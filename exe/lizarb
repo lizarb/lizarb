@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$VERBOSE = ENV["VERBOSE"]
+
+$LOAD_PATH.unshift "#{Dir.pwd}/lib"
+
+require_relative "../lib/lizarb.rb"
+
+Lizarb.call
+
+exit 0
