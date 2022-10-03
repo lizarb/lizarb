@@ -85,6 +85,23 @@ module App
     irb.eval_input
   end
 
+  # parts
+
+  def connect_part part_klass, key
+    klass = Liza.const "#{key}_part"
+
+    log "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}"
+
+    if klass.insertion
+      part_klass.class_exec &klass.insertion
+    end
+
+    if klass.extension
+      klass.const_set :Extension, Class.new(Liza::PartExtension)
+      klass::Extension.class_exec &klass.extension
+    end
+  end
+
   #
 
   def fname_for klass
