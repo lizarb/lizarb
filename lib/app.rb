@@ -17,9 +17,9 @@ module App
     setup_bundle
     setup_liza
 
-    log "liza #{argv.join(" ").light_green} | lizarb v#{Lizarb::VERSION}"
     puts
     _call_dev if argv[0] == "dev"
+    _call_test if argv[0] == "test"
     puts
   end
 
@@ -83,6 +83,46 @@ module App
     IRB.conf[:MAIN_CONTEXT] = irb.context
 
     irb.eval_input
+  end
+
+  # test
+
+  def _call_test
+    now = Time.now
+
+    App.eager_load_all
+    test_classes = Liza::Test.descendants
+
+    log "Testing #{test_classes}"
+    _call_test_testing test_classes
+    log "Done Testing (#{now.diff}s)"
+
+    puts
+
+    log "Counting #{test_classes.count} Test Classes"
+    _call_test_counting test_classes
+    log "Done Counting (#{now.diff}s)"
+  end
+
+  def _call_test_testing test_classes
+    i, count = 0, test_classes.count
+    for test_class in test_classes
+      test_class.call i+=1, count
+    end
+  end
+
+  def _call_test_counting test_classes
+    puts
+    totals = Hash.new { 0 }
+    test_classes.each do |test_class|
+      test_class.totals.each do |k, v|
+        totals[k] += v.size
+      end
+      log "  #{test_class}.totals #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
+    end
+    puts
+    log "  Total #{totals}"
+    puts
   end
 
   # parts

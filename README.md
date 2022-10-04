@@ -19,6 +19,12 @@ Try Liza with an interactive prompt
 
     $ liza dev
 
+## Running Tests
+
+Run your Liza tests
+
+    $ liza test
+
 ## Development
 
 To install dependencies, run this bash script:
