@@ -39,6 +39,16 @@ module Lizarb
     VERSION
   end
 
+  # called from "#{APP_DIR}/app"
+  def bundle
+    require "bundler/setup"
+    Bundler.require :default
+
+    bundle_liza
+
+    check_mode!
+  end
+
   # setup
 
   def setup_core_ext

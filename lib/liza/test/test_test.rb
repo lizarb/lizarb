@@ -1,6 +1,11 @@
 module Liza
   class TestTest < Test
 
+    test :settings do
+      assert subject_class.log_level == :normal
+      assert subject_class.log_color == :white
+    end
+
     group :basics do
       test :truths do
         assert true

@@ -1,5 +1,6 @@
 module App
   class Error < StandardError; end
+  class ModeNotFound < Error; end
 
   #
 
@@ -16,6 +17,8 @@ module App
     setup_env
     setup_bundle
     setup_liza
+
+    check_mode!
 
     puts
     _call_dev if argv[0] == "dev"
@@ -67,8 +70,18 @@ module App
 
   # mode
 
-  def mode
-    @mode ||= ENV["LIZA_MODE"] ||= "code"
+  @modes = [:code]
+  ENV["LIZA_MODE"] ||= @modes.first.to_s
+  @mode = ENV["LIZA_MODE"].to_sym
+
+  def mode mode = nil
+    return @mode if mode.nil?
+    @modes << mode.to_sym
+  end
+
+  def check_mode!
+    return if @modes.include? @mode
+    raise ModeNotFound, "LIZA_MODE `#{@mode}` not found in #{@modes}", []
   end
 
   # dev
