@@ -22,4 +22,13 @@ module Liza
     const_get name
   end
 
+  # constants missing from Liza will be looked up in all systems
+  def const_missing name
+    for k in App.systems.values.reverse
+      return k.const_get(name) if k.const_defined? name
+    end
+
+    super
+  end
+
 end

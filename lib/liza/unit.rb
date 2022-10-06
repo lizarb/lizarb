@@ -3,8 +3,8 @@ module Liza
 
     # PARTS
 
-    def self.part key
-      App.connect_part self, key
+    def self.part key, system: nil
+      App.connect_part self, key, system
     end
 
     # SETTINGS
@@ -128,6 +128,22 @@ module Liza
     def log?(...)= self.class.log?(...)
     def log_level?(...)= self.class.log_level?(...)
     def log_color(...)= self.class.log_color(...)
+
+    # SYSTEM
+
+    def self.inherited_explicitly_sets_system
+
+      def self.inherited sub
+        super
+
+        return unless sub.name.to_s.include? "::"
+
+        system = Object.const_get sub.first_namespace
+
+        sub.set :system, system
+      end
+
+    end
 
   end
 end
