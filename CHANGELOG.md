@@ -6,3 +6,4 @@
 - Liza::Unit has class/instance methods settings/set/set/add/fetch
 - Liza::Unit has class/instance methods log/log_color/log_level/log?/log_level?
 - Liza::System, Liza::Box, Liza::Panel, Liza::Controller
+- DevSystem, Liza::DevBox, Liza::Command, AppCommand, and others

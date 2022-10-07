@@ -1,5 +1,10 @@
 App.call ARGV do
 
+  # Systems help you organize your application's dependencies and RAM memory usage.
+  # Learn more: http://guides.lizarb.org/systems.html
+
+  system :dev
+
   # Modes help you organize your application's behavior and settings.
   # Learn more: http://guides.lizarb.org/modes.html
 
