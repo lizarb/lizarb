@@ -106,7 +106,7 @@ module Liza
 
       string = "#{source} #{string}"
 
-      puts string
+      DevBox.logs.call string
     end
 
     def self.log_level

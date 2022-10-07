@@ -2,8 +2,10 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in lizarb.gemspec
-gemspec
+ruby File.read(".ruby-version").strip
+
+gem "lizarb", github: "rubyonrails-brasil/lizarb"
+# gem "lizarb"
 
 group :dev do
   # gems you only want to load if DevSystem is loaded
