@@ -4,6 +4,7 @@ App.call ARGV do
   # Learn more: http://guides.lizarb.org/systems.html
 
   system :dev
+  system :happy
 
   # Modes help you organize your application's behavior and settings.
   # Learn more: http://guides.lizarb.org/modes.html
