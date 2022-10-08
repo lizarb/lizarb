@@ -25,6 +25,12 @@ Run your Liza tests
 
     $ liza test
 
+## Happy
+
+Try Liza and build an ASCII game
+
+    $ liza happy axo
+
 ## Development
 
 To install dependencies, run this bash script:
