@@ -1,2 +1,4 @@
 .gitignore/.bundle/
 /tmp/
+*.sqlite
+*.rdb

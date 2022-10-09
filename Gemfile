@@ -12,3 +12,9 @@ end
 group :happy do
   # gems you only want to load if HappySystem is loaded
 end
+
+group :net do
+  # gems you only want to load if NetSystem is loaded
+  gem "redis", "~> 5.0"
+  gem "sqlite3", "~> 1.5"
+end
