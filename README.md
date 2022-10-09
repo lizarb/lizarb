@@ -31,6 +31,29 @@ Try Liza and build an ASCII game
 
     $ liza happy axo
 
+## Networking
+
+Try Liza to connect with Sqlite and Redis
+
+    $ liza net
+
+```ruby
+
+NetBox.adapters.get :sqlite
+NetBox.adapters.get :redis_url
+
+NetBox.databases.sql
+NetBox.databases.sqlite
+NetBox.databases.redis
+
+RedisDb.current
+SqliteDb.current
+
+RedisDb.current.call "TIME"
+SqliteDb.current.call "SELECT name, sql FROM sqlite_master WHERE type = 'table';"
+
+```
+
 ## Development
 
 To install dependencies, run this bash script:

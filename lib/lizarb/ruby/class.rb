@@ -8,4 +8,8 @@ class Class
   def first_namespace
     name.rpartition('::')[0]
   end
+
+  def last_namespace
+    name.rpartition('::')[-1]
+  end
 end
