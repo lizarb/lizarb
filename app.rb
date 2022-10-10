@@ -6,6 +6,7 @@ App.call ARGV do
   system :dev
   system :happy
   system :net
+  system :web
 
   # Modes help you organize your application's behavior and settings.
   # Learn more: http://guides.lizarb.org/modes.html

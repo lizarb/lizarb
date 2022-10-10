@@ -54,6 +54,34 @@ SqliteDb.current.call "SELECT name, sql FROM sqlite_master WHERE type = 'table';
 
 ```
 
+## Web Server
+
+Try Liza with the Rack Web Server
+
+    $ liza web
+
+http://localhost:3000/
+  
+http://localhost:3000/xxxxxxx
+  
+http://localhost:3000/api/xxxxxxx
+  
+http://localhost:3000/api/auth/sign_up
+  
+http://localhost:3000/api/auth/sign_in
+  
+http://localhost:3000/api/auth/account
+  
+http://localhost:3000/api/auth/sign_out
+  
+http://localhost:3000/assets/app.css
+  
+http://localhost:3000/assets/app.js
+
+## Usage
+
+TODO: Write usage instructions here
+
 ## Development
 
 To install dependencies, run this bash script:

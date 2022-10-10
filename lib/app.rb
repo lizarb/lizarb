@@ -27,6 +27,10 @@ module App
     puts
   end
 
+  def root
+    Pathname Dir.pwd
+  end
+
   def setup_env
     require "dotenv"
     Dotenv.load "app.#{mode}.env", "app.env"
