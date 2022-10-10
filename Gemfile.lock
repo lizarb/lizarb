@@ -12,12 +12,20 @@ GEM
     colorize (0.8.1)
     connection_pool (2.3.0)
     dotenv (2.8.1)
+    nio4r (2.5.8)
+    puma (5.6.5)
+      nio4r (~> 2.0)
+    rack (3.0.0)
+    rackup (0.2.2)
+      rack (>= 3.0.0.beta1)
+      webrick
     rake (13.0.6)
     redis (5.0.5)
       redis-client (>= 0.9.0)
     redis-client (0.10.0)
       connection_pool
     sqlite3 (1.5.2-x86_64-linux)
+    webrick (1.7.0)
     zeitwerk (2.6.1)
 
 PLATFORMS
@@ -25,6 +33,9 @@ PLATFORMS
 
 DEPENDENCIES
   lizarb!
+  puma (~> 5.6)
+  rack (~> 3.0)
+  rackup (~> 0.2.2)
   rake (~> 13.0)
   redis (~> 5.0)
   sqlite3 (~> 1.5)
