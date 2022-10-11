@@ -4,8 +4,10 @@ source "https://rubygems.org"
 
 ruby File.read(".ruby-version").strip
 
-gem "lizarb", github: "rubyonrails-brasil/lizarb"
-# gem "lizarb"
+group :default do
+  gem "lizarb", "~> 1.0"
+  # gem "lizarb", github: "rubyonrails-brasil/lizarb"
+end
 
 group :dev do
   # gems you only want to load if DevSystem is loaded
