@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+- 
+
+## [1.0.0] - 2022-10-11
+
 - App, Liza and Lizarb
 - Liza::Unit, Liza::Part
 - Liza::Test
