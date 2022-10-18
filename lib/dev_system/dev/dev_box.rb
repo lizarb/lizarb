@@ -2,6 +2,7 @@ class DevSystem
   class DevBox < Liza::Box
     has_panel :command, :commands
     has_controller :command, :commands
+    has_controller :shell, :commands
 
     has_panel :log, :logs
 
