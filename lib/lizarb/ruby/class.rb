@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Class
+  public :eval
+
   def descendants
     ObjectSpace.each_object(Class).select { |klass| klass < self }
   end
