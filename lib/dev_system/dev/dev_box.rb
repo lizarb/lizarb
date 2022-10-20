@@ -3,6 +3,7 @@ class DevSystem
     has_panel :command, :commands
     has_controller :command, :commands
     has_controller :shell, :commands
+    has_controller :bench, :commands
 
     has_panel :log, :logs
 
