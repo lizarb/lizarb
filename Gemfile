@@ -7,6 +7,7 @@ gemspec
 
 group :dev do
   # gems you only want to load if DevSystem is loaded
+  gem "pry", "~> 0.14.1"
 end
 
 group :happy do
