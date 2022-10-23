@@ -2,22 +2,22 @@ class DevSystem
   class DevCommand < Command
 
     def self.call args
-      if args[0] == "pry"
-        require "pry"
-        Pry.start
-      else
-        log :higher, "Called #{self} with args #{args}"
+      # 1. LOG
 
-        # https://github.com/ruby/ruby/blob/master/lib/irb.rb
-        require "irb"
+      log :higher, "args: #{args}"
+      puts
 
-        IRB.setup(nil)
-        workspace = IRB::WorkSpace.new(binding)
-        irb = IRB::Irb.new(workspace)
-        IRB.conf[:MAIN_CONTEXT] = irb.context
+      # 2. FIND terminal
 
-        irb.eval_input
-      end
+      terminal = args[0] || "irb"
+
+      log({terminal:})
+
+      terminal_klass = Liza.const "#{terminal}_terminal"
+
+      # 3. CALL
+
+      terminal_klass.call Array(args[1..-1])
     end
 
   end
