@@ -4,6 +4,7 @@ class DevSystem
     has_controller :command, :commands
     has_controller :shell, :commands
     has_controller :bench, :commands
+    has_controller :terminal, :commands
 
     has_panel :log, :logs
 
