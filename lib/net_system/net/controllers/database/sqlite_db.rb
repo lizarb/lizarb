@@ -1,9 +1,9 @@
 class NetSystem
   class SqliteDb < Database
-    set_adapter :sqlite
+    set_client :sqlite
 
     def now
-      array = adapter.now
+      array = client.now
       Time.parse array[1][0]
     end
 
