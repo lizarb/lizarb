@@ -15,20 +15,45 @@ module Liza
 
   # After checking the top-level namespace, looks up the Liza namespace
   def const name
-    name = name.to_s.camelize
+    name = name.to_s.camelize.to_sym
 
-    return Object.const_get name if Object.const_defined? name
+    k = const_check_object name
+    return k if k
 
-    const_get name
+    k = const_get name
+    return k if k
+
+    nil
   end
 
   # constants missing from Liza will be looked up in all systems
   def const_missing name
-    for k in App.systems.values.reverse
-      return k.const_get(name) if k.const_defined? name
-    end
+    k = const_check_systems name
+    return k if k
 
     super
+  end
+
+  def const_check_object name
+    return if not Object.const_defined? name
+    kk = Object.const_get name
+    return kk if is_unit? kk
+
+    nil
+  end
+
+  def const_check_systems name
+    for k in App.systems.values.reverse
+      next if not k.const_defined? name.to_sym
+      kk = k.const(name) if k.constants.include? name
+      return kk if is_unit? kk
+    end
+
+    nil
+  end
+
+  def is_unit? kk
+    kk && kk < Liza::Unit
   end
 
 end
