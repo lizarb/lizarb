@@ -13,11 +13,14 @@ module Liza
 
   #
 
-  # After checking the top-level namespace, looks up the Liza namespace
+  # Checks Object, each system, then Liza for Liza::Unit classes
   def const name
     name = name.to_s.camelize.to_sym
 
     k = const_check_object name
+    return k if k
+
+    k = const_check_systems name
     return k if k
 
     k = const_get name
@@ -26,7 +29,7 @@ module Liza
     nil
   end
 
-  # constants missing from Liza will be looked up in all systems
+  # Checks each system, then Liza for Liza::Unit classes
   def const_missing name
     k = const_check_systems name
     return k if k
