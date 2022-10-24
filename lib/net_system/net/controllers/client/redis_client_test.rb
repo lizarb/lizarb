@@ -1,12 +1,12 @@
 class NetSystem
-  class RedisAdapterTest < AdapterTest
+  class RedisClientTest < ClientTest
 
     def subject
       @subject ||= subject_class.new
     end
 
     test :subject_class do
-      assert subject_class == Liza::RedisAdapter
+      assert subject_class == Liza::RedisClient
     end
 
     test :subject do

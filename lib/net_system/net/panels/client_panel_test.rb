@@ -1,8 +1,8 @@
 class NetSystem
-  class AdapterPanelTest < Liza::PanelTest
+  class ClientPanelTest < Liza::PanelTest
 
     test :subject_class do
-      assert subject_class == NetSystem::AdapterPanel
+      assert subject_class == NetSystem::ClientPanel
     end
 
     test :settings do

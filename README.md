@@ -39,8 +39,8 @@ Try Liza to connect with Sqlite and Redis
 
 ```ruby
 
-NetBox.adapters.get :sqlite
-NetBox.adapters.get :redis_url
+NetBox.clients.get :sqlite
+NetBox.clients.get :redis_url
 
 NetBox.databases.sql
 NetBox.databases.sqlite
