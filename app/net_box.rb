@@ -1,7 +1,7 @@
 class NetBox < Liza::NetBox
 
-  adapters do
-    # Set up your adapter panel per the DSL in http://guides.lizarb.org/panels/adapter.html
+  clients do
+    # Set up your client panel per the DSL in http://guides.lizarb.org/panels/client.html
 
     set :redis_url, "redis://localhost:6379/15"
     set :sqlite, "tmp/app.#{Time.now.to_i}.sqlite" if App.mode == :code

@@ -1,12 +1,12 @@
 class NetSystem
-  class SqliteAdapterTest < AdapterTest
+  class SqliteClientTest < ClientTest
 
     def subject
       @subject ||= subject_class.new ":memory:"
     end
 
     test :subject_class do
-      assert subject_class == Liza::SqliteAdapter
+      assert subject_class == Liza::SqliteClient
     end
 
     test :subject do

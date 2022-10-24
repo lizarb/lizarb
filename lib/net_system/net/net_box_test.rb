@@ -11,7 +11,7 @@ class NetSystem
     end
 
     test :panels do
-      assert subject_class.adapters.is_a? AdapterPanel
+      assert subject_class.clients.is_a? ClientPanel
       assert subject_class.databases.is_a? DatabasePanel
     end
 
