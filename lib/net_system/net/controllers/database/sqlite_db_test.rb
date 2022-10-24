@@ -6,7 +6,7 @@ class NetSystem
     end
 
     test :subject do
-      assert subject.adapter.class == NetSystem::SqliteAdapter
+      assert subject.client.class == NetSystem::SqliteClient
     end
 
     test :now do

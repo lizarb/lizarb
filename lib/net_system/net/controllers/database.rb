@@ -9,14 +9,14 @@ class NetSystem
       raise "please rename #{sub.name} to #{sub.name}Db"
     end
 
-    attr_reader :adapter
+    attr_reader :client
 
-    def initialize adapter: get(:adapter).new
-      @adapter = adapter
+    def initialize client: get(:client).new
+      @client = client
     end
 
-    def self.set_adapter adapter_id
-      set :adapter, Liza.const("#{adapter_id}_adapter")
+    def self.set_client client_id
+      set :client, Liza.const("#{client_id}_client")
     end
 
     def self.current
@@ -27,7 +27,7 @@ class NetSystem
     end
 
     def self.call(...); current.call(...); end
-    def call(...); @adapter.call(...); end
+    def call(...); @client.call(...); end
 
   end
 end

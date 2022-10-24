@@ -1,8 +1,8 @@
 class NetSystem
-  class AdapterTest < Liza::ControllerTest
+  class ClientTest < Liza::ControllerTest
 
     test :subject_class do
-      assert subject_class == NetSystem::Adapter
+      assert subject_class == NetSystem::Client
     end
 
     test :settings do

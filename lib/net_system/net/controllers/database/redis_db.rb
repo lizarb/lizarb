@@ -1,9 +1,9 @@
 class NetSystem
   class RedisDb < Database
-    set_adapter :redis
+    set_client :redis
 
     def now
-      array = adapter.now
+      array = client.now
       Time.at array[0]
     end
 

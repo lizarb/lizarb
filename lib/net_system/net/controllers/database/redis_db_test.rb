@@ -6,7 +6,7 @@ class NetSystem
     end
 
     test :subject do
-      assert subject.adapter.class == NetSystem::RedisAdapter
+      assert subject.client.class == NetSystem::RedisClient
     end
 
     test :now do

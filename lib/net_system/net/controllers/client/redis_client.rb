@@ -1,10 +1,10 @@
 class NetSystem
-  class RedisAdapter < Adapter
+  class RedisClient < Client
 
     # https://redis.io/
     # https://github.com/redis/redis-rb
     def initialize *args
-      args = [url: Liza.const(:net_box).adapters.get(:redis_url)] if args.empty?
+      args = [url: Liza.const(:net_box).clients.get(:redis_url)] if args.empty?
       log "Connecting to #{args}"
       @conn = Redis.new *args
     end
