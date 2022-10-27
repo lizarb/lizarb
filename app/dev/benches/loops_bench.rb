@@ -1,15 +1,14 @@
 class LoopsBench < AppBench
-
   main_dsl
 
-  N = 10_000_000
-
-  RANGE = 1..N
-  ARRAY = Array RANGE
-
-  HASH_INT = RANGE.map { |i| [i, i] }.to_h
-  HASH_STR = RANGE.map { |i| ["a#{i}", i] }.to_h
-  HASH_SYM = RANGE.map { |i| [:"a#{i}", i] }.to_h
+  setup do
+    N = 1_000_000
+    RANGE = 1..N
+    ARRAY = Array RANGE
+    HASH_INT = RANGE.map { |i| [i, i] }.to_h
+    HASH_STR = RANGE.map { |i| ["a#{i}", i] }.to_h
+    HASH_SYM = RANGE.map { |i| [:"a#{i}", i] }.to_h
+  end
 
   mark "for i in RANGE" do
     for i in RANGE
