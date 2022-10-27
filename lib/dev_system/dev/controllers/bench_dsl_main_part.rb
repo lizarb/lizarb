@@ -9,6 +9,12 @@ class DevSystem
         # https://rubyapi.org/3.1/o/benchmark
         require "benchmark"
 
+        if @setup_bl
+          log "Setting up..."
+          instance_exec &@setup_bl
+          log "Set up"
+        end
+
         log "Benchmarking #{marks.count} Ruby Blocks"
         puts
 
@@ -40,9 +46,13 @@ class DevSystem
 
       #
 
-      def self.marks()= @@marks ||= {}
+      def self.marks()= @marks ||= {}
 
       def self.mark(label, &block)= marks[label] = block
+
+      def self.setup &block
+        @setup_bl = block if block_given?
+      end
 
     end
 
