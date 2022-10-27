@@ -1,5 +1,7 @@
 class LoopsBench < AppBench
 
+  main_dsl
+
   N = 10_000_000
   RANGE = 1..N
 
