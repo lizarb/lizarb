@@ -149,7 +149,7 @@ module App
                   .const "#{key}_part"
             end
 
-    log "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}"
+    log "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}" if $VERBOSE
 
     if klass.insertion
       part_klass.class_exec &klass.insertion
