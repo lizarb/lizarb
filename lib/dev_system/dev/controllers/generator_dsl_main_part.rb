@@ -31,10 +31,7 @@ class DevSystem
       end
 
       def call
-        FileUtils.mkdir_p folder, verbose: true
-        fname = "#{folder}/#{filename}"
-        File.write fname, content
-        log "writing #{fname} with #{content.size} bytes"
+        FileShell.write folder, filename, content
       end
 
       %w|folder filename content|.each do |s|
