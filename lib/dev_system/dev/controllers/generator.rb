@@ -1,19 +1,11 @@
 class DevSystem
   class Generator < Liza::Controller
 
-    # def self.call args
-    #   new.call args
-    # end
+    # DSLS
 
-    # def initialize args
-    #   @args = args
-    # end
-
-    # attr_reader :args
-
-    # def call args
-    #
-    # end
+    def self.main_dsl
+      part :"generator_dsl_main", system: :dev
+    end
 
   end
 end
