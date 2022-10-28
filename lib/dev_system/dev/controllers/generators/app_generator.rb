@@ -26,12 +26,10 @@ class DevSystem
 
       puts
 
-      FileUtils.mkdir_p "#{to}/lib", verbose: true
-      FileUtils.touch "#{to}/lib/.gitkeep", verbose: true
-      FileUtils.mkdir_p "#{to}/tmp", verbose: true
-      FileUtils.touch "#{to}/tmp/.gitkeep", verbose: true
+      FileShell.gitkeep "#{to}/lib"
+      FileShell.gitkeep "#{to}/tmp"
 
-      FileUtils.mkdir_p "#{to}/app", verbose: true
+      FileShell.create_folder "#{to}/app"
 
       # systems
 
