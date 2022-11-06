@@ -3,9 +3,11 @@
 class String
   alias lpartition partition
 
-  def camelize
-    split("_").map { |s| "#{s[0].upcase}#{s[1..-1]}" }.join("")
+  def camelcase
+    split("_").map { |s| "#{s[0].to_s.upcase}#{s[1..-1]}" }.join("")
   end
+
+  alias camelize camelcase
 
   def rjust_blanks length
     rjust length, " "
