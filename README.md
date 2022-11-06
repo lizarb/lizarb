@@ -54,7 +54,7 @@ SqliteDb.current.call "SELECT name, sql FROM sqlite_master WHERE type = 'table';
 
 ```
 
-## Web Server
+## Rack Web Server
 
 Try Liza with the Rack Web Server
 
@@ -78,9 +78,29 @@ http://localhost:3000/assets/app.css
   
 http://localhost:3000/assets/app.js
 
-## Usage
+## Web Request
 
-TODO: Write usage instructions here
+Try Liza with the Rack Web Server
+
+    $ liza request get /
+
+    $ liza request post /
+  
+    $ liza request get /xxxxxxx
+  
+    $ liza request get /api/xxxxxxx
+  
+    $ liza request get /api/auth/sign_up
+  
+    $ liza request get /api/auth/sign_in
+  
+    $ liza request get /api/auth/account
+  
+    $ liza request get /api/auth/sign_out
+  
+    $ liza request get /assets/app.css
+  
+    $ liza request get /assets/app.js
 
 ## Development
 

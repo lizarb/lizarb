@@ -10,32 +10,32 @@ class AssetsRequest < AppRequest
 
     #
 
-    @status = 200
-    @headers = {
+    status = 200
+    headers = {
       "Framework" => "Liza #{Lizarb::VERSION}"
     }
-    @body = ""
+    body = ""
 
-    render_action_admin_format_js  if action == :admin && format == :js
-    render_action_admin_format_css if action == :admin && format == :css
-    render_action_app_format_js    if action == :app   && format == :js
-    render_action_app_format_css   if action == :app   && format == :css
+    body = render_action_admin_format_js  if action == :admin && format == :js
+    body = render_action_admin_format_css if action == :admin && format == :css
+    body = render_action_app_format_js    if action == :app   && format == :js
+    body = render_action_app_format_css   if action == :app   && format == :css
 
-    [@status, @headers, [@body]]
+    [status, headers, [body]]
   end
 
   # helper methods
 
   def render_action_admin_format_js
-    @body = "alert('it works')"
+    "alert('it works')"
   end
 
   def render_action_admin_format_css
-    @body = "body { background: gray }"
+    "body { background: gray }"
   end
 
   def render_action_app_format_js
-    @body = <<-CODE
+    <<-CODE
 window.onload = () => {
   var h1 = document.createElement("h1");
   h1.setAttribute("style", "color: white");
@@ -46,7 +46,7 @@ window.onload = () => {
   end
 
   def render_action_app_format_css
-    @body = <<-CODE
+    <<-CODE
 body {
 background: ##{random_color};
 font-family: Roboto;
