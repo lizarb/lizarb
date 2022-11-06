@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "colorize"
+require "json"
 require "pathname"
 require "zeitwerk"
 

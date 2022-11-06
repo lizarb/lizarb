@@ -19,9 +19,9 @@ class WebSystem
 
       case segments.count
       when 0
-        request, action = "root", "root"
+        request, action = "root", "index"
       when 1
-        request, action = "root", segments[0]
+        request, action = segments[0], "index"
       else
         request, action = segments[0..1]
       end
