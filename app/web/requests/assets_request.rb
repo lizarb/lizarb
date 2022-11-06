@@ -21,7 +21,6 @@ class AssetsRequest < AppRequest
     render_action_app_format_js    if action == :app   && format == :js
     render_action_app_format_css   if action == :app   && format == :css
 
-    log @status
     [@status, @headers, [@body]]
   end
 
