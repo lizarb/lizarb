@@ -21,7 +21,6 @@ class RootRequest < AppRequest
       render_action_not_found
     end
 
-    log @status
     [@status, @headers, [@body]]
   rescue => e
     @status = 500

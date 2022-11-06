@@ -31,7 +31,6 @@ class ApiRequest < AppRequest
       body = render_route_not_found env["LIZA_PATH"]
     end
 
-    log status
     [status, headers, [body]]
   end
 
