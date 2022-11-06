@@ -14,6 +14,14 @@ class Liza::StringTest < Liza::RubyTest
     assert s2.class == String
   end
   
+  test :lpartition do
+    todo "write examples"
+  end
+  
+  test :rpartition do
+    todo "write examples"
+  end
+  
   test :camelcase do
     assert ""     == "".camelcase
     assert "A"    == "a".camelcase
@@ -32,4 +40,20 @@ class Liza::StringTest < Liza::RubyTest
     assert "ab_cd" == "AbCd".snakecase
   end
 
+  test :rjust_blanks do
+    todo "write examples"
+  end
+
+  test :rjust_zeroes do
+    todo "write examples"
+  end
+
+  test :ljust_blanks do
+    todo "write examples"
+  end
+
+  test :ljust_zeroes do
+    todo "write examples"
+  end
+  
 end
