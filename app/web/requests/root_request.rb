@@ -14,14 +14,13 @@ class RootRequest < AppRequest
 
     @body = ""
 
-    if action == "root"
-      render_action_root
+    if action == "index"
+      render_action_index
     else
       @status = 404
-      render_action_not_found
+      render_action_not_found action
     end
 
-    log @status
     [@status, @headers, [@body]]
   rescue => e
     @status = 500
@@ -31,7 +30,7 @@ class RootRequest < AppRequest
     [@status, @headers, [@body]]
   end
 
-  def self.render_action_root
+  def self.render_action_index
     h1 = "Ruby Works!"
 
     @body = <<~CODE
@@ -48,8 +47,8 @@ class RootRequest < AppRequest
     CODE
   end
 
-  def self.render_action_not_found
-    @body = "Ruby couldn't find your page!"
+  def self.render_action_not_found action
+    @body = "Ruby couldn't find your page! action: #{action}"
   end
 
 end

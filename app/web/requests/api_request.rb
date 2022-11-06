@@ -31,31 +31,32 @@ class ApiRequest < AppRequest
       body = render_route_not_found env["LIZA_PATH"]
     end
 
-    log status
+    body = body.to_json
+
     [status, headers, [body]]
   end
 
   def self.render_route_api_auth_sign_up
-    "route: render_route_api_auth_sign_up"
+    {route: "render_route_api_auth_sign_up"}
   end
 
   def self.render_route_api_auth_sign_in
-    "route: render_route_api_auth_sign_in"
+    {route: "render_route_api_auth_sign_in"}
   end
 
   def self.render_route_api_auth_account
-    "route: render_route_api_auth_account"
+    {route: "render_route_api_auth_account"}
   end
 
   def self.render_route_api_auth_sign_out
-    "route: render_route_api_auth_sign_out"
+    {route: "render_route_api_auth_sign_out"}
   end
 
   def self.render_route_api_users
-    "route: render_route_api_users"
+    {route: "render_route_api_users"}
   end
 
   def self.render_route_not_found path
-    "route: render_route_not_found #{path}"
+    {route: "render_route_not_found #{path}"}
   end
 end

@@ -10,7 +10,6 @@ class WebSystem
 
       body = "Client Error #{status} - #{env["LIZA_PATH"]}"
 
-      log status
       [status, headers, [body]]
     end
 
