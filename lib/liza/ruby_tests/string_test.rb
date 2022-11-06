@@ -23,5 +23,13 @@ class Liza::StringTest < Liza::RubyTest
     assert "Ab"   == "ab_".camelcase
     assert "Cd"   == "_cd".camelcase
   end
+  
+  test :snakecase do
+    assert ""      == "".snakecase
+    assert "a"     == "A".snakecase
+    assert "ab"    == "Ab".snakecase
+    assert "ab_c"  == "AbC".snakecase
+    assert "ab_cd" == "AbCd".snakecase
+  end
 
 end
