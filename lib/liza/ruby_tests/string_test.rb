@@ -14,4 +14,14 @@ class Liza::StringTest < Liza::RubyTest
     assert s2.class == String
   end
   
+  test :camelcase do
+    assert ""     == "".camelcase
+    assert "A"    == "a".camelcase
+    assert "Ab"   == "ab".camelcase
+    assert "AbC"  == "ab_c".camelcase
+    assert "AbCd" == "ab_cd".camelcase
+    assert "Ab"   == "ab_".camelcase
+    assert "Cd"   == "_cd".camelcase
+  end
+
 end
