@@ -12,7 +12,6 @@ class WebSystem
 
       body = "Server Error #{status} - #{e.class} - #{e.message}"
 
-      log status
       [status, headers, [body]]
     end
 

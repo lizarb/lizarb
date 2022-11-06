@@ -2,7 +2,7 @@ class WebSystem
   class RequestPanel < Liza::Panel
 
     def call env
-      puts
+      t = Time.now
 
       # 1. LOG GET /
 
@@ -19,9 +19,9 @@ class WebSystem
 
       case segments.count
       when 0
-        request, action = "root", "root"
+        request, action = "root", "index"
       when 1
-        request, action = "root", segments[0]
+        request, action = segments[0], "index"
       else
         request, action = segments[0..1]
       end
@@ -43,12 +43,16 @@ class WebSystem
 
       # 4. CALL
 
-      request_klass.call env
+      ret = request_klass.call env
     rescue => e
       request_klass = ServerErrorRequest
       env["LIZA_ERROR"] = e
 
-      request_klass.call env
+      ret = request_klass.call env
+    ensure
+      log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
+      puts
+      ret
     end
 
   end
