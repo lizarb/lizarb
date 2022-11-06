@@ -65,4 +65,20 @@ module Lizarb
                   : "#{GEM_DIR}/exe/Gemfile"
   end
 
+  # threads
+
+  def thread_object_id
+    Thread.current.object_id
+  end
+
+  @thread_ids = {thread_object_id => 0}
+  @thread_ids_mutex = Mutex.new
+
+  def thread_id
+    @thread_ids[thread_object_id] ||=
+      @thread_ids_mutex.synchronize do
+        @thread_ids.count
+      end
+  end
+
 end
