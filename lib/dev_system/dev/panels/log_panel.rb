@@ -3,7 +3,7 @@ class DevSystem
 
     # https://rubyapi.org/3.1/o/logger
     def call string
-      puts string
+      puts "lizarb #{Lizarb.thread_id.to_s.rjust_zeroes 3} #{string}"
     end
 
   end
