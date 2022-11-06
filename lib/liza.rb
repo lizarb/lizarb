@@ -2,6 +2,7 @@
 
 module Liza
   class Error < StandardError; end
+  class ConstNotFound < Error; end
 
   #
 
@@ -27,6 +28,8 @@ module Liza
     return k if k
 
     nil
+  rescue NameError
+    raise ConstNotFound, name
   end
 
   # Checks each system, then Liza for Liza::Unit classes
