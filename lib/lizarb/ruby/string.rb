@@ -9,6 +9,12 @@ class String
 
   alias camelize camelcase
 
+  def snakecase
+    gsub(/[A-Z\s-]/) { |s, t| "_#{s}" }[1..-1].to_s.downcase
+  end
+  
+  alias snakefy snakecase
+
   def rjust_blanks length
     rjust length, " "
   end
