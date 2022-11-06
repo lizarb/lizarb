@@ -58,7 +58,7 @@ SqliteDb.current.call "SELECT name, sql FROM sqlite_master WHERE type = 'table';
 
 Try Liza with the Rack Web Server
 
-    $ liza web
+    $ liza rack
 
 http://localhost:3000/
   
