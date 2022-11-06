@@ -18,20 +18,21 @@ module Liza
       @name = name
     end
 
-    def log string
+    def log log_level = :normal, string
+      raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
+      return unless log_level? log_level
+
       source = box.to_s
 
       x = source.size
-
       source = source.bold.colorize log_color
 
       y = source.size
-
       source = "#{source}.#{@name}".ljust(LOG_JUST+y-x)
 
       string = "#{source} #{string}"
-
-      super string
+      
+      DevBox.logs.call string
     end
 
   end
