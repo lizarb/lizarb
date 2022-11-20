@@ -83,6 +83,8 @@ module App
     @systems.each do |k, klass|
       connect_system k, klass
     end
+
+    @systems.freeze
   end
 
   # loaders
