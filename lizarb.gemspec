@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
     end
   end
   spec.bindir = "exe"
-  spec.executables = ["liza", "lizarb"]
+  spec.executables = ["liza", "lizarb", "lrb"]
   spec.require_paths = ["lib"]
 
   # dependencies
