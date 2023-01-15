@@ -1,0 +1,24 @@
+class <%= name.camelize %>Bench < AppBench
+  main_dsl
+
+  setup do
+    N = 1_000_000
+  end
+
+  mark "alternative 1" do
+    i = 0
+
+    while (i += 1) <= N
+      a = "1".to_sym
+    end
+  end
+
+  mark "alternative 2" do
+    i = 0
+
+    while (i += 1) <= N
+      a = :"1"
+    end
+  end
+
+end
