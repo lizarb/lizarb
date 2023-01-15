@@ -1,0 +1,26 @@
+class <%= name.camelize %>Command < AppCommand
+
+  def self.call args
+    log :higher, "Called #{self}.#{__method__} with args #{args}"
+    new(args).call
+  end
+
+  def initialize args
+    @args = args
+  end
+
+  def call
+    log :higher, "Called #{self}.#{__method__}"
+
+    text = render "text.txt"
+
+    log :higher, "text: #{text}"
+  end
+
+end
+
+__END__
+
+# text.txt.erb
+Called <%%= self %>.<%%= __method__ %>
+@args: <%%= @args %>
