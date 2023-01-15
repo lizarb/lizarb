@@ -11,7 +11,7 @@ class LERB < ERB
   # loaders
 
   def self.load path_radical
-    load_from_file("#{path_radical}.rb") + load_from_folder(path_radical)
+    load_from_folder(path_radical) + load_from_file("#{path_radical}.rb")
   end
 
   def self.load_from_file path
@@ -62,26 +62,26 @@ class LERB < ERB
     TAG_FORMATS.include? format
   end
 
-  # type
+  # source
 
-  TYPES = %i|file folder|
+  SOURCES = %i|file folder|
 
   def file?
-    @type == :file
+    @source == :file
   end
 
   def folder?
-    @type == :folder
+    @source == :folder
   end
 
   # constructor
 
   TRIM_MODE = "<>-"
 
-  attr_reader :type, :key, :format
+  attr_reader :source, :key, :format
 
-  def initialize type, key, content, filename, lineno
-    raise BuildError, "type :#{type} must be one of #{TYPES}" unless TYPES.include? type
+  def initialize source, key, content, filename, lineno
+    raise BuildError, "source :#{source} must be one of #{SOURCES}" unless SOURCES.include? source
 
     segments = key.split("/").last.split(".")
     format = segments[1]
@@ -91,7 +91,7 @@ class LERB < ERB
     raise BuildError, "key '#{key}' has an invalid format '#{format}'" unless format.gsub(/[^a-z0-9]/, "") == format
 
     super content, trim_mode: TRIM_MODE
-    @type, @key, @format, self.filename, self.lineno = type, key, format, filename, lineno
+    @source, @key, @format, self.filename, self.lineno = source, key, format, filename, lineno
   end
 
   # result
