@@ -4,6 +4,7 @@ require "colorize"
 require "json"
 require "pathname"
 require "zeitwerk"
+require "lerb"
 
 require_relative "lizarb/version"
 
