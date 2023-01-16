@@ -6,36 +6,49 @@ Liza is a light, experimental framework primarily developed to help study the Ru
 
 Install the gem by executing:
 
-    $ gem install lizarb
+    gem install lizarb
 
 You will get the following three shims:
 
-    $ lizarb version
-    $ liza version
+    lizarb version
+    liza version
+
+## Create a liza app
+
+So you can rn your experiments
+
+    liza new
+
+Then enter automatilacally your liza app
+
+    cd app_1        
+    bundle install
+
+Now you are ready to go!
 
 ## Try
 
 Try Liza with an interactive prompt
 
-    $ liza dev
+    liza dev
 
 ## Running Tests
 
 Run your Liza tests
 
-    $ liza test
+    liza test
 
 ## Happy
 
 Try Liza and build an ASCII game
 
-    $ liza happy axo
+    liza happy axo
 
 ## Networking
 
 Try Liza to connect with Sqlite and Redis
 
-    $ liza net
+    liza net
 
 ```ruby
 
@@ -58,7 +71,7 @@ SqliteDb.current.call "SELECT name, sql FROM sqlite_master WHERE type = 'table';
 
 Try Liza with the Rack Web Server
 
-    $ liza rack
+    liza rack
 
 http://localhost:3000/
   
@@ -82,39 +95,39 @@ http://localhost:3000/assets/app.js
 
 Try Liza with the Rack Web Server
 
-    $ liza request get /
+    liza request get /
 
-    $ liza request post /
+    liza request post /
   
-    $ liza request get /xxxxxxx
+    liza request get /xxxxxxx
   
-    $ liza request get /api/xxxxxxx
+    liza request get /api/xxxxxxx
   
-    $ liza request get /api/auth/sign_up
+    liza request get /api/auth/sign_up
   
-    $ liza request get /api/auth/sign_in
+    liza request get /api/auth/sign_in
   
-    $ liza request get /api/auth/account
+    liza request get /api/auth/account
   
-    $ liza request get /api/auth/sign_out
+    liza request get /api/auth/sign_out
   
-    $ liza request get /assets/app.css
+    liza request get /assets/app.css
   
-    $ liza request get /assets/app.js
+    liza request get /assets/app.js
 
 ## Development
 
 To install dependencies, run this bash script:
 
-    $ bin/setup
+    bin/setup
 
 For development experiments, use the local executable script
 
-    $ exe/lizarb test
+    exe/lizarb test
 
 To build and install lizarb in your local machine
 
-    $ bundle exec rake install
+    bundle exec rake install
 
 ## Release    
 
