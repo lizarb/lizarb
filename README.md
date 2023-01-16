@@ -24,7 +24,6 @@ Then enter your liza app
     cd app_1
     bundle install
 
-
 ## Try
 
 Try Liza with an interactive prompt
