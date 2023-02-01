@@ -70,6 +70,24 @@ class LoopsBench < AppBench
     end
   end
 
+  mark "HASH_INT.each_pair do |i, iv|" do
+    HASH_INT.each_pair do |i, iv|
+      a = "1"
+    end
+  end
+
+  mark "HASH_STR.each_pair do |i, iv|" do
+    HASH_STR.each_pair do |i, iv|
+      a = "1"
+    end
+  end
+
+  mark "HASH_SYM.each_pair do |i, iv|" do
+    HASH_SYM.each_pair do |i, iv|
+      a = "1"
+    end
+  end
+
   mark "RANGE.map do |i|" do
     RANGE.map do |i|
       a = "1"
@@ -112,6 +130,17 @@ class LoopsBench < AppBench
     end
   end
 
+  mark "1.upto N next" do
+    it = 1.upto N
+    begin
+      it.next while true
+    rescue StopIteration
+    end
+    #  do |i|
+    #   a = "1"
+    # end
+  end
+
   mark "loop break" do
     i = 0
 
@@ -127,6 +156,12 @@ class LoopsBench < AppBench
     while (i += 1) <= N
       a = "1"
     end
+  end
+
+  mark "while inline" do
+    i = 0
+
+    a = "1" while (i += 1) <= N
   end
 
   mark "begin end while" do
