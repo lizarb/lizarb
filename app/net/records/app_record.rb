@@ -1,4 +1,4 @@
-class AppModel < Liza::Model
+class AppRecord < Liza::Record
   db :sqlite
 
   def self.create_tables!
@@ -18,3 +18,4 @@ SQLITE
   end
 
 end
+

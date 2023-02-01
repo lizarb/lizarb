@@ -1,8 +1,8 @@
 class NetSystem
-  class ModelTest < Liza::ControllerTest
+  class RecordTest < Liza::ControllerTest
 
     test :subject_class do
-      assert subject_class == NetSystem::Model
+      assert subject_class == NetSystem::Record
     end
 
     test :settings do
