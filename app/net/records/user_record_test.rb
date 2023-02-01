@@ -1,7 +1,7 @@
-class UserModelTest < Liza::ModelTest
+class UserRecordTest < Liza::RecordTest
 
   test :subject_class do
-    assert subject_class == UserModel
+    assert subject_class == UserRecord
     assert subject_class.db == SqliteDb.current
   end
 
