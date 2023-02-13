@@ -10,3 +10,4 @@
 *.rdb
 /.idea/
 /.solargraph/
+.solargraph.yml
