@@ -5,10 +5,10 @@ module Liza
 
       def self.totals
         @totals ||= {
-                      todos: [],
-                      passes: [],
-                      fails: [],
                       errors: [],
+                      todos: [],
+                      fails: [],
+                      passes: [],
                     }
       end
 
@@ -46,7 +46,7 @@ module Liza
         self.class._assertion_todo msg
         @last_result = :todo
 
-        _assertion_log __method__, caller if _groups.empty?
+        log_test_assertion __method__, caller if _groups.empty?
       end
 
       def _groups
@@ -61,7 +61,7 @@ module Liza
         _groups.pop
 
         kaller ||= caller
-        _assertion_log __method__, kaller if _groups.empty?
+        log_test_assertion __method__, kaller if _groups.empty?
       end
 
       def assert b, msg = "it should have been true", kaller: nil
@@ -74,7 +74,7 @@ module Liza
         end
 
         kaller ||= caller
-        _assertion_log __method__, kaller if _groups.empty?
+        log_test_assertion __method__, kaller if _groups.empty?
 
         b
       end
@@ -89,7 +89,7 @@ module Liza
         end
 
         kaller ||= caller
-        _assertion_log __method__, kaller if _groups.empty?
+        log_test_assertion __method__, kaller if _groups.empty?
 
         b
       end
@@ -105,6 +105,7 @@ module Liza
       def critical passed
         throw :critical, :critical if not passed
       end
+
     end
   end
 end
