@@ -26,6 +26,74 @@ module Liza
       end
     end
 
+    group :assertions do
+      test :assert do
+        assert 0
+        assert 1
+        assert :a
+        assert "a"
+        assert ""
+        assert []
+        assert [1]
+        assert({})
+        assert({a: 1})
+        assert true
+        refute false
+        refute nil
+      end
+
+      test :assert_equality do
+        assert_equality 0, 0
+        assert_equality 1, 1
+        assert_equality :a, :a
+        assert_equality "a", "a"
+        assert_equality "", ""
+        assert_equality [], []
+        assert_equality [1], [1]
+        assert_equality({}, {})
+        assert_equality({a: 1}, {a: 1})
+        assert_equality true, true
+        refute_equality false, true
+        refute_equality nil, true
+      end
+      
+      test :assert_raises do
+        assert_raises StandardError do
+          raise RuntimeError
+        end
+
+        assert_raises RuntimeError do
+          raise RuntimeError
+        end
+
+        refute_raises RuntimeError do
+          raise StandardError
+        end
+      end
+    end
+    
+    group :instance_variables do
+      test :instance_variables do
+        assert_equality instance_variables, [:@test_words, :@before_stack, :@after_stack, :@test_block]
+      end
+
+      test :test_block do
+        assert_equality @test_block.source_location[1], __LINE__ - 1
+      end
+    end
+
+    group :tree do
+      test :test_tree do
+        assert_equality self.class.test_tree.class, Liza::TestTreePart::Extension
+        assert_equality self.class.test_tree, self.class.test_tree.parent
+        
+        assert_equality 2, self.class.test_tree.tests.count
+        assert_equality 5, self.class.test_tree.children.count
+
+        assert_equality self.class.test_tree.tests.map(&:first).flatten, [:settings, :instance_groups]
+      end
+    end
+
     test :instance_groups do
       assert assertions == 0
 
@@ -48,32 +116,57 @@ module Liza
       assert assertions == 4
     end
 
-    group do
+    group :class_groups do
       before do
-        @a = true
-        assert @a
+        @string = "START"
+        assert_equality @string, "START"
       end
 
-      group do
+      test :class_groups, :outer_a do
+        @string.concat "-123"
+        assert_equality @string, "START-123"
+        #
+        @expectation_outer = "START-123-FINISH"
+      end
+
+      test :class_groups, :outer_b do
+        @string.concat "-321"
+        assert_equality @string, "START-321"
+        #
+        @expectation_outer = "START-321-FINISH"
+      end
+
+      group :class_groups_inner do
         before do
-          refute @b
-          @b = true
+          @string.concat "-BEGIN"
+          assert_equality @string, "START-BEGIN"
         end
 
-        test :Test, :inner do
-          assert @a
-          assert @b
+        test :class_groups, :inner_a do
+          @string.concat "-aaa"
+          assert_equality @string, "START-BEGIN-aaa"
+          #
+          @expectation_inner = "START-BEGIN-aaa-END"
+          @expectation_outer = "START-BEGIN-aaa-END-FINISH"
         end
-      end
 
-      test :Test, :outer do
-        assert @a
-        refute @b
+        test :class_groups, :inner_b do
+          @string.concat "-bbb"
+          assert_equality @string, "START-BEGIN-bbb"
+          #
+          @expectation_inner = "START-BEGIN-bbb-END"
+          @expectation_outer = "START-BEGIN-bbb-END-FINISH"
+        end
+
+        after do
+          @string.concat "-END"
+          assert_equality @string, @expectation_inner
+        end
       end
 
       after do
-        assert @a
-        refute @b
+        @string << "-FINISH"
+        assert_equality @string, @expectation_outer
       end
     end
 
