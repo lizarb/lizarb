@@ -9,3 +9,5 @@
 *.sqlite
 *.rdb
 /.idea/
+/.solargraph/
+.solargraph.yml
