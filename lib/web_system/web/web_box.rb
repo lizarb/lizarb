@@ -17,6 +17,7 @@ class WebSystem
     # Set up your request panel per the DSL in http://guides.lizarb.org/panels/request.html
     requests do
       # set :log_level, ENV["web.request.log_level"]
+
     end
 
   end
