@@ -1,19 +1,31 @@
-class DevSystem
-  class Shell < Liza::Controller
-    def windows?
-      RUBY_PLATFORM =~ /win32/
-    end
+class DevSystem::Shell < Liza::Controller
 
-    def unix?
-      linux? || mac?
-    end
-
-    def linux?
-      RUBY_PLATFORM =~ /linux/
-    end
-
-    def mac?
-      RUBY_PLATFORM =~ /darwin/
-    end
+  # Check if the current platform is Windows
+  def self.windows?
+    @windows || Gem.win_platform?
   end
+
+  # Check if the current platform is Unix or Unix-like
+  def self.unix?
+    @unix || !windows?
+  end
+
+  # Check if the current platform is Linux
+  def self.linux?
+    @linux || (unix? && RbConfig::CONFIG['host_os'].include?("linux"))
+  end
+
+  # Check if the current platform is Mac OS
+  def self.mac?
+    @mac || (unix? && RbConfig::CONFIG['host_os'].include?("darwin"))
+  end
+
+  # Return the current operating system as a symbol
+  def self.os
+    return :windows if windows?
+    return :linux   if linux?
+    return :mac     if mac?
+    :unix
+  end
+
 end
