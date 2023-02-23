@@ -78,20 +78,20 @@ class LERB < ERB
 
   TRIM_MODE = "<>-"
 
-  attr_reader :source, :key, :format
+  attr_reader :source, :key, :name, :format
 
   def initialize source, key, content, filename, lineno
     raise BuildError, "source :#{source} must be one of #{SOURCES}" unless SOURCES.include? source
 
     segments = key.split("/").last.split(".")
-    format = segments[1]
+    name, format = segments[0..1]
 
     # raise BuildError, "key '#{key}' must be formatted as <name>.<format>.erb" unless segments.count == 3
     # raise BuildError, "key '#{key}' must be formatted as <name>.<format>.erb" unless segments[2] == "erb"
     raise BuildError, "key '#{key}' has an invalid format '#{format}'" unless format.gsub(/[^a-z0-9]/, "") == format
 
     super content, trim_mode: TRIM_MODE
-    @source, @key, @format, self.filename, self.lineno = source, key, format, filename, lineno
+    @source, @key, @name, @format, self.filename, self.lineno = source, key, name, format, filename, lineno
   end
 
   # result
