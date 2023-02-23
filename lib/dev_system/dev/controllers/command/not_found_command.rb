@@ -21,6 +21,7 @@ class DevSystem
       # 3. LIST commands
 
       keys = commands.map { |k| k.last_namespace.snakecase[0..-9] }.sort
+      keys.reject! { |s| s == "not_found" }
       keys.each { |s| log "liza #{s}" }
     end
 
