@@ -13,6 +13,7 @@ GEM
     colorize (0.8.1)
     connection_pool (2.3.0)
     dotenv (2.8.1)
+    htmlbeautifier (1.4.2)
     method_source (1.0.0)
     mini_portile2 (2.8.1)
     nio4r (2.5.8)
@@ -40,6 +41,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  htmlbeautifier (~> 1.4)
   lizarb!
   pry (~> 0.14.1)
   puma (~> 5.6)

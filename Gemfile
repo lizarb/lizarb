@@ -25,4 +25,5 @@ group :web do
   gem "rack", "~> 3.0"
   gem "rackup", "~> 0.2.2"
   gem "puma", "~> 5.6"
+  gem "htmlbeautifier", "~> 1.4"
 end
