@@ -9,15 +9,27 @@ class DevSystem
 
       # 2. FIND generator
 
+      return call_not_found args if args.none?
+
       generator = args[0]
 
       log({generator:})
 
-      generator_klass = Liza.const "#{generator}_generator"
+      #
+
+      begin
+        generator_class = Liza.const "#{generator}_generator"
+      rescue Liza::ConstNotFound
+        generator_class = NotFoundGenerator
+      end
 
       # 3. CALL
 
-      generator_klass.call args[1..-1]
+      generator_class.call args[1..-1]
+    end
+
+    def self.call_not_found args
+      Liza::NotFoundGenerator.call args
     end
   end
 end
