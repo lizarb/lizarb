@@ -6,7 +6,7 @@ class RootRequestTest < AppRequestTest
 
   test :actions, :root do
     env = {
-      "LIZA_ACTION" => "root",
+      "LIZA_ACTION" => "index",
     }
 
     status, headers, body = subject_class.call env
