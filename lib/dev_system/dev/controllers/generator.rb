@@ -1,11 +1,9 @@
-class DevSystem
-  class Generator < Liza::Controller
+class DevSystem::Generator < Liza::Controller
 
-    # DSLS
+  # DSLS
 
-    def self.main_dsl
-      part :"generator_dsl_main", system: :dev
-    end
-
+  def self.main_dsl
+    part :"generator_dsl_main", system: :dev
   end
+
 end

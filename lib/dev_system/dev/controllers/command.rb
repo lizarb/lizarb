@@ -1,19 +1,17 @@
-class DevSystem
-  class Command < Liza::Controller
+class DevSystem::Command < Liza::Controller
 
-    # def self.call args
-    #   new.call args
-    # end
+  # def self.call args
+  #   new.call args
+  # end
 
-    # def initialize args
-    #   @args = args
-    # end
+  # def initialize args
+  #   @args = args
+  # end
 
-    # attr_reader :args
+  # attr_reader :args
 
-    # def call args
-    #
-    # end
+  # def call args
+  #
+  # end
 
-  end
 end

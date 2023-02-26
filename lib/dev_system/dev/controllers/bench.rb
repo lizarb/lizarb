@@ -1,11 +1,9 @@
-class DevSystem
-  class Bench < Liza::Controller
+class DevSystem::Bench < Liza::Controller
 
-    # DSLS
+  # DSLS
 
-    def self.main_dsl
-      part :"bench_dsl_main", system: :dev
-    end
-
+  def self.main_dsl
+    part :"bench_dsl_main", system: :dev
   end
+
 end
