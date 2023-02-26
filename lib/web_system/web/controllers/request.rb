@@ -1,5 +1,3 @@
-class WebSystem
-  class Request < Liza::Controller
+class WebSystem::Request < Liza::Controller
 
-  end
 end
