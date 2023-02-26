@@ -31,7 +31,7 @@ class DevSystem
       end
 
       def call
-        FileShell.write folder, filename, "#{content}\n"
+        TextShell.write "#{folder}/#{filename}", "#{content}\n"
       end
 
       %w|folder filename content|.each do |s|
