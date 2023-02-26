@@ -11,6 +11,10 @@ module App
     puts s.bold
   end
 
+  def logv s
+    log s if $VERBOSE
+  end
+
   # called from "#{APP_DIR}/app"
   def call argv, &block
     instance_exec &block
@@ -135,7 +139,10 @@ module App
   end
 
   def self.require_system key
+    t = Time.now
+    logv "App.system :#{key}"
     require key
+    logv "App.system :#{key} takes #{t.diff}s"
   rescue LoadError => e
     def e.backtrace; []; end
     raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
@@ -144,14 +151,16 @@ module App
   # parts
 
   def connect_part part_klass, key, system
+    t = Time.now
+    string = "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}"
+    logv string
+
     klass = if system.nil?
               Liza.const "#{key}_part"
             else
               Liza.const("#{system}_system")
                   .const "#{key}_part"
             end
-
-    log "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}" if $VERBOSE
 
     if klass.insertion
       part_klass.class_exec &klass.insertion
@@ -161,6 +170,7 @@ module App
       klass.const_set :Extension, Class.new(Liza::PartExtension)
       klass::Extension.class_exec &klass.extension
     end
+    logv "#{string} takes #{t.diff}s"
   end
 
   # systems
