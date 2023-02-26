@@ -13,7 +13,8 @@ module Lizarb
 
   #
 
-  GEM_DIR = Gem::Specification.find_by_name("lizarb").gem_dir
+  SPEC    = Gem::Specification.find_by_name("lizarb")
+  GEM_DIR = SPEC.gem_dir
   CUR_DIR = Dir.pwd
 
   IS_APP_DIR = File.file? "#{CUR_DIR}/app.rb"
@@ -38,7 +39,10 @@ module Lizarb
 
     require "#{APP_DIR}/app"
 
-    VERSION
+    versions = {ruby: RUBY_VERSION, bundler: Bundler::VERSION, zeitwerk: Zeitwerk::VERSION, lizarb: VERSION}
+    bugs = SPEC.metadata["bug_tracker_uri"]
+    puts versions.to_s.green
+    puts "Report bugs at #{bugs}"
   end
 
   # called from "#{APP_DIR}/app"
