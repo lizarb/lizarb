@@ -1,19 +1,17 @@
-class WebSystem
-  class ServerErrorRequest < Request
+class WebSystem::ServerErrorRequest < WebSystem::Request
 
-    def self.call env
-      status = 500
+  def self.call env
+    status = 500
 
-      headers = {
-        "Framework" => "Liza #{Lizarb::VERSION}"
-      }
+    headers = {
+      "Framework" => "Liza #{Lizarb::VERSION}"
+    }
 
-      e = env["LIZA_ERROR"]
+    e = env["LIZA_ERROR"]
 
-      body = "Server Error #{status} - #{e.class} - #{e.message}"
+    body = "Server Error #{status} - #{e.class} - #{e.message}"
 
-      [status, headers, [body]]
-    end
-
+    [status, headers, [body]]
   end
+
 end

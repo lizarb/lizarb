@@ -1,17 +1,15 @@
-class WebSystem
-  class ClientErrorRequest < Request
+class WebSystem::ClientErrorRequest < WebSystem::Request
 
-    def self.call env
-      status = 400
+  def self.call env
+    status = 400
 
-      headers = {
-        "Framework" => "Liza #{Lizarb::VERSION}"
-      }
+    headers = {
+      "Framework" => "Liza #{Lizarb::VERSION}"
+    }
 
-      body = "Client Error #{status} - #{env["LIZA_PATH"]}"
+    body = "Client Error #{status} - #{env["LIZA_PATH"]}"
 
-      [status, headers, [body]]
-    end
-
+    [status, headers, [body]]
   end
+
 end
