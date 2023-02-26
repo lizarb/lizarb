@@ -1,54 +1,52 @@
-class DevSystem
-  class GeneratorDslMainPart < Liza::Part
+class DevSystem::GeneratorDslMainPart < Liza::Part
 
-    insertion do
+  insertion do
 
-      def self.call args
-        log :higher, "Called #{self}.#{__method__} with args #{args}"
+    def self.call args
+      log :higher, "Called #{self}.#{__method__} with args #{args}"
 
-        name = args.shift || raise("args[0] should contain NAME")
-        name = name.downcase
+      name = args.shift || raise("args[0] should contain NAME")
+      name = name.downcase
 
-        memo.each do |label, bl|
-          log "Generating #{label}"
-          g = new label, name, args
-          g.instance_exec &bl
-          g.call
-        end
-
-        puts
-        log "done"
+      memo.each do |label, bl|
+        log "Generating #{label}"
+        g = new label, name, args
+        g.instance_exec &bl
+        g.call
       end
 
-      def self.memo()= @memo ||= {}
+      puts
+      log "done"
+    end
 
-      def self.generate(label, &block)= memo[label] = block
+    def self.memo()= @memo ||= {}
 
-      attr_reader :label, :name, :args
+    def self.generate(label, &block)= memo[label] = block
 
-      def initialize label, name, args
-        @label, @name, @args = label, name, args
-      end
+    attr_reader :label, :name, :args
 
-      def call
-        TextShell.write "#{folder}/#{filename}", "#{content}\n"
-      end
+    def initialize label, name, args
+      @label, @name, @args = label, name, args
+    end
 
-      %w|folder filename content|.each do |s|
-        class_eval <<-CODE, __FILE__, __LINE__ + 1
-          attr_reader :#{s}
+    def call
+      TextShell.write "#{folder}/#{filename}", "#{content}\n"
+    end
 
-          def #{s} #{s} = nil
-            if #{s}
-              @#{s} = #{s}
-            else
-              @#{s}
-            end
+    %w|folder filename content|.each do |s|
+      class_eval <<-CODE, __FILE__, __LINE__ + 1
+        attr_reader :#{s}
+
+        def #{s} #{s} = nil
+          if #{s}
+            @#{s} = #{s}
+          else
+            @#{s}
           end
-        CODE
-      end
-
+        end
+      CODE
     end
 
   end
+
 end

@@ -7,7 +7,7 @@ class Liza::ModuleTest < Liza::RubyTest
   test :source_location do
     assert Object.source_location == []
 
-    assert Liza::Command.source_location[1] == 2
+    assert Liza::Command.source_location[1] == 1
     assert AppCommand.source_location[1] == 1
   end
 

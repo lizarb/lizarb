@@ -1,11 +1,9 @@
-class DevSystem
-  class EchoCommand < Command
+class DevSystem::EchoCommand < DevSystem::Command
 
-    def self.call args
-      log :higher, "Called #{self} with args #{args}"
+  def self.call args
+    log :higher, "Called #{self} with args #{args}"
 
-      raise RuntimeError, args.to_s
-    end
-
+    raise RuntimeError, args.to_s
   end
+
 end

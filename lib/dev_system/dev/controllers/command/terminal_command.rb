@@ -1,24 +1,22 @@
-class DevSystem
-  class TerminalCommand < Command
+class DevSystem::TerminalCommand < DevSystem::Command
 
-    def self.call args
-      # 1. LOG
+  def self.call args
+    # 1. LOG
 
-      log :higher, "args: #{args}"
-      puts
+    log :higher, "args: #{args}"
+    puts
 
-      # 2. FIND terminal
+    # 2. FIND terminal
 
-      terminal = args[0] || "irb"
+    terminal = args[0] || "irb"
 
-      log({terminal:})
+    log({terminal:})
 
-      terminal_klass = Liza.const "#{terminal}_terminal"
+    terminal_klass = Liza.const "#{terminal}_terminal"
 
-      # 3. CALL
+    # 3. CALL
 
-      terminal_klass.call Array(args[1..-1])
-    end
-
+    terminal_klass.call Array(args[1..-1])
   end
+
 end
