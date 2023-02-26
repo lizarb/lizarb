@@ -1,5 +1,3 @@
-class NetSystem
-  class Client < Liza::Controller
+class NetSystem::Client < Liza::Controller
 
-  end
 end

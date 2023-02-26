@@ -1,5 +1,3 @@
-class NetSystem
-  class ClientPanel < Liza::Panel
+class NetSystem::ClientPanel < Liza::Panel
 
-  end
 end
