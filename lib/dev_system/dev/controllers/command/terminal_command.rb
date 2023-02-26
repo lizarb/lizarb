@@ -1,5 +1,5 @@
 class DevSystem
-  class DevCommand < Command
+  class TerminalCommand < Command
 
     def self.call args
       # 1. LOG

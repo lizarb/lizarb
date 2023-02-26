@@ -29,9 +29,9 @@ Now you're ready to go and try some stuff!
 
 ## Try
 
-Try Liza with an interactive prompt
+Try Liza with an interactive terminal
 
-    liza dev
+    liza terminal
 
 ## Running Tests
 

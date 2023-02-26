@@ -1,8 +1,8 @@
 class DevSystem
-  class DevCommandTest < CommandTest
+  class TerminalCommandTest < CommandTest
 
     test :subject_class do
-      assert subject_class == DevSystem::DevCommand
+      assert subject_class == DevSystem::TerminalCommand
     end
 
     test :settings do
