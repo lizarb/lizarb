@@ -1,9 +1,7 @@
-module Liza
-  class RubyTest < Test
+class Liza::RubyTest < Liza::Test
 
-    def self.subject_class
-      @subject_class ||= Object.const_get last_namespace[0..-5]
-    end
-
+  def self.subject_class
+    @subject_class ||= Object.const_get last_namespace[0..-5]
   end
+
 end
