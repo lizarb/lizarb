@@ -1,5 +1,3 @@
-class HappySystem
-  class AxoPanel < Liza::Panel
+class HappySystem::AxoPanel < Liza::Panel
 
-  end
 end
