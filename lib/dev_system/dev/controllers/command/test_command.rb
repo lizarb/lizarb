@@ -8,6 +8,10 @@ class DevSystem
 
       now = Time.now
       test_classes = Liza::Test.descendants
+      
+      if Lizarb::IS_APP_DIR
+        test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb::APP_DIR }
+      end
 
       test_classes = _call_sort test_classes
 
