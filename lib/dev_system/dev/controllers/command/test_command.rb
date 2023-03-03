@@ -7,6 +7,8 @@ class DevSystem::TestCommand < DevSystem::Command
 
     now = Time.now
     test_classes = Liza::Test.descendants
+
+    _call_silence_base_units
     
     if Lizarb::IS_APP_DIR
       test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb::APP_DIR }
@@ -23,6 +25,17 @@ class DevSystem::TestCommand < DevSystem::Command
     log "Counting #{test_classes.count} Test Classes"
     _call_counting test_classes
     log "Done Counting (#{now.diff}s)"
+  end
+
+  def self._call_silence_base_units
+    [
+      Liza::Box,
+      Liza::Panel,
+      Liza::Controller,
+    ].each do |x|
+      def x.log(...) end
+      def x.puts(...) end
+    end
   end
 
   def self._call_sort test_classes
