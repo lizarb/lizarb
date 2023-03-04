@@ -10,7 +10,7 @@ class HappySystem::HappyBoxTest < Liza::BoxTest
   end
 
   test :panels do
-    assert subject_class.axo.is_a? HappySystem::AxoPanel
+    assert subject_class[:axo].is_a? HappySystem::AxoPanel
   end
 
 end

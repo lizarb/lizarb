@@ -56,7 +56,7 @@ class WebSystem::RequestCommand < Liza::Command
 
     request_panel.find @env
 
-    @request_class = @env["LIZA_REQUEST_CLASS"]
+    @request_class = @env["LIZA_REQUEST_CLASS"] || raise("No request class found")
 
     puts render "find.txt"
   end
@@ -90,7 +90,7 @@ class WebSystem::RequestCommand < Liza::Command
   # helpers
 
   def request_panel
-    Liza.const(:web_box).requests
+    @request_panel ||= WebBox[:request]
   end
 end
 

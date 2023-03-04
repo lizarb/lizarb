@@ -12,12 +12,12 @@ class NetSystem::Record < Liza::Controller
     if database_id.nil?
       db = get :db
       if db
-        Liza.const(:NetBox).databases.get db
+        NetBox[:database].get db
       else
         raise "please set a db to record #{self}"
       end
     else
-      valid = Liza.const(:NetBox).databases.settings.keys
+      valid = NetBox[:database].settings.keys
       if valid.include? database_id
         set :db, database_id
       else

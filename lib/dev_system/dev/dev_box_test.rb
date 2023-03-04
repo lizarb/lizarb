@@ -10,8 +10,8 @@ class DevSystem::DevBoxTest < Liza::BoxTest
   end
 
   test :panels do
-    assert subject_class.commands.is_a? DevSystem::CommandPanel
-    assert subject_class.logs.is_a? DevSystem::LogPanel
+    assert subject_class[:command].is_a? DevSystem::CommandPanel
+    assert subject_class[:log].is_a? DevSystem::LogPanel
   end
 
 end

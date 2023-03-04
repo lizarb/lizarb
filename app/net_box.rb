@@ -1,6 +1,6 @@
 class NetBox < Liza::NetBox
 
-  clients do
+  panel :client do
     # Set up your client panel per the DSL in http://guides.lizarb.org/panels/client.html
 
     set :redis_url, "redis://localhost:6379/15"
@@ -9,7 +9,7 @@ class NetBox < Liza::NetBox
 
   end
 
-  databases do
+  panel :database do
     # Set up your database panel per the DSL in http://guides.lizarb.org/panels/database.html
 
     define :redis, RedisDb.current

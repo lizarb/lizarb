@@ -27,7 +27,7 @@ module App
     check_mode!
 
     puts
-    ::DevBox.commands.call argv
+    DevBox[:command].call argv
     puts
   end
 

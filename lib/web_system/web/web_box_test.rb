@@ -10,7 +10,7 @@ class WebSystem::WebBoxTest < Liza::BoxTest
   end
 
   test :panels do
-    assert subject_class.requests.is_a? WebSystem::RequestPanel
+    assert subject_class[:request].is_a? WebSystem::RequestPanel
   end
 
 end

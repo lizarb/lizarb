@@ -3,7 +3,7 @@ class NetSystem::SqliteClient < NetSystem::Client
   # https://www.sqlite.org/
   # https://github.com/sparklemotion/sqlite3-ruby
   def initialize *args
-    args = [Liza.const(:net_box).clients.get(:sqlite)] if args.empty?
+    args = [NetBox[:client].get(:sqlite)] if args.empty?
     log "Connecting to #{args}"
     @conn = SQLite3::Database.new *args
   end

@@ -8,7 +8,7 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
   #
 
   test :_prepare do
-    subject = WebSystem::WebBox.requests
+    subject = WebBox[:request]
     env = {}
     env["REQUEST_PATH"]   = "/foo/bar/baz"
     subject._prepare env
