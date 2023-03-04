@@ -113,7 +113,7 @@ class Liza::Unit
 
     string = "#{source} #{string}"
 
-    DevBox.logs.call string
+    DevBox[:log].call string
   end
 
   def self.log_level

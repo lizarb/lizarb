@@ -26,7 +26,7 @@ class WebSystem::RackPanel < Liza::Panel
     handler.run rack_app, Host: host, Port: port
   end
 
-  def get_rack_app_production()= Liza.const(:web_box).requests
+  def get_rack_app_production()= WebBox[:request]
 
   def get_rack_app_development
     Proc.new do |env|

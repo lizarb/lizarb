@@ -1,6 +1,6 @@
 class WebBox < Liza::WebBox
 
-  rack do
+  panel :rack do
     # Set up your rack panel per the DSL in http://guides.lizarb.org/panels/rack.html
     
     # set :files, App.root.join("web_files")
@@ -8,7 +8,7 @@ class WebBox < Liza::WebBox
     # set :port, 3000
   end
 
-  requests do
+  panel :request do
     # Set up your request panel per the DSL in http://guides.lizarb.org/panels/request.html
 
   end

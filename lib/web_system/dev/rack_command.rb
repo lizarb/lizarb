@@ -1,7 +1,14 @@
 class WebSystem::RackCommand < Liza::Command
 
   def self.call args
-    log "args #{args}"
+    log "Called #{self}.#{__method__} with args #{args}"
+    new.call args
+  end
+
+  # instance methods
+
+  def call args
+    log "Called #{self}.#{__method__} with args #{args}"
 
     strategy = nil
     host = nil
@@ -18,7 +25,11 @@ class WebSystem::RackCommand < Liza::Command
 
     log({strategy:, host:, port:})
 
-    Liza.const(:web_box).rack.call strategy, host, port
+    rack_panel.call strategy, host, port
+  end
+
+  def rack_panel
+    @rack_panel ||= WebBox[:rack]
   end
 
 end

@@ -10,8 +10,8 @@ class NetSystem::NetBoxTest < Liza::BoxTest
   end
 
   test :panels do
-    assert subject_class.clients.is_a? NetSystem::ClientPanel
-    assert subject_class.databases.is_a? NetSystem::DatabasePanel
+    assert subject_class[:client].is_a? NetSystem::ClientPanel
+    assert subject_class[:database].is_a? NetSystem::DatabasePanel
   end
 
 end

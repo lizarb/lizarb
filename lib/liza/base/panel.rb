@@ -13,10 +13,27 @@ class Liza::Panel < Liza::Unit
     self.class.box
   end
 
-  def initialize name
-    @name = name
+  def initialize key
+    @key = key
+    @blocks = []
+    @unstarted = true
   end
 
+  def push block
+    @unstarted = true
+    @blocks.push block
+  end
+
+  def started
+    return self unless defined? @unstarted
+    remove_instance_variable :@unstarted
+
+    @blocks.each { |bl| instance_eval &bl }
+    @blocks.clear
+
+    self
+  end
+  
   def log log_level = :normal, string
     raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
     return unless log_level? log_level
@@ -27,11 +44,11 @@ class Liza::Panel < Liza::Unit
     source = source.bold.colorize log_color
 
     y = source.size
-    source = "#{source}.#{@name}".ljust(LOG_JUST+y-x)
+    source = "#{source}[:#{@key}]".ljust(LOG_JUST+y-x)
 
     string = "#{source} #{string}"
     
-    DevBox.logs.call string
+    DevBox[:log].call string
   end
 
 end
