@@ -12,7 +12,7 @@ class NetSystem::Record < Liza::Controller
     if database_id.nil?
       db = get :db
       if db
-        NetBox[:database].get db
+        NetBox[:database].get(db)
       else
         raise "please set a db to record #{self}"
       end
