@@ -1,8 +1,18 @@
 class DevSystem::DevBox < Liza::Box
 
+  # Set up your bench panel per the DSL in http://guides.lizarb.org/panels/bench.html
+  panel :bench do
+    # set :log_level, ENV["dev.bench.log_level"]
+  end
+
   # Set up your command panel per the DSL in http://guides.lizarb.org/panels/command.html
   panel :command do
     # set :log_level, ENV["dev.command.log_level"]
+  end
+
+  # Set up your generator panel per the DSL in http://guides.lizarb.org/panels/generator.html
+  panel :generator do
+    # set :log_level, ENV["dev.generator.log_level"]
   end
 
   # Set up your command panel per the DSL in http://guides.lizarb.org/panels/log.html
@@ -10,8 +20,20 @@ class DevSystem::DevBox < Liza::Box
     # set :log_level, ENV["dev.log.log_level"]
   end
 
+  # Set up your shell panel per the DSL in http://guides.lizarb.org/panels/shell.html
+  panel :shell do
+    # set :log_level, ENV["dev.shell.log_level"]
+  end
+
+  # Set up your terminal panel per the DSL in http://guides.lizarb.org/panels/terminal.html
+  panel :terminal do
+    # set :log_level, ENV["dev.terminal.log_level"]
+  end
+
+  has_controller :bench, :bench
   has_controller :command, :command
-  has_controller :bench, :command
-  has_controller :shell, :command
-  has_controller :terminal, :command
+  has_controller :generator, :generator
+  # has_controller :log, :log
+  has_controller :shell, :shell
+  has_controller :terminal, :terminal
 end
