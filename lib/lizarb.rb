@@ -36,14 +36,16 @@ module Lizarb
 
   # called from exe/lizarb
   def call
-    require "app"
-
     setup_core_ext
     setup_gemfile
 
-    require "#{APP_DIR}/#{$APP}"
+    # lookup phase
+    lookup_and_require_app
+
+    # call phase
     App.call ARGV
 
+    # exit phase
     versions = {ruby: RUBY_VERSION, bundler: Bundler::VERSION, zeitwerk: Zeitwerk::VERSION, lizarb: VERSION, app: $APP}
     bugs = SPEC.metadata["bug_tracker_uri"]
     puts versions.to_s.green
@@ -64,6 +66,28 @@ module Lizarb
     ENV["BUNDLE_GEMFILE"] =
       IS_APP_DIR  ? "#{CUR_DIR}/Gemfile"
                   : "#{GEM_DIR}/exe/Gemfile"
+  end
+
+  # lookup phase
+
+  def lookup_and_require_app
+    require "app"
+
+    finder = \
+      proc do |lib_name, file_name|
+        log "#{self} checking if #{file_name} exists" if $VERBOSE
+        if File.file? "#{file_name}"
+          require lib_name
+          true
+        else
+          false
+        end
+      end
+
+    return if finder.call "#{CUR_DIR}/#{$APP}", "#{CUR_DIR}/#{$APP}.rb"
+    return if finder.call "#{GEM_DIR}/#{$APP}", "#{GEM_DIR}/#{$APP}.rb"
+
+    raise Error, "Could not find #{$APP}.rb in #{CUR_DIR} or #{GEM_DIR}"
   end
 
   # threads
