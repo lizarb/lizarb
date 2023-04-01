@@ -1,7 +1,7 @@
-class DevSystem::AppGeneratorTest < DevSystem::GeneratorTest
+class NewGeneratorTest < Liza::GeneratorTest
 
   test :subject_class do
-    assert subject_class == DevSystem::AppGenerator
+    assert subject_class == NewGenerator
   end
 
   test :settings do

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+$APP = ENV["APP"]
+
 $VERBOSE = ENV["VERBOSE"]
 
 $LOAD_PATH.unshift "#{Dir.pwd}/lib"

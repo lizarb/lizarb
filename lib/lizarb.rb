@@ -8,6 +8,8 @@ require "lerb"
 
 require_relative "lizarb/version"
 
+$APP ||= "app"
+
 module Lizarb
   class Error < StandardError; end
 
@@ -21,6 +23,8 @@ module Lizarb
   IS_LIZ_DIR = File.file? "#{CUR_DIR}/lib/lizarb.rb"
 
   APP_DIR = IS_APP_DIR ? CUR_DIR : GEM_DIR
+
+  $APP = "app_global" if not IS_APP_DIR
 
   #
 
@@ -37,22 +41,13 @@ module Lizarb
     setup_core_ext
     setup_gemfile
 
-    require "#{APP_DIR}/app"
+    require "#{APP_DIR}/#{$APP}"
+    App.call ARGV
 
-    versions = {ruby: RUBY_VERSION, bundler: Bundler::VERSION, zeitwerk: Zeitwerk::VERSION, lizarb: VERSION}
+    versions = {ruby: RUBY_VERSION, bundler: Bundler::VERSION, zeitwerk: Zeitwerk::VERSION, lizarb: VERSION, app: $APP}
     bugs = SPEC.metadata["bug_tracker_uri"]
     puts versions.to_s.green
     puts "Report bugs at #{bugs}"
-  end
-
-  # called from "#{APP_DIR}/app"
-  def bundle
-    require "bundler/setup"
-    Bundler.require :default
-
-    bundle_liza
-
-    check_mode!
   end
 
   # setup
