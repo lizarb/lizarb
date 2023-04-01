@@ -1,24 +1,20 @@
-module App
+class App
   class Error < StandardError; end
   class ModeNotFound < Error; end
   class SystemNotFound < Error; end
 
   #
 
-  module_function
-
-  def log s
+  def self.log s
     puts s.bold
   end
 
-  def logv s
+  def self.logv s
     log s if $VERBOSE
   end
 
   # called from "#{APP_DIR}/app"
-  def call argv, &block
-    instance_exec &block
-
+  def self.call argv
     setup_env
     setup_bundle
     setup_liza
@@ -27,25 +23,25 @@ module App
     check_mode!
 
     puts
-    DevBox[:command].call argv
+    Liza.const(:DevBox)[:command].call argv
     puts
   end
 
-  def root
+  def self.root
     Pathname Dir.pwd
   end
 
-  def setup_env
+  def self.setup_env
     require "dotenv"
     Dotenv.load "app.#{mode}.env", "app.env"
   end
 
-  def setup_bundle
+  def self.setup_bundle
     require "bundler/setup"
     Bundler.require :default, *@systems.keys
   end
 
-  def setup_liza
+  def self.setup_liza
     require "liza"
 
     @loaders << loader = Zeitwerk::Loader.new
@@ -59,7 +55,7 @@ module App
     loader.setup
   end
 
-  def bundle_systems_app app_dir
+  def self.bundle_systems_app app_dir
     @systems.keys.each do |k|
       key = "#{k}_system"
 
@@ -77,9 +73,11 @@ module App
       loader.push_dir "#{klass.source_location_radical}", namespace: klass
     end
 
+    app_name = $APP
+
     # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
-    loader.collapse "#{app_dir}/app/**/*"
-    loader.push_dir "#{app_dir}/app" if Dir.exist? "#{app_dir}/app"
+    loader.collapse "#{app_dir}/#{app_name}/**/*"
+    loader.push_dir "#{app_dir}/#{app_name}" if Dir.exist? "#{app_dir}/#{app_name}"
 
     loader.enable_reloading
     loader.setup
@@ -96,7 +94,7 @@ module App
   @loaders = []
   @mutex = Mutex.new
 
-  def reload &block
+  def self.reload &block
     @mutex.synchronize do
       @loaders.map &:reload
       yield if block_given?
@@ -105,7 +103,7 @@ module App
     true
   end
 
-  def eager_load_all
+  def self.eager_load_all
     Zeitwerk::Loader.eager_load_all
   end
 
@@ -115,12 +113,12 @@ module App
   ENV["LIZA_MODE"] ||= @modes.first.to_s
   @mode = ENV["LIZA_MODE"].to_sym
 
-  def mode mode = nil
+  def self.mode mode = nil
     return @mode if mode.nil?
     @modes << mode.to_sym
   end
 
-  def check_mode!
+  def self.check_mode!
     return if @modes.include? @mode
     raise ModeNotFound, "LIZA_MODE `#{@mode}` not found in #{@modes}", []
   end
@@ -129,12 +127,12 @@ module App
 
   @systems = {}
 
-  def system key
+  def self.system key
     raise "locked" if @locked
     @systems[key] = nil
   end
 
-  def systems
+  def self.systems
     @systems
   end
 
@@ -150,7 +148,7 @@ module App
 
   # parts
 
-  def connect_part part_klass, key, system
+  def self.connect_part part_klass, key, system
     t = Time.now
     string = "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}"
     logv string
@@ -175,7 +173,7 @@ module App
 
   # systems
 
-  def connect_system key, system_klass
+  def self.connect_system key, system_klass
     t = Time.now
 
     color_system_klass = system_klass.to_s.colorize system_klass.log_color
