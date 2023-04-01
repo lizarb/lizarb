@@ -21,6 +21,7 @@ module Lizarb
 
   IS_APP_DIR = File.file? "#{CUR_DIR}/app.rb"
   IS_LIZ_DIR = File.file? "#{CUR_DIR}/lib/lizarb.rb"
+  IS_GEM_DIR = File.file? "#{CUR_DIR}/lizarb.gemspec"
 
   APP_DIR = IS_APP_DIR ? CUR_DIR : GEM_DIR
 
@@ -36,10 +37,10 @@ module Lizarb
 
   # called from exe/lizarb
   def call
-    setup_core_ext
     setup_gemfile
 
     # lookup phase
+    lookup_and_load_core_ext
     lookup_and_require_app
 
     # call phase
@@ -54,14 +55,6 @@ module Lizarb
 
   # setup
 
-  def setup_core_ext
-    pattern =
-      IS_LIZ_DIR  ? "lib/lizarb/ruby/*.rb"
-                  : "#{GEM_DIR}/lib/lizarb/ruby/*.rb"
-
-    Dir[pattern].each &method(:load)
-  end
-
   def setup_gemfile
     ENV["BUNDLE_GEMFILE"] =
       IS_APP_DIR  ? "#{CUR_DIR}/Gemfile"
@@ -69,6 +62,20 @@ module Lizarb
   end
 
   # lookup phase
+
+  def lookup_and_load_core_ext
+    files =
+      if IS_GEM_DIR
+        Dir["#{CUR_DIR}/lib/lizarb/ruby/*.rb"]
+      else
+        Dir["#{GEM_DIR}/lib/lizarb/ruby/*.rb"] + Dir["#{CUR_DIR}/lib/lizarb/ruby/*.rb"]
+      end
+
+    files.each do |file_name|
+      log "#{self} loading #{file_name}" if $VERBOSE
+      load file_name
+    end
+  end
 
   def lookup_and_require_app
     require "app"
