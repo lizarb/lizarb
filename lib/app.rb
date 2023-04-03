@@ -16,7 +16,6 @@ class App
   # called from "#{APP_DIR}/app"
   def self.call argv
     setup_env
-    setup_bundle
     setup_liza
     bundle_systems_app Lizarb::APP_DIR
 
@@ -34,11 +33,6 @@ class App
   def self.setup_env
     require "dotenv"
     Dotenv.load "app.#{mode}.env", "app.env"
-  end
-
-  def self.setup_bundle
-    require "bundler/setup"
-    Bundler.require :default, *@systems.keys
   end
 
   def self.setup_liza

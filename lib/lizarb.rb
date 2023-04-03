@@ -41,6 +41,7 @@ module Lizarb
     lookup_and_load_core_ext
     lookup_and_set_gemfile
     lookup_and_require_app
+    lookup_and_require_dependencies
 
     # call phase
     App.call ARGV
@@ -108,6 +109,11 @@ module Lizarb
     return if finder.call "#{GEM_DIR}/#{$APP}", "#{GEM_DIR}/#{$APP}.rb"
 
     raise Error, "Could not find #{$APP}.rb in #{CUR_DIR} or #{GEM_DIR}"
+  end
+
+  def lookup_and_require_dependencies
+    require "bundler/setup"
+    Bundler.require :default, *App.systems.keys
   end
 
   # threads
