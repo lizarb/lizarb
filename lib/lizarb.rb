@@ -37,10 +37,9 @@ module Lizarb
 
   # called from exe/lizarb
   def call
-    setup_gemfile
-
     # lookup phase
     lookup_and_load_core_ext
+    lookup_and_set_gemfile
     lookup_and_require_app
 
     # call phase
@@ -51,14 +50,6 @@ module Lizarb
     bugs = SPEC.metadata["bug_tracker_uri"]
     puts versions.to_s.green
     puts "Report bugs at #{bugs}"
-  end
-
-  # setup
-
-  def setup_gemfile
-    ENV["BUNDLE_GEMFILE"] =
-      IS_APP_DIR  ? "#{CUR_DIR}/Gemfile"
-                  : "#{GEM_DIR}/exe/Gemfile"
   end
 
   # lookup phase
@@ -75,6 +66,28 @@ module Lizarb
       log "#{self} loading #{file_name}" if $VERBOSE
       load file_name
     end
+  end
+
+  def lookup_and_set_gemfile
+    gemfile = nil
+
+    finder = \
+      proc do |file_name|
+        log "#{self}.#{__method__} #{file_name}" if $VERBOSE
+        if File.file? file_name
+          file_name
+        else
+          false
+        end
+      end
+
+    gemfile ||= finder.call "#{CUR_DIR}/#{$APP}.gemfile.rb"
+    gemfile ||= finder.call "#{GEM_DIR}/#{$APP}.gemfile.rb" unless IS_GEM_DIR
+    gemfile ||= finder.call "#{CUR_DIR}/Gemfile"
+    gemfile ||= finder.call "#{GEM_DIR}/app_global.gemfile.rb"
+
+    log "#{self} setting BUNDLE_GEMFILE to #{gemfile}" if $VERBOSE
+    ENV["BUNDLE_GEMFILE"] = gemfile
   end
 
   def lookup_and_require_app
