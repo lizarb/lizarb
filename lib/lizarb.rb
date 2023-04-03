@@ -42,6 +42,7 @@ module Lizarb
     lookup_and_set_gemfile
     lookup_and_require_app
     lookup_and_require_dependencies
+    lookup_and_load_settings
 
     # call phase
     App.call ARGV
@@ -114,6 +115,12 @@ module Lizarb
   def lookup_and_require_dependencies
     require "bundler/setup"
     Bundler.require :default, *App.systems.keys
+  end
+
+  def lookup_and_load_settings
+    files = ["#{$APP}.#{App.mode}.env", "#{$APP}.env"]
+    require "dotenv"
+    Dotenv.load *files
   end
 
   # threads
