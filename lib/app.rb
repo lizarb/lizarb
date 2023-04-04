@@ -1,6 +1,5 @@
 class App
   class Error < StandardError; end
-  class ModeNotFound < Error; end
   class SystemNotFound < Error; end
 
   #
@@ -17,8 +16,6 @@ class App
   def self.call argv
     setup_liza
     bundle_systems_app Lizarb::APP_DIR
-
-    check_mode!
 
     puts
     Liza.const(:DevBox)[:command].call argv
@@ -95,20 +92,17 @@ class App
     Zeitwerk::Loader.eager_load_all
   end
 
-  # mode
+  # modes
 
-  @modes = [:code]
-  ENV["LIZA_MODE"] ||= @modes.first.to_s
-  @mode = ENV["LIZA_MODE"].to_sym
+  @modes = []
 
   def self.mode mode = nil
-    return @mode if mode.nil?
+    return $MODE if mode.nil?
     @modes << mode.to_sym
   end
 
-  def self.check_mode!
-    return if @modes.include? @mode
-    raise ModeNotFound, "LIZA_MODE `#{@mode}` not found in #{@modes}", []
+  def self.modes
+    @modes
   end
 
   # systems

@@ -12,6 +12,7 @@ $APP ||= "app"
 
 module Lizarb
   class Error < StandardError; end
+  class ModeNotFound < Error; end
 
   #
 
@@ -41,6 +42,7 @@ module Lizarb
     lookup_and_load_core_ext
     lookup_and_set_gemfile
     lookup_and_require_app
+    lookup_and_set_mode
     lookup_and_require_dependencies
     lookup_and_load_settings
 
@@ -112,13 +114,26 @@ module Lizarb
     raise Error, "Could not find #{$APP}.rb in #{CUR_DIR} or #{GEM_DIR}"
   end
 
+  def lookup_and_set_mode
+    raise ModeNotFound, "App #{$APP} has no modes" if App.modes.empty?
+
+    mode = ENV["MODE"]
+    mode ||= App.modes.first
+    mode = mode.to_sym
+
+    raise ModeNotFound, "MODE `#{mode}` is not included in #{App.modes}" unless App.modes.include? mode
+
+    log "#{self}.#{__method__} #{mode.inspect}" if $VERBOSE
+    $MODE = mode
+  end
+
   def lookup_and_require_dependencies
     require "bundler/setup"
     Bundler.require :default, *App.systems.keys
   end
 
   def lookup_and_load_settings
-    files = ["#{$APP}.#{App.mode}.env", "#{$APP}.env"]
+    files = ["#{$APP}.#{$MODE}.env", "#{$APP}.env"]
     require "dotenv"
     Dotenv.load *files
   end
