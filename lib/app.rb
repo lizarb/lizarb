@@ -18,7 +18,7 @@ class App
     bundle_systems_app Lizarb::APP_DIR
 
     puts
-    Liza.const(:DevBox)[:command].call argv
+    Liza[:DevBox][:command].call argv
     puts
   end
 

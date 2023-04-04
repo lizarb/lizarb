@@ -14,6 +14,10 @@ module Liza
 
   #
 
+  def [] name
+    const name
+  end
+
   # Checks Object, each system, then Liza for Liza::Unit classes
   def const name
     name = name.to_s.camelize.to_sym
