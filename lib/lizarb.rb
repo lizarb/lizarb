@@ -3,7 +3,6 @@
 require "colorize"
 require "json"
 require "pathname"
-require "zeitwerk"
 require "lerb"
 
 require_relative "lizarb/version"
@@ -36,12 +35,17 @@ module Lizarb
     puts s.bold
   end
 
+  def self.load_all
+    Zeitwerk::Loader.eager_load_all
+  end
+
   # called from exe/lizarb
   def setup
     lookup_and_load_core_ext
     lookup_and_set_gemfile
   end
 
+  # called from exe/lizarb
   def app
     require "app"
     lookup_and_require_app
@@ -52,6 +56,7 @@ module Lizarb
     lookup_and_set_mode
     lookup_and_require_dependencies
     lookup_and_load_settings
+    require_liza_and_bundle_systems
   end
 
   # called from exe/lizarb
@@ -74,7 +79,7 @@ module Lizarb
     puts "Report bugs at #{bugs}"
   end
 
-  # lookup phase
+  # setup phase
 
   def lookup_and_load_core_ext
     files =
@@ -112,6 +117,8 @@ module Lizarb
     ENV["BUNDLE_GEMFILE"] = gemfile
   end
 
+  # app phase
+
   def lookup_and_require_app
     finder = \
       proc do |lib_name, file_name|
@@ -129,6 +136,8 @@ module Lizarb
 
     raise Error, "Could not find #{$APP}.rb in #{CUR_DIR} or #{GEM_DIR}"
   end
+
+  # call phase
 
   def lookup_and_set_mode
     raise ModeNotFound, "App #{$APP} has no modes" if App.modes.empty?
@@ -154,7 +163,52 @@ module Lizarb
     Dotenv.load *files
   end
 
-  # threads
+  def require_liza_and_bundle_systems
+    require "zeitwerk"
+    require "liza"
+
+    App.loaders << loader = Zeitwerk::Loader.new
+    loader.tag = Liza.to_s
+
+    # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
+    loader.collapse "#{Liza.source_location_radical}/**/*"
+    loader.push_dir "#{Liza.source_location_radical}", namespace: Liza
+
+    loader.enable_reloading
+    loader.setup
+
+    App.systems.keys.each do |k|
+      key = "#{k}_system"
+
+      App.require_system key
+      klass = Object.const_get key.camelize
+
+      App.systems[k] = klass
+    end
+
+    App.loaders << loader = Zeitwerk::Loader.new
+
+    App.systems.each do |k, klass|
+      # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
+      loader.collapse "#{klass.source_location_radical}/**/*"
+      loader.push_dir "#{klass.source_location_radical}", namespace: klass
+    end
+
+    # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
+    loader.collapse "#{APP_DIR}/#{$APP}/**/*"
+    loader.push_dir "#{APP_DIR}/#{$APP}" if Dir.exist? "#{APP_DIR}/#{$APP}"
+
+    loader.enable_reloading
+    loader.setup
+
+    App.systems.each do |k, klass|
+      App.connect_system k, klass
+    end
+
+    App.systems.freeze
+  end
+
+  # thread management
 
   def thread_object_id
     Thread.current.object_id

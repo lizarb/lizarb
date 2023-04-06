@@ -8,7 +8,7 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
 
     # 2. FIND generators
 
-    App.eager_load_all
+    App.load_all
     generators = Liza::Generator.descendants
 
     log "Liza comes with #{generators.count} generators you can use."
