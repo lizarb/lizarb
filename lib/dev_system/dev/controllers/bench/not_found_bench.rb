@@ -8,7 +8,7 @@ class DevSystem::NotFoundBench < DevSystem::Bench
 
     # 2. FIND generators
 
-    App.eager_load_all
+    App.load_all
     benches = Liza::Bench.descendants
 
     log "Liza comes with #{benches.count} benches you can use."

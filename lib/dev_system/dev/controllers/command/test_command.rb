@@ -3,7 +3,7 @@ class DevSystem::TestCommand < DevSystem::Command
   def self.call args
     log :higher, "Called #{self} with args #{args}"
 
-    App.eager_load_all
+    App.load_all
 
     now = Time.now
     test_classes = Liza::Test.descendants

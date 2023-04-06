@@ -12,11 +12,8 @@ class App
     log s if $VERBOSE
   end
 
-  # called from "#{APP_DIR}/app"
+  # called from exe/lizarb
   def self.call argv
-    setup_liza
-    bundle_systems_app Lizarb::APP_DIR
-
     puts
     Liza[:DevBox][:command].call argv
     puts
@@ -26,58 +23,14 @@ class App
     Pathname Dir.pwd
   end
 
-  def self.setup_liza
-    require "liza"
-
-    @loaders << loader = Zeitwerk::Loader.new
-    loader.tag = Liza.to_s
-
-    # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
-    loader.collapse "#{Liza.source_location_radical}/**/*"
-    loader.push_dir "#{Liza.source_location_radical}", namespace: Liza
-
-    loader.enable_reloading
-    loader.setup
-  end
-
-  def self.bundle_systems_app app_dir
-    @systems.keys.each do |k|
-      key = "#{k}_system"
-
-      require_system key
-      klass = Object.const_get key.camelize
-
-      @systems[k] = klass
-    end
-
-    @loaders << loader = Zeitwerk::Loader.new
-
-    @systems.each do |k, klass|
-      # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
-      loader.collapse "#{klass.source_location_radical}/**/*"
-      loader.push_dir "#{klass.source_location_radical}", namespace: klass
-    end
-
-    app_name = $APP
-
-    # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
-    loader.collapse "#{app_dir}/#{app_name}/**/*"
-    loader.push_dir "#{app_dir}/#{app_name}" if Dir.exist? "#{app_dir}/#{app_name}"
-
-    loader.enable_reloading
-    loader.setup
-
-    @systems.each do |k, klass|
-      connect_system k, klass
-    end
-
-    @systems.freeze
-  end
-
   # loaders
 
   @loaders = []
   @mutex = Mutex.new
+
+  def self.loaders
+    @loaders
+  end
 
   def self.reload &block
     @mutex.synchronize do
@@ -88,8 +41,8 @@ class App
     true
   end
 
-  def self.eager_load_all
-    Zeitwerk::Loader.eager_load_all
+  def self.load_all
+    Lizarb.load_all
   end
 
   # modes

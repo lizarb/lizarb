@@ -8,7 +8,7 @@ class DevSystem::NotFoundCommand < DevSystem::Command
 
     # 2. FIND commands
 
-    App.eager_load_all
+    App.load_all
     commands = Liza::Command.descendants
 
     log "Liza comes with #{commands.count} commands you can use."
