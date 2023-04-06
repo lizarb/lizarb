@@ -8,6 +8,12 @@ $LOAD_PATH.unshift "#{Dir.pwd}/lib"
 
 require_relative "../lib/lizarb.rb"
 
+Lizarb.setup
+
+Lizarb.app
+
 Lizarb.call
 
-exit 0
+App.call ARGV
+
+Lizarb.exit verbose: true

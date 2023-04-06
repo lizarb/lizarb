@@ -37,20 +37,38 @@ module Lizarb
   end
 
   # called from exe/lizarb
-  def call
-    # lookup phase
+  def setup
     lookup_and_load_core_ext
     lookup_and_set_gemfile
+  end
+
+  def app
+    require "app"
     lookup_and_require_app
+  end
+
+  # called from exe/lizarb
+  def call
     lookup_and_set_mode
     lookup_and_require_dependencies
     lookup_and_load_settings
+  end
 
-    # call phase
-    App.call ARGV
+  # called from exe/lizarb
+  def exit verbose: $VERBOSE
+    exit_messages if verbose
+    super 0
+  end
 
-    # exit phase
-    versions = {ruby: RUBY_VERSION, bundler: Bundler::VERSION, zeitwerk: Zeitwerk::VERSION, lizarb: VERSION, app: $APP}
+  def exit_messages
+    versions = {
+      ruby: RUBY_VERSION,
+      bundler: Bundler::VERSION,
+      zeitwerk: Zeitwerk::VERSION,
+      lizarb: VERSION,
+      app: $APP,
+      mode: $MODE
+    }
     bugs = SPEC.metadata["bug_tracker_uri"]
     puts versions.to_s.green
     puts "Report bugs at #{bugs}"
@@ -95,8 +113,6 @@ module Lizarb
   end
 
   def lookup_and_require_app
-    require "app"
-
     finder = \
       proc do |lib_name, file_name|
         log "#{self} checking if #{file_name} exists" if $VERBOSE
