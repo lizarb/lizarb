@@ -1,4 +1,4 @@
-class RequestGenerator < Liza::Generator
+class DevSystem::RequestGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/web/requests"

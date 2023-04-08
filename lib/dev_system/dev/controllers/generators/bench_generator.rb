@@ -1,4 +1,4 @@
-class BenchGenerator < Liza::Generator
+class DevSystem::BenchGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/dev/benches"

@@ -1,7 +1,7 @@
-class RecordGeneratorTest < Liza::GeneratorTest
+class DevSystem::BenchGeneratorTest < DevSystem::GeneratorTest
 
   test :subject_class do
-    assert subject_class == RecordGenerator
+    assert subject_class == DevSystem::BenchGenerator
   end
 
   test :settings do

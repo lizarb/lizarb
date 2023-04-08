@@ -1,4 +1,4 @@
-class CommandGenerator < Liza::Generator
+class DevSystem::CommandGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/dev/commands"
