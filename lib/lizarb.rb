@@ -46,9 +46,13 @@ module Lizarb
   end
 
   # called from exe/lizarb
-  def app
+  def app &block
     require "app"
-    lookup_and_require_app
+    if block_given?
+      App.class_exec &block
+    else
+      lookup_and_require_app
+    end
   end
 
   # called from exe/lizarb

@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+# THIS FILE IS A PART OF AN EXPERIMENT. PLEASE DO NOT USE IT.
+
+$VERBOSE = ENV["VERBOSE"]
+
+$APP = "app_global"
+
+require "lizarb"
+
+Lizarb.setup
+
+Lizarb.app do
+  mode :code
+  system :dev
+  system :happy
+end
+
+Lizarb.call
+
+class MainCommand < Liza::Command
+  def self.call args
+    puts "Hello World!"
+  end
+end
+
+App.call [:main, *ARGV]
+
+Lizarb.exit verbose: true
