@@ -1,4 +1,4 @@
-class RecordGenerator < Liza::Generator
+class DevSystem::RecordGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/net/records"
