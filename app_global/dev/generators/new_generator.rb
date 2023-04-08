@@ -23,8 +23,8 @@ class NewGenerator < Liza::Generator
 
     # app
     
-    FileUtils.cp_r "app_new", "#{to}/app", verbose: true
-    FileUtils.cp_r "app_new.rb", "#{to}/app.rb", verbose: true
+    FileUtils.cp_r from, "#{to}/app", verbose: true
+    FileUtils.cp_r "#{from}.rb", "#{to}/app.rb", verbose: true
 
     # extra
 
