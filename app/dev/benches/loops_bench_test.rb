@@ -1,4 +1,4 @@
-class LoopsBenchTest < AppBenchTest
+class LoopsBenchTest < Liza::BenchTest
 
   test :subject_class do
     assert subject_class == LoopsBench

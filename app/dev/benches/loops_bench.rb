@@ -1,4 +1,4 @@
-class LoopsBench < AppBench
+class LoopsBench < Liza::Bench
   main_dsl
 
   setup do
