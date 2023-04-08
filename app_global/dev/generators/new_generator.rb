@@ -1,11 +1,10 @@
 class NewGenerator < Liza::Generator
-
-  def self.call args
+  def self.call(args)
     log :higher, "Called #{self}.#{__method__} with args #{args}"
     new.call args
   end
 
-  def call args
+  def call(args)
     # setup
 
     name = args.shift || "app_1"
@@ -22,7 +21,7 @@ class NewGenerator < Liza::Generator
     DirShell.create to
 
     # app
-    
+
     FileUtils.cp_r from, "#{to}/app", verbose: true
     FileUtils.cp_r "#{from}.rb", "#{to}/app.rb", verbose: true
 
@@ -36,11 +35,15 @@ class NewGenerator < Liza::Generator
     TextShell.write "#{to}/.gitignore", render("hidden.gitignore")
     TextShell.write "#{to}/Gemfile", render("Gemfile.rb")
     TextShell.write "#{to}/Procfile", render("Procfile.yml")
+    TextShell.write "#{to}/.tool-versions", render("toolversions.txt")
 
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/.ruby-version", "#{to}/.ruby-version", verbose: true
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/README.md", "#{to}/README.md", verbose: true
+    FileUtils.cp_r "#{Lizarb::APP_DIR}/README.md",
+                   "#{to}/README.md",
+                   verbose: true
     FileUtils.cp_r "#{Lizarb::APP_DIR}/app.env", "#{to}/app.env", verbose: true
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/app.code.env", "#{to}/app.code.env", verbose: true
+    FileUtils.cp_r "#{Lizarb::APP_DIR}/app.code.env",
+                   "#{to}/app.code.env",
+                   verbose: true
 
     puts
 
@@ -48,7 +51,6 @@ class NewGenerator < Liza::Generator
 
     log "Liza Application initialized at `#{to}`"
   end
-
 end
 
 __END__
@@ -60,6 +62,10 @@ __END__
 /tmp/
 *.sqlite
 *.rdb
+
+# toolversions.txt.erb
+
+ruby <%= RUBY_VERSION %>
 
 # Procfile.yml.erb
 
