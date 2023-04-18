@@ -56,7 +56,7 @@ class Liza::Box < Liza::Unit
     panels[symbol].started
   end
 
-  def self.panel symbol, panel_class = nil, &block
+  def self.has_panel symbol, panel_class = nil, &block
     raise ArgumentError, "block required" unless block_given?
 
     system_class = get :system
@@ -80,6 +80,11 @@ class Liza::Box < Liza::Unit
     panel = self[panel_name]
 
     controller_class.on_connected self, panel
+  end
+
+  def self.configure name, &block
+    has_panel name, &block
+    has_controller name, name
   end
 
 end
