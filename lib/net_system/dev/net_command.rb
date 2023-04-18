@@ -4,8 +4,8 @@ class NetSystem::NetCommand < Liza::Command
     log :higher, "Called #{self} with args #{args}"
 
     ruby_time   = Time.now
-    redis_time  = ::NetBox.databases.redis.now
-    sqlite_time = ::NetBox.databases.sqlite.now
+    redis_time  = NetBox[:database].redis.new.now
+    sqlite_time = NetBox[:database].sqlite.new.now
     # redis_time  = ::RedisDb.current.now
     # sqlite_time = ::SqliteDb.current.now
 
@@ -16,7 +16,6 @@ class NetSystem::NetCommand < Liza::Command
           Time for Sqlite:  #{sqlite_time.to_s.light_red}
 
       OUTPUT
-    Liza::DevCommand.call []
   end
 
 end
