@@ -1,4 +1,4 @@
-class NewGenerator < Liza::Generator
+class DevSystem::NewGenerator < DevSystem::Generator
   def self.call(args)
     log :higher, "Called #{self}.#{__method__} with args #{args}"
     new.call args
