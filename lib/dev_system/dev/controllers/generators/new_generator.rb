@@ -79,8 +79,6 @@ web: LIZA_MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
 
 source "https://rubygems.org"
 
-ruby File.read(".ruby-version").strip
-
 group :default do
   gem "lizarb", "~> <%= Lizarb::VERSION %>"
   # gem "lizarb", github: "rubyonrails-brasil/lizarb"
