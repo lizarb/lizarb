@@ -1,26 +1,41 @@
 class <%= name.camelize %>Command < Liza::Command
 
   def self.call args
-    log :higher, "Called #{self}.#{__method__} with args #{args}"
-    new(args).call
+    log ":#{__method__}(#{args})"
+    new.call args
   end
 
-  def initialize args
+  def call args
+    log "##{__method__}(#{args})"
     @args = args
-  end
 
-  def call
-    log :higher, "Called #{self}.#{__method__}"
+    # log "puts render inline.txt"
+    # puts render "inline.txt"
 
-    text = render "text.txt"
+    # log "puts render text.txt"
+    # puts render "text.txt"
 
-    log :higher, "text: #{text}"
+    log "Time.now #{Time.now}"
   end
 
 end
 
 __END__
 
-# text.txt.erb
-Called <%%= self %>.<%%= __method__ %>
-@args: <%%= @args %>
+The default view can be rendered by calling `render "inline.txt`"
+
+Self is the instance of the class that called `render`:
+  self: <%%= self %>
+
+# view text.txt.erb
+
+This named view can be rendered by calling `render "text.txt`"
+
+Instance variables are accessible from the view:
+  @args: <%%= @args %>
+
+Written at <%%= Time.now %>
+
+# view lalala.txt.erb.ignored
+
+This named view will be ignored.
