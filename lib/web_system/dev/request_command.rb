@@ -96,14 +96,14 @@ end
 
 __END__
 
-# success.txt.erb
+# view success.txt.erb
 
 RESULT:
 
 class      <%= @result.class %>
 value      <%= @result %>
 
-# error.txt.erb
+# view error.txt.erb
 
 ERROR:
 
@@ -111,7 +111,7 @@ class      <%= @error.class %>
 message    <%= @error.message %>
 backtrace  <%= @error.backtrace.select { |s| @stop = true if s.include?("/exe/lizarb:"); !defined? @stop }.join "\n           " %>
 
-# help.txt.erb
+# view help.txt.erb
 
 USAGE:
 
@@ -119,7 +119,7 @@ liza request find /path/to/action.format
 liza request get /path/to/action.format
 liza request post /path/to/action.format
 
-# find.txt.erb
+# view find.txt.erb
 
 ENV:
 <% @env.each do |k, v| %>
@@ -133,7 +133,7 @@ class <%= @request_class %> < <%= @request_class.superclass %>
   # ...
 end
 
-# response.http.erb
+# view response.http.erb
 
 <%= @status %>
 <% @headers.each do |k, v| -%>

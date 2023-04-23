@@ -44,14 +44,14 @@ end
 
 __END__
 
-# success.txt.erb
+# view success.txt.erb
 
 RESULT:
 
 class      <%= @result.class %>
 value      <%= @result %>
 
-# error.txt.erb
+# view error.txt.erb
 
 ERROR:
 

@@ -55,7 +55,7 @@ end
 
 __END__
 
-# hidden.gitignore.erb
+# view hidden.gitignore.erb
 
 # Ignore all files in all subdirectories
 .gitignore/.bundle/
@@ -63,17 +63,17 @@ __END__
 *.sqlite
 *.rdb
 
-# toolversions.txt.erb
+# view toolversions.txt.erb
 
 ruby <%= RUBY_VERSION %>
 
-# Procfile.yml.erb
+# view Procfile.yml.erb
 
-<%= "# HEROKU EXAMPLE" %>
+# HEROKU EXAMPLE
 
 web: LIZA_MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
 
-# Gemfile.rb.erb
+# view Gemfile.rb.erb
 
 <%= "# frozen_string_literal: true" %>
 

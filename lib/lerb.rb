@@ -3,55 +3,115 @@
 # https://docs.ruby-lang.org/en/3.2/ERB.html
 require "erb"
 
+$LERB_VERBOSE = ENV["LERB_VERBOSE"]
+
 class LERB < ERB
   class Error < StandardError; end
   class BuildError < Error; end
   class ExecutionError < Error; end
 
+  # output
+
+  def self.puts string=nil
+    super if $LERB_VERBOSE
+  end
+
   # loaders
 
+  DEFAULT_KEY = "inline.txt.erb"
+
   def self.load path_radical
-    load_from_folder(path_radical) + load_from_file("#{path_radical}.rb")
-  end
+    erbs = []
 
-  def self.load_from_file path
-    ret = []
-
-    fname = path
-    return ret unless File.exist? path
-
-    lines = File.readlines fname
-
-    lineno = lines.index "__END__\n"
-    return ret if lineno.nil?
-
-    content = lines[lineno+1..-1].join
-    array = content.split(/^# (\w*).(\w*).(\w*)$/)
-    # => ["", "a", "html", "erb", "\n<html>\n<a></a>\n</html>\n", "b", "html", "erb", "\n<html>\n<b></b>\n</html>"]
-
-    while (chunk = array.pop 4; chunk.size == 4)
-      # => ["b", "html", "erb", "\n<html>\n<b></b>\n</html>"]
-      # => ["a", "html", "erb", "\n<html>\n<a></a>\n</html>\n"]
-      key = "#{chunk[0]}.#{chunk[1]}.#{chunk[2]}"
-      content = chunk[3]
-      ret.push new :file, key, content, fname, lineno
+    "#{path_radical}.rb".tap do |filename|
+      _load erbs, filename
     end
 
-    ret
-  end
-
-  def self.load_from_folder path
-    ret = []
-
-    lineno = 0
-    fnames = Dir.glob "#{path}/*.*.erb"
-    fnames.map do |fname|
-      key = fname.split("/").last
-      content = File.read fname
-      ret.push new :folder, key, content, fname, lineno
+    Dir.glob("#{path_radical}.*.erb").each do |filename|
+      _load erbs, filename
     end
 
-    ret
+    Dir.glob("#{path_radical}/*.*.erb").each do |filename|
+      _load erbs, filename
+    end
+
+    #
+
+    puts "#{erbs.size} erbs".on_red
+    erbs.each do |h|
+      puts "key: #{h.key}".on_green
+    end
+
+    erbs
+  end
+
+  def self._load erbs, filename
+    is_erb = filename.end_with? ".erb"
+    is_ignoring_ruby = !is_erb
+    is_accepting_views = false
+    
+    puts
+    puts "LERB filename: #{filename}".on_red
+    
+    puts "LERB is_erb: #{is_erb}".on_red
+    puts "LERB is_ignoring_ruby: #{is_ignoring_ruby}".on_red
+    puts "LERB is_accepting_views: #{is_accepting_views}".on_red
+
+    current_lineno = 0
+    current_content = ""
+    current_key = is_erb ? filename.split("/").last : DEFAULT_KEY
+
+    if current_key
+      puts "LERB declare: #{current_key} | because not erb".green
+    end
+
+    File.readlines(filename).each.with_index do |line, lineno|
+      is_line_end = line == "__END__\n"
+
+      # stop ignoring ruby lines if line is __END__
+      # move to next line if ignoring ruby lines
+
+      if is_ignoring_ruby
+        puts "LERB ignore: #{lineno}: #{line[0..-2]}".light_black
+        if is_line_end
+          is_ignoring_ruby = false
+          is_accepting_views = true
+          current_lineno = lineno + 1
+          puts "LERB declare: #{current_key} | current".green if current_key
+        end
+        next
+      end
+
+      if is_accepting_views && line[0..6] == "# view "
+        _load_into erbs, filename, current_lineno, current_key, current_content
+        current_key = line[7..-1].strip
+        current_lineno = lineno + 1
+        current_content = ""
+        puts "LERB declare: #{current_key} | #{lineno}: #{line[0..-2]}".green
+      else
+        current_content += line
+        puts "LERB keeping: #{lineno}: #{line[0..-2]}".bold.white
+      end
+
+      if is_line_end
+        puts "LERB warning: #{lineno}: #{line[0..-2]} found! No longer accepting views".light_yellow
+        is_accepting_views = false
+      end
+    end
+
+    _load_into erbs, filename, current_lineno, current_key, current_content
+
+    erbs
+  end
+
+  def self._load_into erbs, filename, lineno, key, content
+    return unless key
+    return unless key.end_with? "erb"
+    return if content.strip.empty?
+
+    content += "\n" if content[-1] != "\n"
+
+    erbs.push new filename, lineno, key, content
   end
 
   # format
@@ -62,36 +122,22 @@ class LERB < ERB
     TAG_FORMATS.include? format
   end
 
-  # source
-
-  SOURCES = %i|file folder|
-
-  def file?
-    @source == :file
-  end
-
-  def folder?
-    @source == :folder
-  end
-
   # constructor
 
   TRIM_MODE = "<>-"
 
-  attr_reader :source, :key, :name, :format
+  attr_reader :key, :name, :format
 
-  def initialize source, key, content, filename, lineno
-    raise BuildError, "source :#{source} must be one of #{SOURCES}" unless SOURCES.include? source
-
+  def initialize filename, lineno, key, content
     segments = key.split("/").last.split(".")
     name, format = segments[0..1]
 
-    # raise BuildError, "key '#{key}' must be formatted as <name>.<format>.erb" unless segments.count == 3
-    # raise BuildError, "key '#{key}' must be formatted as <name>.<format>.erb" unless segments[2] == "erb"
-    raise BuildError, "key '#{key}' has an invalid format '#{format}'" unless format.gsub(/[^a-z0-9]/, "") == format
+    if format.gsub(/[^a-z0-9]/, "") != format
+      raise BuildError, "key '#{key}' has an invalid format '#{format}'"
+    end
 
     super content, trim_mode: TRIM_MODE
-    @source, @key, @name, @format, self.filename, self.lineno = source, key, name, format, filename, lineno
+    self.filename, self.lineno, @key, @name, @format = filename, lineno, key, name, format
   end
 
   # result

@@ -42,7 +42,7 @@ end
 
 __END__
 
-# help.txt.erb
+# view help.txt.erb
 
 NAME:
 
