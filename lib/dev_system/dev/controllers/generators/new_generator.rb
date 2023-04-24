@@ -40,6 +40,9 @@ class DevSystem::NewGenerator < DevSystem::Generator
     FileUtils.cp_r "#{Lizarb::APP_DIR}/README.md",
                    "#{to}/README.md",
                    verbose: true
+    FileUtils.cp_r "#{Lizarb::APP_DIR}/web_files",
+                   "#{to}/web_files",
+                   verbose: true
     FileUtils.cp_r "#{Lizarb::APP_DIR}/app.env", "#{to}/app.env", verbose: true
     FileUtils.cp_r "#{Lizarb::APP_DIR}/app.code.env",
                    "#{to}/app.code.env",
