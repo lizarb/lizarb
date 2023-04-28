@@ -4,7 +4,7 @@ class Module
 
   # /path/to/liza.rb
   def source_location
-    Object.const_source_location name
+    Array Object.const_source_location name
   end
 
   # /path/to/liza
