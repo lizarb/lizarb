@@ -36,6 +36,16 @@ module Lizarb
     puts s.bold
   end
 
+  # Returns Lizarb::VERSION as a Gem::Version
+  def version
+    @version ||= Gem::Version.new VERSION
+  end
+
+  # Returns RUBY_VERSION as a Gem::Version
+  def ruby_version
+    @ruby_version ||= Gem::Version.new RUBY_VERSION
+  end
+
   def ruby_supports_raise_cause?
     RUBY_ENGINE != "jruby"
   end
