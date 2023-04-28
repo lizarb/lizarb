@@ -28,4 +28,26 @@ class DevSystem::Shell < Liza::Controller
     :unix
   end
 
+  # Return the current Ruby engine as a symbol
+  def self.engine
+    return :jruby if jruby?
+    return :ruby  if ruby?
+    :unknown
+  end
+
+  # Check if the current Ruby engine is JRuby
+  def self.jruby?
+    @jruby || RUBY_ENGINE == "jruby"
+  end
+
+  # Check if the current Ruby engine is MRI
+  def self.ruby?
+    @ruby || RUBY_ENGINE == "ruby"
+  end
+
+  # Return the current Ruby version as a Gem::Version
+  def self.ruby_version
+    Lizarb.ruby_version
+  end
+
 end
