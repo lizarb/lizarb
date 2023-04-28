@@ -6,10 +6,24 @@ class Liza::Unit
     App.connect_part self, key, system
   end
 
-  def self.const_missing name
-    Liza.const name
-  rescue Liza::ConstNotFound => e
-    raise NameError, "uninitialized constant #{name}", caller[1..], cause: nil
+  # CONST MISSING
+
+  if Lizarb.ruby_supports_raise_cause?
+
+    def self.const_missing name
+      Liza.const name
+    rescue Liza::ConstNotFound => e
+      raise NameError, "uninitialized constant #{name}", caller[1..], cause: nil
+    end
+
+  else
+
+    def self.const_missing name
+      Liza.const name
+    rescue Liza::ConstNotFound => e
+      raise NameError, "uninitialized constant #{name}", caller[1..]
+    end
+
   end
 
   part :unit_procedure
