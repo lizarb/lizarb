@@ -3,6 +3,7 @@
 require "colorize"
 require "json"
 require "pathname"
+require "fileutils"
 require "lerb"
 
 require_relative "lizarb/version"
@@ -33,6 +34,10 @@ module Lizarb
 
   def log s
     puts s.bold
+  end
+
+  def ruby_supports_raise_cause?
+    RUBY_ENGINE != "jruby"
   end
 
   def self.load_all
