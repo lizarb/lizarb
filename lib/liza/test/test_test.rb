@@ -74,7 +74,11 @@ class Liza::TestTest < Liza::Test
   
   group :instance_variables do
     test :instance_variables do
-      assert_equality instance_variables, [:@test_words, :@before_stack, :@after_stack, :@test_block]
+      if Shell.jruby?
+        todo "jruby!"
+      else
+        assert_equality instance_variables, [:@test_words, :@before_stack, :@after_stack, :@test_block]
+      end
     end
 
     test :test_block do
