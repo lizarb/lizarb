@@ -13,11 +13,26 @@ class Liza::Panel < Liza::Unit
     self.class.box
   end
 
+  #
+
   def initialize key
     @key = key
     @blocks = []
     @unstarted = true
+    @short = {}
   end
+
+  #
+
+  def short a, b = nil
+    if b
+      @short[a.to_s] = b.to_s
+    else
+      @short[a.to_s] || a.to_s
+    end
+  end
+
+  #
 
   def push block
     @unstarted = true
@@ -33,6 +48,8 @@ class Liza::Panel < Liza::Unit
 
     self
   end
+
+  #
   
   def log log_level = :normal, string
     raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
