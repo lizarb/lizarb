@@ -1,17 +1,13 @@
 class DevSystem::Command < Liza::Controller
 
-  # def self.call args
-  #   new.call args
-  # end
+  def self.call args
+    log ":call #{args}"
+    new.call args
+  end
 
-  # def initialize args
-  #   @args = args
-  # end
-
-  # attr_reader :args
-
-  # def call args
-  #
-  # end
+  def call args
+    log "#call #{args}"
+    raise NotImplementedError
+  end
 
 end
