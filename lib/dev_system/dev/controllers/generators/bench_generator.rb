@@ -1,18 +1,12 @@
-class DevSystem::BenchGenerator < DevSystem::Generator
-  main_dsl
+class DevSystem::BenchGenerator < DevSystem::ControllerGenerator
 
-  FOLDER = "app/dev/benches"
+  def self.call args
+    log ":call #{args}"
 
-  generate :controller do
-    folder FOLDER
-    filename "#{name}_bench.rb"
-    content render "bench.rb"
-  end
+    name = args.shift || raise("args[0] should contain NAME")
+    name = name.downcase
 
-  generate :controller_test do
-    folder FOLDER
-    filename "#{name}_bench_test.rb"
-    content render "bench_test.rb"
+    new.generate_app_controller :dev, :bench, :benches, name
   end
 
 end

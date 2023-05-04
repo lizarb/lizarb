@@ -1,7 +1,7 @@
-class <%= name.camelize %>BenchTest < Liza::BenchTest
+class <%= @name.camelize %>BenchTest < Liza::BenchTest
 
   test :subject_class do
-    assert subject_class == <%= name.camelize %>Bench
+    assert subject_class == <%= @name.camelize %>Bench
   end
 
   test :settings do
