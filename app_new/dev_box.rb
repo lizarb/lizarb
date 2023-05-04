@@ -1,8 +1,12 @@
 class DevBox < Liza::DevBox
 
-  # Configure your command panel per the DSL in http://guides.lizarb.org/panels/command.html
+  configure :bench do
+    #
+  end
+
   configure :command do
-    # set :log_level, ENV["dev.command.log_level"]
+    short :b, :bench
+    short :g, :generate
   end
 
 end
