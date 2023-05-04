@@ -1,5 +1,4 @@
-class LoopsBench < Liza::Bench
-  main_dsl
+class LoopsBench < SortedBench
 
   setup do
     N = 1_000_000
@@ -8,6 +7,8 @@ class LoopsBench < Liza::Bench
     HASH_INT = RANGE.map { |i| [i, i] }.to_h
     HASH_STR = RANGE.map { |i| ["a#{i}", i] }.to_h
     HASH_SYM = RANGE.map { |i| [:"a#{i}", i] }.to_h
+    
+    log "setup N = #{N}"
   end
 
   mark "for i in RANGE" do
