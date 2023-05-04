@@ -1,4 +1,4 @@
-class DevSystem::CommandGeneratorTest < DevSystem::GeneratorTest
+class DevSystem::CommandGeneratorTest < DevSystem::ControllerGeneratorTest
 
   test :subject_class do
     assert subject_class == DevSystem::CommandGenerator

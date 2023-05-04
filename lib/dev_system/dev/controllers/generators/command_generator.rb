@@ -1,18 +1,19 @@
-class DevSystem::CommandGenerator < DevSystem::Generator
-  main_dsl
+class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
-  FOLDER = "app/dev/commands"
+  def self.call args
+    log ":call #{args}"
 
-  generate :controller do
-    folder FOLDER
-    filename "#{name}_command.rb"
-    content render "command.rb"
-  end
+    name = args.shift || raise("args[0] should contain NAME")
+    name = name.downcase
 
-  generate :controller_test do
-    folder FOLDER
-    filename "#{name}_command_test.rb"
-    content render "command_test.rb"
+    new.generate_app_controller :dev, :command, :commands, name
   end
 
 end
+
+__END__
+
+# view install_insert_panel.rb.erb
+
+    short :b, :bench
+    short :g, :generate

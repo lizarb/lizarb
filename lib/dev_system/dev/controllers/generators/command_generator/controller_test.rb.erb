@@ -1,7 +1,7 @@
-class <%= name.camelize %>CommandTest < Liza::CommandTest
+class <%= @name.camelize %>CommandTest < Liza::CommandTest
 
   test :subject_class do
-    assert subject_class == <%= name.camelize %>Command
+    assert subject_class == <%= @name.camelize %>Command
   end
 
   test :settings do
