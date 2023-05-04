@@ -1,11 +1,12 @@
-class LoopsBenchTest < Liza::BenchTest
+class LoopsBenchTest < SortedBenchTest
 
   test :subject_class do
     assert subject_class == LoopsBench
   end
 
-  test :marks do
-    assert subject_class.marks.keys.count.positive?
+  test :settings do
+    assert subject_class.log_level == :normal
+    assert subject_class.log_color == :green
   end
 
 end
