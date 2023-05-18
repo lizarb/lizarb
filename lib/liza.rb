@@ -33,7 +33,12 @@ module Liza
 
     nil
   rescue NameError
-    raise ConstNotFound, name
+    log "Liza const #{name} not found!"
+    if Lizarb.ruby_supports_raise_cause?
+      raise ConstNotFound, name, cause: nil
+    else
+      raise ConstNotFound, name, []
+    end
   end
 
   # Checks each system, then Liza for Liza::Unit classes
