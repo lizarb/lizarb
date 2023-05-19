@@ -1,9 +1,9 @@
 class DevSystem::NotFoundCommand < DevSystem::Command
 
-  def self.call args
+  def call args
     # 1. LOG
 
-    log :higher, "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
     puts
 
     # 2. FIND commands

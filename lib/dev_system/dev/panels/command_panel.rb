@@ -3,32 +3,39 @@ class DevSystem::CommandPanel < Liza::Panel
   class ParseError < Error; end
 
   def call args
-    log "#call(#{args})"
+    log "args = #{args.inspect}"
+
+    return call_not_found args if args.none?
+
     struct = parse args[0]
     struct.command = short struct.command
     command = find struct.command
 
     case
     when struct.class_method
-      log "#{command}.#{struct.class_method}(#{args[1..-1]})"
+      _call_log "#{command}.#{struct.class_method}(#{args[1..-1]})"
       command.public_send struct.class_method, args[1..-1]
     when struct.instance_method
-      log "#{command}.new.#{struct.instance_method}(#{args[1..-1]})"
+      _call_log "#{command}.new.#{struct.instance_method}(#{args[1..-1]})"
       command.new.public_send struct.instance_method, args[1..-1]
     when struct.method
       if command.respond_to?(struct.method)
-        log "#{command}.#{struct.method}(#{args[1..-1]})"
+        _call_log "#{command}.#{struct.method}(#{args[1..-1]})"
         command.public_send struct.method, args[1..-1]
       else
-        log "#{command}.new.#{struct.method}(#{args[1..-1]})"
+        _call_log "#{command}.new.#{struct.method}(#{args[1..-1]})"
         command.new.public_send struct.method, args[1..-1]
       end
     else
-      log "#{command}.call(#{args[1..-1]})"
+      _call_log "#{command}.call(#{args[1..-1]})"
       command.call args[1..-1]
     end
   rescue ParseError
-    call ["not_found"]
+    call_not_found args
+  end
+
+  def _call_log string
+    log "#{string}" if get :log_details?
   end
 
   #
@@ -40,7 +47,7 @@ class DevSystem::CommandPanel < Liza::Panel
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
     hash = md.named_captures
-    log "Parsing #{string.inspect} resulted in {#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}"
+    log "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}" if get :log_details?
     OpenStruct.new hash
   end
 
@@ -51,8 +58,14 @@ class DevSystem::CommandPanel < Liza::Panel
   rescue Liza::ConstNotFound
     k = Liza::NotFoundCommand
   ensure
-    log k.to_s
+    log k.to_s if get :log_details?
     k
+  end
+
+  #
+
+  def call_not_found args
+    Liza[:NotFoundCommand].call args
   end
 
 end

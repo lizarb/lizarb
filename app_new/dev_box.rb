@@ -5,6 +5,8 @@ class DevBox < Liza::DevBox
   end
 
   configure :command do
+    set :log_details?, true
+    
     short :b, :bench
     short :g, :generate
   end
