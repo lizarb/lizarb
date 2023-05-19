@@ -3,7 +3,7 @@ class DevSystem::GeneratorDslMainPart < Liza::Part
   insertion do
 
     def self.call args
-      log :higher, "Called #{self}.#{__method__} with args #{args}"
+      log "args = #{args.inspect}"
 
       name = args.shift || raise("args[0] should contain NAME")
       name = name.downcase
