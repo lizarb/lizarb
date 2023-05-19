@@ -36,6 +36,10 @@ module Lizarb
     puts s.bold
   end
 
+  def self.logv s
+    log s if $VERBOSE
+  end
+
   # Returns Lizarb::VERSION as a Gem::Version
   def version
     @version ||= Gem::Version.new VERSION
@@ -186,15 +190,22 @@ module Lizarb
     require "zeitwerk"
     require "liza"
 
+    # App.loaders[0] first loads Liza, then each System class
     App.loaders << loader = Zeitwerk::Loader.new
     loader.tag = Liza.to_s
+
+    # collapse Liza paths
 
     # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
     loader.collapse "#{Liza.source_location_radical}/**/*"
     loader.push_dir "#{Liza.source_location_radical}", namespace: Liza
 
+    # loader setup
+
     loader.enable_reloading
     loader.setup
+
+    # load each System class
 
     App.systems.keys.each do |k|
       key = "#{k}_system"
@@ -205,7 +216,10 @@ module Lizarb
       App.systems[k] = klass
     end
 
+    # App.loaders[1] first loads each System, then the App
     App.loaders << loader = Zeitwerk::Loader.new
+
+    # collapse each System paths
 
     App.systems.each do |k, klass|
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
@@ -213,12 +227,65 @@ module Lizarb
       loader.push_dir "#{klass.source_location_radical}", namespace: klass
     end
 
-    # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
-    loader.collapse "#{APP_DIR}/#{$APP}/**/*"
-    loader.push_dir "#{APP_DIR}/#{$APP}" if Dir.exist? "#{APP_DIR}/#{$APP}"
+    # cherrypick App paths
+
+    app_dir = "#{APP_DIR}/#{$APP}"
+    logv "Lizarb app loader #{app_dir}".on_cyan
+    list = Dir["#{app_dir}/*"].to_set
+    logv "Lizarb app loader lists #{list.count} entries to review".on_cyan
+
+    if list.empty?
+      logv "no #{app_dir} found".red
+    else
+      logv "Lizarb app loader found #{app_dir}\t\tCollapsing #{app_dir}/*".on_cyan
+
+      to_collapse = []
+
+      App.systems.each do |k, klass|
+        box_dir  = "#{app_dir}/#{k}"
+        box_file = "#{box_dir}_box.rb"
+
+        if !list.include? box_file
+          logv "Lizarb app loader missd #{box_file}".on_light_black
+        else
+          logv "Lizarb app loader found #{box_file}\t\tto_collapse!".on_cyan
+          to_collapse << box_file
+
+          if !list.include? box_dir
+            logv "Lizarb app loader missd #{box_dir}".on_light_black
+          else
+            logv "Lizarb app loader found #{box_dir}\t\tto_collapse!".on_cyan
+            to_collapse << box_dir
+          end
+        end
+      end
+
+      # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
+      to_ignore = list - to_collapse
+      to_ignore.each do |file|
+        logv "Lizarb app loader missd #{file}\t\tSkipping this one".on_light_black
+        loader.ignore file
+      end
+
+      to_collapse.each do |path|
+        logv "Lizarb app loader collapsing #{path}".on_cyan
+        if path.end_with? ".rb"
+          loader.collapse path
+        else
+          loader.collapse "#{path}/**/*"
+        end
+      end
+      loader.collapse "#{app_dir}/*"
+
+      loader.push_dir app_dir, namespace: Object
+    end
+
+    # loader setup
 
     loader.enable_reloading
     loader.setup
+
+    # App connects to systems
 
     App.systems.each do |k, klass|
       App.connect_system k, klass
