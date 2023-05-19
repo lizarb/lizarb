@@ -1,7 +1,7 @@
 class SortedBench < Liza::Bench
 
   def self.call args
-    log ":call(#{args})"
+    log "args = #{args.inspect}"
 
     # https://rubyapi.org/3.1/o/benchmark
     require "benchmark"
