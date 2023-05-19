@@ -1,5 +1,4 @@
-class <%= @name.camelize %>Bench < Liza::Bench
-  main_dsl
+class <%= @name.camelize %>Bench < SortedBench
 
   setup do
     N = 1_000_000

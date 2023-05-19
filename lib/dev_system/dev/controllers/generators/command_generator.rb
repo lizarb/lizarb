@@ -1,7 +1,7 @@
 class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
   def self.call args
-    log ":call #{args}"
+    log "args = #{args.inspect}"
 
     name = args.shift || raise("args[0] should contain NAME")
     name = name.downcase

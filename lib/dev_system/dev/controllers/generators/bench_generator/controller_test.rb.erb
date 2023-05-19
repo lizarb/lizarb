@@ -1,4 +1,4 @@
-class <%= @name.camelize %>BenchTest < Liza::BenchTest
+class <%= @name.camelize %>BenchTest < SortedBenchTest
 
   test :subject_class do
     assert subject_class == <%= @name.camelize %>Bench

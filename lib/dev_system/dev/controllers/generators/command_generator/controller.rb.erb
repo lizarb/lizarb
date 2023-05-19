@@ -1,12 +1,12 @@
 class <%= @name.camelize %>Command < Liza::Command
 
   def self.call args
-    log ":#{__method__}(#{args})"
+    log "args = #{args.inspect}"
     new.call args
   end
 
   def call args
-    log "##{__method__}(#{args})"
+    log "@args = #{args.inspect}"
     @args = args
 
     # log "puts render inline.txt"
