@@ -1,12 +1,12 @@
 class DevSystem::ControllerGenerator < DevSystem::Generator
 
   def self.call args
-    log ":call #{args}"
+    log "args = #{args.inspect}"
     new.generate_app_controller *args
   end
 
   def generate_app_controller system_name, controller_name, folder, name
-    log "#generate_app_controller(#{system_name.inspect}, #{controller_name.inspect}, #{folder.inspect}, #{name.inspect})"
+    log "(#{system_name.inspect}, #{controller_name.inspect}, #{folder.inspect}, #{name.inspect})"
 
     @name = name
     @panels = []
@@ -23,7 +23,7 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
   #
 
   def self.install args
-    log ":install #{args}"
+    log "args = #{args.inspect}"
 
     system_name = get(:system).name.snakecase.gsub "_system", ""
     controller_name = last_namespace.snakecase.gsub "_generator", ""

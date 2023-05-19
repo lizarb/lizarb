@@ -23,7 +23,7 @@ class #{name.camelize}Request < Liza::Request
 
   def self.call env
     path = env["REQUEST_PATH"]
-    log :higher, "Called \#{self}.\#{__method__} with path \#{path}"
+    log "args = #{args.inspect}"
 
     #
 
