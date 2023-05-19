@@ -1,7 +1,7 @@
 class DevSystem::NewCommand < DevSystem::Command
 
-  def self.call args
-    log :higher, "Called #{self}.#{__method__} with args #{args}"
+  def call args
+    log "args = #{args.inspect}"
 
     Liza[:GenerateCommand].call ["new", *args]
   end

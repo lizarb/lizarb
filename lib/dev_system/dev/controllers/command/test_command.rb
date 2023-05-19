@@ -1,7 +1,7 @@
 class DevSystem::TestCommand < DevSystem::Command
 
   def self.call args
-    log :higher, "Called #{self} with args #{args}"
+    log "args = #{args.inspect}"
 
     App.load_all
 

@@ -3,17 +3,17 @@ class NarrativeMethodCommand < Liza::Command
   class Invalid < Error; end
 
   def self.call(args)
-    log "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
     new.call(args)
   end
 
   # instance methods
 
   def call(args)
-    log "Called #{self}.#{__method__} with args #{args}"
+    @args = args
+    log "@args = #{args.inspect}"
     return help if args.empty?
 
-    @args = args
     validate
     perform
   rescue StandardError => error
@@ -32,12 +32,10 @@ class NarrativeMethodCommand < Liza::Command
   end
 
   def handle
-    log "Called #{self}.#{__method__}"
     log render "error.txt"
   end
 
   def help
-    log "Called #{self}.#{__method__}"
     log render "help.txt"
   end
 end
