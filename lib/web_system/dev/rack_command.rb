@@ -1,14 +1,7 @@
 class WebSystem::RackCommand < Liza::Command
 
-  def self.call args
-    log "Called #{self}.#{__method__} with args #{args}"
-    new.call args
-  end
-
-  # instance methods
-
   def call args
-    log "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
 
     strategy = nil
     host = nil
