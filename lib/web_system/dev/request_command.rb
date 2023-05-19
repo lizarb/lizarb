@@ -2,15 +2,8 @@ class WebSystem::RequestCommand < Liza::Command
 
   VALID_ACTIONS = %w[find get post]
 
-  def self.call(args)
-    log "Called #{self}.#{__method__} with args #{args}"
-    new.call(args)
-  end
-
-  # instance methods
-
   def call(args)
-    log "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
 
     @command = args.shift
     @args = args
@@ -23,8 +16,6 @@ class WebSystem::RequestCommand < Liza::Command
   end
 
   def perform
-    log "Called #{self}.#{__method__}"
-    
     case @command
     when "find"
       find
@@ -36,19 +27,16 @@ class WebSystem::RequestCommand < Liza::Command
   end
 
   def handle
-    log "Called #{self}.#{__method__}"
     log render "error.txt"
   end
 
   def help
-    log "Called #{self}.#{__method__}"
     log render "help.txt"
   end
 
   # actions
 
   def find
-    log "Called #{self}.#{__method__}"
     path = @args.first
 
     @env = {}
@@ -62,7 +50,6 @@ class WebSystem::RequestCommand < Liza::Command
   end
 
   def get_request
-    log "Called #{self}.#{__method__}"
     path = @args.first
     
     @env = {}
@@ -75,7 +62,6 @@ class WebSystem::RequestCommand < Liza::Command
   end
 
   def post_request
-    log "Called #{self}.#{__method__}"
     path = @args.first
     
     @env = {}
