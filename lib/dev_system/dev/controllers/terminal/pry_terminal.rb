@@ -1,7 +1,7 @@
 class DevSystem::PryTerminal < DevSystem::Terminal
 
   def self.call args
-    log :higher, "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
 
     require "pry"
     Pry.start
