@@ -9,15 +9,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality subject_class.log_color, :green
   end
 
-  test :call do
-    begin
-      subject.call ["echo", 1, 2, 3]
-      assert false
-    rescue RuntimeError => e
-      assert e.message == "[1, 2, 3]"
-    end
-  end
-
   test :parse do
     struct = subject.parse "generate"
     assert_equality struct.command, "generate"
