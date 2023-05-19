@@ -1,7 +1,7 @@
 class NetSystem::NetCommand < Liza::Command
 
   def self.call args
-    log :higher, "Called #{self} with args #{args}"
+    log "args = #{args.inspect}"
 
     ruby_time   = Time.now
     redis_time  = NetBox[:database].redis.new.now
@@ -9,13 +9,14 @@ class NetSystem::NetCommand < Liza::Command
     # redis_time  = ::RedisDb.current.now
     # sqlite_time = ::SqliteDb.current.now
 
-      puts <<-OUTPUT.bold
 
-          Time for Ruby:    #{ruby_time.to_s.light_red}
-          Time for Redis:   #{redis_time.to_s.light_red}
-          Time for Sqlite:  #{sqlite_time.to_s.light_red}
+    log "Time for Ruby:    #{_red ruby_time}".bold
+    log "Time for Redis:   #{_red redis_time}".bold
+    log "Time for Sqlite:  #{_red sqlite_time}".bold
+  end
 
-      OUTPUT
+  def self._red s
+    s.to_s.light_red
   end
 
 end
