@@ -1,10 +1,11 @@
 class DevSystem::NewGenerator < DevSystem::Generator
   def self.call(args)
-    log :higher, "Called #{self}.#{__method__} with args #{args}"
+    log "args = #{args.inspect}"
     new.call args
   end
 
   def call(args)
+    log "args = #{args.inspect}"
     # setup
 
     name = args.shift || "app_1"
