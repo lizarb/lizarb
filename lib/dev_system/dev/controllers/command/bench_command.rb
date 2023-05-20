@@ -4,7 +4,6 @@ class DevSystem::BenchCommand < DevSystem::Command
     # 1. LOG
 
     log "args = #{args.inspect}"
-    puts
 
     # 2. FIND bench
 

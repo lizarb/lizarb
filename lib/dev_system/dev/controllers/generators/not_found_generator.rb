@@ -10,18 +10,30 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
 
     App.load_all
     generators = Liza::Generator.descendants
-
-    log "Liza comes with #{generators.count} generators you can use."
-    puts
-
-    log "Here they are:"
-    puts
+    generators -= ignored_generators
 
     # 3. LIST generators
 
-    keys = generators.map { |k| k.last_namespace.snakecase[0..-11] }.sort
-    keys.reject! { |s| s == "not_found" }
-    keys.each { |s| log "liza generate #{s}" }
+    keys = generators.map { _1.last_namespace.snakecase[0..-11] }.uniq.sort
+
+    log "Liza comes with #{keys.count} generators you can use."
+    log "Here they are:"
+    puts
+
+    keys.each do
+      log "liza generate #{_1}"
+    end
+  end
+
+  def self.ignored_generators
+    [
+      self,
+      DevSystem::NotFoundGenerator,
+      DevSystem::NewGenerator,
+      DevSystem::ControllerGenerator,
+      DevSystem::RecordGenerator,
+      DevSystem::RequestGenerator,
+    ].uniq.compact
   end
 
 end

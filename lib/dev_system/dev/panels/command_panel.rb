@@ -47,7 +47,7 @@ class DevSystem::CommandPanel < Liza::Panel
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
     hash = md.named_captures
-    log "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}" if get :log_details?
+    log "{#{hash.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}" if get :log_details?
     OpenStruct.new hash
   end
 
