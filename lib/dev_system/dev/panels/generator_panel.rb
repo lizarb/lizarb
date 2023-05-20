@@ -1,9 +1,14 @@
 class DevSystem::GeneratorPanel < Liza::Panel
+  class Error < StandardError; end
+  class ParseError < Error; end
 
   #
 
   def call args
     log "args = #{args}"
+    
+    return call_not_found args if args.none?
+
     struct = parse args[0]
     struct.generator = short struct.generator
     generator = find struct.generator
@@ -27,6 +32,8 @@ class DevSystem::GeneratorPanel < Liza::Panel
       _call_log "#{generator}.call(#{args[1..-1]})"
       generator.call args[1..-1]
     end
+  rescue ParseError
+    call_not_found args
   end
 
   def _call_log string
@@ -55,6 +62,12 @@ class DevSystem::GeneratorPanel < Liza::Panel
   ensure
     log k.to_s if get :log_details?
     k
+  end
+
+  #
+
+  def call_not_found args
+    Liza[:NotFoundGenerator].call args
   end
 
 end

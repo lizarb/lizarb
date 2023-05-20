@@ -10,18 +10,25 @@ class DevSystem::NotFoundBench < DevSystem::Bench
 
     App.load_all
     benches = Liza::Bench.descendants
-
-    log "Liza comes with #{benches.count} benches you can use."
-    puts
-
-    log "Here they are:"
-    puts
+    benches -= ignored_benches
 
     # 3. LIST benches
 
-    keys = benches.map { |k| k.last_namespace.snakecase[0..-7] }.sort
-    keys.reject! { |s| s == "not_found" }
+    keys = benches.map { _1.last_namespace.snakecase[0..-7] }.uniq.sort
+
+    log "Liza comes with #{keys.count} benches you can use."
+    log "Here they are:"
+    puts
+
     keys.each { |s| log "liza bench #{s}" }
+  end
+
+  def self.ignored_benches
+    [
+      self,
+      DevSystem::NotFoundBench,
+      (DevSystem::SortedBench if defined? SortedBench),
+    ].uniq.compact
   end
 
 end
