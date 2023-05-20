@@ -35,19 +35,21 @@ class DevSystem::NewGenerator < DevSystem::Generator
 
     TextShell.write "#{to}/.gitignore", render("hidden.gitignore")
     TextShell.write "#{to}/Gemfile", render("Gemfile.rb")
-    TextShell.write "#{to}/Procfile", render("Procfile.yml")
+    # TextShell.write "#{to}/Procfile", render("Procfile.yml")
     TextShell.write "#{to}/.tool-versions", render("toolversions.txt")
 
     FileUtils.cp_r "#{Lizarb::APP_DIR}/README.md",
                    "#{to}/README.md",
                    verbose: true
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/web_files",
-                   "#{to}/web_files",
-                   verbose: true
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/app.env", "#{to}/app.env", verbose: true
-    FileUtils.cp_r "#{Lizarb::APP_DIR}/app.code.env",
-                   "#{to}/app.code.env",
-                   verbose: true
+    # FileUtils.cp_r "#{Lizarb::APP_DIR}/web_files",
+    #                "#{to}/web_files",
+    #                verbose: true
+    @env_name = nil
+    TextShell.write "#{to}/app.env",      render("env.env")
+    @env_name = :code
+    TextShell.write "#{to}/app.code.env", render("env.env")
+    @env_name = :demo
+    TextShell.write "#{to}/app.demo.env", render("env.env")
 
     puts
 
@@ -60,26 +62,23 @@ end
 __END__
 
 # view hidden.gitignore.erb
-
 # Ignore all files in all subdirectories
-.gitignore/.bundle/
+.gitignore
+/.bundle/
 /tmp/
 *.sqlite
 *.rdb
 
 # view toolversions.txt.erb
-
 ruby <%= RUBY_VERSION %>
 
 # view Procfile.yml.erb
-
 # HEROKU EXAMPLE
 
-web: LIZA_MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
+web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
 
 # view Gemfile.rb.erb
-
-<%= "# frozen_string_literal: true" %>
+# frozen_string_literal: true
 
 source "https://rubygems.org"
 
@@ -93,20 +92,26 @@ group :dev do
   # gem "pry", "~> 0.14.1"
 end
 
-group :happy do
-  # gems you only want to load if HappySystem is loaded
-end
+# view env.env.erb
+#
+<% if @env_name == :code -%>
+# ENV VARIABLES FOR MODE=code (default)
+#
+# MODE=code lizarb commands
+# lizarb commands
+<% elsif @env_name == :demo -%>
+# ENV VARIABLES FOR MODE=demo
+#
+# MODE=demo lizarb commands
+<% else -%>
+# ENV VARIABLES FOR ALL MODES
+#
+# MODE=code lizarb commands
+# MODE=demo lizarb commands
+# lizarb commands
+<% end -%>
+#
 
-group :net do
-  # gems you only want to load if NetSystem is loaded
-  # gem "redis", "~> 5.0"
-  # gem "sqlite3", "~> 1.5"
-end
+# app variables
 
-group :web do
-  # gems you only want to load if WebSystem is loaded
-  # gem "rack", "~> 3.0"
-  # gem "rackup", "~> 0.2.2"
-  # gem "puma", "~> 5.6"
-  # gem "htmlbeautifier", "~> 1.4"
-end
+# dev variables
