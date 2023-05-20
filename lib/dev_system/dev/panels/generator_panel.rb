@@ -37,7 +37,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   end
 
   def _call_log string
-    log "#{string}" if get :log_details?
+    log "#{string}" if get :log_details
   end
 
   #
@@ -49,7 +49,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
     hash = md.named_captures
-    log "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}" if get :log_details?
+    log "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}" if get :log_details
     OpenStruct.new hash
   end
 
@@ -60,7 +60,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   rescue Liza::ConstNotFound
     k = Liza::NotFoundGenerator
   ensure
-    log k.to_s if get :log_details?
+    log k.to_s if get :log_details
     k
   end
 
