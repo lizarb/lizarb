@@ -51,51 +51,6 @@ class Liza::TestTreePart < Liza::Part
     attr_reader :tests, :parent, :children, :before_stack, :after_stack
 
     def initialize parent, before_stack, after_stack
-      @parent = parent || self
-
-      @children, @tests = [], []
-      @before_top, @after_top = [], []
-
-      @before_stack = before_stack.push @before_top
-      @after_stack  = after_stack.unshift @after_top
-
-      @parent.children << self if @parent != self
-    end
-
-    def initialize parent, before_stack, after_stack
-      @parent = parent || self
-
-      @children, @tests, @before_top, @after_top = [], [], [], []
-
-      @before_stack = before_stack.push @before_top
-      @after_stack  = after_stack.unshift @after_top
-
-      @parent.children << self if @parent != self
-    end
-
-    def initialize parent, before_stack, after_stack
-      @parent = parent || self
-      @children, @tests = [], []
-      @parent.children << self if @parent != self
-
-      @before_top, @after_top = [], []
-      @before_stack = before_stack.push @before_top
-      @after_stack  = after_stack.unshift @after_top
-    end
-
-    def initialize parent, before_stack, after_stack
-      @tests = []
-
-      @parent = parent || self
-      @children = []
-      @parent.children << self if @parent != self
-
-      @before_top, @after_top = [], []
-      @before_stack = before_stack.push @before_top
-      @after_stack  = after_stack.unshift @after_top
-    end
-
-    def initialize parent, before_stack, after_stack
       @tests = []
       initialize_parenting parent
       initialize_filters before_stack, after_stack
