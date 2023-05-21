@@ -3,7 +3,7 @@ class DevSystem::CommandPanel < Liza::Panel
   class ParseError < Error; end
 
   def call args
-    log "args = #{args.inspect}"
+    log "args = #{args.inspect}" if get :log_details
 
     return call_not_found args if args.none?
 
