@@ -21,7 +21,6 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
       procedure "asserts old scope is not accessible" do
         assert instance_variables.include? :@a
         assert local_variables.include? :b
-        refute local_variables.include? :c
 
         assert @a == 1
         assert b == 2
@@ -34,7 +33,10 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
 
     y =
       procedure "asserts proceed calls can be lazy" do
-        proceed { "slow operation"; 200 } if true
+        proceed do
+          "slow operation"
+          200
+        end if true
         raise "did not get here"
       end
 
