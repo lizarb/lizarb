@@ -2,7 +2,7 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
 
   def self.call args
     log "args = #{args.inspect}"
-    new.generate_app_controller *args
+    new.generate_app_controller(*args)
   end
 
   def generate_app_controller system_name, controller_name, folder, name
@@ -55,7 +55,7 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
 
     cursor = nil
     @content.split("\n").each do |line|
-      md = line.match /^  configure :(.*) do$/
+      md = line.match(/^  configure :(.*) do$/)
       if md
         cursor = md[1]
         @panels[cursor] = {lines: []}

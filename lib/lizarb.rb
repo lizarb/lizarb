@@ -68,7 +68,7 @@ module Lizarb
   def app &block
     require "app"
     if block_given?
-      App.class_exec &block
+      App.class_exec(&block)
     else
       lookup_and_require_app
     end
@@ -183,7 +183,7 @@ module Lizarb
   def lookup_and_load_settings
     files = ["#{$APP}.#{$MODE}.env", "#{$APP}.env"]
     require "dotenv"
-    Dotenv.load *files
+    Dotenv.load(*files)
   end
 
   def require_liza_and_bundle_systems

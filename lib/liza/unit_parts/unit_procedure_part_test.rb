@@ -7,7 +7,6 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
       procedure "creates a new scope" do
         @a = 1
         b = 2
-        c = 3
         assert true
 
         proceed if true
@@ -21,7 +20,6 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
       procedure "asserts old scope is not accessible" do
         assert instance_variables.include? :@a
         assert local_variables.include? :b
-        refute local_variables.include? :c
 
         assert @a == 1
         assert b == 2
@@ -32,13 +30,15 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
 
     assert x == 100
 
-    y =
-      procedure "asserts proceed calls can be lazy" do
-        proceed { "slow operation"; 200 } if true
-        raise "did not get here"
-      end
-
-    assert y == 200
+    y = procedure "asserts proceed calls can be lazy" do
+      proceed do
+        puts "slow operation"
+        200
+      end if true
+      raise "did not get here"
+    end
+    
+    assert y == 200    
   end
 
   test :procedure_rescue_and_ensure do

@@ -11,7 +11,7 @@ class DevSystem::GeneratorDslMainPart < Liza::Part
       memo.each do |label, bl|
         log "Generating #{label}"
         g = new label, name, args
-        g.instance_exec &bl
+        g.instance_exec(&bl)
         g.call
       end
 

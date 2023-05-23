@@ -56,7 +56,7 @@ class Liza::TestAssertionsPart < Liza::Part
       block_given? || raise(ArgumentError, "No block given")
 
       _groups << block
-      instance_exec &block
+      instance_exec(&block)
       _groups.pop
 
       kaller ||= caller
