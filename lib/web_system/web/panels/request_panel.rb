@@ -22,8 +22,6 @@ class WebSystem::RequestPanel < Liza::Panel
   def find env
     _prepare env
 
-    path = env["LIZA_PATH"]
-
     segments = env["LIZA_SEGMENTS"].dup
     request = segments.shift || "root"
     action  = segments.shift || "index"

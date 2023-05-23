@@ -5,7 +5,7 @@ class NetSystem::SqliteClient < NetSystem::Client
   def initialize *args
     args = [NetBox[:client].get(:sqlite_path)] if args.empty?
     log "Connecting to #{args}"
-    @conn = SQLite3::Database.new *args
+    @conn = SQLite3::Database.new(*args)
   end
 
   attr_reader :conn

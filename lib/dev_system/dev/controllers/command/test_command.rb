@@ -44,11 +44,11 @@ class DevSystem::TestCommand < DevSystem::Command
     proc_namespaced = proc { |tc| tc.name.include? "::" }
     proc_liza = proc { |tc| tc.name[0..3] == "Liza" }
 
-    tc_app        = test_classes.reject &proc_namespaced
-    tc_namespaced = test_classes.select &proc_namespaced
+    tc_app        = test_classes.reject(&proc_namespaced)
+    tc_namespaced = test_classes.select(&proc_namespaced)
 
-    tc_liza   = tc_namespaced.select &proc_liza
-    tc_system = tc_namespaced.reject &proc_liza
+    tc_liza   = tc_namespaced.select(&proc_liza)
+    tc_system = tc_namespaced.reject(&proc_liza)
 
     tc_app.sort_by! &:source_location
     tc_liza.sort_by! &:source_location

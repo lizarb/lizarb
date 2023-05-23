@@ -17,7 +17,7 @@ class Liza::TestTreePart < Liza::Part
       raise ArgumentError, "No block given" unless block_given?
       previous = test_node
       @test_node = test_node.branch_out words
-      instance_exec &block
+      instance_exec(&block)
       @test_node = previous
     end
 
@@ -28,12 +28,12 @@ class Liza::TestTreePart < Liza::Part
 
     def self.before &block
       raise ArgumentError, "No block given" unless block_given?
-      test_node.add_before &block
+      test_node.add_before(&block)
     end
 
     def self.after &block
       raise ArgumentError, "No block given" unless block_given?
-      test_node.add_after &block
+      test_node.add_after(&block)
     end
 
   end
@@ -41,7 +41,7 @@ class Liza::TestTreePart < Liza::Part
   extension do
     
     def log *args
-      self.class.solder.log *args
+      self.class.solder.log(*args)
     end
 
     def log_test_building?

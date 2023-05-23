@@ -5,7 +5,7 @@ class NetSystem::RedisClient < NetSystem::Client
   def initialize *args
     args = [url: NetBox[:client].get(:redis_url)] if args.empty?
     log "Connecting to #{args}"
-    @conn = Redis.new *args
+    @conn = Redis.new(*args)
   end
 
   attr_reader :conn
