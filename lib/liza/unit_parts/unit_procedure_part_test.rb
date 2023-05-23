@@ -7,7 +7,6 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
       procedure "creates a new scope" do
         @a = 1
         b = 2
-        c = 3
         assert true
 
         proceed if true
@@ -31,16 +30,15 @@ class Liza::UnitProcedurePartTest < Liza::UnitTest
 
     assert x == 100
 
-    y =
-      procedure "asserts proceed calls can be lazy" do
-        proceed do
-          "slow operation"
-          200
-        end if true
-        raise "did not get here"
-      end
-
-    assert y == 200
+    y = procedure "asserts proceed calls can be lazy" do
+      proceed do
+        puts "slow operation"
+        200
+      end if true
+      raise "did not get here"
+    end
+    
+    assert y == 200    
   end
 
   test :procedure_rescue_and_ensure do
