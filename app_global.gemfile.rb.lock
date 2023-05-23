@@ -3,11 +3,11 @@ GEM
   specs:
     colorize (0.8.1)
     dotenv (2.8.1)
-    lizarb (1.0.3)
+    lizarb (1.0.4)
       colorize (~> 0.8)
       dotenv (~> 2.8)
       zeitwerk (~> 2.6)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-linux
