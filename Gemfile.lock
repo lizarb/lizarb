@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lizarb (1.0.3)
+    lizarb (1.0.4)
       colorize (~> 0.8)
       dotenv (~> 2.8)
       zeitwerk (~> 2.6)
