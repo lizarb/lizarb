@@ -96,12 +96,12 @@ class App
             end
 
     if klass.insertion
-      part_klass.class_exec &klass.insertion
+      part_klass.class_exec(&klass.insertion)
     end
 
     if klass.extension
       klass.const_set :Extension, Class.new(Liza::PartExtension)
-      klass::Extension.class_exec &klass.extension
+      klass::Extension.class_exec(&klass.extension)
     end
     logv "#{string} takes #{t.diff}s"
   end
@@ -112,7 +112,6 @@ class App
     t = Time.now
 
     color_system_klass = system_klass.to_s.colorize system_klass.log_color
-    color_key = key.to_s.colorize system_klass.log_color
 
     registrar_index = 0
     system_klass.registrar.each do |string, target_block|
@@ -123,7 +122,7 @@ class App
       target_klass = Liza.const reg_target
 
       if reg_type == "insertion"
-        target_klass.class_exec &target_block
+        target_klass.class_exec(&target_block)
       else
         raise "TODO: decide and implement system extension"
       end
