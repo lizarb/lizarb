@@ -12,7 +12,7 @@ class Liza::Unit
 
     def self.const_missing name
       Liza.const name
-    rescue Liza::ConstNotFound => e
+    rescue Liza::ConstNotFound
       raise NameError, "uninitialized constant #{name}", caller[1..], cause: nil
     end
 
@@ -20,7 +20,7 @@ class Liza::Unit
 
     def self.const_missing name
       Liza.const name
-    rescue Liza::ConstNotFound => e
+    rescue Liza::ConstNotFound
       raise NameError, "uninitialized constant #{name}", caller[1..]
     end
 
