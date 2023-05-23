@@ -43,7 +43,7 @@ class Liza::Panel < Liza::Unit
     return self unless defined? @unstarted
     remove_instance_variable :@unstarted
 
-    @blocks.each { |bl| instance_eval &bl }
+    @blocks.each { |bl| instance_eval(&bl) }
     @blocks.clear
 
     self
