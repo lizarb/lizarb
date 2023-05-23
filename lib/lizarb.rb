@@ -100,6 +100,7 @@ module Lizarb
     bugs = SPEC.metadata["bug_tracker_uri"]
     puts versions.to_s.green
     puts "Report bugs at #{bugs}"
+    puts "Fork us on Github at #{bugs}/fork"
   end
 
   # setup phase
