@@ -35,8 +35,6 @@ class DevSystem::GeneratorDslMainPart < Liza::Part
 
     %w|folder filename content|.each do |s|
       class_eval <<-CODE, __FILE__, __LINE__ + 1
-        attr_reader :#{s}
-
         def #{s} #{s} = nil
           if #{s}
             @#{s} = #{s}
