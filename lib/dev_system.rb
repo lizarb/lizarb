@@ -5,4 +5,11 @@ class DevSystem < Liza::System
 
   set :log_color, :green
 
+  sub :bench
+  sub :command
+  sub :generator
+  sub :log
+  sub :shell
+  sub :terminal
+  
 end

@@ -79,7 +79,8 @@ module Lizarb
   end
 
   # called from exe/lizarb
-  def exit verbose: $VERBOSE
+  def exit
+    verbose = $VERBOSE || (ENV["LOG_VERSIONS"] != "")
     exit_messages if verbose
     super 0
   end
@@ -184,6 +185,8 @@ module Lizarb
   end
 
   def require_liza_and_bundle_systems
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org"
+
     require "zeitwerk"
     require "liza"
 
@@ -201,7 +204,6 @@ module Lizarb
 
     loader.enable_reloading
     loader.setup
-
     # load each System class
 
     App.systems.keys.each do |k|
@@ -283,13 +285,16 @@ module Lizarb
     loader.setup
 
     # App connects to systems
+    logs_system = ENV["LOG_SYSTEMS"] != ""
+    logs_box = ENV["LOG_BOXES"] != ""
 
     App.systems.freeze
 
     App.loaders.map &:eager_load
 
-    App.systems.each do |k, klass|
-      App.connect_system k, klass
+    App.systems.each do |system_key, system_class|
+      App.connect_system system_key, system_class, logs_system
+      App.connect_box system_key, system_class, logs_box
     end
   end
 
