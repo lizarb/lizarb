@@ -54,10 +54,6 @@ module Lizarb
     RUBY_ENGINE != "jruby"
   end
 
-  def self.load_all
-    Zeitwerk::Loader.eager_load_all
-  end
-
   # called from exe/lizarb
   def setup
     lookup_and_load_core_ext
@@ -288,11 +284,13 @@ module Lizarb
 
     # App connects to systems
 
+    App.systems.freeze
+
+    App.loaders.map &:eager_load
+
     App.systems.each do |k, klass|
       App.connect_system k, klass
     end
-
-    App.systems.freeze
   end
 
   # thread management

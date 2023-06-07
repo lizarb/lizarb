@@ -8,7 +8,6 @@ class DevSystem::NotFoundCommand < DevSystem::Command
 
     # 2. FIND commands
 
-    App.load_all
     commands = Liza::Command.descendants
     commands -= ignored_commands
 
