@@ -16,4 +16,4 @@ Lizarb.call
 
 App.call ARGV
 
-Lizarb.exit verbose: true
+Lizarb.exit

@@ -8,5 +8,7 @@ class HappySystem < Liza::System
 
   set :log_color, :magenta
 
+  sub :axo
+
   #
 end
