@@ -8,7 +8,6 @@ class DevSystem::NotFoundBench < DevSystem::Bench
 
     # 2. FIND generators
 
-    App.load_all
     benches = Liza::Bench.descendants
     benches -= ignored_benches
 

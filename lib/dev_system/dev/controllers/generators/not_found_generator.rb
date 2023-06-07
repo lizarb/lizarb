@@ -8,7 +8,6 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
 
     # 2. FIND generators
 
-    App.load_all
     generators = Liza::Generator.descendants
     generators -= ignored_generators
 

@@ -3,8 +3,6 @@ class DevSystem::TestCommand < DevSystem::Command
   def self.call args
     log "args = #{args.inspect}"
 
-    App.load_all
-
     now = Time.now
     test_classes = Liza::Test.descendants
 

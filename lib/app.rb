@@ -41,10 +41,6 @@ class App
     true
   end
 
-  def self.load_all
-    Lizarb.load_all
-  end
-
   # modes
 
   @modes = []
