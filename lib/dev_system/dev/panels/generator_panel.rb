@@ -2,6 +2,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   class Error < StandardError; end
   class ParseError < Error; end
   class FormatterError < Error; end
+  class ConverterError < Error; end
 
   #
 
@@ -109,6 +110,49 @@ class DevSystem::GeneratorPanel < Liza::Panel
       formatters[format][:generator].format string, options
     else
       log "formatter not found" if get :log_details
+      string
+    end
+  end
+
+  #
+
+  def converter to, from, generator_key = from, options = {}
+    generator = options[:generator] || Liza.const("#{generator_key}_converter_generator")
+
+    converters[generator_key] = {
+      from: from,
+      to: to,
+      generator: generator,
+      options: options
+    }
+  end
+
+  def converters
+    @converters ||= {}
+  end
+
+  def convert? format
+    converters.key? format.to_sym
+  end
+
+  def convert! format, string, options = {}
+    format = format.to_sym
+    if convert? format
+      log "converter found" if get :log_details
+      converters[format][:generator].convert string
+    else
+      log "converter not found" if get :log_details
+      raise ConverterError, "no converter for #{format.inspect}"
+    end
+  end
+
+  def convert format, string, options = {}
+    format = format.to_sym
+    if convert? format
+      log "converter found" if get :log_details
+      converters[format][:generator].convert string, options
+    else
+      log "converter not found" if get :log_details
       string
     end
   end

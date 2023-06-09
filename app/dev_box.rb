@@ -18,6 +18,10 @@ class DevBox < Liza::DevBox
 
     # formatters
     formatter :html if defined? HtmlBeautifier
+
+    # converters
+    converter :html, :md   if defined? CommonMarker
+    converter :html, :haml if defined? Haml
   end
 
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html

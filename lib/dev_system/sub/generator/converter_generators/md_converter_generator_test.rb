@@ -1,0 +1,39 @@
+class DevSystem::MdConverterGeneratorTest < DevSystem::ConverterGeneratorTest
+
+  test :subject_class do
+    assert subject_class == DevSystem::MdConverterGenerator
+  end
+
+  test :settings do
+    assert subject_class.log_level == :normal
+    assert subject_class.log_color == :green
+  end
+
+  test :convert do
+    markdown, html = <<-MARKDOWN, <<-HTML
+# Hello World
+
+## Hello World
+
+### Hello World
+
+#### Hello World
+
+##### Hello World
+
+###### Hello World
+
+MARKDOWN
+<h1>Hello World</h1>
+<h2>Hello World</h2>
+<h3>Hello World</h3>
+<h4>Hello World</h4>
+<h5>Hello World</h5>
+<h6>Hello World</h6>
+HTML
+
+    output = subject_class.convert markdown
+    assert_equality output, html
+  end
+
+end
