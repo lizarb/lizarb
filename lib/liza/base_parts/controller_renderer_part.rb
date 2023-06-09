@@ -93,6 +93,8 @@ Did you forget to add ERB keys?
         s = erb.result the_binding, receiver
         _log_render_out key, s.length, t.diff
         s = wrap_comment_tags s, erb if App.mode == :code && erb.tags?
+        s = DevBox.convert erb.format, s
+
         stack.push s
       end
 
