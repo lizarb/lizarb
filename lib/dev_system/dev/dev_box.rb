@@ -15,6 +15,14 @@ class DevSystem::DevBox < Liza::Box
     # set :log_level, ENV["dev.generator.log_level"]
   end
 
+  def self.format(...)
+    self[:generator].format(...)
+  end
+
+  def self.format?(...)
+    self[:generator].format?(...)
+  end
+
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html
   configure :log do
     # set :log_level, ENV["dev.log.log_level"]

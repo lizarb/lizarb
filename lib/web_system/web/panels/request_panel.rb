@@ -4,7 +4,7 @@ class WebSystem::RequestPanel < Liza::Panel
     t = Time.now
     request_klass = find env
     ret = request_klass.call env
-    _html_beautify env, ret
+    _format env, ret
     ret
   rescue => e
     request_klass = WebSystem::ServerErrorRequest
@@ -43,13 +43,12 @@ class WebSystem::RequestPanel < Liza::Panel
 
   #
 
-  def _html_beautify env, ret
-    return unless defined? HtmlBeautifier
-    return unless env["LIZA_FORMAT"] == "html"
+  def _format env, ret
+    format = env["LIZA_FORMAT"]
 
-    body = ret[2].first
-    body = HtmlBeautifier.beautify body
-    ret[2] = [body]
+    body = ret[2][0]
+    body = DevBox.format format, body
+    ret[2][0] = body
   end
 
   def _prepare env

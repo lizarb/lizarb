@@ -15,6 +15,9 @@ class DevBox < Liza::DevBox
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
     set :log_details, false
+
+    # formatters
+    formatter :html if defined? HtmlBeautifier
   end
 
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html

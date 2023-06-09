@@ -1,6 +1,7 @@
 class DevSystem::GeneratorPanel < Liza::Panel
   class Error < StandardError; end
   class ParseError < Error; end
+  class FormatterError < Error; end
 
   #
 
@@ -68,6 +69,48 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
   def call_not_found args
     Liza[:NotFoundGenerator].call args
+  end
+
+  #
+
+  def formatter format, generator_key = format, options = {}
+    generator = options[:generator] || Liza.const("#{format}_formatter_generator")
+
+    formatters[generator_key] = {
+      format: format,
+      generator: generator,
+      options: options
+    }
+  end
+
+  def formatters
+    @formatters ||= {}
+  end
+
+  def format? format
+    formatters.key? format.to_sym
+  end
+
+  def format! format, string
+    format = format.to_sym
+    if format? format
+      log "formatter found" if get :log_details
+      formatters[format][:generator].format string
+    else
+      log "formatter not found" if get :log_details
+      raise FormatterError, "no formatter for #{format.inspect}"
+    end
+  end
+
+  def format format, string, options = {}
+    format = format.to_sym
+    if format? format
+      log "formatter found" if get :log_details
+      formatters[format][:generator].format string, options
+    else
+      log "formatter not found" if get :log_details
+      string
+    end
   end
 
 end
