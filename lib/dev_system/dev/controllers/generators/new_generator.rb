@@ -34,7 +34,6 @@ class DevSystem::NewGenerator < DevSystem::Generator
     FileShell.gitkeep "#{to}/tmp"
 
     TextShell.write "#{to}/.gitignore", render("hidden.gitignore")
-    TextShell.write "#{to}/Gemfile", render("Gemfile.rb")
     # TextShell.write "#{to}/Procfile", render("Procfile.yml")
     TextShell.write "#{to}/.tool-versions", render("toolversions.txt")
 
@@ -44,12 +43,6 @@ class DevSystem::NewGenerator < DevSystem::Generator
     # FileUtils.cp_r "#{Lizarb::APP_DIR}/web_files",
     #                "#{to}/web_files",
     #                verbose: true
-    @env_name = nil
-    TextShell.write "#{to}/app.env",      render("env.env")
-    @env_name = :code
-    TextShell.write "#{to}/app.code.env", render("env.env")
-    @env_name = :demo
-    TextShell.write "#{to}/app.demo.env", render("env.env")
 
     puts
 
@@ -76,50 +69,3 @@ ruby <%= RUBY_VERSION %>
 # HEROKU EXAMPLE
 
 web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
-
-# view Gemfile.rb.erb
-# frozen_string_literal: true
-
-source "https://rubygems.org"
-
-group :default do
-  gem "lizarb", "~> <%= Lizarb::VERSION %>"
-  # gem "lizarb", github: "rubyonrails-brasil/lizarb"
-end
-
-group :dev do
-  # gems you only want to load if DevSystem is loaded
-
-  # Generator gems
-  gem "htmlbeautifier", "~> 1.4"
-  gem "commonmarker", "~> 0.23.9"
-  gem "haml", "~> 6.1"
-  gem "sassc", "~> 2.4"
-  
-  # Terminal gems
-  gem "pry", "~> 0.14.1"
-end
-
-# view env.env.erb
-#
-<% if @env_name == :code -%>
-# ENV VARIABLES FOR MODE=code (default)
-#
-# MODE=code lizarb commands
-# lizarb commands
-<% elsif @env_name == :demo -%>
-# ENV VARIABLES FOR MODE=demo
-#
-# MODE=demo lizarb commands
-<% else -%>
-# ENV VARIABLES FOR ALL MODES
-#
-# MODE=code lizarb commands
-# MODE=demo lizarb commands
-# lizarb commands
-<% end -%>
-#
-
-# app variables
-
-# dev variables
