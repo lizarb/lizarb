@@ -11,6 +11,9 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
     generators = Liza::Generator.descendants
     generators -= ignored_generators
 
+    generators.reject! { _1 <= DevSystem::FormatterGenerator }
+    generators.reject! { _1 <= DevSystem::ConverterGenerator }
+
     # 3. LIST generators
 
     keys = generators.map { _1.last_namespace.snakecase[0..-11] }.uniq.sort
