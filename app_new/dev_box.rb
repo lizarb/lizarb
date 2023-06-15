@@ -1,9 +1,5 @@
 class DevBox < Liza::DevBox
 
-  configure :bench do
-    #
-  end
-
   configure :command do
     set :log_details, false
     
@@ -16,6 +12,12 @@ class DevBox < Liza::DevBox
 
     # formatters
     formatter :html if defined? HtmlBeautifier
+
+    # converters
+    converter :html, :md     if defined? CommonMarker
+    converter :html, :haml   if defined? Haml
+    converter :js,   :coffee if defined? CoffeeScript
+    converter :css,  :scss   if defined? SassC
   end
 
 end

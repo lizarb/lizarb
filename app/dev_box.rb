@@ -9,6 +9,9 @@ class DevBox < Liza::DevBox
   configure :command do
     # set :log_level, ENV["dev.command.log_level"]
     set :log_details, false
+
+    short :b, :bench
+    short :g, :generate
   end
 
   # Configure your generator panel per the DSL in http://guides.lizarb.org/panels/generator.html
@@ -20,8 +23,10 @@ class DevBox < Liza::DevBox
     formatter :html if defined? HtmlBeautifier
 
     # converters
-    converter :html, :md   if defined? CommonMarker
-    converter :html, :haml if defined? Haml
+    converter :html, :md     if defined? CommonMarker
+    converter :html, :haml   if defined? Haml
+    converter :js,   :coffee if defined? CoffeeScript
+    converter :css,  :scss   if defined? SassC
   end
 
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html
