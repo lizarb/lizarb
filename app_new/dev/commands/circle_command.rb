@@ -38,7 +38,7 @@ class CircleCommand < NarrativeMethodCommand
       when :circumference then self.class.circumference(@radius)
       end
     log "RESULT: #{@result}"
-    log render "success.txt"
+    log render_controller "success.txt"
   end
 
 end

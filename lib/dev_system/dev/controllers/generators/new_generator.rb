@@ -33,9 +33,9 @@ class DevSystem::NewGenerator < DevSystem::Generator
     FileShell.gitkeep "#{to}/lib"
     FileShell.gitkeep "#{to}/tmp"
 
-    TextShell.write "#{to}/.gitignore", render("hidden.gitignore")
-    # TextShell.write "#{to}/Procfile", render("Procfile.yml")
-    TextShell.write "#{to}/.tool-versions", render("toolversions.txt")
+    TextShell.write "#{to}/.gitignore", render_controller("hidden.gitignore")
+    # TextShell.write "#{to}/Procfile", render_controller("Procfile.yml")
+    TextShell.write "#{to}/.tool-versions", render_controller("toolversions.txt")
 
     FileUtils.cp_r "#{Lizarb::APP_DIR}/README.md",
                    "#{to}/README.md",

@@ -12,11 +12,11 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
     @panels = []
 
     filename = "app/#{system_name}/#{folder}/#{name}_#{controller_name}.rb"
-    content = render "controller.rb"
+    content = render_controller "controller.rb"
     TextShell.write filename, content
 
     filename = "app/#{system_name}/#{folder}/#{name}_#{controller_name}_test.rb"
-    content = render "controller_test.rb"
+    content = render_controller "controller_test.rb"
     TextShell.write filename, content
   end
 
@@ -46,7 +46,7 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
   # helper methods
 
   def install_write_box
-    @content = render "app_box.rb"
+    @content = render_controller "app_box.rb"
     TextShell.write @filename, "#{@content.strip}\n"
   end
 
@@ -69,7 +69,7 @@ class DevSystem::ControllerGenerator < DevSystem::Generator
   end
 
   def install_insert_panel
-    lines = render("install_insert_panel.rb").split("\n").reject(&:empty?)
+    lines = render_controller("install_insert_panel.rb").split("\n").reject(&:empty?)
     @panels[@controller_name] = {lines: lines}
     @panels = @panels.sort_by(&:first)
   end
