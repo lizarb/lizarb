@@ -28,21 +28,21 @@ class DevSystem::EnvGenerator < DevSystem::Generator
   def write_env_files
     # app
     @env_name = nil
-    content = render "env.env"
+    content = render_controller "env.env"
     puts "-" * 80
     puts content.green
     TextShell.write "app.env",      content
 
     # app.code
     @env_name = :code
-    content = render "env.env"
+    content = render_controller "env.env"
     puts "-" * 80
     puts content.green
     TextShell.write "app.code.env", content
 
     # app.demo
     @env_name = :demo
-    content = render "env.env"
+    content = render_controller "env.env"
     puts "-" * 80
     puts content.green
     TextShell.write "app.demo.env", content
@@ -54,7 +54,7 @@ __END__
 
 # view env.env.erb
 #
-<%= render "#{@env_name || :blank}.env" -%>
+<%= render_controller "#{@env_name || :blank}.env" -%>
 #
 
 # app variables

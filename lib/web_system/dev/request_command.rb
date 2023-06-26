@@ -27,11 +27,11 @@ class WebSystem::RequestCommand < Liza::Command
   end
 
   def handle
-    log render "error.txt"
+    log render_controller "error.txt"
   end
 
   def help
-    log render "help.txt"
+    log render_controller "help.txt"
   end
 
   # actions
@@ -46,7 +46,7 @@ class WebSystem::RequestCommand < Liza::Command
 
     @request_class = @env["LIZA_REQUEST_CLASS"] || raise("No request class found")
 
-    puts render "find.txt"
+    puts render_controller "find.txt"
   end
 
   def get_request
@@ -58,7 +58,7 @@ class WebSystem::RequestCommand < Liza::Command
 
     @status, @headers, @body = request_panel.call @env
     log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
-    puts render "response.http"
+    puts render_controller "response.http"
   end
 
   def post_request
@@ -70,7 +70,7 @@ class WebSystem::RequestCommand < Liza::Command
 
     @status, @headers, @body = request_panel.call @env
     log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
-    puts render "response.http"
+    puts render_controller "response.http"
   end
 
   # helpers

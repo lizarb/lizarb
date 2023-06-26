@@ -35,7 +35,7 @@ class QuadraticCommand < NarrativeMethodCommand
 
     @result = self.class.quadratic(@a, @b, @c)
     log "RESULT: #{@result}"
-    log render "success.txt"
+    log render_controller "success.txt"
   end
 
 end

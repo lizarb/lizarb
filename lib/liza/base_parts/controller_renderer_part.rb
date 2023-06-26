@@ -44,7 +44,7 @@ Did you forget to add ERB keys?
 
     # INSTANCE
 
-    def render *keys
+    def render_controller *keys
       if keys.any?
         _log_render_in keys
         renderer.render keys, binding, self
