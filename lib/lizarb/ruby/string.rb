@@ -10,7 +10,9 @@ class String
   alias camelize camelcase
 
   def snakecase
-    gsub(/[A-Z\s-]/) { |s, t| "_#{s}" }[1..-1].to_s.downcase
+    gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+      .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+      .downcase
   end
   
   alias snakefy snakecase
