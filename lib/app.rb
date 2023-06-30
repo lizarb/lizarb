@@ -15,7 +15,7 @@ class App
   # called from exe/lizarb
   def self.call argv
     puts
-    Liza[:DevBox][:command].call argv
+    DevBox.command argv
     puts
   end
 

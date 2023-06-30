@@ -10,6 +10,10 @@ class DevSystem::DevBox < Liza::Box
     # set :log_level, ENV["dev.command.log_level"]
   end
 
+  def self.command(...)
+    self[:command].call(...)
+  end
+
   # Configure your generator panel per the DSL in http://guides.lizarb.org/panels/generator.html
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
