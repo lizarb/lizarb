@@ -1,5 +1,4 @@
 class Liza::Controller < Liza::Unit
-  part :controller_renderer
 
   inherited_explicitly_sets_system
 
