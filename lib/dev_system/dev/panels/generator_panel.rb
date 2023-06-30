@@ -119,20 +119,28 @@ class DevSystem::GeneratorPanel < Liza::Panel
   def converter to, from, generator_key = from, options = {}
     generator = options[:generator] || Liza.const("#{generator_key}_converter_generator")
 
-    converters[generator_key] = {
-      from: from,
-      to: to,
+    hash = {
+      to: to.to_sym,
+      from: from.to_sym,
       generator: generator,
       options: options
     }
+    converters[generator_key] = hash
+    converters_to[to] ||= []
+    converters_to[to] << hash
   end
 
   def converters
     @converters ||= {}
   end
 
+  def converters_to
+    @converters_to ||= {}
+  end
+
   def convert? format
-    converters.key? format.to_sym
+    format = format.to_sym
+    converters.values.any? { _1[:from] == format }
   end
 
   def convert! format, string, options = {}
