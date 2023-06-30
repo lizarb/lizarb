@@ -15,6 +15,18 @@ class DevSystem::DevBox < Liza::Box
     # set :log_level, ENV["dev.generator.log_level"]
   end
 
+  def self.formatters
+    self[:generator].formatters
+  end
+
+  def self.converters
+    self[:generator].converters
+  end
+
+  def self.converters_to
+    self[:generator].converters_to
+  end
+
   def self.format(...)
     self[:generator].format(...)
   end

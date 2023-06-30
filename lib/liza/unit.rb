@@ -1,6 +1,10 @@
 class Liza::Unit
 
-  # PARTS
+  # ERROR
+  
+  class Error < Liza::Error; end
+
+  # PART
 
   def self.part key, system: nil
     App.connect_part self, key, system
@@ -26,7 +30,16 @@ class Liza::Unit
 
   end
 
+  # PARTS
+
   part :unit_procedure
+  
+  class RenderError < Error; end
+  class RendererNotFound < RenderError; end
+  class RenderStackIsFull < RenderError; end
+  class RenderStackIsEmpty < RenderError; end
+  part :unit_renderer
+
   part :unit_settings
 
   # LOG
@@ -147,3 +160,8 @@ class Liza::Unit
   end
 
 end
+
+__END__
+
+# view render.txt.erb
+<%= render if render_stack.any? -%>
