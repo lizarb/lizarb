@@ -38,6 +38,8 @@ class Liza::StringTest < Liza::RubyTest
     assert "ab"    == "Ab".snakecase
     assert "ab_c"  == "AbC".snakecase
     assert "ab_cd" == "AbCd".snakecase
+    assert "ab"    == "ab".snakecase
+    assert "cd"    == "cd".snakecase
   end
 
   test :rjust_blanks do
