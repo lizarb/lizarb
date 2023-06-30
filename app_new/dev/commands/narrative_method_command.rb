@@ -32,11 +32,11 @@ class NarrativeMethodCommand < Liza::Command
   end
 
   def handle
-    log render_controller "error.txt"
+    log render(:error, format: :txt)
   end
 
   def help
-    log render_controller "help.txt"
+    log render(:help, format: :txt)
   end
 end
 

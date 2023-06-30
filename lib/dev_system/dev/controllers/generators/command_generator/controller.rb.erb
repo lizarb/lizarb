@@ -9,11 +9,11 @@ class <%= @name.camelize %>Command < Liza::Command
     log "@args = #{args.inspect}"
     @args = args
 
-    # log "puts render_controller inline.txt"
-    # puts render_controller "inline.txt"
+    # log "puts render :inline, format: :txt"
+    # puts render :inline, format: :txt
 
-    # log "puts render_controller text.txt"
-    # puts render_controller "text.txt"
+    # log "puts render :text, format: :txt"
+    # puts render :text, format: :txt
 
     log "Time.now #{Time.now}"
   end
@@ -22,14 +22,14 @@ end
 
 __END__
 
-The default view can be rendered by calling `render_controller "inline.txt`"
+The default view can be rendered by calling `render :inline, format: :txt`
 
 Self is the instance of the class that called `render`:
   self: <%%= self %>
 
 # view text.txt.erb
 
-This named view can be rendered by calling `render_controller "text.txt`"
+This named view can be rendered by calling `render :text, format: :txt`
 
 Instance variables are accessible from the view:
   @args: <%%= @args %>

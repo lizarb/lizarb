@@ -33,7 +33,7 @@ class CalculatorCommand < NarrativeMethodCommand
       when :/ then self.class.div(@a, @b)
       end
     log "RESULT: #{@result}"
-    log render_controller "success.txt"
+    log render(:success, format: :txt)
   end
 
 end
