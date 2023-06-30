@@ -14,7 +14,7 @@ class Liza::ModuleTest < Liza::RubyTest
   test :source_location_radical do
     assert Object.source_location_radical == nil
 
-    assert Liza::Command.source_location_radical.end_with? "/lib/dev_system/dev/controllers/command"
+    assert Liza::Command.source_location_radical.end_with? "/lib/dev_system/sub/command/command"
     assert TerminalCommand.source_location_radical.end_with? "/lib/dev_system/dev/controllers/command/terminal_command"
   end
 
