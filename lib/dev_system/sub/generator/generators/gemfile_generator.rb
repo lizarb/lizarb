@@ -57,7 +57,7 @@ class DevSystem::GemfileGenerator < DevSystem::Generator
   end
 
   def new_content
-    @new_content ||= render_controller "inline.txt"
+    @new_content ||= render :inline, format: :txt
   end
 
   def agrees_to_overwrite?
