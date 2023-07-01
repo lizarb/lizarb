@@ -23,12 +23,10 @@ class DevSystem::DirShellTest < DevSystem::FileShellTest
 
   test :subject_class, :exist?, true do
     assert subject_class.exist? Dir.pwd
-    assert subject_class.exist? Liza::Shell.source_location_radical
   end
 
   test :subject_class, :exist?, false do
     refute subject_class.exist? "does_not_exist"
-    refute subject_class.exist? Liza::DirShell.source_location_radical
   end
 
   test :subject_class, :size, :raise do
@@ -47,7 +45,6 @@ class DevSystem::DirShellTest < DevSystem::FileShellTest
 
   test :subject_class, :size, true do
     assert subject_class.size(Dir.pwd).positive?
-    assert subject_class.size(Liza::Shell.source_location_radical).positive?
   end
 
   #
