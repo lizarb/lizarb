@@ -25,5 +25,9 @@ class DevBox < Liza::DevBox
 
     # default
     default :irb
+
+    # input
+    # input :highline # gem "highline"
+    # input :tty # gem "tty-prompt"
   end
 end

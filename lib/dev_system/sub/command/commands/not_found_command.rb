@@ -27,7 +27,6 @@ class DevSystem::NotFoundCommand < DevSystem::Command
       self,
       DevSystem::NotFoundCommand,
       DevSystem::NewCommand,
-      DevSystem::TerminalCommand,
       (DevSystem::NarrativeMethodCommand if defined? NarrativeMethodCommand),
     ].uniq.compact
   end

@@ -48,10 +48,6 @@ class DevSystem::GemfileGenerator < DevSystem::Generator
     puts
   end
 
-  def prompt
-    @prompt ||= TTY::Prompt.new symbols: {marker: ">", radio_on: "x", radio_off: " "}
-  end
-
   def old_content
     TextShell.read @name
   end
@@ -62,7 +58,7 @@ class DevSystem::GemfileGenerator < DevSystem::Generator
 
   def agrees_to_overwrite?
     log "#{@name} already exists. Do you want to overwrite it?"
-    answer = prompt.select("Overwrite?", ["Yes", "No"], filter: true, show_help: :always)
+    answer = DevBox.pick_one "Overwrite?", %w[Yes No]
     bool = answer == "Yes"
 
     if bool
@@ -99,4 +95,6 @@ group :dev do
   
   # Terminal gems
   gem "pry", "~> 0.14.1"
+  # gem "highline", "~> 2.1"
+  # gem "tty-prompt", "~> 0.23.1"
 end

@@ -17,6 +17,8 @@ group :dev do
   
   # Terminal gems
   gem "pry", "~> 0.14.1"
+  # gem "highline", "~> 2.1"
+  # gem "tty-prompt", "~> 0.23.1"
 end
 
 group :happy do

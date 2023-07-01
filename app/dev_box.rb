@@ -44,7 +44,12 @@ class DevBox < Liza::DevBox
     # set :log_level, ENV["dev.terminal.log_level"]
     set :log_details, false
     
+    # default
     default :irb
+
+    # input
+    # input :highline # gem "highline"
+    # input :tty # gem "tty-prompt"
   end
 
 end
