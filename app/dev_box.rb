@@ -42,6 +42,9 @@ class DevBox < Liza::DevBox
   # Configure your terminal panel per the DSL in http://guides.lizarb.org/panels/terminal.html
   configure :terminal do
     # set :log_level, ENV["dev.terminal.log_level"]
+    set :log_details, false
+    
+    default :irb
   end
 
 end
