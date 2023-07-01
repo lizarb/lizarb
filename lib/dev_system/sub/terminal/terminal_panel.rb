@@ -1,4 +1,5 @@
 class DevSystem::TerminalPanel < Liza::Panel
+  class AlreadySet < Error; end
 
   def call args
     log "args = #{args.inspect}" if get :log_details
@@ -15,8 +16,21 @@ class DevSystem::TerminalPanel < Liza::Panel
   #
 
   def default name = nil
-    @default = find name if name
-    @default
+    return @default if name.nil?
+    raise AlreadySet, "default already set to #{@default.inspect}, but trying to set to #{name.inspect}", caller if @default
+    @default = find name
+  end
+
+  #
+
+  def input name = nil
+    return (@input || InputTerminal) if name.nil?
+    raise AlreadySet, "input already set to #{@input.inspect}, but trying to set to #{name.inspect}", caller if @input
+    @input = find "#{name}_input"
+  end
+
+  def pick_one title, options = ["Yes", "No"]
+    input.pick_one title, options
   end
 
   #

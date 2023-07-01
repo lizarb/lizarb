@@ -62,4 +62,12 @@ class DevSystem::DevBox < Liza::Box
     # set :log_level, ENV["dev.terminal.log_level"]
   end
 
+  def self.input
+    self[:terminal].input
+  end
+  
+  def self.pick_one(...)
+    self[:terminal].pick_one(...)
+  end
+  
 end
