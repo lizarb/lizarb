@@ -35,6 +35,14 @@ class DevSystem::TerminalPanel < Liza::Panel
 
   #
 
+  def pallet name = nil
+    return (@pallet || PalletTerminal) if name.nil?
+    raise AlreadySet, "pallet already set to #{@pallet.inspect}, but trying to set to #{name.inspect}", caller if @pallet
+    @pallet = find "#{name}_pallet"
+  end
+
+  #
+
   def find string
     Liza.const "#{string}_terminal"
   rescue Liza::ConstNotFound

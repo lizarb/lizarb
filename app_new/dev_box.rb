@@ -29,5 +29,9 @@ class DevBox < Liza::DevBox
     # input
     # input :highline # gem "highline"
     # input :tty # gem "tty-prompt"
+
+    # pallet
+    # pallet :solarized
+    # pallet :nord
   end
 end
