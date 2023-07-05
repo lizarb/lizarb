@@ -143,6 +143,19 @@ class Liza::Unit
   def log_level?(...)= self.class.log_level?(...)
   def log_color(...)= self.class.log_color(...)
 
+  def self.log_hash hash, prefix: "", kaller: caller[1..-1]
+    prefix = prefix.to_s
+    size = hash.keys.map(&:to_s).map(&:size).max
+    
+    hash.each do |k,v|
+      log "#{prefix}#{k.to_s.ljust size} = #{v.to_s.inspect}", kaller: kaller
+    end
+  end
+
+  def log_hash hash, prefix: "", kaller: caller[1..-1]
+    self.class.log_hash hash, prefix: prefix, kaller: kaller
+  end
+
   # SYSTEM
 
   def self.inherited_explicitly_sets_system
