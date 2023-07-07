@@ -74,14 +74,14 @@ class Liza::UnitTest < Liza::Test
     assert class_b.get(:hash) == {a: 10, b: 20, c: 30, d: 40}
   end
 
-  test :build_log_sidebar_for do
-    assert_equality "DevSystem::Command:call                       ", build_log_sidebar_for(DevSystem::Command, "call", ":", panel_key: nil)
-    assert_equality "DevSystem::TestCommand#call                   ", build_log_sidebar_for(DevSystem::TestCommand, "call", "#", panel_key: nil)
-    assert_equality "DevBox[:command].call                         ", build_log_sidebar_for(DevBox, "call", ".", panel_key: :command)
+  test :_log_sidebar_for do
+    assert_equality "DevSystem::Command:call                       ", _log_sidebar_for(DevSystem::Command, "call", ":", panel_key: nil)
+    assert_equality "DevSystem::TestCommand#call                   ", _log_sidebar_for(DevSystem::TestCommand, "call", "#", panel_key: nil)
+    assert_equality "DevBox[:command].call                         ", _log_sidebar_for(DevBox, "call", ".", panel_key: :command)
   end
 
-  def build_log_sidebar_for source, method_key, method_sep, panel_key: nil
-    s = subject_class.build_log_sidebar_for source, method_key, method_sep, panel_key: panel_key
+  def _log_sidebar_for source, method_key, method_sep, panel_key: nil
+    s = subject_class._log_sidebar_for source, method_key, method_sep, panel_key: panel_key
     s.uncolorize
   end
 
