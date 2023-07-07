@@ -1,15 +1,15 @@
 class Liza::UnitRendererPartTest < Liza::UnitTest
 
-  test :defined_erbs do
-    defined_erbs = Unit.defined_erbs.map(&:key)
+  test :erbs_defined do
+    erbs_defined = Unit.erbs_defined.map(&:key)
     expected = ["render.txt.erb"]
-    assert_equality defined_erbs, expected
+    assert_equality erbs_defined, expected
   end
 
-  test :available_erbs do
-    available_erbs = Unit.available_erbs.map(&:key)
+  test :erbs_available do
+    erbs_available = Unit.erbs_available.map(&:key)
     expected = []
-    assert_equality available_erbs, expected
+    assert_equality erbs_available, expected
   end
 
 end
