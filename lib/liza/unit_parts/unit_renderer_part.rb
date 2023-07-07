@@ -20,22 +20,24 @@ Did you accidentally fall into an infinite loop?
       format = @render_format ||= @format if format.nil?
       raise "@render_format or @format must be set, or format keyword-argument must be given" if format.nil?
       @render_format = format = format.to_sym
+
+      log_rendering = true
       
       if keys.any?
-        log_render_in keys, kaller: caller if log_rendering?
+        log_render_in keys, kaller: caller if log_rendering
 
         erbs = self.class.erbs_for format, keys, allow_missing: allow_missing
         erbs.to_a.reverse.each do |key, erb|
           if true
             t = Time.now
             s = erb.result binding, self
-            log_render_out "#{erb.name}.#{erb.format}", s.length, t.diff, kaller: caller if log_rendering?
+            log_render_out "#{erb.name}.#{erb.format}", s.length, t.diff, kaller: caller if log_rendering
           end
           
           if DevBox.convert? erb.format
             t = Time.now
             s = DevBox.convert erb.format, s
-            log_render_convert "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering?
+            log_render_convert "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
           end
   
           render_stack.push s
@@ -75,30 +77,20 @@ Did you accidentally fall into an infinite loop?
       log "convert  #{"#{key}".ljust_blanks 23} #{length.to_s.rjust_blanks 4} characters in #{t}s", kaller: kaller
     end
 
-    def log_rendering?
-      # get :log_rendering
-      true
-    end
-
     # class level methods
 
-    def self.log_erb?
-      # get :log_erb
-      true
+    def self.erbs_defined
+      @erbs_defined ||= LERB.load(self.source_location_radical)
     end
 
-    def self.defined_erbs
-      @defined_erbs ||= LERB.load(self.source_location_radical)
-    end
-
-    def self.available_erbs ref = Liza::Unit
-      @available_erbs ||= begin
+    def self.erbs_available ref = Liza::Unit
+      @erbs_available ||= begin
         h = {}
 
         ancestors.take_while do |ancestor|
           ancestor != ref
         end.reverse.each do |ancestor|
-          ancestor.defined_erbs.each do |erb|
+          ancestor.erbs_defined.each do |erb|
             h[erb.key] = erb
           end
         end
@@ -108,37 +100,39 @@ Did you accidentally fall into an infinite loop?
     end
 
     def self.renderable_names
-      available_erbs.map(&:name).uniq
+      erbs_available.map(&:name).uniq
     end
 
     def self.renderable_formats_for name_string
-      available_erbs.select { _1.name == name_string }
+      erbs_available.select { _1.name == name_string }
     end
 
     def self.erbs_for format, names, allow_missing:
       @erbs_for ||= {}
       k = "#{format}-#{names.join("-")}"
-      @erbs_for[k] ||= find_erbs_for format, names, allow_missing:
+      @erbs_for[k] ||= _erbs_for format, names, allow_missing:
     end
 
-    def self.find_erbs_for format, names, allow_missing:
+    def self._erbs_for format, names, allow_missing:
       ret = {}
+
+      log_erb = true
 
       converters = DevBox.converters_to[format] || []
       converters_from = converters.map { _1[:from] }
       format_with_converters_from = [format, *converters_from]
-      log "names #{names.join(" ").green} | formats #{format_with_converters_from.join(" ").green}" if log_erb?
+      log "names #{names.join(" ").green} | formats #{format_with_converters_from.join(" ").green}" if log_erb
 
       names.each do |name|
         name_string = name.to_s
-        log "      #{name_string}#{".*.erb # filtering name  "} #{renderable_names.join(" ")}".light_black if log_erb?
+        log "      #{name_string}#{".*.erb # filtering name  "} #{renderable_names.join(" ")}".light_black if log_erb
         
         name_candidates = renderable_formats_for name_string
         if name_candidates.none?
 
           if allow_missing
-            log "      #{name_string}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb?
-            found = Liza::Unit.defined_erbs.first
+            log "      #{name_string}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb
+            found = Liza::Unit.erbs_defined.first
           else
             log "    #{name}.#{format}.erb not found, and allow_missing: false".red
             raise RendererNotFound, "ERB #{name}.#{format}.erb not found"
@@ -146,7 +140,7 @@ Did you accidentally fall into an infinite loop?
 
         else
 
-          log "      #{name_string}#{".*.erb # filtering format "}#{name_candidates.map(&:format).join(" ")}".light_black if log_erb?
+          log "      #{name_string}#{".*.erb # filtering format "}#{name_candidates.map(&:format).join(" ")}".light_black if log_erb
 
           found = name_candidates.find do |erb|
             erb_format_sym = erb.format.to_sym
@@ -154,11 +148,11 @@ Did you accidentally fall into an infinite loop?
           end
 
           if found
-            log "      #{found.key} found".green if log_erb?
+            log "      #{found.key} found".green if log_erb
           else
             if allow_missing
-              log "    #{name}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb?
-              found = Liza::Unit.defined_erbs.first
+              log "    #{name}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb
+              found = Liza::Unit.erbs_defined.first
             else
               log "    #{name}.#{format}.erb not found, and allow_missing: false".red
               raise RendererNotFound, "ERB #{name}.#{format}.erb not found"

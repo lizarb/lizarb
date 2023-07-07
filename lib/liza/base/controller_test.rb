@@ -8,16 +8,16 @@ class Liza::ControllerTest < Liza::UnitTest
     assert subject_class.log_color == :white
   end
 
-  test :defined_erbs do
-    defined_erbs = subject_class.defined_erbs.map(&:key)
+  test :erbs_defined do
+    erbs_defined = subject_class.erbs_defined.map(&:key)
     expected = []
-    assert_equality defined_erbs, expected
+    assert_equality erbs_defined, expected
   end
 
-  test :available_erbs do
-    available_erbs = subject_class.available_erbs.map(&:key)
+  test :erbs_available do
+    erbs_available = subject_class.erbs_available.map(&:key)
     expected = []
-    assert_equality available_erbs, expected
+    assert_equality erbs_available, expected
   end
 
 end
