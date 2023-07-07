@@ -59,7 +59,7 @@ class Liza::Unit
 
   LOG_JUST = 60
 
-  def self.build_log_sidebar_for source, method_key, method_sep, panel_key: nil
+  def self._log_sidebar_for source, method_key, method_sep, panel_key: nil
     source = (source.is_a? Class) ? source : source.class
     source_color = source.log_color
     source = source.to_s
@@ -99,7 +99,7 @@ class Liza::Unit
     return unless log_level? log_level
 
     method_key = _log_extract_method_name kaller
-    source = Liza::Unit.build_log_sidebar_for self, method_key, ":"
+    source = Liza::Unit._log_sidebar_for self, method_key, ":"
 
     DevBox[:log].call "#{source} #{string}"
   end
@@ -112,11 +112,11 @@ class Liza::Unit
 
     case self
     when Liza::Panel
-      source = Liza::Unit.build_log_sidebar_for box, method_key, ".", panel_key: @key
+      source = Liza::Unit._log_sidebar_for box, method_key, ".", panel_key: @key
     when Liza::UnitTest
-      source = Liza::Unit.build_log_sidebar_for self, " ", " "
+      source = Liza::Unit._log_sidebar_for self, " ", " "
     else
-      source = Liza::Unit.build_log_sidebar_for self, method_key, "#"
+      source = Liza::Unit._log_sidebar_for self, method_key, "#"
     end
 
     DevBox[:log].call "#{source} #{string}"
