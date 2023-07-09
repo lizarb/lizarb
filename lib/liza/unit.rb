@@ -42,6 +42,17 @@ class Liza::Unit
 
   part :unit_settings
 
+  # TEST
+
+  def self.test_class
+    @test_class ||=
+      if first_namespace == "Liza"
+        Liza.const_get "#{last_namespace}Test"
+      else
+        Object.const_get "#{name}Test"
+      end
+  end
+
   # LOG
 
   LOG_LEVELS = {
