@@ -9,9 +9,17 @@ class DevSystem::DevBoxTest < Liza::BoxTest
     assert subject_class.log_color == :green
   end
 
-  test :panels do
-    assert subject_class[:command].is_a? DevSystem::CommandPanel
-    assert subject_class[:log].is_a? DevSystem::LogPanel
+  test :subsystems do
+    a = subject_class.panels.keys
+    b = [:bench, :command, :generator, :log, :shell, :terminal]
+    assert_equality a, b
+    
+    assert_sub :bench,     DevSystem::Bench,     DevSystem::BenchPanel
+    assert_sub :command,   DevSystem::Command,   DevSystem::CommandPanel
+    assert_sub :generator, DevSystem::Generator, DevSystem::GeneratorPanel
+    assert_sub :log,       DevSystem::Log,       DevSystem::LogPanel
+    assert_sub :shell,     DevSystem::Shell,     DevSystem::ShellPanel
+    assert_sub :terminal,  DevSystem::Terminal,  DevSystem::TerminalPanel
   end
 
 end
