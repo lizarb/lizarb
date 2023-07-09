@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Class
-  public :eval
 
   def descendants
     ObjectSpace.each_object(Class).select { |klass| klass < self }
@@ -14,4 +13,5 @@ class Class
   def last_namespace
     name.rpartition('::')[-1]
   end
+
 end
