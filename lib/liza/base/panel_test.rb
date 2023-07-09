@@ -7,6 +7,11 @@ class Liza::PanelTest < Liza::UnitTest
     @subject ||= subject_class.new "name"
   end
 
+  test_methods_defined do
+    on_self :box, :inherited, :on_connected, :puts
+    on_instance :box, :push, :short, :started
+  end
+
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :white
