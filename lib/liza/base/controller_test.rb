@@ -3,9 +3,9 @@ class Liza::ControllerTest < Liza::UnitTest
     assert subject_class == Liza::Controller
   end
 
-  test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :white
+  test_methods_defined do
+    on_self :box, :inherited, :on_connected, :panel, :puts
+    on_instance :box, :panel
   end
 
   test :erbs_defined do
@@ -18,6 +18,11 @@ class Liza::ControllerTest < Liza::UnitTest
     erbs_available = subject_class.erbs_available.map(&:key)
     expected = []
     assert_equality erbs_available, expected
+  end
+
+  test :settings do
+    assert subject_class.log_level == :normal
+    assert subject_class.log_color == :white
   end
 
 end

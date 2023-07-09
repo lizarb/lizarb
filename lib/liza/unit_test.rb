@@ -3,6 +3,110 @@ class Liza::UnitTest < Liza::Test
     assert subject_class == Liza::Unit
   end
 
+  #
+
+  def self.test_methods_defined(&block)
+    helper = TestMethodsDefinedHelper.new
+    helper.instance_eval(&block)
+
+    test :subject_class, :methods_defined do
+      a = subject_class.methods_defined
+      b = helper.methods
+      assert_equality a, b, kaller: helper.methods_caller
+    end
+
+    test :subject_class, :instance_methods_defined do
+      a = subject_class.instance_methods_defined
+      b = helper.instance_methods
+      assert_equality a, b, kaller: helper.instance_methods_caller
+    end
+  end
+
+  class TestMethodsDefinedHelper
+    attr_reader :methods, :methods_caller
+    attr_reader :instance_methods, :instance_methods_caller
+
+    def initialize
+      @methods, @instance_methods = [], []
+      @methods_caller, @instance_methods_caller = caller, caller
+    end
+
+    def on_self(*args)
+      @methods = args
+      @methods_caller = caller
+    end
+
+    def on_instance(*args)
+      @instance_methods = args
+      @instance_methods_caller = caller
+    end
+  end
+
+  #
+
+  test :subject_class, :methods_defined do
+    a = \
+      subject_class.methods_defined -
+      subject_class.methods_for_settings -
+      subject_class.methods_for_logging -
+      subject_class.methods_for_rendering
+    b = [
+      :inherited_explicitly_sets_system,
+      :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_settings,
+      :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
+      :part,
+      :procedure, :proceed,
+      :test_class
+    ]
+    assert_equality a, b
+  end
+
+  test :subject_class, :instance_methods_defined do
+    a = \
+      subject_class.instance_methods_defined -
+      subject_class.instance_methods_for_settings -
+      subject_class.instance_methods_for_logging -
+      subject_class.instance_methods_for_rendering
+    b = [:procedure, :proceed]
+    assert_equality a, b
+  end
+
+  test :subject_class, :methods_for_settings do
+    a = subject_class.methods_for_settings
+    b = [:add, :fetch, :get, :set, :settings]
+    assert_equality a, b
+  end
+
+  test :subject_class, :instance_methods_for_settings do
+    a = subject_class.instance_methods_for_settings
+    b = [:add, :fetch, :get, :set, :settings]
+    assert_equality a, b
+  end
+
+  test :subject_class, :methods_for_rendering do
+    a = subject_class.methods_for_rendering
+    b = [:erbs_available, :erbs_defined, :erbs_for, :renderable_formats_for, :renderable_names]
+    assert_equality a, b
+  end
+
+  test :subject_class, :instance_methods_for_rendering do
+    a = subject_class.instance_methods_for_rendering
+    b = [:render, :render!, :render_stack]
+    assert_equality a, b
+  end
+
+  test :subject_class, :methods_for_logging do
+    a = subject_class.methods_for_logging
+    b = [:log, :log?, :log_color, :log_hash, :log_level, :log_level?]
+    assert_equality a, b
+  end
+
+  test :subject_class, :instance_methods_for_logging do
+    a = subject_class.instance_methods_for_logging
+    b = [:log, :log?, :log_color, :log_hash, :log_level, :log_level?, :log_render_convert, :log_render_in, :log_render_out]
+    assert_equality a, b
+  end
+
   test :settings do
     assert subject_class.get(:log_level) == :normal
     assert subject_class.get(:log_color) == :white

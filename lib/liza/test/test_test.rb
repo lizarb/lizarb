@@ -1,9 +1,39 @@
 
-class Liza::TestTest < Liza::Test
+class Liza::TestTest < Liza::UnitTest
 
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :white
+  end
+
+  test_methods_defined do
+    on_self \
+      :after, :after_stack,
+      :before, :before_stack,
+      :call,
+      :group,
+      :log_test_building, :log_test_building?,
+      :subject_class,
+      :test, :test_node, :test_tree,
+      :totals
+    on_instance \
+      :assert, :assert!,
+      :assert_equality, :assert_equality!,
+      :assert_raises, :assert_raises!,
+      :assertions, :assertions=,
+      :call,
+      :critical,
+      :group,
+      :log_test_assertion, :log_test_assertion?,
+      :log_test_assertion_message, :log_test_assertion_message?,
+      :log_test_assertion_result, :log_test_building?,
+      :log_test_call, :log_test_call_block?, :log_test_call_rescue,
+      :refute, :refute!,
+      :refute_equality, :refute_equality!,
+      :refute_raises, :refute_raises!,
+      :subject, :subject_class,
+      :test_words,
+      :todo
   end
 
   group :basics do
@@ -91,10 +121,12 @@ class Liza::TestTest < Liza::Test
       assert_equality self.class.test_tree.class, Liza::TestTreePart::Extension
       assert_equality self.class.test_tree, self.class.test_tree.parent
       
-      assert_equality 2, self.class.test_tree.tests.count
+      assert_equality 4, self.class.test_tree.tests.count
       assert_equality 5, self.class.test_tree.children.count
 
-      assert_equality self.class.test_tree.tests.map(&:first).flatten, [:settings, :instance_groups]
+      a = self.class.test_tree.tests.map(&:first).flatten
+      b = [:settings, :subject_class, :methods_defined, :subject_class, :instance_methods_defined, :instance_groups]
+      assert_equality a, b
     end
   end
 
