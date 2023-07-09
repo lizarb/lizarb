@@ -32,6 +32,8 @@ class Liza::Unit
 
   # PARTS
 
+  part :unit_classes
+
   part :unit_procedure
   
   class RenderError < Error; end
