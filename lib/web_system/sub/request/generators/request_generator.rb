@@ -1,4 +1,4 @@
-class DevSystem::RequestGenerator < DevSystem::Generator
+class WebSystem::RequestGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/web/requests"
