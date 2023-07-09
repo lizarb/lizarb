@@ -1,4 +1,4 @@
-class DevSystem::RecordGenerator < DevSystem::Generator
+class NetSystem::RecordGenerator < DevSystem::Generator
   main_dsl
 
   FOLDER = "app/net/records"
