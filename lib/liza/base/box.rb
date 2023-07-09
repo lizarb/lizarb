@@ -5,6 +5,10 @@ class Liza::Box < Liza::Unit
     fetch(:panels) { {} }
   end
 
+  def self.controllers
+    @controllers ||= {}
+  end
+
   def self.[] symbol
     panels[symbol].started
   end
@@ -34,6 +38,7 @@ class Liza::Box < Liza::Unit
   def self._has_controller symbol, panel_name = symbol
     system_klass = get :system
     controller_class = system_klass.const symbol
+    self.controllers[symbol] = controller_class
 
     panel = self[panel_name]
 
