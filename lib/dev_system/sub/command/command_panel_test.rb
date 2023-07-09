@@ -4,6 +4,11 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality subject_class, DevSystem::CommandPanel
   end
 
+  test_methods_defined do
+    on_self
+    on_instance :call, :call_not_found, :find, :parse
+  end
+
   test :settings do
     assert_equality subject_class.log_level, :normal
     assert_equality subject_class.log_color, :green

@@ -4,6 +4,11 @@ class DevSystem::ShellTest < Liza::ControllerTest
     assert subject_class == DevSystem::Shell
   end
 
+  test_methods_defined do
+    on_self :engine, :jruby?, :linux?, :mac?, :os, :ruby?, :ruby_version, :unix?, :windows?
+    on_instance
+  end
+
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :green

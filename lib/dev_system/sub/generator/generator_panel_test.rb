@@ -4,6 +4,17 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert subject_class == DevSystem::GeneratorPanel
   end
 
+  test_methods_defined do
+    on_self
+    on_instance \
+      :call,
+      :call_not_found,
+      :convert, :convert!, :convert?, :converter, :converters, :converters_to,
+      :find,
+      :format, :format!, :format?, :formatter, :formatters,
+      :parse
+  end
+
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :green

@@ -4,6 +4,16 @@ class DevSystem::DevBoxTest < Liza::BoxTest
     assert subject_class == DevSystem::DevBox
   end
 
+  test_methods_defined do
+    on_self \
+      :command,
+      :convert, :convert?, :converters, :converters_to,
+      :format, :format?, :formatters,
+      :input,
+      :pick_one
+    on_instance
+  end
+
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :green
