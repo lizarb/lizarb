@@ -15,7 +15,9 @@ class App
   # called from exe/lizarb
   def self.call argv
     puts
-    DevBox.command argv
+    args = argv.dup
+    argv.clear
+    DevBox.command args
     puts
   end
 

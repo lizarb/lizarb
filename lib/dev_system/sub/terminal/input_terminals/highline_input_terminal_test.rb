@@ -1,4 +1,4 @@
-class DevSystem::HighlineInputTerminalTest < DevSystem::TerminalTest
+class DevSystem::HighlineInputTerminalTest < DevSystem::InputTerminalTest
 
   test :subject_class do
     assert subject_class == DevSystem::HighlineInputTerminal
