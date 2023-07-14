@@ -1,4 +1,4 @@
-class DevSystem::HighlineInputTerminal < DevSystem::Terminal
+class DevSystem::HighlineInputTerminal < DevSystem::InputTerminal
 
   def self.highline
     @highline ||= HighLine.new
