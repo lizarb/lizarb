@@ -16,9 +16,14 @@ module Lizarb
 
   #
 
-  SPEC    = Gem::Specification.find_by_name("lizarb")
-  GEM_DIR = SPEC.gem_dir
   CUR_DIR = Dir.pwd
+  begin
+    SPEC    = Gem::Specification.find_by_name("lizarb")
+    GEM_DIR = SPEC.gem_dir
+  rescue Gem::MissingSpecError
+    SPEC    = nil
+    GEM_DIR = CUR_DIR
+  end
 
   IS_APP_DIR = File.file? "#{CUR_DIR}/app.rb"
   IS_LIZ_DIR = File.file? "#{CUR_DIR}/lib/lizarb.rb"
