@@ -6,8 +6,8 @@ class Liza::Unit
 
   # PART
 
-  def self.part key, system: nil
-    App.connect_part self, key, system
+  def self.part key, klass = nil, system: nil
+    App.connect_part self, key, klass, system
   end
 
   # CONST MISSING

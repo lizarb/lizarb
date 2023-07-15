@@ -81,25 +81,25 @@ class App
 
   # parts
 
-  def self.connect_part part_klass, key, system
+  def self.connect_part unit_class, key, part_class, system
     t = Time.now
-    string = "CONNECTING PART #{part_klass.to_s.rjust 25}.part :#{key}"
+    string = "CONNECTING PART #{unit_class.to_s.rjust 25}.part :#{key}"
     logv string
 
-    klass = if system.nil?
-              Liza.const "#{key}_part"
-            else
-              Liza.const("#{system}_system")
-                  .const "#{key}_part"
-            end
+    part_class ||= if system.nil?
+                Liza.const "#{key}_part"
+              else
+                Liza.const("#{system}_system")
+                    .const "#{key}_part"
+              end
 
-    if klass.insertion
-      part_klass.class_exec(&klass.insertion)
+    if part_class.insertion
+      unit_class.class_exec(&part_class.insertion)
     end
 
-    if klass.extension
-      klass.const_set :Extension, Class.new(Liza::PartExtension)
-      klass::Extension.class_exec(&klass.extension)
+    if part_class.extension
+      part_class.const_set :Extension, Class.new(Liza::PartExtension)
+      part_class::Extension.class_exec(&part_class.extension)
     end
     logv "#{string} takes #{t.diff}s"
   end
