@@ -99,10 +99,10 @@ module Lizarb
       app: $APP,
       mode: $MODE
     }
-    bugs = SPEC.metadata["bug_tracker_uri"]
+    github = "https://github.com/lizarb/lizarb"
     puts versions.to_s.green
-    puts "Report bugs at #{bugs}"
-    puts "Fork us on Github at #{bugs}/fork"
+    puts "Report bugs at #{github}/issues"
+    puts "Fork us on Github at #{github}/fork"
   end
 
   # setup phase
