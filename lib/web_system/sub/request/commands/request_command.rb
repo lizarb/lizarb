@@ -36,7 +36,7 @@ class WebSystem::RequestCommand < Liza::Command
       @env["REQUEST_METHOD"] = "GET"
       @env["REQUEST_PATH"]   = path
 
-      @status, @headers, @body = request_panel.call @env
+      @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
       puts render :response, format: :http
     end
@@ -53,7 +53,7 @@ class WebSystem::RequestCommand < Liza::Command
       @env["REQUEST_METHOD"] = "POST"
       @env["REQUEST_PATH"]   = path
 
-      @status, @headers, @body = request_panel.call @env
+      @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
       puts render :response, format: :http
     end
