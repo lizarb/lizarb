@@ -1,20 +1,28 @@
 class WebSystem::RequestPanel < Liza::Panel
+  class Error < StandardError; end
+  class RequestNotFound < Error; end
 
-  def call env
+  def call env, allow_raise: false
     t = Time.now
     request_klass = find env
     ret = request_klass.call env
     _format env, ret
+    log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
+    puts
     ret
   rescue => e
+    raise e if allow_raise
     request_klass = WebSystem::ServerErrorRequest
     env["LIZA_ERROR"] = e
 
     ret = request_klass.call env
-  ensure
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     puts
     ret
+  end
+
+  def call! env
+    call env, allow_raise: true
   end
 
   #
@@ -37,8 +45,8 @@ class WebSystem::RequestPanel < Liza::Panel
 
   def _find_request_class request
     Liza.const "#{request}_request"
-  rescue NameError
-    WebSystem::NotFoundRequest
+  rescue Liza::ConstNotFound
+    raise RequestNotFound
   end
 
   #
