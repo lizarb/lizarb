@@ -110,7 +110,7 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
   def self._ask_subsystem_name(system, generated_class_name)
     title = "Where do you want to place #{generated_class_name} ?"
-    options = ["/ system root folder", *system.subs.keys].map(&:to_s)
+    options = ["/lib/#{system.name.snakecase}", *system.subs.keys].map(&:to_s)
     return options.first if options.size < 2
 
     DevBox.pick_one title, options
