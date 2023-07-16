@@ -67,7 +67,7 @@ class DevSystem::BenchGenerator < DevSystem::Generator
 
     ret << new.tap do |instance|
       instance.instance_exec do
-        source = "#{Lizarb::GEM_DIR}/app_new/dev/benches/sorted_bench.rb"
+        source = "#{Lizarb::GEM_DIR}/app_benches/dev/benches/sorted_bench.rb"
         @content = TextShell.read source
 
         @path = "#{app_name}/dev/benches/sorted_bench.rb"
@@ -77,7 +77,7 @@ class DevSystem::BenchGenerator < DevSystem::Generator
 
     ret << new.tap do |instance|
       instance.instance_exec do
-        source = "#{Lizarb::GEM_DIR}/app_new/dev/benches/sorted_bench_test.rb"
+        source = "#{Lizarb::GEM_DIR}/app_benches/dev/benches/sorted_bench_test.rb"
         @content = TextShell.read source
 
         @path = "#{app_name}/dev/benches/sorted_bench_test.rb"
@@ -104,7 +104,7 @@ class DevSystem::BenchGenerator < DevSystem::Generator
 
     app_name = $APP
 
-    list = Dir["#{Lizarb::GEM_DIR}/app_new/dev/benches/*.rb"]
+    list = Dir["#{Lizarb::GEM_DIR}/app_benches/dev/benches/*.rb"]
     list.each do |source|
       ret << new.tap do |instance|
         instance.instance_exec do
