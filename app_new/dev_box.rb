@@ -23,14 +23,15 @@ class DevBox < Liza::DevBox
   configure :terminal do
     set :log_details, false
 
-    # default
+    # default (pick one)
     default :irb
+    # default :pry
 
-    # input
+    # input (pick one)
     # input :highline # gem "highline"
-    # input :tty # gem "tty-prompt"
+    input :tty # gem "tty-prompt"
 
-    # pallet
+    # pallet (pick one)
     # pallet :solarized
     # pallet :nord
   end
