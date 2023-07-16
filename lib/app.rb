@@ -17,7 +17,7 @@ class App
     puts
     args = argv.dup
     argv.clear
-    DevBox.command args
+    Liza[:DevBox].command args
     puts
   end
 
