@@ -46,6 +46,8 @@ class DevSystem::NewGenerator < DevSystem::Generator
 
     puts
 
+    `cd #{to}; liza generate gemfile; BUNDLE_GEMFILE=Gemfile bundle install`
+
     `cd #{to}; git init -b main; git add .; git commit -m "lizarb new app_1 (v#{Lizarb::VERSION})"`
 
     log "Liza Application initialized at `#{to}`"
