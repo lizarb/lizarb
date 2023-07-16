@@ -11,7 +11,7 @@ class WebSystem::RackPanel < Liza::Panel
 
     log({strategy:, host:, port:})
 
-    x = App.mode == :code ? "development" : "production"
+    x = $code_mode ? "development" : "production"
     ENV["RACK_ENV"] = x
     rack_app = send "get_rack_app_#{x}"
 
