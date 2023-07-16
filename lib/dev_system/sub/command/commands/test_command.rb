@@ -6,6 +6,10 @@ class DevSystem::TestCommand < DevSystem::Command
     now = Time.now
     test_classes = Liza::Test.descendants
 
+    if args.any?
+      test_classes = test_classes.select { |tc| args.any? { tc.source_location_radical.snakecase.include? _1.snakecase } }
+    end
+
     _call_silence_base_units
     
     if Lizarb::IS_APP_DIR
