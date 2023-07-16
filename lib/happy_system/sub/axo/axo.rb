@@ -1,6 +1,4 @@
-class Axo < Liza::Axo
-
-  # Set up your request controllers per the DSL in http://guides.lizarb.org/controllers/axo.html
+class HappySystem::Axo < Liza::Controller
 
   def self.call args
     cycles = args[0] || "3"
@@ -47,4 +45,5 @@ code to the left  >(.___.)<
 
   end
 
+  
 end
