@@ -1,7 +1,7 @@
 class Liza::UnitProcedurePart < Liza::Part
 
   insertion do
-    def self.procedure _label, &block
+    def self.procedure _label = nil, &block
       catch :procedure, &block
     end
 
@@ -10,7 +10,7 @@ class Liza::UnitProcedurePart < Liza::Part
       throw :procedure, val
     end
 
-    def procedure(_label, &block)= self.class.procedure _label, &block
+    def procedure(_label = nil, &block)= self.class.procedure _label, &block
     def proceed(...)= self.class.proceed(...)
   end
 
