@@ -38,6 +38,18 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality struct.class_method, nil
     assert_equality struct.instance_method, nil
     assert_equality struct.method, "install"
+
+    struct = subject.parse "two_words"
+    assert_equality struct.command, "two_words"
+    assert_equality struct.class_method, nil
+    assert_equality struct.instance_method, nil
+    assert_equality struct.method, nil
+
+    struct = subject.parse "word10"
+    assert_equality struct.command, "word10"
+    assert_equality struct.class_method, nil
+    assert_equality struct.instance_method, nil
+    assert_equality struct.method, nil
   end
 
   test :find do
