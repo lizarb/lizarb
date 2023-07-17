@@ -40,7 +40,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
   #
 
-  PARSE_REGEX = /(?<command>[A-Za-z_]+)(?::(?<class_method>[a-z_]+))?(?:#(?<instance_method>[a-z_]+))?(?:\.(?<method>[a-z_]+))?/
+  PARSE_REGEX = /(?<command>[A-Za-z0-9_]+)(?::(?<class_method>[a-z0-9_]+))?(?:#(?<instance_method>[a-z0-9_]+))?(?:\.(?<method>[a-z0-9_]+))?/
 
   # OpenStruct command class_method instance_method method
   def parse string
