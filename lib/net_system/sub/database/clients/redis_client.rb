@@ -3,9 +3,11 @@ class NetSystem::RedisClient < NetSystem::Client
   # https://redis.io/
   # https://github.com/redis/redis-rb
   def initialize *args
+    t = Time.now
     args = [url: NetBox[:client].get(:redis_url)] if args.empty?
-    log "Connecting to #{args}"
     @conn = Redis.new(*args)
+  ensure
+    log "#{t.diff}s | Connecting to #{args}"
   end
 
   attr_reader :conn
