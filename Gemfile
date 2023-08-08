@@ -31,6 +31,7 @@ group :net do
   gem "mongo", "~> 2.19"
   gem "sqlite3", "~> 1.5"
   gem "mysql2", "~> 0.5.5"
+  gem "pg", "~> 1.5"
 end
 
 group :web do

@@ -15,6 +15,11 @@ class NetBox < Liza::NetBox
                       username: "root",
                       password: "123123123",
                       database: "app_1_#{App.mode}"
+    set :pgsql_hash,  host:     "localhost",
+                      port:     5432,
+                      user:     "postgres",
+                      password: "postgres",
+                      dbname:   "app_1_#{App.mode}"
 
   end
 
@@ -26,6 +31,7 @@ class NetBox < Liza::NetBox
     define :sql, SqliteDb
     define :sqlite, SqliteDb
     define :mysql, MysqlDb
+    define :pgsql, PgsqlDb
 
   end
 
