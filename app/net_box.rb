@@ -10,6 +10,11 @@ class NetBox < Liza::NetBox
                       database: "app_1_#{App.mode}"
     set :sqlite_path, "tmp/app.#{Time.now.to_i}.sqlite" if $code_mode
     set :sqlite_path, "app.#{App.mode}.sqlite"
+    set :mysql_hash,  host:     "localhost",
+                      port:     3306,
+                      username: "root",
+                      password: "123123123",
+                      database: "app_1_#{App.mode}"
 
   end
 
@@ -20,6 +25,7 @@ class NetBox < Liza::NetBox
     define :mongo, MongoDb
     define :sql, SqliteDb
     define :sqlite, SqliteDb
+    define :mysql, MysqlDb
 
   end
 

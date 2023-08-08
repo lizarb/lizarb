@@ -30,6 +30,7 @@ group :net do
   gem "redis", "~> 5.0"
   gem "mongo", "~> 2.19"
   gem "sqlite3", "~> 1.5"
+  gem "mysql2", "~> 0.5.5"
 end
 
 group :web do
