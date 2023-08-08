@@ -2,15 +2,13 @@ class NetSystem::MongoClient < NetSystem::Client
 
   # https://www.mongodb.com/
   # https://github.com/mongodb/mongo-ruby-driver
-  def initialize *args
+  def initialize hash={}
     t = Time.now
-    hash = NetBox[:client].get(:mongo_hash)  # if args.empty?
-
-    uri = uri = "mongodb://#{hash[:host]}:#{hash[:port]}/#{hash[:database]}"
-
+    hash = NetBox[:client].get(:mongo_hash) if hash.empty?
+    uri = "mongodb://#{hash[:host]}:#{hash[:port]}/#{hash[:database]}"
     @conn = Mongo::Client.new(uri)
   ensure
-    log "#{t.diff}s | Connecting to #{args}"
+    log "#{t.diff}s | Connecting to #{hash}"
   end
 
   attr_reader :conn
@@ -23,9 +21,12 @@ class NetSystem::MongoClient < NetSystem::Client
   end
 
   def now
+    t0 = Time.now
     server_status = @conn.database.command(serverStatus: 1)
     t = server_status.first['localTime']
     Time.at t.to_i
+  ensure
+    log "#{t0.diff}s | now | []"
   end
 
 end

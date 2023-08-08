@@ -3,9 +3,11 @@ class NetSystem::SqliteClient < NetSystem::Client
   # https://www.sqlite.org/
   # https://github.com/sparklemotion/sqlite3-ruby
   def initialize *args
+    t = Time.now
     args = [NetBox[:client].get(:sqlite_path)] if args.empty?
-    log "Connecting to #{args}"
     @conn = SQLite3::Database.new(*args)
+  ensure
+    log "#{t.diff}s | Connecting to #{args}"
   end
 
   attr_reader :conn
