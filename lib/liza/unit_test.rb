@@ -99,13 +99,13 @@ class Liza::UnitTest < Liza::Test
 
   test :subject_class, :methods_for_logging do
     a = subject_class.methods_for_logging
-    b = [:log, :log?, :log_color, :log_hash, :log_level, :log_level?]
+    b = [:log, :log?, :log_array, :log_color, :log_hash, :log_level, :log_level?]
     assert_equality a, b
   end
 
   test :subject_class, :instance_methods_for_logging do
     a = subject_class.instance_methods_for_logging
-    b = [:log, :log?, :log_color, :log_hash, :log_level, :log_level?, :log_render_convert, :log_render_in, :log_render_out]
+    b = [:log, :log?, :log_array, :log_color, :log_hash, :log_level, :log_level?, :log_render_convert, :log_render_in, :log_render_out]
     assert_equality a, b
   end
 

@@ -171,6 +171,19 @@ class Liza::Unit
     self.class.log_hash hash, prefix: prefix, kaller: kaller
   end
 
+  def self.log_array array, prefix: "", kaller: caller[1..-1]
+    prefix = prefix.to_s
+    size = array.size.to_s.size+1
+    
+    array.each.with_index do |v, i|
+      log "#{prefix}#{i.to_s.ljust size} = #{v.inspect}", kaller: kaller
+    end
+  end
+
+  def log_array array, prefix: "", kaller: caller[1..-1]
+    self.class.log_array array, prefix: prefix, kaller: kaller
+  end
+
   # SYSTEM
 
   def self.inherited_explicitly_sets_system
