@@ -11,9 +11,12 @@ class WebSystem::RackPanel < Liza::Panel
 
     log({strategy:, host:, port:})
 
-    x = $coding ? "development" : "production"
-    ENV["RACK_ENV"] = x
-    rack_app = send "get_rack_app_#{x}"
+    ENV["RACK_ENV"] = $coding ? "development" : "production"
+
+    rack_app = WebBox[:request]
+    rack_app = LastMiddleRack.new rack_app
+    rack_app = FirstMiddleRack.new rack_app
+    rack_app = ZeitwerkMiddleRack.new rack_app if $coding
 
     rack_files = Object::Rack::Files.new files
     rack_app = Object::Rack::Cascade.new [rack_files, rack_app]
@@ -24,19 +27,6 @@ class WebSystem::RackPanel < Liza::Panel
     require "rack/handler/puma"
     handler = Object::Rack::Handler::Puma
     handler.run rack_app, Host: host, Port: port
-  end
-
-  def get_rack_app_production()= WebBox[:request]
-
-  def get_rack_app_development
-    Proc.new do |env|
-      ret = nil
-      App.reload do
-        log "reloading"
-        ret = get_rack_app_production.call env
-      end
-      ret
-    end
   end
 
 end
