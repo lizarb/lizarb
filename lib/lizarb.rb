@@ -177,7 +177,7 @@ module Lizarb
     log "#{self}.#{__method__} #{mode.inspect}" if $VERBOSE
     $MODE = mode
     $mode = mode
-    $code_mode = mode == :code
+    $coding = mode == :code
   end
 
   def lookup_and_require_dependencies

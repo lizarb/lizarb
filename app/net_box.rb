@@ -8,7 +8,7 @@ class NetBox < Liza::NetBox
                       port: 27017,
                       connect: :direct,
                       database: "app_1_#{App.mode}"
-    set :sqlite_path, "tmp/app.#{Time.now.to_i}.sqlite" if $code_mode
+    set :sqlite_path, "tmp/app.#{Time.now.to_i}.sqlite" if $coding
     set :sqlite_path, "app.#{App.mode}.sqlite"
     set :mysql_hash,  host:     "localhost",
                       port:     3306,
