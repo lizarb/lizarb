@@ -8,7 +8,6 @@ class WebSystem::RequestPanel < Liza::Panel
     ret = request_klass.call env
     _format env, ret
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
-    puts
     ret
   rescue => e
     raise e if allow_raise
