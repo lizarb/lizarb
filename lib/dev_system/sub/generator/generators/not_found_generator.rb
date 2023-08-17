@@ -11,6 +11,8 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
     generators = Liza::Generator.descendants
     generators -= ignored_generators
 
+    generators.reject! { _1.name =~ /Record/ } unless defined? NetSystem
+    generators.reject! { _1.name =~ /Request/ } unless defined? WebSystem
     generators.reject! { _1 <= DevSystem::FormatterGenerator }
     generators.reject! { _1 <= DevSystem::ConverterGenerator }
 
@@ -33,8 +35,6 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
       DevSystem::NotFoundGenerator,
       DevSystem::NewGenerator,
       DevSystem::ControllerGenerator,
-      DevSystem::RecordGenerator,
-      DevSystem::RequestGenerator,
     ].uniq.compact
   end
 
