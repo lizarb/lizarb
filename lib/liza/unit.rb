@@ -70,71 +70,34 @@ class Liza::Unit
   set :log_level, :normal
   set :log_color, :white
 
-  # NOTE: improve logs performance and readability
-
-  LOG_JUST = 60
-
-  def self._log_sidebar_for source, method_key, method_sep, panel_key: nil
-    source = (source.is_a? Class) ? source : source.class
-    source_color = source.log_color
-    source = source.to_s
-
-    s = source.bold.colorize(source_color)
-    s << "[:#{panel_key}]" if panel_key
-    s << "#{method_sep}#{method_key}"
-    s.ljust(LOG_JUST)
-  end
-
-  # NOTE: This code needs to be optimized.
-  def self._log_extract_method_name kaller
-    kaller.each do |s|
-      t = s.match(/`(.*)'/)[1]
-
-      next if t.include? " in <class:"
-      return t.split(" ").last if t.include? " in "
-      
-      next if t == "log"
-      next if t == "each"
-      next if t == "map"
-      next if t == "with_index"
-      next if t == "instance_exec"
-      next if t.start_with? "_"
-      return t
-    end
-
-    raise "there's something wrong with kaller"
-  end
-
-  def _log_extract_method_name kaller
-    self.class._log_extract_method_name kaller
-  end
-
-  def self.log log_level = :normal, string, kaller: caller
+  def self.log log_level = :normal, object, kaller: caller
     raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
     return unless log_level? log_level
 
-    method_key = _log_extract_method_name kaller
-    source = Liza::Unit._log_sidebar_for self, method_key, ":"
+    env = {}
+    env[:unit] = self
+    env[:unit_class] = self
+    # env[:log_level_required] = log_level
+    # env[:unit_log_level] = self.log_level
+    env[:caller] = kaller
+    env[:object] = object
 
-    DevBox[:log].call "#{source} #{string}"
+    DevBox[:log].call env
   end
 
-  def log log_level = :normal, string, kaller: caller
+  def log log_level = :normal, object, kaller: caller
     raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
     return unless log_level? log_level
 
-    method_key = _log_extract_method_name kaller
+    env = {}
+    env[:unit] = self
+    env[:unit_class] = self.class
+    # env[:log_level_required] = log_level
+    # env[:unit_log_level] = self.log_level
+    env[:caller] = kaller
+    env[:object] = object
 
-    case self
-    when Liza::Panel
-      source = Liza::Unit._log_sidebar_for box, method_key, ".", panel_key: @key
-    when Liza::UnitTest
-      source = Liza::Unit._log_sidebar_for self, " ", " "
-    else
-      source = Liza::Unit._log_sidebar_for self, method_key, "#"
-    end
-
-    DevBox[:log].call "#{source} #{string}"
+    DevBox[:log].call env
   end
 
   #

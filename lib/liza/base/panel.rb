@@ -15,6 +15,8 @@ class Liza::Panel < Liza::Unit
 
   #
 
+  attr_reader :key
+
   def initialize key
     @key = key
     @blocks = []
