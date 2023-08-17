@@ -17,19 +17,34 @@ class DevSystem::SystemGenerator < DevSystem::Generator
   def self._build_generators(name, args)
     ret = []
 
+    raise "not allowed for #{Lizarb::APP_DIR}" if Lizarb::APP_DIR == Lizarb::GEM_DIR
+
     ret << new.tap do |instance|
       instance.instance_exec do
-        @name = name
-        @class_name = "#{name.camelize}System"
-        @superclass_name = "Liza::System"
-        @template = :system
-        @path = "lib/#{name.snakecase}_system.rb"
+        @type = :append
+        @path = "#{Lizarb::APP_DIR}/#{$APP}.rb"
+        @append_newline = "  system :#{name}"
+        @append_after = /system :/
         @args = args
       end
     end
 
     ret << new.tap do |instance|
       instance.instance_exec do
+        @type = :newfile
+        @name = name
+        @class_name = "#{name.camelize}System"
+        @superclass_name = "Liza::System"
+        @template = :system
+        @path = "lib/#{name.snakecase}_system.rb"
+        @color = [:black, :light_black, :red, :light_red, :green, :light_green, :yellow, :light_yellow, :blue, :light_blue, :magenta, :light_magenta, :cyan, :light_cyan, :white, :light_white].sample
+        @args = args
+      end
+    end
+
+    ret << new.tap do |instance|
+      instance.instance_exec do
+        @type = :newfile
         @name = name
         @class_name = "#{name.camelize}System::#{name.camelize}Box"
         @superclass_name = "Liza::Box"
@@ -41,6 +56,7 @@ class DevSystem::SystemGenerator < DevSystem::Generator
 
     ret << new.tap do |instance|
       instance.instance_exec do
+        @type = :newfile
         @name = name
         @subject_class_name = "#{name.camelize}System::#{name.camelize}Box"
         @class_name = "#{name.camelize}System::#{name.camelize}BoxTest"
@@ -57,8 +73,22 @@ class DevSystem::SystemGenerator < DevSystem::Generator
   #
 
   def generate!
-    @content ||= render :unit, @template, format: :rb
-    TextShell.write @path, @content if _should_generate?
+    case @type
+    when :newfile
+    
+      @content ||= render :unit, @template, format: :rb
+      TextShell.write @path, @content if _should_generate?
+    
+    when :append
+
+      TextShell.append_line_after_last_including \
+        path: @path,
+        newline: @append_newline,
+        after: @append_after
+
+    else
+      raise "Unknown type #{@type}"
+    end
   end
 
   def _should_generate?
@@ -96,7 +126,7 @@ class Error < Liza::Error; end
 
   #
 
-  set :log_color, :white
+  set :log_color, :<%= @color %>
 
 # view box.rb.erb
 
