@@ -75,6 +75,7 @@ class Liza::Unit
     return unless log_level? log_level
 
     env = {}
+    env[:type] = :log
     env[:unit] = self
     env[:unit_class] = self
     # env[:log_level_required] = log_level
@@ -90,6 +91,7 @@ class Liza::Unit
     return unless log_level? log_level
 
     env = {}
+    env[:type] = :log
     env[:unit] = self
     env[:unit_class] = self.class
     # env[:log_level_required] = log_level
