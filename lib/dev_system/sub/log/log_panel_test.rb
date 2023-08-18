@@ -19,19 +19,19 @@ class DevSystem::LogPanelTest < Liza::PanelTest
   # end
 
   test :sidebar_for do
-    assert_equality "DevSystem::Command:call                       ",
+    assert_equality "DevSystem::Command:call                                    ",
       sidebar_for(
         DevSystem::Command,
         DevSystem::Command,
         "call"
       )
-    assert_equality "DevSystem::TestCommand:call                   ",
+    assert_equality "DevSystem::TestCommand:call                                ",
       sidebar_for(
         DevSystem::TestCommand,
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "DevSystem::DevBox[:command].call              ",
+    assert_equality "DevSystem::DevBox[:command].call                           ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),

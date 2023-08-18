@@ -112,7 +112,7 @@ class Liza::Unit
   end
 
   def self.log_color
-    (get(:system) || self).get :log_color
+    system.get :log_color
   end
 
   def self.log?(log_level = :normal)= log_level? log_level
@@ -149,19 +149,22 @@ class Liza::Unit
 
   # SYSTEM
 
-  def self.inherited_explicitly_sets_system
-
-    def self.inherited sub
-      super
-
-      return unless sub.name.to_s.include? "::"
-
-      system = Object.const_get sub.first_namespace
-
-      sub.set :system, system
+  def self.system
+    if name&.include? "::"
+      return System if first_namespace == "Liza"
+      Object.const_get first_namespace
+    else
+      superclass.system
     end
-
   end
+
+  singleton_class.send :public, :system
+
+  def system
+    self.class.system
+  end
+
+  public :system
 
 end
 

@@ -17,6 +17,16 @@ class Liza::TestSubjectPart < Liza::Part
     def subject
       @subject ||= subject_class.new
     end
+
+    def self.system
+      subject_class.system
+    rescue
+      System
+    end
+
+    def system
+      self.class.system
+    end
   end
 
 end

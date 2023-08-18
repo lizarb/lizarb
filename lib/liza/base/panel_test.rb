@@ -8,7 +8,7 @@ class Liza::PanelTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :box, :inherited, :on_connected, :puts
+    on_self :box, :on_connected, :puts
     on_instance :box, :key, :push, :short, :started
   end
 

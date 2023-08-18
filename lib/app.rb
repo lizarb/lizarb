@@ -5,7 +5,7 @@ class App
   #
 
   def self.log s
-    puts s.bold
+    puts s
   end
 
   def self.logv s

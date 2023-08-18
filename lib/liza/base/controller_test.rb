@@ -4,7 +4,7 @@ class Liza::ControllerTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :box, :inherited, :on_connected, :panel, :puts
+    on_self :box, :on_connected, :panel, :puts
     on_instance :box, :panel
   end
 

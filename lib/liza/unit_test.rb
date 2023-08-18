@@ -52,12 +52,11 @@ class Liza::UnitTest < Liza::Test
       subject_class.methods_for_rendering
     b = [
       :descendants_select,
-      :inherited_explicitly_sets_system,
       :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_settings,
       :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
       :part,
       :procedure, :proceed,
-      :subclasses_select, :system?,
+      :subclasses_select, :system, :system?,
       :test_class
     ]
     assert_equality a, b
@@ -69,7 +68,7 @@ class Liza::UnitTest < Liza::Test
       subject_class.instance_methods_for_settings -
       subject_class.instance_methods_for_logging -
       subject_class.instance_methods_for_rendering
-    b = [:procedure, :proceed]
+    b = [:procedure, :proceed, :system]
     assert_equality a, b
   end
 

@@ -16,7 +16,7 @@ class Liza::TestAssertionsAdvancedPart < Liza::Part
       log_test_assertion __method__, kaller if _groups.empty?
 
       if log_test_assertion_message?
-        msg ||= "#{__method__} #{a}, #{b} (== equality)"
+        msg ||= "#{__method__} #{a.inspect}, #{b.inspect} (== equality)"
         log_test_assertion_message ret, msg
       end
 

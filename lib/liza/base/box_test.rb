@@ -4,7 +4,7 @@ class Liza::BoxTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :[], :configure, :controllers, :inherited, :panels, :puts
+    on_self :[], :configure, :controllers, :panels, :puts
     on_instance
   end
 
