@@ -1,7 +1,7 @@
-class NetSystem::NetCommandTest < Liza::CommandTest
+class NetSystem::DatabaseCommandTest < Liza::CommandTest
 
   test :subject_class do
-    assert subject_class == NetSystem::NetCommand
+    assert subject_class == NetSystem::DatabaseCommand
   end
 
   test :settings do
