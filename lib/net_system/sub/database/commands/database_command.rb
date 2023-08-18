@@ -1,4 +1,4 @@
-class NetSystem::NetCommand < Liza::Command
+class NetSystem::DatabaseCommand < Liza::Command
 
   def self.call args
     log "args = #{args.inspect}"
