@@ -28,27 +28,46 @@ class DevSystem::LogPanel < Liza::Panel
 
     source = env[:unit_class]
     source_color = source.log_color
-    case
-    when source < Liza::Panel
+    system_color = source.system.log_color
+    size = 0
+
+    if source < Liza::Panel
       key = env[:unit].key
       source = source.box
 
-      sidebar << env[:unit].box.to_s.bold.colorize(source_color)
-
+      namespace, _sep, classname = source.name.rpartition('::')
+      unless namespace.empty?
+        sidebar << namespace.colorize(system_color)
+        sidebar << "::"
+        size += namespace.size + 2
+      end
+      sidebar << classname.colorize(source_color)
       sidebar << "[:#{key}]."
 
-    when source < Liza::UnitTest
-      source_color = source.subject_class.log_color
-      sidebar << env[:unit_class].to_s.bold.colorize(color: :white, background: :"light_#{source_color}")
+      size += classname.size + key.size + 4
     else
       method_sep = env[:instance] ? "#" : ":"
-      sidebar << env[:unit_class].to_s.bold.colorize(source_color)
+
+      namespace, _sep, classname = env[:unit_class].name.rpartition('::')
+      unless namespace.empty?
+        sidebar << namespace.colorize(system_color)
+        sidebar << "::"
+        size += namespace.size + 2
+      end
+      sidebar << classname.colorize(source_color)
+
       sidebar << method_sep
+      size += classname.size + 1
     end
 
     sidebar << env[:method_name]
+    size += env[:method_name].size
 
-    sidebar.ljust(SIDEBAR_LENGTH)
+    size = SIDEBAR_LENGTH - size - 1
+    size = 0 if size < 0
+    sidebar << " " * size
+
+    sidebar
   end
 
   def method_name_for env

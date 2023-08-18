@@ -40,4 +40,10 @@ class Liza::System < Liza::Unit
     !!box
   end
 
+  # SYSTEM
+
+  def self.system
+    self
+  end
+  
 end

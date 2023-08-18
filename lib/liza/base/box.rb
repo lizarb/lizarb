@@ -1,5 +1,4 @@
 class Liza::Box < Liza::Unit
-  inherited_explicitly_sets_system
 
   def self.panels
     fetch(:panels) { {} }
@@ -21,8 +20,7 @@ class Liza::Box < Liza::Unit
   def self._has_panel symbol, panel_class = nil, &block
     raise ArgumentError, "block required" unless block_given?
 
-    system_class = get :system
-    panel_class ||= system_class.const "#{symbol}_panel"
+    panel_class ||= system.const "#{symbol}_panel"
 
     if panels.has_key? symbol
       panel = panels[symbol]
@@ -36,8 +34,7 @@ class Liza::Box < Liza::Unit
   end
 
   def self._has_controller symbol, panel_name = symbol
-    system_klass = get :system
-    controller_class = system_klass.const symbol
+    controller_class = system.const symbol
     self.controllers[symbol] = controller_class
 
     panel = self[panel_name]

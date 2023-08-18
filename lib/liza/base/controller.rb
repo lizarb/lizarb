@@ -1,7 +1,5 @@
 class Liza::Controller < Liza::Unit
 
-  inherited_explicitly_sets_system
-
   def self.on_connected box_klass, panel
     set :box, box_klass
     set :panel, panel
@@ -21,6 +19,10 @@ class Liza::Controller < Liza::Unit
 
   def panel
     self.class.panel
+  end
+
+  def self.log_color
+    (box || system).log_color
   end
 
 end
