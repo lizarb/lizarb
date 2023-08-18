@@ -20,6 +20,12 @@ class DevBox < Liza::DevBox
     converter :css,  :scss   if defined? SassC
   end
 
+  configure :log do
+    # handlers
+    handler :output
+    # handler :logger
+  end
+
   configure :terminal do
     set :log_details, false
 

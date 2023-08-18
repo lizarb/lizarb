@@ -32,6 +32,10 @@ class DevBox < Liza::DevBox
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html
   configure :log do
     # set :log_level, ENV["dev.log.log_level"]
+
+    # handlers
+    handler :output
+    # handler :logger
   end
 
   # Configure your shell panel per the DSL in http://guides.lizarb.org/panels/shell.html
