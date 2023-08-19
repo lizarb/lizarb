@@ -1,6 +1,4 @@
 class WebSystem::RequestPanel < Liza::Panel
-  class Error < StandardError; end
-  class RequestNotFound < Error; end
 
   def call env, allow_raise: false
     t = Time.now
@@ -26,14 +24,13 @@ class WebSystem::RequestPanel < Liza::Panel
 
   #
 
-  def router name = nil
-    if name
-      @router = Liza.const "#{name}_router_request"
-    elsif @router.nil?
-      raise NotSet, "Please set your request router on your web_box.rb file", caller 
-    else
-      @router
-    end
+  def router(name, &block)
+    router = routers[name] ||= Liza.const "#{name}_router_request"
+    router.instance_eval(&block) if block_given?
+  end
+
+  def routers
+    @routers ||= {}
   end
 
   #
@@ -41,23 +38,7 @@ class WebSystem::RequestPanel < Liza::Panel
   def find env
     _prepare env
 
-    segments = env["LIZA_SEGMENTS"].dup
-    request = segments.shift || "root"
-    action  = segments.shift || "index"
-
-    env["LIZA_REQUEST"] = request
-    env["LIZA_ACTION"] = action
-    format = env["LIZA_FORMAT"]
-
-    log({request:, action:, format:})
-
-    env["LIZA_REQUEST_CLASS"] = _find_request_class request
-  end
-
-  def _find_request_class request
-    Liza.const "#{request}_request"
-  rescue Liza::ConstNotFound
-    raise RequestNotFound
+    routers.values.first.call(env)
   end
 
   #
