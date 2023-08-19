@@ -10,7 +10,7 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
   test :call! do
     subject = WebBox[:request]
     env = {}
-    env["REQUEST_PATH"] = "/foo/bar/baz"
+    env["PATH_INFO"] = "/foo/bar/baz"
     subject.call! env
     assert false
   rescue => e
@@ -21,7 +21,7 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
   test :call do
     subject = WebBox[:request]
     env = {}
-    env["REQUEST_PATH"] = "/foo/bar/baz"
+    env["PATH_INFO"] = "/foo/bar/baz"
     status, headers, body = subject.call env
     assert_equality status, 500
     assert_equality body.first, "Server Error 500 - WebSystem::RequestPanel::RequestNotFound - WebSystem::RequestPanel::RequestNotFound"
@@ -32,20 +32,20 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
   test :_prepare do
     subject = WebBox[:request]
     env = {}
-    env["REQUEST_PATH"]   = "/foo/bar/baz"
+    env["PATH_INFO"]   = "/foo/bar/baz"
     subject._prepare env
     assert_equality env, {
-      "REQUEST_PATH"=>"/foo/bar/baz",
+      "PATH_INFO"=>"/foo/bar/baz",
       "LIZA_PATH"=>"/foo/bar/baz",
       "LIZA_FORMAT"=>"html",
       "LIZA_SEGMENTS"=>["foo", "bar", "baz"]
     }
 
     env = {}
-    env["REQUEST_PATH"]   = "/"
+    env["PATH_INFO"]   = "/"
     subject._prepare env
     assert_equality env, {
-      "REQUEST_PATH"=>"/",
+      "PATH_INFO"=>"/",
       "LIZA_PATH"=>"/",
       "LIZA_FORMAT"=>"html",
       "LIZA_SEGMENTS"=>[]

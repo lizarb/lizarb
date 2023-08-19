@@ -26,6 +26,18 @@ class WebSystem::RequestPanel < Liza::Panel
 
   #
 
+  def router name = nil
+    if name
+      @router = Liza.const "#{name}_router_request"
+    elsif @router.nil?
+      raise NotSet, "Please set your request router on your web_box.rb file", caller 
+    else
+      @router
+    end
+  end
+
+  #
+
   def find env
     _prepare env
 
@@ -59,9 +71,9 @@ class WebSystem::RequestPanel < Liza::Panel
   end
 
   def _prepare env
-    log "#{env["REQUEST_METHOD"]} #{env["REQUEST_PATH"]}"
+    log "#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}"
 
-    path = env["REQUEST_PATH"]
+    path = env["PATH_INFO"]
 
     path, _sep, format = path.lpartition "."
     format = "html" if format.empty?

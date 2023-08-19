@@ -1,15 +1,36 @@
 class WebSystem::RackPanel < Liza::Panel
+  class NotSet < Error; end
 
-  def call strategy, host, port
+  def call server, host, port
     puts
-    log({strategy:, host:, port:})
 
-    strategy ||= get :strategy
+    server ||= get :server
     host ||= get :host
-    port ||= 3000
-    files ||= get :files
+    port ||= get :port
 
-    log({strategy:, host:, port:})
+    self.server server
+    set :host, host
+    set :port, port
+
+    log({server:, host:, port:})
+
+    self.server.call rack_app
+  end
+
+  def server name = nil
+    if name
+      @server = Liza.const(:"#{name}_server_rack")
+    elsif @server.nil?
+      raise NotSet, "Please set your rack server on your web_box.rb file", caller 
+    else
+      @server
+    end
+  end
+
+  def rack_app
+    return @rack_app if @rack_app
+
+    rack_app = @rack_app = WebBox[:request]
 
     ENV["RACK_ENV"] = $coding ? "development" : "production"
 
@@ -18,15 +39,11 @@ class WebSystem::RackPanel < Liza::Panel
     rack_app = FirstMiddleRack.new rack_app
     rack_app = ZeitwerkMiddleRack.new rack_app if $coding
 
+    files ||= get :files
     rack_files = Object::Rack::Files.new files
     rack_app = Object::Rack::Cascade.new [rack_files, rack_app]
-
-    # TODO: PumaRack
-    # handler = Liza.const(:"#{strategy}_rack")
-
-    require "rack/handler/puma"
-    handler = Object::Rack::Handler::Puma
-    handler.run rack_app, Host: host, Port: port
+    
+    rack_app
   end
 
 end
