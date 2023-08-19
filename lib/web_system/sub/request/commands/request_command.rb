@@ -8,7 +8,7 @@ class WebSystem::RequestCommand < Liza::Command
 
     new.instance_exec do
       @env = {}
-      @env["REQUEST_PATH"] = path
+      @env["PATH_INFO"] = path
 
       request_panel.find @env
 
@@ -34,7 +34,7 @@ class WebSystem::RequestCommand < Liza::Command
     new.instance_exec do
       @env = {}
       @env["REQUEST_METHOD"] = "GET"
-      @env["REQUEST_PATH"]   = path
+      @env["PATH_INFO"]   = path
 
       @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
@@ -51,7 +51,7 @@ class WebSystem::RequestCommand < Liza::Command
     new.instance_exec do
       @env = {}
       @env["REQUEST_METHOD"] = "POST"
-      @env["REQUEST_PATH"]   = path
+      @env["PATH_INFO"]   = path
 
       @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"

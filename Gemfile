@@ -38,5 +38,6 @@ group :web do
   # gems you only want to load if WebSystem is loaded
   gem "rack", "~> 3.0"
   gem "rackup", "~> 0.2.2"
-  gem "puma", "~> 5.6"
 end
+
+gem "puma", "~> 6.3"
