@@ -15,6 +15,14 @@ class Liza::UnitClassesPart < Liza::Part
       system == get(:system)
     end
 
+    def self.reload!
+      Lizarb.reload
+    end
+
+    def reload!
+      Lizarb.reload
+    end
+
   end
 
 end
