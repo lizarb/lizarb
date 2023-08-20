@@ -12,6 +12,8 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
   test :settings do
     assert_equality subject_class.log_level, :normal
     assert_equality subject_class.log_color, :green
+    assert_equality subject_class.get(:log_erb), false
+    assert_equality subject_class.get(:log_render), false
   end
 
   test :parse do

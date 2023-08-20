@@ -3,6 +3,10 @@ class Liza::Controller < Liza::Unit
   def self.on_connected box_klass, panel
     set :box, box_klass
     set :panel, panel
+
+    panel.settings.each do |k, v|
+      set k, v
+    end
   end
 
   def self.box

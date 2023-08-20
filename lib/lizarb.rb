@@ -38,7 +38,7 @@ module Lizarb
   module_function
 
   def log s
-    puts s.bold
+    puts s
   end
 
   def self.logv s
@@ -211,6 +211,13 @@ module Lizarb
 
     loader.enable_reloading
     loader.setup
+
+    # App settings are copied to Liza::Unit
+
+    App.settings.each do |k, v|
+      Liza::Unit.set k, v
+    end
+
     # load each System class
 
     App.systems.keys.each do |k|

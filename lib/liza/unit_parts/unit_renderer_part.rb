@@ -21,7 +21,7 @@ Did you accidentally fall into an infinite loop?
       raise "@render_format or @format must be set, or format keyword-argument must be given" if format.nil?
       @render_format = format = format.to_sym
 
-      log_rendering = true
+      log_rendering = get :log_render
       
       if keys.any?
         log_render_in keys, kaller: caller if log_rendering
@@ -116,7 +116,7 @@ Did you accidentally fall into an infinite loop?
     def self._erbs_for format, names, allow_missing:
       ret = {}
 
-      log_erb = true
+      log_erb = get :log_erb
 
       converters = DevBox.converters_to[format] || []
       converters_from = converters.map { _1[:from] }

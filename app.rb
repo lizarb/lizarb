@@ -5,6 +5,10 @@ ENV["LOG_VERSIONS"] ||= "1"
 
 class App
 
+  set :log_level, :normal
+  set :log_erb, false
+  set :log_render, false
+
   # Modes help you organize your application's behavior and settings.
 
   mode :code

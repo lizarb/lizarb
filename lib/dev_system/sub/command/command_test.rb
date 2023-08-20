@@ -12,6 +12,8 @@ class DevSystem::CommandTest < Liza::ControllerTest
   test :settings do
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :green
+    assert_equality subject_class.get(:log_erb), false
+    assert_equality subject_class.get(:log_render), false
   end
 
 end
