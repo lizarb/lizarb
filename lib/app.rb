@@ -24,25 +24,7 @@ class App
   def self.root
     Pathname Dir.pwd
   end
-
-  # loaders
-
-  @loaders = []
-  @mutex = Mutex.new
-
-  def self.loaders
-    @loaders
-  end
-
-  def self.reload &block
-    @mutex.synchronize do
-      @loaders.map &:reload
-      yield if block_given?
-    end
-
-    true
-  end
-
+  
   # modes
 
   @modes = []

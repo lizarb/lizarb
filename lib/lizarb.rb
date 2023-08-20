@@ -197,8 +197,8 @@ module Lizarb
     require "zeitwerk"
     require "liza"
 
-    # App.loaders[0] first loads Liza, then each System class
-    App.loaders << loader = Zeitwerk::Loader.new
+    # loaders[0] first loads Liza, then each System class
+    loaders << loader = Zeitwerk::Loader.new
     loader.tag = Liza.to_s
 
     # collapse Liza paths
@@ -222,8 +222,8 @@ module Lizarb
       App.systems[k] = klass
     end
 
-    # App.loaders[1] first loads each System, then the App
-    App.loaders << loader = Zeitwerk::Loader.new
+    # loaders[1] first loads each System, then the App
+    loaders << loader = Zeitwerk::Loader.new
 
     # collapse each System paths
 
@@ -297,12 +297,30 @@ module Lizarb
 
     App.systems.freeze
 
-    App.loaders.map &:eager_load
+    loaders.map &:eager_load
 
     App.systems.each do |system_key, system_class|
       App.connect_system system_key, system_class, logs_system
       App.connect_box system_key, system_class, logs_box
     end
+  end
+
+  # loaders
+
+  @loaders = []
+  @mutex = Mutex.new
+
+  def loaders
+    @loaders
+  end
+
+  def reload &block
+    @mutex.synchronize do
+      Lizarb.loaders.map &:reload
+      yield if block_given?
+    end
+
+    true
   end
 
   # thread management
