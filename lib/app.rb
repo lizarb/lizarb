@@ -51,4 +51,18 @@ class App
     @systems
   end
 
+  # settings
+
+  def self.settings
+    @settings ||= {}
+  end
+
+  def self.set key, value
+    settings[key] = value
+  end
+
+  def self.get key
+    settings[key]
+  end
+
 end

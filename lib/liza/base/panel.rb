@@ -1,5 +1,7 @@
 class Liza::Panel < Liza::Unit
 
+  set :box, Liza::Box
+
   def self.on_connected box_klass
     set :box, box_klass
   end

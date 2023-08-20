@@ -69,6 +69,8 @@ class Liza::Unit
 
   set :log_level, :normal
   set :log_color, :white
+  set :log_erb, false
+  set :log_render, false
 
   def self.log log_level = :normal, object, kaller: caller
     raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level

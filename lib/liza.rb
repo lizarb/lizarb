@@ -9,7 +9,7 @@ module Liza
   module_function
 
   def log s
-    puts s.bold
+    puts s
   end
 
   #
