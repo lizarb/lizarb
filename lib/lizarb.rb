@@ -369,6 +369,31 @@ module Lizarb
     log "CHECKING BOX              #{t.diff}s for #{color_box_class.ljust_blanks 35} to connect to #{index} panels" if logs
   end
 
+  # parts
+
+  def connect_part unit_class, key, part_class, system
+    t = Time.now
+    string = "CONNECTING PART #{unit_class.to_s.rjust 25}.part :#{key}"
+    logv string
+
+    part_class ||= if system.nil?
+                Liza.const "#{key}_part"
+              else
+                Liza.const("#{system}_system")
+                    .const "#{key}_part"
+              end
+
+    if part_class.insertion
+      unit_class.class_exec(&part_class.insertion)
+    end
+
+    if part_class.extension
+      part_class.const_set :Extension, Class.new(Liza::PartExtension)
+      part_class::Extension.class_exec(&part_class.extension)
+    end
+    logv "#{string} takes #{t.diff}s"
+  end
+
   # loaders
 
   @loaders = []
