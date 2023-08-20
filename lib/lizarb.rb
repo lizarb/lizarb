@@ -216,7 +216,7 @@ module Lizarb
     App.systems.keys.each do |k|
       key = "#{k}_system"
 
-      App.require_system key
+      require_system key
       klass = Object.const_get key.camelize
 
       App.systems[k] = klass
@@ -300,9 +300,73 @@ module Lizarb
     loaders.map &:eager_load
 
     App.systems.each do |system_key, system_class|
-      App.connect_system system_key, system_class, logs_system
-      App.connect_box system_key, system_class, logs_box
+      connect_system system_key, system_class, logs_system
+      connect_box system_key, system_class, logs_box
     end
+  end
+
+  # systems
+
+  def require_system key
+    t = Time.now
+    logv "App.system :#{key}"
+    require key
+    logv "App.system :#{key} takes #{t.diff}s"
+  rescue LoadError => e
+    def e.backtrace; []; end
+    raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
+  end
+
+  def connect_system key, system_class, logs
+    t = Time.now
+    puts if logs
+
+    color_system_class = system_class.to_s.colorize system_class.log_color
+
+    log "CONNECTING SYSTEM                     #{color_system_class}" if logs
+    index = 0
+    system_class.registrar.each do |string, target_block|
+      reg_type, _sep, reg_target = string.to_s.lpartition "_"
+
+      index += 1
+
+      target_klass = Liza.const reg_target
+
+      if reg_type == "insertion"
+        target_klass.class_exec(&target_block)
+      else
+        raise "TODO: decide and implement system extension"
+      end
+      log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if logs
+    end
+    log "CONNECTING SYSTEM         #{t.diff}s for #{  color_system_class.ljust_blanks 35  } to connect to #{index} system parts"
+  end
+
+  def connect_box key, system_class, logs
+    t = Time.now
+
+    color_system_class = system_class.to_s.colorize system_class.log_color
+
+    if system_class.box?
+      box_class = system_class.box
+    else
+      log "        NO BOX FOR                    #{color_system_class}" if logs
+      return
+    end
+    
+    color_box_class = box_class.to_s.colorize system_class.log_color
+
+    log "CHECKING BOX                          #{color_box_class}" if logs
+    index = 0
+    system_class.subs.keys.each do |sub_key|
+      # if you have a sub-system, you must have a panel and a controller of the same name
+      panel_class = system_class.const "#{sub_key}_panel"
+      controller_class = system_class.const sub_key
+
+      index += 1
+      log "CHECKING BOX-PANEL                    #{  "#{color_box_class}[:#{sub_key}]".ljust_blanks(35) } is an instance of #{panel_class.last_namespace.ljust_blanks 15} and it configures #{controller_class.last_namespace.ljust_blanks 10} subclasses" if logs
+    end
+    log "CHECKING BOX              #{t.diff}s for #{color_box_class.ljust_blanks 35} to connect to #{index} panels" if logs
   end
 
   # loaders
