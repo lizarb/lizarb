@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+$boot_time = Time.now
+
 require "colorize"
 require "json"
 require "pathname"
@@ -77,6 +79,14 @@ module Lizarb
 
   # called from exe/lizarb
   def call
+    level = App.log_boot
+    is_lowest = level == -3
+    App::LOG_LEVELS.each do |k, v|
+      puts "$log_boot_#{k} = #{v >= level}" if level == -3
+      eval "$log_boot_#{k} = true" if v >= level
+    end
+    log "#{self}.#{__method__}" if defined? $log_boot_normal
+
     lookup_and_set_mode
     lookup_and_require_dependencies
     lookup_and_load_settings
@@ -85,8 +95,7 @@ module Lizarb
 
   # called from exe/lizarb
   def exit
-    verbose = $VERBOSE || (ENV["LOG_VERSIONS"] != "")
-    exit_messages if verbose
+    exit_messages if defined? $log_boot_normal
     super 0
   end
 
@@ -166,6 +175,7 @@ module Lizarb
   # call phase
 
   def lookup_and_set_mode
+    log "      .#{__method__}" if defined? $log_boot_low
     raise ModeNotFound, "App #{$APP} has no modes" if App.modes.empty?
 
     mode = ENV["MODE"]
@@ -181,18 +191,21 @@ module Lizarb
   end
 
   def lookup_and_require_dependencies
+    log "      .#{__method__}" if defined? $log_boot_low
     require "bundler/setup"
     Bundler.require :default, *App.systems.keys
   end
 
   def lookup_and_load_settings
+    log "      .#{__method__}" if defined? $log_boot_low
     files = ["#{$APP}.#{$MODE}.env", "#{$APP}.env"]
     require "dotenv"
     Dotenv.load(*files)
   end
 
   def require_liza_and_bundle_systems
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org"
+    log "      .#{__method__}" if defined? $log_boot_low
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_high
 
     require "zeitwerk"
     require "liza"
@@ -299,16 +312,14 @@ module Lizarb
     loader.setup
 
     # App connects to systems
-    logs_system = ENV["LOG_SYSTEMS"] != ""
-    logs_box = ENV["LOG_BOXES"] != ""
 
     App.systems.freeze
 
     loaders.map &:eager_load
 
     App.systems.each do |system_key, system_class|
-      connect_system system_key, system_class, logs_system
-      connect_box system_key, system_class, logs_box
+      connect_system system_key, system_class
+      connect_box system_key, system_class
     end
   end
 
@@ -324,13 +335,13 @@ module Lizarb
     raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
   end
 
-  def connect_system key, system_class, logs
+  def connect_system key, system_class
     t = Time.now
-    puts if logs
+    puts if defined? $log_boot_low
 
     color_system_class = system_class.to_s.colorize system_class.log_color
 
-    log "CONNECTING SYSTEM                     #{color_system_class}" if logs
+    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
     index = 0
     system_class.registrar.each do |string, target_block|
       reg_type, _sep, reg_target = string.to_s.lpartition "_"
@@ -344,12 +355,12 @@ module Lizarb
       else
         raise "TODO: decide and implement system extension"
       end
-      log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if logs
+      log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
     end
-    log "CONNECTING SYSTEM         #{t.diff}s for #{  color_system_class.ljust_blanks 35  } to connect to #{index} system parts"
+    log "CONNECTING SYSTEM         #{t.diff}s for #{  color_system_class.ljust_blanks 35  } to connect to #{index} system parts" if defined? $log_boot_normal
   end
 
-  def connect_box key, system_class, logs
+  def connect_box key, system_class
     t = Time.now
 
     color_system_class = system_class.to_s.colorize system_class.log_color
@@ -357,13 +368,13 @@ module Lizarb
     if system_class.box?
       box_class = system_class.box
     else
-      log "        NO BOX FOR                    #{color_system_class}" if logs
+      log "        NO BOX FOR                    #{color_system_class}" if defined? $log_boot_low
       return
     end
     
     color_box_class = box_class.to_s.colorize system_class.log_color
 
-    log "CHECKING BOX                          #{color_box_class}" if logs
+    log "CHECKING BOX                          #{color_box_class}" if defined? $log_boot_low
     index = 0
     system_class.subs.keys.each do |sub_key|
       # if you have a sub-system, you must have a panel and a controller of the same name
@@ -371,9 +382,9 @@ module Lizarb
       controller_class = system_class.const sub_key
 
       index += 1
-      log "CHECKING BOX-PANEL                    #{  "#{color_box_class}[:#{sub_key}]".ljust_blanks(35) } is an instance of #{panel_class.last_namespace.ljust_blanks 15} and it configures #{controller_class.last_namespace.ljust_blanks 10} subclasses" if logs
+      log "CHECKING BOX-PANEL                    #{  "#{color_box_class}[:#{sub_key}]".ljust_blanks(35) } is an instance of #{panel_class.last_namespace.ljust_blanks 15} and it configures #{controller_class.last_namespace.ljust_blanks 10} subclasses" if defined? $log_boot_low
     end
-    log "CHECKING BOX              #{t.diff}s for #{color_box_class.ljust_blanks 35} to connect to #{index} panels" if logs
+    log "CHECKING BOX              #{t.diff}s for #{color_box_class.ljust_blanks 35} to connect to #{index} panels" if defined? $log_boot_low
   end
 
   # parts

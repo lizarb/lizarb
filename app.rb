@@ -1,9 +1,18 @@
 # ENV["VERBOSE"] ||= "1"
-ENV["LOG_SYSTEMS"] ||= ""
-ENV["LOG_BOXES"] ||= ""
-ENV["LOG_VERSIONS"] ||= "1"
 
 class App
+
+  # Choose your level of log opacity
+
+  # log_boot :highest
+  # log_boot :higher
+  # log_boot :high
+  log_boot :normal
+  # log_boot :low
+  # log_boot :lower
+  # log_boot :lowest
+
+  # App settings
 
   set :log_level, :normal
   set :log_erb, false
