@@ -56,6 +56,7 @@ class Liza::UnitTest < Liza::Test
       :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
       :part,
       :procedure, :proceed,
+      :reload!,
       :subclasses_select, :system, :system?,
       :test_class
     ]
@@ -68,7 +69,7 @@ class Liza::UnitTest < Liza::Test
       subject_class.instance_methods_for_settings -
       subject_class.instance_methods_for_logging -
       subject_class.instance_methods_for_rendering
-    b = [:procedure, :proceed, :system]
+    b = [:procedure, :proceed, :reload!, :system]
     assert_equality a, b
   end
 
@@ -114,7 +115,12 @@ class Liza::UnitTest < Liza::Test
     assert subject_class.log_level == :normal
     assert subject_class.log_color == :white
 
-    assert subject_class.settings == {log_level: :normal, log_color: :white}
+    assert subject_class.settings == {
+      log_level: :normal,
+      log_color: :white,
+      log_erb: false,
+      log_render: false
+    }
   end
 
   test :settings_inheritance do
