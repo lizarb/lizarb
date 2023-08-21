@@ -2,9 +2,6 @@
 # Learn more: http://lizarb.org/
 
 # ENV["VERBOSE"] ||= "1"
-ENV["LOG_SYSTEMS"] ||= ""
-ENV["LOG_BOXES"] ||= ""
-ENV["LOG_VERSIONS"] ||= "1"
 
 class App
 

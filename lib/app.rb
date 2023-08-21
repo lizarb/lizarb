@@ -14,6 +14,7 @@ class App
 
   # called from exe/lizarb
   def self.call argv
+    log "#{$boot_time.diff}s to boot" if defined? $log_boot_high
     puts
     args = argv.dup
     argv.clear
@@ -63,6 +64,27 @@ class App
 
   def self.get key
     settings[key]
+  end
+
+  # advanced settings
+
+  LOG_LEVELS = {
+    :highest => 3,
+    :higher  => 2,
+    :high    => 1,
+    :normal  => 0,
+    :low     => -1,
+    :lower   => -2,
+    :lowest  => -3,
+  }
+  @log_boot = 0
+
+  def self.log_boot level = nil
+    return @log_boot if level.nil?
+    level = LOG_LEVELS[level] if level.is_a? Symbol
+    raise "invalid log level `#{level}`" unless level.is_a? Integer
+
+    @log_boot = level
   end
 
 end
