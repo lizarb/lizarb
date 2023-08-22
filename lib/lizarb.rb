@@ -40,11 +40,8 @@ module Lizarb
   module_function
 
   def log s
+    print "#{$boot_time.diff}s " if defined? $log_boot_low
     puts s
-  end
-
-  def self.logv s
-    log s if $VERBOSE
   end
 
   # Returns Lizarb::VERSION as a Gem::Version
@@ -85,12 +82,14 @@ module Lizarb
       puts "$log_boot_#{k} = #{v >= level}" if level == -3
       eval "$log_boot_#{k} = true" if v >= level
     end
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_high
     log "#{self}.#{__method__}" if defined? $log_boot_normal
 
     lookup_and_set_mode
     lookup_and_require_dependencies
     lookup_and_load_settings
-    require_liza_and_bundle_systems
+    require_liza_and_systems
+    connect_systems
   end
 
   # called from exe/lizarb
@@ -175,7 +174,7 @@ module Lizarb
   # call phase
 
   def lookup_and_set_mode
-    log "      .#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if defined? $log_boot_low
     raise ModeNotFound, "App #{$APP} has no modes" if App.modes.empty?
 
     mode = ENV["MODE"]
@@ -191,26 +190,30 @@ module Lizarb
   end
 
   def lookup_and_require_dependencies
-    log "      .#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if defined? $log_boot_low
     require "bundler/setup"
     Bundler.require :default, *App.systems.keys
   end
 
   def lookup_and_load_settings
-    log "      .#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if defined? $log_boot_low
     files = ["#{$APP}.#{$MODE}.env", "#{$APP}.env"]
     require "dotenv"
     Dotenv.load(*files)
   end
 
-  def require_liza_and_bundle_systems
-    log "      .#{__method__}" if defined? $log_boot_low
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_high
+  def require_liza_and_systems
+    log "  Lizarb.#{__method__}" if defined? $log_boot_low
+
+    log "    require Zeitwerk and Liza" if defined? $log_boot_lower
 
     require "zeitwerk"
     require "liza"
 
     # loaders[0] first loads Liza, then each System class
+
+    log "    Zeitwerk loaders [0] first loads Liza, then each System class" if defined? $log_boot_lower
+
     loaders << loader = Zeitwerk::Loader.new
     loader.tag = Liza.to_s
 
@@ -227,12 +230,14 @@ module Lizarb
 
     # App settings are copied to Liza::Unit
 
+    log "      App settings are copied to Liza::Unit" if defined? $log_boot_lowest
     App.settings.each do |k, v|
       Liza::Unit.set k, v
     end
 
     # load each System class
 
+    log "      App.systems is Hash containing all system classes" if defined? $log_boot_lowest
     App.systems.keys.each do |k|
       key = "#{k}_system"
 
@@ -242,7 +247,10 @@ module Lizarb
       App.systems[k] = klass
     end
 
+    App.systems.freeze
+
     # loaders[1] first loads each System, then the App
+    log "    Zeitwerk loaders [1] first loads each System, then the App" if defined? $log_boot_lower
     loaders << loader = Zeitwerk::Loader.new
 
     # collapse each System paths
@@ -256,14 +264,14 @@ module Lizarb
     # cherrypick App paths
 
     app_dir = "#{APP_DIR}/#{$APP}"
-    logv "Lizarb app loader #{app_dir}".on_cyan
+    log "      Application Directory: #{app_dir}" if defined? $log_boot_lowest
     list = Dir["#{app_dir}/*"].to_set
-    logv "Lizarb app loader lists #{list.count} entries to review".on_cyan
+    # log "      Lizarb app loader lists `#{$APP}/*` #{list.count} entries to review" if defined? $log_boot_lowest
 
     if list.empty?
-      logv "no #{app_dir} found".red
+      log "      Application Directory is empty" if defined? $log_boot_lowest
     else
-      logv "Lizarb app loader found #{app_dir}\t\tCollapsing #{app_dir}/*".on_cyan
+      log "      Application Directory found #{list.count} items to collapse" if defined? $log_boot_lowest
 
       to_collapse = []
 
@@ -272,15 +280,15 @@ module Lizarb
         box_file = "#{box_dir}_box.rb"
 
         if !list.include? box_file
-          logv "Lizarb app loader missd #{box_file}".on_light_black
+          log "        Missd box file    #{box_file}" if defined? $log_boot_lowest
         else
-          logv "Lizarb app loader found #{box_file}\t\tto_collapse!".on_cyan
+          log "        Found box file    #{box_file}" if defined? $log_boot_lowest
           to_collapse << box_file
 
           if !list.include? box_dir
-            logv "Lizarb app loader missd #{box_dir}".on_light_black
+            log "        Missd controllers #{box_dir}" if defined? $log_boot_lowest
           else
-            logv "Lizarb app loader found #{box_dir}\t\tto_collapse!".on_cyan
+            log "        Found controllers #{box_dir}" if defined? $log_boot_lowest
             to_collapse << box_dir
           end
         end
@@ -289,12 +297,12 @@ module Lizarb
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
       to_ignore = list - to_collapse
       to_ignore.each do |file|
-        logv "Lizarb app loader missd #{file}\t\tSkipping this one".on_light_black
+        log "      Ignoring   #{file}" if $log_boot_lowest
         loader.ignore file
       end
 
       to_collapse.each do |path|
-        logv "Lizarb app loader collapsing #{path}".on_cyan
+        log "      Collapsing #{path}" if $log_boot_lowest
         if path.end_with? ".rb"
           loader.collapse path
         else
@@ -313,10 +321,12 @@ module Lizarb
 
     # App connects to systems
 
-    App.systems.freeze
-
+    log "    Zeitwerk loaders eager load" if defined? $log_boot_lowest
     loaders.map &:eager_load
+  end
 
+  def connect_systems
+    log "  Lizarb.#{__method__}" if defined? $log_boot_low
     App.systems.each do |system_key, system_class|
       connect_system system_key, system_class
       connect_box system_key, system_class
@@ -326,10 +336,8 @@ module Lizarb
   # systems
 
   def require_system key
-    t = Time.now
-    logv "App.system :#{key}"
+    log "        require '#{key}'" if defined? $log_boot_lowest
     require key
-    logv "App.system :#{key} takes #{t.diff}s"
   rescue LoadError => e
     def e.backtrace; []; end
     raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
@@ -368,7 +376,7 @@ module Lizarb
     if system_class.box?
       box_class = system_class.box
     else
-      log "        NO BOX FOR                    #{color_system_class}" if defined? $log_boot_low
+      log "    NO BOX FOR                    #{color_system_class}" if defined? $log_boot_low
       return
     end
     
@@ -390,9 +398,11 @@ module Lizarb
   # parts
 
   def connect_part unit_class, key, part_class, system
-    t = Time.now
-    string = "CONNECTING PART #{unit_class.to_s.rjust 25}.part :#{key}"
-    logv string
+    if defined? $log_boot_lowest
+      t = Time.now
+      string = "      #{unit_class}.part :#{key}"
+      log string
+    end
 
     part_class ||= if system.nil?
                 Liza.const "#{key}_part"
@@ -409,7 +419,10 @@ module Lizarb
       part_class.const_set :Extension, Class.new(Liza::PartExtension)
       part_class::Extension.class_exec(&part_class.extension)
     end
-    logv "#{string} takes #{t.diff}s"
+
+    if defined? $log_boot_lowest
+      log "      ."
+    end
   end
 
   # loaders
