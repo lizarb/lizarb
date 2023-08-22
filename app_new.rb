@@ -5,10 +5,10 @@
 
 class App
 
-  # Modes help you organize your application's behavior and settings.
+  # Your mode is where you get global environment variables from
 
-  mode :code
-  mode :demo
+  # mode :code # default
+  # mode :demo
 
   # Systems help you organize your application's dependencies and RAM memory usage.
 
