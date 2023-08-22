@@ -5,6 +5,10 @@
 
 class App
 
+  # Choose your Application Directory
+
+  dir :app
+
   # Your mode is where you get global environment variables from
 
   # mode :code # default

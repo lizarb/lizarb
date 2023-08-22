@@ -2,6 +2,10 @@
 
 class App
 
+  # Choose your Application Directory
+
+  dir :app
+  
   # Choose your level of log opacity
 
   # log_boot :highest

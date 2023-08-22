@@ -256,12 +256,13 @@ module Lizarb
 
     # cherrypick App paths
 
-    app_dir = "#{APP_DIR}/#{$APP}"
-    log "      Application Directory: #{app_dir}" if defined? $log_boot_lowest
-    list = Dir["#{app_dir}/*"].to_set
-    # log "      Lizarb app loader lists `#{$APP}/*` #{list.count} entries to review" if defined? $log_boot_lowest
+    app_dir = App.dir
+    if app_dir
+      log "      Application Directory: #{app_dir}" if defined? $log_boot_lowest
+      list = Dir["#{app_dir}/*"].to_set
+    end
 
-    if list.empty?
+    if app_dir.nil? || list.empty?
       log "      Application Directory is empty" if defined? $log_boot_lowest
     else
       log "      Application Directory found #{list.count} items to collapse" if defined? $log_boot_lowest
