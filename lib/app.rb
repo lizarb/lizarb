@@ -22,17 +22,14 @@ class App
     Pathname Dir.pwd
   end
 
-  # modes
-
-  @modes = []
+  # mode
 
   def self.mode mode = nil
-    return $MODE if mode.nil?
-    @modes << mode.to_sym
-  end
-
-  def self.modes
-    @modes
+    if mode
+      @mode = mode.to_sym
+    else
+      @mode ||= (ENV["MODE"] || :code).to_sym
+    end
   end
 
   # systems

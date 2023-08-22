@@ -175,18 +175,11 @@ module Lizarb
 
   def lookup_and_set_mode
     log "  Lizarb.#{__method__}" if defined? $log_boot_low
-    raise ModeNotFound, "App #{$APP} has no modes" if App.modes.empty?
 
-    mode = ENV["MODE"]
-    mode ||= App.modes.first
-    mode = mode.to_sym
-
-    raise ModeNotFound, "MODE `#{mode}` is not included in #{App.modes}" unless App.modes.include? mode
-
-    log "#{self}.#{__method__} #{mode.inspect}" if $VERBOSE
-    $MODE = mode
-    $mode = mode
-    $coding = mode == :code
+    $mode = App.mode
+    log "    $mode = #{$mode.inspect}" if defined? $log_boot_lower
+    $coding = $mode == :code
+    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_lower
   end
 
   def lookup_and_require_dependencies
@@ -197,7 +190,7 @@ module Lizarb
 
   def lookup_and_load_settings
     log "  Lizarb.#{__method__}" if defined? $log_boot_low
-    files = ["#{$APP}.#{$MODE}.env", "#{$APP}.env"]
+    files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
     require "dotenv"
     Dotenv.load(*files)
   end
