@@ -132,9 +132,12 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
     app_name = $APP
 
+    dir   = Lizarb::GEM_DIR if File.directory? "#{Lizarb::GEM_DIR}/examples/command"
+    dir ||= Lizarb::APP_DIR
+
     ret << new.tap do |instance|
       instance.instance_exec do
-        source = "#{Lizarb::GEM_DIR}/app_commands/dev/commands/narrative_method_command.rb"
+        source = "#{dir}/examples/command/app/dev/commands/narrative_method_command.rb"
         @content = TextShell.read source
 
         @path = "#{app_name}/dev/commands/narrative_method_command.rb"
@@ -144,7 +147,7 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
     ret << new.tap do |instance|
       instance.instance_exec do
-        source = "#{Lizarb::GEM_DIR}/app_commands/dev/commands/narrative_method_command_test.rb"
+        source = "#{dir}/examples/command/app/dev/commands/narrative_method_command_test.rb"
         @content = TextShell.read source
 
         @path = "#{app_name}/dev/commands/narrative_method_command_test.rb"
@@ -171,7 +174,9 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
     app_name = $APP
 
-    list = Dir["#{Lizarb::GEM_DIR}/app_commands/dev/commands/*.rb"]
+    list   = Dir["#{Lizarb::APP_DIR}/examples/command/app/dev/commands/*.rb"] if File.directory? "#{Lizarb::APP_DIR}/examples/command"
+    list ||= Dir["#{Lizarb::GEM_DIR}/examples/command/app/dev/commands/*.rb"]
+
     list.each do |source|
       ret << new.tap do |instance|
         instance.instance_exec do
