@@ -8,10 +8,6 @@ class App
     puts s
   end
 
-  def self.logv s
-    log s if $VERBOSE
-  end
-
   # called from exe/lizarb
   def self.call argv
     log "#{$boot_time.diff}s to boot" if defined? $log_boot_high
