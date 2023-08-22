@@ -22,6 +22,16 @@ class App
     Pathname Dir.pwd
   end
 
+  # dir
+
+  def self.dir dir = nil
+    if dir
+      @dir = Pathname("#{Lizarb::APP_DIR}/#{dir}")
+    else
+      @dir
+    end
+  end
+
   # mode
 
   def self.mode mode = nil
