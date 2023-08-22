@@ -10,21 +10,17 @@ class DevSystem::NewGenerator < DevSystem::Generator
 
     name = args.shift || "app_1"
 
-    from = "#{Lizarb::APP_DIR}/app_new"
-    to = name
+    from = "#{Lizarb::APP_DIR}/examples/new"
+    log "from: #{from}"
+    to = "#{Dir.pwd}/#{name}"
 
     return log "Directory #{to.light_green} already exists." if Dir.exist? to
 
     log "Liza Application initializing at `#{to}`"
 
-    # init
-
-    DirShell.create to
-
     # app
 
-    FileUtils.cp_r from, "#{to}/app", verbose: true
-    FileUtils.cp_r "#{from}.rb", "#{to}/app.rb", verbose: true
+    FileUtils.cp_r from, to, verbose: true
 
     # extra
 
