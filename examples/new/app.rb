@@ -9,6 +9,16 @@ class App
 
   dir :app
 
+  # Choose your level of log opacity
+
+  # log_boot :highest
+  # log_boot :higher
+  # log_boot :high
+  # log_boot :normal # default
+  # log_boot :low
+  # log_boot :lower
+  # log_boot :lowest
+
   # Your mode is where you get global environment variables from
 
   # mode :code # default
@@ -16,6 +26,6 @@ class App
 
   # Systems help you organize your application's dependencies and RAM memory usage.
 
-  system :dev
+  system :dev # default
 
 end
