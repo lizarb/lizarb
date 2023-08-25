@@ -31,7 +31,7 @@ class DevSystem::Shell < Liza::Controller
   # Return the current Ruby engine as a symbol
   def self.engine
     return :jruby if jruby?
-    return :ruby  if ruby?
+    return :cruby if cruby?
     :unknown
   end
 
@@ -41,7 +41,7 @@ class DevSystem::Shell < Liza::Controller
   end
 
   # Check if the current Ruby engine is MRI
-  def self.ruby?
+  def self.cruby?
     @ruby || RUBY_ENGINE == "ruby"
   end
 

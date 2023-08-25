@@ -5,7 +5,7 @@ class DevSystem::ShellTest < Liza::ControllerTest
   end
 
   test_methods_defined do
-    on_self :engine, :jruby?, :linux?, :mac?, :os, :ruby?, :ruby_version, :unix?, :windows?
+    on_self :engine, :jruby?, :linux?, :mac?, :os, :cruby?, :ruby_version, :unix?, :windows?
     on_instance
   end
 
@@ -50,10 +50,10 @@ class DevSystem::ShellTest < Liza::ControllerTest
 
   #
 
-  test :subject_class, :ruby? do
-    original = subject_class.ruby?
+  test :subject_class, :cruby? do
+    original = subject_class.cruby?
     subject_class.instance_variable_set(:@ruby, true)
-    assert subject_class.ruby?
+    assert subject_class.cruby?
   ensure
     subject_class.instance_variable_set(:@ruby, original)
   end
