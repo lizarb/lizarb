@@ -15,7 +15,7 @@ class DevSystem::NotFoundBench < DevSystem::Bench
 
     keys = benches.map { _1.last_namespace.snakecase[0..-7] }.uniq.sort
 
-    log "Liza comes with #{keys.count} benches you can use."
+    log "This app has #{keys.count} benches you can use."
     log "Here they are:"
     puts
 

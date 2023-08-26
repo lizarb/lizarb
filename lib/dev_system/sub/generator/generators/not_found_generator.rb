@@ -20,7 +20,7 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
 
     keys = generators.map { _1.last_namespace.snakecase[0..-11] }.uniq.sort
 
-    log "Liza comes with #{keys.count} generators you can use."
+    log "This app has #{keys.count} generators you can use."
     log "Here they are:"
     puts
 
