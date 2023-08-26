@@ -15,7 +15,7 @@ class DevSystem::NotFoundCommand < DevSystem::Command
 
     keys = commands.map { _1.last_namespace.snakecase[0..-9] }.uniq.sort
 
-    log "Liza comes with #{keys.count} commands you can use."
+    log "This app has #{keys.count} commands you can use."
     log "Here they are:"
     puts
 
