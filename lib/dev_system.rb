@@ -1,5 +1,5 @@
 class DevSystem < Liza::System
-  class Error < Liza::Error; end
+  class Error < Error; end
 
   #
 
