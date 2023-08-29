@@ -252,7 +252,6 @@ end
   #
 
   # lizarb <%= @name %> a b c
-  # lizarb <%= @name %>:call a b c
   def self.call args
     log "args = #{args.inspect}"
 
