@@ -11,6 +11,8 @@ class DevSystem::TerminalPanel < Liza::Panel
     end
 
     terminal.call Array(args[1..-1])
+  rescue Exception => e
+    rescue_from_panel(e, with: args)
   end
 
   #
