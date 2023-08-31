@@ -5,6 +5,13 @@ class DevBox < Liza::DevBox
     
     short :b, :bench
     short :g, :generate
+
+    # rescue_from declarations are checked bottom to top
+
+    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+
+    rescue_from CommandPanel::NotFoundError, with: NotFoundCommand
   end
 
   configure :generator do

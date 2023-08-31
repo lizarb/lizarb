@@ -58,8 +58,12 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     klass = subject.find "generate"
     assert_equality DevSystem::GenerateCommand, klass
 
-    klass = subject.find "g"
-    assert_equality DevSystem::NotFoundCommand, klass
+    begin
+      klass = subject.find "g"
+      assert false
+    rescue CommandPanel::NotFoundError
+      assert true
+    end
   end
 
 end
