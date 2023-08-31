@@ -34,8 +34,8 @@ class DevSystem::GeneratorPanel < Liza::Panel
       _call_log "#{generator}.call(#{args[1..-1]})"
       generator.call args[1..-1]
     end
-  rescue ParseError
-    call_not_found args
+  rescue Exception => e
+    rescue_from_panel(e, with: args)
   end
 
   def _call_log string
@@ -59,11 +59,10 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
   def find string
     k = Liza.const "#{string}_generator"
-  rescue Liza::ConstNotFound
-    k = Liza::NotFoundGenerator
-  ensure
-    log k.to_s if get :log_details
+    log k if get :log_details
     k
+  rescue Liza::ConstNotFound
+    raise ParseError, "generator not found: #{string.inspect}"
   end
 
   #

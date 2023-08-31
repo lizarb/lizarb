@@ -6,6 +6,9 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
     log "args = #{args.inspect}"
     puts
 
+    rescuer = args.pop if args.last.is_a? Hash
+    log "rescuer = #{rescuer.inspect}" if rescuer and get :log_details
+
     # 2. FIND generators
 
     generators = Liza::Generator.descendants

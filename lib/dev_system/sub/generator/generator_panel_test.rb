@@ -50,8 +50,12 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     klass = subject.find "command"
     assert_equality DevSystem::CommandGenerator, klass
 
-    klass = subject.find "c"
-    assert_equality DevSystem::NotFoundGenerator, klass
+    begin
+      klass = subject.find "c"
+      assert false
+    rescue GeneratorPanel::ParseError
+      assert true
+    end
   end
 
 end
