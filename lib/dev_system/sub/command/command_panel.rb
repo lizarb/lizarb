@@ -1,6 +1,7 @@
 class DevSystem::CommandPanel < Liza::Panel
   class Error < StandardError; end
   class ParseError < Error; end
+  class NotFoundError < Error; end
 
   def call args
     log "args = #{args.inspect}" if get :log_details
@@ -30,8 +31,8 @@ class DevSystem::CommandPanel < Liza::Panel
       _call_log "#{command}.call(#{args[1..-1]})"
       command.call args[1..-1]
     end
-  rescue ParseError
-    call_not_found args
+  rescue Exception => e
+    rescue_from_panel(e, with: args)
   end
 
   def _call_log string
@@ -55,11 +56,10 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def find string
     k = Liza.const "#{string}_command"
-  rescue Liza::ConstNotFound
-    k = Liza::NotFoundCommand
-  ensure
-    log k.to_s if get :log_details
+    log k if get :log_details
     k
+  rescue Liza::ConstNotFound
+    raise NotFoundError, "command not found: #{string.inspect}"
   end
 
   #
