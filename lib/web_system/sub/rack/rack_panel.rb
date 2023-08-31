@@ -1,25 +1,26 @@
 class WebSystem::RackPanel < Liza::Panel
   class NotSet < Error; end
 
-  def call server, host, port
+  def call env
     puts
 
-    server ||= get :server
-    host ||= get :host
-    port ||= get :port
+    env[:server] ||= get :server
+    env[:host] ||= get :host
+    env[:port] ||= get :port
 
-    self.server server
-    set :host, host
-    set :port, port
+    self.server env[:server]
+    set :host, env[:host]
+    set :port, env[:port]
 
-    log({server:, host:, port:})
+    log(env)
 
-    self.server.call rack_app
+    self.server.call(self.rack_app)
   end
 
   def server name = nil
     if name
       @server = Liza.const(:"#{name}_server_rack")
+      set :server, name
     elsif @server.nil?
       raise NotSet, "Please set your rack server on your web_box.rb file", caller 
     else
