@@ -34,6 +34,13 @@ class DevBox < Liza::DevBox
     converter :html, :haml   if defined? Haml
     converter :js,   :coffee if defined? CoffeeScript
     converter :css,  :scss   if defined? SassC
+
+    # rescue_from declarations are checked bottom to top
+
+    rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+
+    rescue_from GeneratorPanel::ParseError, with: NotFoundGenerator
   end
 
   # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html
