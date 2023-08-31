@@ -1,20 +1,13 @@
 class DevSystem::LogPanel < Liza::Panel
 
-  def self.log(*args)
-    raise NotImplementedError, "method log cannot exist on #{self}"
-  end
-  
-  def log(*args)
-    raise NotImplementedError, "method log cannot exist on #{self}"
-
-  end
-  
   def call env
     env[:instance] ||= env[:unit_class] == env[:unit]
     env[:method_name] ||= method_name_for env
   
     handlers.values.each do |handler|
       handler.call env
+    rescue Exception => e
+      log "#{e.class} #{e.message.inspect} on #{e.backtrace[0]}".yellow
     end
   end
 

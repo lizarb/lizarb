@@ -25,7 +25,13 @@ class DevSystem::OutputLog < DevSystem::Log
     system_color = source.system.log_color
     size = 0
 
-    if source < Liza::Panel
+    # TODO: Figure out why RequestPanel is returning false when started from rack command but not from request command
+    # source_is_a_panel = source < Panel
+    # source_is_a_panel = source.ancestors.include? Panel
+    # source_is_a_panel = env[:unit].is_a? Panel
+    source_is_a_panel = source.to_s.end_with? "Panel"
+
+    if source_is_a_panel
       key = env[:unit].key
       source = source.box
 
