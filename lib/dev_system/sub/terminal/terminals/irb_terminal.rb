@@ -11,13 +11,9 @@ class DevSystem::IrbTerminal < DevSystem::Terminal
     irb = IRB::Irb.new(workspace)
     IRB.conf[:MAIN_CONTEXT] = irb.context
 
-    def irb.signal_status(status)
-      super
-    rescue Interrupt
-      IrbTerminal.log "Control-C"
-    end
-
     irb.eval_input
+  rescue Interrupt
+    log "Control-C"
   end
 
 end

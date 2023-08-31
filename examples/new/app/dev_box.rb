@@ -59,5 +59,10 @@ class DevBox < Liza::DevBox
     # pallet (pick one)
     # pallet :solarized
     # pallet :nord
+
+    # rescue_from declarations are checked bottom to top
+
+    rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 end
