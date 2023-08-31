@@ -16,9 +16,11 @@ class WebSystem::RackCommand < Liza::Command
       port = arg.split("=")[1] if arg.start_with? "p="
     end
 
-    log({server:, host:, port:})
+    env = {server:, host:, port:}
 
-    rack_panel.call server, host, port
+    log env
+
+    rack_panel.call env
   end
 
   def rack_panel
