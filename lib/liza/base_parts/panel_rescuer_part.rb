@@ -117,7 +117,7 @@ class Liza::PanelRescuerPart < Liza::Part
         elsif block_given?
           yield
         else
-          self[:with].call self
+          self[:with].call self[:args]
         end
       end
     end
