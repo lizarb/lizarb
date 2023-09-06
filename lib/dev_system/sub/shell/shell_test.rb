@@ -5,7 +5,7 @@ class DevSystem::ShellTest < Liza::ControllerTest
   end
 
   test_methods_defined do
-    on_self :engine, :jruby?, :linux?, :mac?, :os, :cruby?, :ruby_version, :unix?, :windows?
+    on_self :cruby?, :engine, :jruby?, :linux?, :mac?, :os, :ruby_version, :unix?, :windows?
     on_instance
   end
 
