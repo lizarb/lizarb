@@ -18,8 +18,14 @@ class App
     puts
   end
 
-  def self.root
+  def self.cwd
     Pathname Dir.pwd
+  end
+
+  @root = cwd
+
+  def self.root
+    @root
   end
 
   # dir
