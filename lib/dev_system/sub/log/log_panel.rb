@@ -1,7 +1,7 @@
 class DevSystem::LogPanel < Liza::Panel
 
   def call env
-    env[:instance] ||= env[:unit_class] == env[:unit]
+    env[:instance] ||= env[:unit_class] != env[:unit]
     env[:method_name] ||= method_name_for env
   
     handlers.values.each do |handler|
