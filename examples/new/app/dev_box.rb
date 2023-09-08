@@ -28,8 +28,8 @@ class DevBox < Liza::DevBox
 
     # rescue_from declarations are checked bottom to top
 
-    rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
 
     rescue_from GeneratorPanel::ParseError, with: NotFoundGenerator
   end
@@ -41,8 +41,8 @@ class DevBox < Liza::DevBox
 
     # rescue_from declarations are checked bottom to top
 
-    rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 
   configure :terminal do
@@ -62,7 +62,7 @@ class DevBox < Liza::DevBox
 
     # rescue_from declarations are checked bottom to top
 
-    rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
+    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 end
