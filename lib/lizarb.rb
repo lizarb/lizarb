@@ -256,7 +256,7 @@ module Lizarb
 
     # cherrypick App paths
 
-    app_dir = App.dir
+    app_dir = App.path
     if app_dir
       log "      Application Directory: #{app_dir}" if defined? $log_boot_lowest
       list = Dir["#{app_dir}/*"].to_set
