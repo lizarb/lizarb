@@ -30,11 +30,11 @@ class App
 
   # dir
 
-  def self.dir dir = nil
-    if dir
-      @dir = Pathname("#{Lizarb::APP_DIR}/#{dir}")
+  def self.path path = nil
+    if path
+      @path = Pathname("#{Lizarb::APP_DIR}/#{path}")
     else
-      @dir
+      @path
     end
   end
 

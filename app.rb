@@ -4,7 +4,7 @@ class App
 
   # Choose your Application Directory
 
-  dir :app
+  path :app
   
   # Choose your level of log opacity
 
