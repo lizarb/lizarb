@@ -1,5 +1,11 @@
 class DevSystem::InputTerminal < DevSystem::Terminal
 
+  #
+
+  division!
+
+  #
+
   def self.call args
     log "args = #{args.inspect}"
   end

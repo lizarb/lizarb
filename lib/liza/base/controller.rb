@@ -1,28 +1,12 @@
 class Liza::Controller < Liza::Unit
 
+  part :controller_subsystem
+
   def self.on_connected box_klass, panel
-    set :box, box_klass
-    set :panel, panel
-
-    panel.settings.each do |k, v|
-      set k, v
-    end
-  end
-
-  def self.box
-    get :box
-  end
-
-  def self.panel
-    get :panel
-  end
-
-  def box
-    self.class.box
-  end
-
-  def panel
-    self.class.panel
+    # REMEMBER: these are top-level controllers
+    # REMEMBER: the class and its settings are already loaded at this point
+    subsystem! box_klass, panel
+    division!
   end
 
   def self.log_color
