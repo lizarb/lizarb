@@ -1,7 +1,7 @@
 class DevSystem::LogPanelTest < Liza::PanelTest
 
   test :subject_class do
-    assert subject_class == DevSystem::LogPanel
+    assert_equality subject_class, DevSystem::LogPanel
   end
 
   test_methods_defined do
@@ -10,12 +10,42 @@ class DevSystem::LogPanelTest < Liza::PanelTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :green
+    assert_equality subject_class.log_level, 0
+    assert_equality subject_class.log_color, :green
   end
 
-  # test :call do
-  #   todo "write this"
-  # end
+  test :call, :unit_log_level, true do
+    handler_env = nil
+
+    assert_equality subject.handlers, {}
+    subject.handlers[:test] = -> env { handler_env = env }
+
+    input_env = {
+      caller: caller,
+      unit_log_level: :normal,
+      message_log_level: :normal
+    }
+    subject.call input_env
+
+    # it has passed the filter
+    assert_equality handler_env.object_id, input_env.object_id
+  end
+
+  test :call, :unit_log_level, false do
+    handler_env = nil
+
+    assert_equality subject.handlers, {}
+    subject.handlers[:test] = -> env { handler_env = env }
+
+    input_env = {
+      caller: caller,
+      unit_log_level: :normal,
+      message_log_level: :low
+    }
+    subject.call input_env
+
+    # it has not passed the filter
+    assert_equality handler_env, nil
+  end
 
 end

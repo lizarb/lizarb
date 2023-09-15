@@ -99,24 +99,24 @@ class Liza::UnitTest < Liza::Test
 
   test :subject_class, :methods_for_logging do
     a = subject_class.methods_for_logging
-    b = [:log, :log?, :log_array, :log_color, :log_hash, :log_level, :log_level?]
+    b = [:log, :log?, :log_array, :log_color, :log_hash, :log_level, :log_level?, :log_levels]
     assert_equality a, b
   end
 
   test :subject_class, :instance_methods_for_logging do
     a = subject_class.instance_methods_for_logging
-    b = [:log, :log?, :log_array, :log_color, :log_hash, :log_level, :log_level?, :log_render_convert, :log_render_in, :log_render_out]
+    b = [:log, :log?, :log_array, :log_hash, :log_level, :log_level?, :log_levels, :log_render_convert, :log_render_in, :log_render_out]
     assert_equality a, b
   end
 
   test :settings do
-    assert subject_class.get(:log_level) == :normal
-    assert subject_class.get(:log_color) == :white
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :white
+    assert_equality subject_class.get(:log_level), 0
+    assert_equality subject_class.get(:log_color), :white
+    assert_equality subject_class.log_level, 0
+    assert_equality subject_class.log_color, :white
 
-    assert subject_class.settings == {
-      log_level: :normal,
+    assert_equality subject_class.settings, {
+      log_level: 0,
       log_color: :white,
       log_erb: false,
       log_render: false

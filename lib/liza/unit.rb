@@ -59,45 +59,41 @@ class Liza::Unit
 
   # LOG
 
-  LOG_LEVELS = {
-    :higher => 2,
-    :high   => 1,
-    :normal => 0,
-    :low    => -1,
-    :lower  => -2,
-  }
-
-  set :log_level, :normal
   set :log_color, :white
   set :log_erb, false
   set :log_render, false
 
-  def self.log log_level = :normal, object, kaller: caller
-    raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
+  def self.log_levels()= App::LOG_LEVELS
+  def log_levels()= App::LOG_LEVELS
+
+  def self.log log_level = App::DEFAULT_LOG_LEVEL, object, kaller: caller
+    log_level = log_levels[log_level] if log_level.is_a? Symbol
+    raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
     return unless log_level? log_level
 
     env = {}
     env[:type] = :log
     env[:unit] = self
     env[:unit_class] = self
-    # env[:log_level_required] = log_level
-    # env[:unit_log_level] = self.log_level
+    env[:message_log_level] = log_level
+    env[:unit_log_level] = self.log_level
     env[:caller] = kaller
     env[:object] = object
 
     DevBox[:log].call env
   end
 
-  def log log_level = :normal, object, kaller: caller
-    raise "invalid log_level `#{log_level}`" unless LOG_LEVELS.keys.include? log_level
+  def log log_level = App::DEFAULT_LOG_LEVEL, object, kaller: caller
+    log_level = log_levels[log_level] if log_level.is_a? Symbol
+    raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
     return unless log_level? log_level
 
     env = {}
     env[:type] = :log
     env[:unit] = self
     env[:unit_class] = self.class
-    # env[:log_level_required] = log_level
-    # env[:unit_log_level] = self.log_level
+    env[:message_log_level] = log_level
+    env[:unit_log_level] = self.log_level
     env[:caller] = kaller
     env[:object] = object
 
@@ -106,24 +102,29 @@ class Liza::Unit
 
   #
 
-  def self.log_level
-    get(:log_level) || :normal
+  def self.log_level new_value = nil
+    if new_value
+      new_value = log_levels[new_value] if new_value.is_a? Symbol
+      raise "invalid log_level `#{new_value}`" unless log_levels.values.include? new_value
+      set :log_level, new_value
+    else
+      get :log_level
+    end
   end
 
-  def self.log_level? log_level = :normal
-    # TODO
-    true
+  def log_level new_value = nil
+    if new_value
+      new_value = log_levels[new_value] if new_value.is_a? Symbol
+      raise "invalid log_level `#{new_value}`" unless log_levels.values.include? new_value
+      set :log_level, new_value
+    else
+      get :log_level
+    end
   end
 
   def self.log_color
     system.get :log_color
   end
-
-  def self.log?(log_level = :normal)= log_level? log_level
-  def log_level(...)= self.class.log_level(...)
-  def log?(...)= self.class.log?(...)
-  def log_level?(...)= self.class.log_level?(...)
-  def log_color(...)= self.class.log_color(...)
 
   def self.log_hash hash, prefix: "", kaller: caller[1..-1]
     prefix = prefix.to_s
@@ -149,6 +150,21 @@ class Liza::Unit
 
   def log_array array, prefix: "", kaller: caller[1..-1]
     self.class.log_array array, prefix: prefix, kaller: kaller
+  end
+
+  #
+
+  def self.log?(log_level = App::DEFAULT_LOG_LEVEL)= log_level? log_level
+  def log?(...)= log_level? log_level
+
+  def self.log_level? log_level = App::DEFAULT_LOG_LEVEL
+    log_level = log_levels[log_level] if log_level.is_a? Symbol
+    log_level >= self.log_level
+  end
+
+  def log_level? log_level = App::DEFAULT_LOG_LEVEL
+    log_level = log_levels[log_level] if log_level.is_a? Symbol
+    log_level >= self.log_level
   end
 
   # SYSTEM

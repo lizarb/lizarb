@@ -3,7 +3,11 @@ class DevSystem::LogPanel < Liza::Panel
   def call env
     env[:instance] ||= env[:unit_class] != env[:unit]
     env[:method_name] ||= method_name_for env
-  
+
+    # The unit determines the smallest log level it wants to log
+    # Therefore, a message of lower log level will not be logged
+    return if env[:message_log_level] < env[:unit_log_level]
+
     handlers.values.each do |handler|
       handler.call env
     rescue Exception => e
