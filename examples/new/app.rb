@@ -7,7 +7,7 @@ class App
 
   # Choose your Application Directory
 
-  dir :app
+  path :app
 
   # Choose your level of log opacity
 
@@ -19,6 +19,16 @@ class App
   # log_boot :lower
   # log_boot :lowest
 
+  # Choose your level of log opacity
+
+  # log_level :highest
+  # log_level :higher
+  # log_level :high
+  # log_level :normal # default
+  # log_level :low
+  # log_level :lower
+  # log_level :lowest
+  
   # Your mode is where you get global environment variables from
 
   # mode :code # default

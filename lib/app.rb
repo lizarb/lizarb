@@ -77,6 +77,8 @@ class App
 
   # advanced settings
 
+  DEFAULT_LOG_LEVEL = 0
+
   LOG_LEVELS = {
     :highest => 3,
     :higher  => 2,
@@ -86,14 +88,22 @@ class App
     :lower   => -2,
     :lowest  => -3,
   }
-  @log_boot = 0
+  @log_boot = DEFAULT_LOG_LEVEL
+  set :log_level, DEFAULT_LOG_LEVEL
 
   def self.log_boot level = nil
     return @log_boot if level.nil?
     level = LOG_LEVELS[level] if level.is_a? Symbol
-    raise "invalid log level `#{level}`" unless level.is_a? Integer
+    raise Error, "invalid log level `#{level}`", caller unless LOG_LEVELS.values.include? level
 
     @log_boot = level
+  end
+
+  def self.log_level level
+    level = LOG_LEVELS[level] if level.is_a? Symbol
+    raise Error, "invalid log level `#{level}`", caller unless LOG_LEVELS.values.include? level
+
+    set :log_level, level
   end
 
 end
