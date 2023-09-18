@@ -1,13 +1,19 @@
 class VariablesBench < SortedBench
 
   setup do
+    log "repetitions: #{repetitions}"
+    
     LETTERS = (Array("a".."z")+Array("A".."Z"))
+
     N = 1_000
     # N = 10_000
     # N = 100_000
-    
-    log "setup N = #{N}"
+    # N = 1_000_000
+    # N = 10_000_000
+    # N = 100_000_000
   end
+
+  #
 
   mark "local variable" do
     i = 0

@@ -1,83 +1,48 @@
 class ObjectsBench < SortedBench
 
-  setup do
-    N = 1_000_000
-    # N = 10_000_000
-    # N = 100_000_000
+  repetitions 1_000_000
+  # repetitions 10_000_000
+  # repetitions 100_000_000
 
-    log "setup N = #{N}"
+  setup do
+    log "repetitions: #{repetitions}"
   end
+  #
 
   mark "BasicObject.new" do
-    i = 0
-
-    while (i += 1) <= N
-      BasicObject.new
-    end
+    BasicObject.new
   end
 
   mark "Object.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Object.new
-    end
+    Object.new
   end
 
   mark "String.new" do
-    i = 0
-
-    while (i += 1) <= N
-      String.new
-    end
+    String.new
   end
 
   mark "Numeric.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Numeric.new
-    end
+    Numeric.new
   end
 
   mark "Time.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Time.new
-    end
+    Time.new
   end
 
   mark "Proc.new {}" do
-    i = 0
-
-    while (i += 1) <= N
-      Proc.new {}
-    end
+    Proc.new {}
   end
 
   mark "Set.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Set.new
-    end
+    Set.new
   end
 
   mark "Array.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Array.new
-    end
+    Array.new
   end
 
   mark "Hash.new" do
-    i = 0
-
-    while (i += 1) <= N
-      Hash.new
-    end
+    Hash.new
   end
 
 end

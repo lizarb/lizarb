@@ -1,25 +1,31 @@
 class SortedBench < Liza::Bench
 
   def self.call args
+    t = Time.now
+    
     log "args = #{args.inspect}"
 
     # https://rubyapi.org/3.1/o/benchmark
     require "benchmark"
 
+    log "repetitions #{repetitions}"
+
     if @setup_bl
       log "Setting up..."
-      instance_exec &@setup_bl
-      log "Set up"
+      @setup_bl.call
     end
 
     log "Benchmarking #{marks.count} Ruby Blocks"
     puts
 
-    length = marks.keys.map(&:length).max
+    length = marks.keys.map(&:length).max || 0
 
     marks.each do |label, bl|
       log "Benchmarking #{label}"
-      marks[label] = Benchmark.measure label, &bl
+      marks[label] = Benchmark.measure label do
+        i = 0
+        bl.call while (i += 1) <= repetitions
+      end
     end
 
     puts
@@ -38,7 +44,24 @@ class SortedBench < Liza::Bench
       log s
     end
     puts
-    log "Done"
+  ensure
+    log "#{t.diff}s | #{marks.count} marks | #{repetitions} repetitions"
+  end
+
+  #
+
+  def self.repetitions n = nil
+    if n
+      @repetitions = n
+    else
+      @repetitions ||= 1
+    end
+  end
+
+  #
+
+  def self.setup &block
+    @setup_bl = block if block_given?
   end
 
   #
@@ -46,9 +69,5 @@ class SortedBench < Liza::Bench
   def self.marks()= @marks ||= {}
 
   def self.mark(label, &block)= marks[label] = block
-
-  def self.setup &block
-    @setup_bl = block if block_given?
-  end
 
 end
