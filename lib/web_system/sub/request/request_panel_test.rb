@@ -14,7 +14,7 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     subject.call! env
     assert false
   rescue => e
-    assert_equality e.class, WebSystem::RequestPanel::RequestNotFound
+    assert_equality e.class, WebSystem::SimpleRouterRequest::RequestNotFound
     assert_equality e.cause.class, Liza::ConstNotFound
   end
 
@@ -24,7 +24,7 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     env["PATH_INFO"] = "/foo/bar/baz"
     status, headers, body = subject.call env
     assert_equality status, 500
-    assert_equality body.first, "Server Error 500 - WebSystem::RequestPanel::RequestNotFound - WebSystem::RequestPanel::RequestNotFound"
+    assert_equality body.first, "Server Error 500 - WebSystem::SimpleRouterRequest::RequestNotFound - WebSystem::SimpleRouterRequest::RequestNotFound"
   end
 
   #
