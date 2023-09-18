@@ -1,15 +1,21 @@
 class LoopsBench < SortedBench
 
+  repetitions 100
+  # repetitions 1_000
+  # repetitions 10_000
+
   setup do
-    N = 1_000_000
+    log "repetitions: #{repetitions}"
+
+    N = 1_000
     RANGE = 1..N
     ARRAY = Array RANGE
     HASH_INT = RANGE.map { |i| [i, i] }.to_h
     HASH_STR = RANGE.map { |i| ["a#{i}", i] }.to_h
     HASH_SYM = RANGE.map { |i| [:"a#{i}", i] }.to_h
-    
-    log "setup N = #{N}"
   end
+
+  #
 
   mark "for i in RANGE" do
     for i in RANGE
@@ -141,6 +147,7 @@ class LoopsBench < SortedBench
     #   a = "1"
     # end
   end
+
 
   mark "loop break" do
     i = 0
