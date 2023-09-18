@@ -28,14 +28,19 @@ class App
     @root
   end
 
-  # dir
+  # path
 
   def self.path path = nil
     if path
+      @relative_path = Pathname(path.to_s)
       @path = Pathname("#{Lizarb::APP_DIR}/#{path}")
     else
       @path
     end
+  end
+
+  def self.relative_path
+    @relative_path or raise "@relative_path not set"
   end
 
   # mode
