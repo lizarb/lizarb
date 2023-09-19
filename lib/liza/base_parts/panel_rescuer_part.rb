@@ -52,20 +52,20 @@ class Liza::PanelRescuerPart < Liza::Part
       return Liza::Error if arg == :error
 
       Object.const_get(arg.to_s.camelcase)
-    rescue NameError
+    rescue NameError => e
       msg = "rescue_from parsed to #{arg.to_s.camelcase} which does not exist"
       puts msg.red
-      raise
+      raise e, msg, caller
     end
 
     def _rescue_from_parse_symbols(args)
       namespace = Liza.const(args[0])
       begin
         namespace.const_get("#{args[1].to_s.camelcase}Error")
-      rescue NameError
+      rescue NameError => e
         msg = "rescue_from parsed to #{args[0].to_s.camelcase}::#{args[1].to_s.camelcase}Error which does not exist"
         puts msg.red
-        raise
+        raise e, msg, caller
       end
     end
 
@@ -91,6 +91,7 @@ class Liza::PanelRescuerPart < Liza::Part
         ret = rescuer.call
       when Hash
         with[:rescuer] = rescuer
+        rescuer[:env] = with
         ret = rescuer.call
       else
         raise ArgumentError, "wrong argument type #{with.class} (expected Array or Hash)"
@@ -111,13 +112,15 @@ class Liza::PanelRescuerPart < Liza::Part
     #
 
     class Rescuer < Hash
-      def call(&block)
+      def call
         if self[:block]
           self[:block].call self
-        elsif block_given?
-          yield
-        else
+        elsif self[:env]
+          self[:with].call self[:env]
+        elsif self[:args]
           self[:with].call self[:args]
+        else
+          raise "not expected"
         end
       end
     end
