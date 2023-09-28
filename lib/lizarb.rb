@@ -99,16 +99,18 @@ module Lizarb
   end
 
   def exit_messages
-    versions = {
+    info = {
       ruby: RUBY_VERSION,
       bundler: Bundler::VERSION,
       zeitwerk: Zeitwerk::VERSION,
       lizarb: VERSION,
       app: $APP,
-      mode: $MODE
+      mode: $MODE,
+      log_boot: App.log_boot,
+      log_level: App.get(:log_level),
     }
     github = "https://github.com/lizarb/lizarb"
-    puts versions.to_s.green
+    puts info.to_s
     puts "Report bugs at #{github}/issues"
     puts "Fork us on Github at #{github}/fork"
   end
