@@ -32,7 +32,20 @@ class DevSystem::TerminalPanel < Liza::Panel
   end
 
   def pick_one title, options = ["Yes", "No"]
+    if log_level? :highest
+      puts
+      log "Pick One"
+    end
     input.pick_one title, options
+  end
+
+  def pick_many title, options
+    if log_level? :highest
+      puts
+      log "Pick Many"
+    end
+    # input.pick_many title, options
+    TtyInputTerminal.multi_select title, options
   end
 
   #

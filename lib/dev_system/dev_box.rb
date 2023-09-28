@@ -70,4 +70,8 @@ class DevSystem::DevBox < Liza::Box
     self[:terminal].pick_one(...)
   end
   
+  def self.pick_many(...)
+    self[:terminal].pick_many(...)
+  end
+  
 end
