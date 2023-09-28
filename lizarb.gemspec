@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "dotenv", "~> 2.8"
   spec.add_dependency "zeitwerk", "~> 2.6"
+  spec.add_dependency  "diff-lcs", "~> 1.5"
 
   # development dependencies
 
