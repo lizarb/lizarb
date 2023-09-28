@@ -2,14 +2,14 @@ class DevSystem::DirShell < DevSystem::FileShell
 
   # OVERRIDES
 
-  def self.exist? path
-    log :normal, "Checking if directory exists at '#{path}'"
+  def self.exist? path, log_level: self.log_level
+    log log_level, "Checking if directory exists at '#{path}'"
 
     directory? path
   end
 
-  def self.size path
-    log :normal, "Getting size of directory at '#{path}'"
+  def self.size path, log_level: self.log_level
+    log log_level, "Getting size of directory at '#{path}'"
     _raise_if_not_exists path
 
     Pathname.new(path).children.inject(0) { |sum, f| sum + f.size }
@@ -17,8 +17,8 @@ class DevSystem::DirShell < DevSystem::FileShell
 
   # CUSTOM
 
-  def self.create path
-    log :normal, "Creating directory at '#{path}'"
+  def self.create path, log_level: self.log_level
+    log log_level, "Creating directory at '#{path}'"
     _raise_if_blank path
 
     Pathname.new(path).mkpath
