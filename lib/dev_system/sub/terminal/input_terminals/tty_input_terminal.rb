@@ -6,8 +6,34 @@ class DevSystem::TtyInputTerminal < DevSystem::InputTerminal
   end
 
   def self.pick_one title, options = ["Yes", "No"]
-    log title
-    prompt.select title, options, filter: true, show_help: :always
+    prompt.select title, options, filter: true, show_help: :always, per_page: 20
+  rescue TTY::Reader::InputInterrupt
+    puts
+    puts
+    log "Control-C"
+    exit
   end
+
+  #
+
+  def self.multi_select title, choices
+    raise "choices must be a hash" unless choices.is_a? Hash
+    return choices if choices.empty?
+    
+    options = {
+      enum: ")",
+      per_page: 20,
+      help: "(space to select, enter to finish)",
+      show_help: :always,
+      default: 1..choices.count
+    }
+    prompt.multi_select title, choices, options
+  rescue TTY::Reader::InputInterrupt
+    puts
+    puts
+    log "Control-C"
+    exit
+  end
+    
 
 end
