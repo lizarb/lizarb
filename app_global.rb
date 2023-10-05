@@ -1,5 +1,5 @@
 class App
-  path :app_global
+  path :app
   mode :code
   system :dev
 end
