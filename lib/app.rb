@@ -1,6 +1,5 @@
 class App
   class Error < StandardError; end
-  class SystemNotFound < Error; end
 
   #
 
