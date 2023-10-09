@@ -77,6 +77,8 @@ module Lizarb
 
   # called from exe/lizarb
   def call
+    require "bundler/setup"
+
     level = App.log_boot
     is_lowest = level == -3
     App::LOG_LEVELS.each do |k, v|
@@ -187,7 +189,6 @@ module Lizarb
 
   def lookup_and_require_dependencies
     log "  Lizarb.#{__method__}" if defined? $log_boot_low
-    require "bundler/setup"
     Bundler.require :default, *App.systems.keys
   end
 
@@ -230,6 +231,10 @@ module Lizarb
     App.settings.each do |k, v|
       Liza::Unit.set k, v
     end
+
+    # bundle each System gem
+
+    Bundler.require :systems
 
     # load each System class
 
