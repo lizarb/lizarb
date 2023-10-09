@@ -277,18 +277,25 @@ module Lizarb
         box_file = "#{box_dir}_box.rb"
 
         if !list.include? box_file
-          log "        Missd box file    #{box_file}" if defined? $log_boot_lowest
-        else
-          log "        Found box file    #{box_file}" if defined? $log_boot_lowest
-          to_collapse << box_file
+          log "        Missd box file    #{box_file}! Generating it"
 
-          if !list.include? box_dir
-            log "        Missd controllers #{box_dir}" if defined? $log_boot_lowest
-          else
-            log "        Found controllers #{box_dir}" if defined? $log_boot_lowest
-            to_collapse << box_dir
-          end
+          File.write box_file, <<-RUBY
+class #{k.to_s.camelize}Box < #{k.to_s.camelize}System::#{k.to_s.camelize}Box
+
+end
+          RUBY
         end
+
+        log "        Found box file    #{box_file}" if defined? $log_boot_lowest
+        to_collapse << box_file
+
+        if !list.include? box_dir
+          log "        Missd controllers #{box_dir}" if defined? $log_boot_lowest
+        else
+          log "        Found controllers #{box_dir}" if defined? $log_boot_lowest
+          to_collapse << box_dir
+        end
+
       end
 
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
