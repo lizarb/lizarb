@@ -13,7 +13,7 @@ class DevSystem::PalletTerminal < DevSystem::Terminal
 
     colors.each do |k, v|
       color = color_for(v)
-      rgb = hex_to_rgb(color)
+      rgb = ColorShell.rgb_from_str(color)
 
       source = (self.is_a? Class) ? self : self.class
       s = "#{source} #{k.inspect} = #{v.inspect}"
@@ -31,15 +31,6 @@ class DevSystem::PalletTerminal < DevSystem::Terminal
 
   def self.key_name
     last_namespace.gsub("PalletTerminal", "")
-  end
-
-  def self.hex_to_rgb(hex)
-    raise "Invalid hex color: #{hex}" unless hex =~ /^#?[0-9a-fA-F]{6}$/
-
-    r = hex[1..2].to_i(16)
-    g = hex[3..4].to_i(16)
-    b = hex[5..6].to_i(16)
-    return r, g, b
   end
 
   def self.color_for color
