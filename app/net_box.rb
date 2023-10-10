@@ -35,4 +35,8 @@ class NetBox < Liza::NetBox
 
   end
 
+  configure :record do
+
+  end
+  
 end

@@ -6,5 +6,6 @@ class NetSystem < Liza::System
   
   sub :client
   sub :database
+  sub :record
 
 end

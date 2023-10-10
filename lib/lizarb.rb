@@ -232,6 +232,8 @@ module Lizarb
       Liza::Unit.set k, v
     end
 
+    Liza::Unit.set :division, Liza::Controller
+
     # bundle each System gem
 
     Bundler.require :systems
@@ -358,7 +360,7 @@ end
 
     system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
 
-    color_system_class = system_class.to_s.colorize system_class.log_color
+    color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
 
     log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
     index = 0
@@ -376,34 +378,35 @@ end
       end
       log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
     end
-    log "CONNECTING SYSTEM         #{t.diff}s for #{  color_system_class.ljust_blanks 35  } to connect to #{index} system parts" if defined? $log_boot_normal
+    pad = 21-system_class.name.size
+    log "CONNECTING SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
   end
 
   def connect_box key, system_class
     t = Time.now
 
-    color_system_class = system_class.to_s.colorize system_class.log_color
+    box_class = system_class.box
+    color_box_class = Liza::Unit.stick(system_class.color, box_class.name).to_s
 
-    if system_class.box?
-      box_class = system_class.box
-    else
-      log "    NO BOX FOR                    #{color_system_class}" if defined? $log_boot_low
-      return
-    end
-    
-    color_box_class = box_class.to_s.colorize system_class.log_color
-
-    log "CHECKING BOX                          #{color_box_class}" if defined? $log_boot_low
+    log "CONNECTING BOX                        #{color_box_class}" if defined? $log_boot_low
     index = 0
     system_class.subs.keys.each do |sub_key|
-      # if you have a sub-system, you must have a panel and a controller of the same name
-      panel_class = system_class.const "#{sub_key}_panel"
+      box_class.configure(sub_key, &proc {}) unless box_class.panels.key? sub_key
+      panel = box_class[sub_key]
       controller_class = system_class.const sub_key
 
+      panel.class.on_connected box_class, controller_class
+      controller_class.on_connected box_class, panel
+
+      system_class.subs[sub_key] = controller_class
+
       index += 1
-      log "CHECKING BOX-PANEL                    #{  "#{color_box_class}[:#{sub_key}]".ljust_blanks(35) } is an instance of #{panel_class.last_namespace.ljust_blanks 15} and it configures #{controller_class.last_namespace.ljust_blanks 10} subclasses" if defined? $log_boot_low
+      pad = 18-box_class.name.size-sub_key.to_s.size
+      log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel.class.last_namespace.ljust_blanks 20} and it configures #{controller_class.last_namespace}" if defined? $log_boot_low
     end
-    log "CHECKING BOX              #{t.diff}s for #{color_box_class.ljust_blanks 35} to connect to #{index} panels" if defined? $log_boot_low
+    index += 1
+    pad = 21-box_class.name.size
+    log "CONNECTED  BOX            #{t.diff}s for #{color_box_class}#{"".ljust pad} to connect to #{index} panels" if defined? $log_boot_low
   end
 
   # parts

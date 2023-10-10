@@ -10,4 +10,8 @@ class NetSystem::NetBox < Liza::Box
     # set :log_level, ENV["net.database.log_level"]
   end
 
+  configure :record do
+
+  end
+  
 end
