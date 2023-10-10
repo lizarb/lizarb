@@ -22,11 +22,13 @@ class Liza::UnitMethodsPart < Liza::Part
     end
 
     def self.methods_for_logging
-      methods_defined.select { _1[0..2] == "log" }.sort
+      array = methods_defined.select { _1[0..2] == "log" }.sort
+      [*array, :stick]
     end
 
     def self.instance_methods_for_logging
-      instance_methods_defined.select { _1[0..2] == "log" }.sort
+      array = instance_methods_defined.select { _1[0..2] == "log" }.sort
+      [*array, :stick]
     end
   end
 
