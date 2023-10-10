@@ -3,9 +3,12 @@ class Liza::Panel < Liza::Unit
   part :panel_rescuer
 
   set :box, Liza::Box
+  set :controller, Liza::Controller
 
-  def self.on_connected box_klass
-    set :box, box_klass
+  def self.on_connected box_class, controller_class
+    set :box, box_class
+    set :controller, controller_class
+    set :division, controller_class
   end
 
   def self.box
@@ -16,8 +19,20 @@ class Liza::Panel < Liza::Unit
     self.class.box
   end
 
-  def self.log_color
-    (box || system).log_color
+  def self.controller
+    get :controller
+  end
+
+  def controller
+    self.class.controller
+  end
+
+  def self.division
+    controller.division
+  end
+
+  def division
+    controller.division
   end
 
   #
