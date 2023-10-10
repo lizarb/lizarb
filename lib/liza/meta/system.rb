@@ -46,4 +46,14 @@ class Liza::System < Liza::Unit
     self
   end
   
+  # COLOR
+
+  def self.color color = nil
+    if color
+      @color = color
+    else
+      @color
+    end
+  end
+
 end

@@ -4,7 +4,7 @@ class Liza::SystemTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :box, :box?, :const, :insertion, :registrar, :sub, :subs, :token
+    on_self :box, :box?, :color, :const, :insertion, :registrar, :sub, :subs, :token
     on_instance
   end
 

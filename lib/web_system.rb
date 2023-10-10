@@ -4,6 +4,7 @@ class WebSystem < Liza::System
   require "uri"
 
   set :log_color, :blue
+  color :dark_cerulean
 
   sub :rack
   sub :request
