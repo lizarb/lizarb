@@ -4,6 +4,7 @@ class DevSystem < Liza::System
   #
 
   set :log_color, :green
+  color :light_green
 
   sub :bench
   sub :command

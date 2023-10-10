@@ -356,6 +356,8 @@ end
     t = Time.now
     puts if defined? $log_boot_low
 
+    system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
+
     color_system_class = system_class.to_s.colorize system_class.log_color
 
     log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
