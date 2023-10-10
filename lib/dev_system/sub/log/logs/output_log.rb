@@ -5,7 +5,8 @@ class DevSystem::OutputLog < DevSystem::Log
   def self.call(env)
     env[:sidebar] ||= sidebar_for env
 
-    string = env[:object].to_s
+    string = env[:object]
+    string = string.join("") if string.is_a? Array
 
     unless $coding
       pid = Process.pid

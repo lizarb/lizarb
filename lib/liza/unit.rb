@@ -100,6 +100,14 @@ class Liza::Unit
     DevBox[:log].call env
   end
 
+  def self.stick *args
+    StickLog.new *args
+  end
+
+  def stick *args
+    StickLog.new *args
+  end
+
   #
 
   def self.log_level new_value = nil
