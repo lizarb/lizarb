@@ -1,6 +1,7 @@
 class WebSystem::WebBox < Liza::Box
 
-  # Configure your rack panel per the DSL in http://guides.lizarb.org/panels/rack.html
+  # Preconfigure your rack panel
+
   configure :rack do
     # set :log_level, ENV["web.rack.log_level"]
 
@@ -9,7 +10,8 @@ class WebSystem::WebBox < Liza::Box
     set :port, 3000
   end
 
-  # Configure your request panel per the DSL in http://guides.lizarb.org/panels/request.html
+  # Preconfigure your request panel
+
   configure :request do
     # set :log_level, ENV["web.request.log_level"]
 

@@ -1,8 +1,8 @@
-class NetBox < Liza::NetBox
+class NetBox < NetSystem::NetBox
+
+  # Configure your client panel
 
   configure :client do
-    # Configure your client panel per the DSL in http://guides.lizarb.org/panels/client.html
-
     set :redis_url, "redis://localhost:6379/15"
     set :mongo_hash,  host: "localhost",
                       port: 27017,
@@ -23,9 +23,9 @@ class NetBox < Liza::NetBox
 
   end
 
-  configure :database do
-    # Configure your database panel per the DSL in http://guides.lizarb.org/panels/database.html
+  # Configure your database panel
 
+  configure :database do
     define :redis, RedisDb
     define :mongo, MongoDb
     define :sql, SqliteDb
@@ -34,6 +34,8 @@ class NetBox < Liza::NetBox
     define :pgsql, PgsqlDb
 
   end
+
+  # Configure your record panel
 
   configure :record do
 

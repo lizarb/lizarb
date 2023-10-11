@@ -1,16 +1,21 @@
 class NetSystem::NetBox < Liza::Box
 
-  # Configure your client panel per the DSL in http://guides.lizarb.org/panels/client.html
+  # Preconfigure your client panel
+  
   configure :client do
     # set :log_level, ENV["net.client.log_level"]
   end
 
-  # Configure your database panel per the DSL in http://guides.lizarb.org/panels/database.html
+  # Preconfigure your database panel
+
   configure :database do
     # set :log_level, ENV["net.database.log_level"]
   end
 
+  # Preconfigure your record panel
+
   configure :record do
+    # set :log_level, ENV["net.record.log_level"]
 
   end
   
