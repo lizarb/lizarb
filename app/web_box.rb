@@ -5,6 +5,7 @@ class WebBox < Liza::WebBox
     
     # server (pick one, check gemfile)
     # server :agoo
+    # server :falcon
     server :puma
 
     set :files, App.root.join("web_files")
