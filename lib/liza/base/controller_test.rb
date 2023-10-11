@@ -4,7 +4,14 @@ class Liza::ControllerTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :box, :on_connected, :panel, :puts
+    on_self :box, \
+      :division, :division!, :division?,
+      :on_connected,
+      :panel, :plural,
+      :puts,
+      :singular,
+      :subsystem, :subsystem!, :subsystem?,
+      :token
     on_instance :box, :panel
   end
 
