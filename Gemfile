@@ -39,5 +39,6 @@ group :web do
   gem "rack", "~> 3.0"
   gem "rackup", "~> 0.2.2"
   gem "agoo", "~> 2.15"
+  gem "falcon", "~> 0.42.3"
   gem "puma", "~> 6.3"
 end
