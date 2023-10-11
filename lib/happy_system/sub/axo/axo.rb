@@ -33,15 +33,15 @@ code to the left  >(.___.)<
         puts "cycle: #{i}/#{cycles} (#{sleep_time}spf)"
         puts
         puts
-        puts " " * 3 + s.bold.light_white
+        puts "   #{stick s, :bold, :light_white}"
         puts
 
         sleep sleep_time
       end
     end
 
-    puts "That was actually quite a nice workout session!".black.on_white
-    puts "        We should do this again some time.     ".black.on_white
+    puts stick "That was actually quite a nice workout session!", :black, :white
+    puts stick "        We should do this again some time.     ", :black, :white
 
   end
 
