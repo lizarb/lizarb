@@ -373,7 +373,7 @@ end
       log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
     end
     pad = 21-system_class.name.size
-    log "CONNECTING SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
+    log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
   end
 
   def connect_box key, system_class
