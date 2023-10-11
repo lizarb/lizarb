@@ -3,7 +3,8 @@ class WebBox < Liza::WebBox
   configure :rack do
     # Configure your rack panel per the DSL in http://guides.lizarb.org/panels/rack.html
     
-    # servers (pick one, check gemfile)
+    # server (pick one, check gemfile)
+    # server :agoo
     server :puma
 
     set :files, App.root.join("web_files")
