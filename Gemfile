@@ -40,5 +40,6 @@ group :web do
   gem "rackup", "~> 0.2.2"
   gem "agoo", "~> 2.15"
   gem "falcon", "~> 0.42.3"
+  gem "iodine", "~> 0.7.57"
   gem "puma", "~> 6.3"
 end
