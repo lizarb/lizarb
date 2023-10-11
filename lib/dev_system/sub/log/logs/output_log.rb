@@ -22,8 +22,8 @@ class DevSystem::OutputLog < DevSystem::Log
     sidebar = ""
 
     source = env[:unit_class]
-    source_color = source.log_color
-    system_color = source.system.log_color
+    system_color = source.system.color
+    source_color = source.division.system.color
     size = 0
 
     # TODO: Figure out why RequestPanel is returning false when started from rack command but not from request command
@@ -38,11 +38,11 @@ class DevSystem::OutputLog < DevSystem::Log
 
       namespace, _sep, classname = source.name.rpartition('::')
       unless namespace.empty?
-        sidebar << namespace.colorize(system_color)
+        sidebar << stick(namespace, system_color, :b).to_s
         sidebar << "::"
         size += namespace.size + 2
       end
-      sidebar << classname.colorize(source_color)
+      sidebar << stick(classname, source_color).to_s
       sidebar << "[:#{key}]."
 
       size += classname.size + key.size + 4
@@ -51,11 +51,11 @@ class DevSystem::OutputLog < DevSystem::Log
 
       namespace, _sep, classname = env[:unit_class].name.rpartition('::')
       unless namespace.empty?
-        sidebar << namespace.colorize(system_color)
+        sidebar << stick(namespace, system_color, :b).to_s
         sidebar << "::"
         size += namespace.size + 2
       end
-      sidebar << classname.colorize(source_color)
+      sidebar << stick(classname, source_color).to_s
 
       sidebar << method_sep
       size += classname.size + 1

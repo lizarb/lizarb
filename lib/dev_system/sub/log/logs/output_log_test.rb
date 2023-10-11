@@ -15,19 +15,19 @@ class DevSystem::OutputLogTest < DevSystem::LogTest
   end
   
   test :sidebar_for do
-    assert_equality "DevSystem::Command:call                                    ",
+    assert_equality "\e[1m\e[38;2;0;255;0mDevSystem\e[0m::\e[38;2;0;255;0mCommand\e[0m:call                                    ",
       sidebar_for(
         DevSystem::Command,
         DevSystem::Command,
         "call"
       )
-    assert_equality "DevSystem::TestCommand:call                                ",
+    assert_equality "\e[1m\e[38;2;0;255;0mDevSystem\e[0m::\e[38;2;0;255;0mTestCommand\e[0m:call                                ",
       sidebar_for(
         DevSystem::TestCommand,
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "DevSystem::DevBox[:command].call                           ",
+    assert_equality "\e[38;2;0;255;0mDevBox\e[0m[:command].call                                      ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),
@@ -42,8 +42,7 @@ class DevSystem::OutputLogTest < DevSystem::LogTest
       method_name: method_name
     }
     #
-    s = subject_class.sidebar_for env
-    s.uncolorize
+    subject_class.sidebar_for env
   end
 
 end
