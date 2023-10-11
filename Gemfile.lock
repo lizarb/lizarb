@@ -47,8 +47,10 @@ GEM
     console (1.23.2)
       fiber-annotation
       fiber-local
+    daemons (1.4.1)
     diff-lcs (1.5.0)
     dotenv (2.8.1)
+    eventmachine (1.2.7)
     execjs (2.8.1)
     falcon (0.42.3)
       async
@@ -119,6 +121,10 @@ GEM
     sqlite3 (1.6.3-arm64-darwin)
     sqlite3 (1.6.3-x86_64-linux)
     temple (0.10.0)
+    thin (1.6.2)
+      daemons (>= 1.0.9)
+      eventmachine (>= 1.0.0)
+      rack (>= 1.0.0)
     thor (1.2.1)
     tilt (2.1.0)
     timers (4.3.5)
@@ -161,6 +167,7 @@ DEPENDENCIES
   redis (~> 5.0)
   sassc (~> 2.4)
   sqlite3 (~> 1.5)
+  thin (~> 1.6)
   tty-prompt (~> 0.23.1)
 
 BUNDLED WITH

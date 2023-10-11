@@ -8,6 +8,7 @@ class WebBox < Liza::WebBox
     # server :falcon
     # server :iodine
     server :puma
+    # server :thin
 
     set :files, App.root.join("web_files")
     set :host, "localhost"
