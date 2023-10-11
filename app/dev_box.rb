@@ -1,17 +1,20 @@
-class DevBox < Liza::DevBox
+class DevBox < DevSystem::DevBox
 
-  # Configure your bench panel per the DSL in http://guides.lizarb.org/panels/bench.html
+  # Configure your bench panel
+
   configure :bench do
     # set :log_level, ENV["dev.bench.log_level"]
   end
 
-  # Configure your command panel per the DSL in http://guides.lizarb.org/panels/command.html
+  # Configure your command panel
+
   configure :command do
     # set :log_level, ENV["dev.command.log_level"]
     set :log_details, false
 
     short :b, :bench
     short :g, :generate
+    short :t, :terminal
 
     # rescue_from declarations are checked bottom to top
 
@@ -21,7 +24,8 @@ class DevBox < Liza::DevBox
     rescue_from CommandPanel::NotFoundError, with: NotFoundCommand
   end
 
-  # Configure your generator panel per the DSL in http://guides.lizarb.org/panels/generator.html
+  # Configure your generator panel
+
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
     set :log_details, false
@@ -43,7 +47,8 @@ class DevBox < Liza::DevBox
     rescue_from GeneratorPanel::ParseError, with: NotFoundGenerator
   end
 
-  # Configure your command panel per the DSL in http://guides.lizarb.org/panels/log.html
+  # Configure your log panel
+
   configure :log do
     # set :log_level, ENV["dev.log.log_level"]
 
@@ -57,12 +62,14 @@ class DevBox < Liza::DevBox
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 
-  # Configure your shell panel per the DSL in http://guides.lizarb.org/panels/shell.html
+  # Configure your shell panel
+
   configure :shell do
     # set :log_level, ENV["dev.shell.log_level"]
   end
 
-  # Configure your terminal panel per the DSL in http://guides.lizarb.org/panels/terminal.html
+  # Configure your terminal panel
+
   configure :terminal do
     # set :log_level, ENV["dev.terminal.log_level"]
     set :log_details, false

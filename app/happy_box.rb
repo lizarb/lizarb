@@ -1,7 +1,8 @@
-class HappyBox < Liza::HappyBox
+class HappyBox < HappySystem::HappyBox
+  
+  # Configure your axo panel
 
   configure :axo do
-    # Configure your axo panel per the DSL in http://guides.lizarb.com/panels/axo.html
 
   end
 

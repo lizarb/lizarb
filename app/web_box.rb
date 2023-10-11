@@ -1,8 +1,8 @@
-class WebBox < Liza::WebBox
+class WebBox < WebSystem::WebBox
+
+  # Configure your rack panel
 
   configure :rack do
-    # Configure your rack panel per the DSL in http://guides.lizarb.org/panels/rack.html
-    
     # server (pick one, check gemfile)
     # server :agoo
     # server :falcon
@@ -15,9 +15,9 @@ class WebBox < Liza::WebBox
     set :port, 3000
   end
 
-  configure :request do
-    # Configure your request panel per the DSL in http://guides.lizarb.org/panels/request.html
+  # Configure your request panel
 
+  configure :request do
     router :simple
   end
 
