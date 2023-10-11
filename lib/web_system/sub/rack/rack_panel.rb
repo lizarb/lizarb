@@ -40,6 +40,8 @@ class WebSystem::RackPanel < Liza::Panel
     rack_app = FirstMiddleRack.new rack_app
     rack_app = ZeitwerkMiddleRack.new rack_app if $coding
 
+    require "rack"
+
     files ||= get :files
     rack_files = Object::Rack::Files.new files
     rack_app = Object::Rack::Cascade.new [rack_files, rack_app]
