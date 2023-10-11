@@ -5,8 +5,12 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in lizarb.gemspec
 gemspec
 
+group :systems do
+  # gem "echo_system", "~> 1.0"
+end
+
 group :dev do
-  # gems you only want to load if DevSystem is loaded
+  # gems used by DevSystem
 
   # Generator gems
   gem "htmlbeautifier", "~> 1.4"
@@ -22,11 +26,11 @@ group :dev do
 end
 
 group :happy do
-  # gems you only want to load if HappySystem is loaded
+  # gems used by HappySystem
 end
 
 group :net do
-  # gems you only want to load if NetSystem is loaded
+  # gems used by NetSystem
   gem "redis", "~> 5.0"
   gem "mongo", "~> 2.19"
   gem "sqlite3", "~> 1.5"
@@ -35,7 +39,7 @@ group :net do
 end
 
 group :web do
-  # gems you only want to load if WebSystem is loaded
+  # gems used by WebSystem
   gem "rack", "~> 3.0"
   gem "rackup", "~> 0.2.2"
   gem "agoo", "~> 2.15"
