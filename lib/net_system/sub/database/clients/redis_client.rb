@@ -3,6 +3,7 @@ class NetSystem::RedisClient < NetSystem::Client
   # https://redis.io/
   # https://github.com/redis/redis-rb
   def initialize *args
+    require "redis"
     t = Time.now
     args = [url: NetBox[:client].get(:redis_url)] if args.empty?
     @conn = Redis.new(*args)
