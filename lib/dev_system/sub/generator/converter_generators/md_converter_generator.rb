@@ -15,6 +15,7 @@ class DevSystem::MdConverterGenerator < DevSystem::ConverterGenerator
     
     log "#{string.size} chars (options: #{options.inspect})" if log_details
 
+    require "commonmarker"
     # CommonMarker.render_html markdown, [:HARDBREAKS, :SOURCEPOS, :UNSAFE]
     CommonMarker.render_html string, :DEFAULT
   end

@@ -15,6 +15,8 @@ class DevSystem::CoffeeConverterGenerator < DevSystem::ConverterGenerator
     
     log "#{string.size} chars (options: #{options.inspect})" if log_details
 
+    require "coffee-script"
+    
     CoffeeScript.compile string
   end
 
