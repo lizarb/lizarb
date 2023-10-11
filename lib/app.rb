@@ -27,6 +27,10 @@ class App
     @root
   end
 
+  def self.filename
+    root.join "#{$APP}.rb"
+  end
+
   # path
 
   def self.path path = nil
