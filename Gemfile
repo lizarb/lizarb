@@ -42,4 +42,5 @@ group :web do
   gem "falcon", "~> 0.42.3"
   gem "iodine", "~> 0.7.57"
   gem "puma", "~> 6.3"
+  gem "thin", "~> 1.6"
 end
