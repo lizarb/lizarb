@@ -89,7 +89,6 @@ module Lizarb
     log "#{self}.#{__method__}" if defined? $log_boot_normal
 
     lookup_and_set_mode
-    lookup_and_require_dependencies
     lookup_and_load_settings
     require_liza_and_systems
     connect_systems
@@ -185,11 +184,6 @@ module Lizarb
     log "    $mode = #{$mode.inspect}" if defined? $log_boot_lower
     $coding = $mode == :code
     log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_lower
-  end
-
-  def lookup_and_require_dependencies
-    log "  Lizarb.#{__method__}" if defined? $log_boot_low
-    Bundler.require :default, *App.systems.keys
   end
 
   def lookup_and_load_settings
