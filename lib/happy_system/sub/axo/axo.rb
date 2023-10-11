@@ -26,7 +26,7 @@ code to the left  >(.___.)<
 
     cycles.times do |i|
       array.each_with_index do |s, j|
-        system "clear"
+        Kernel.system "clear"
 
         puts "Axo v0"
         puts "frame: #{j}/#{array.size}"
