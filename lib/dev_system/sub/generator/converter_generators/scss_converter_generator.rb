@@ -15,6 +15,7 @@ class DevSystem::ScssConverterGenerator < DevSystem::ConverterGenerator
     
     log "#{string.size} chars (options: #{options.inspect})" if log_details
 
+    require "sassc"
     # output = SassC::Engine.new(scss, line_comments: true).render
     # output = SassC::Engine.new(scss, style: :sass_style_nested).render
     # output = SassC::Engine.new(scss, style: :sass_style_compact).render

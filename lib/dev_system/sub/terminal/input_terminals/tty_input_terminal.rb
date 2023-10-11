@@ -1,6 +1,7 @@
 class DevSystem::TtyInputTerminal < DevSystem::InputTerminal
 
   def self.prompt
+    require "tty-prompt"
     @prompt ||= TTY::Prompt.new symbols: {marker: ">", radio_on: "x", radio_off: " "}
   end
 

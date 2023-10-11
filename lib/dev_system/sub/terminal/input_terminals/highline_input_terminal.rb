@@ -1,6 +1,7 @@
 class DevSystem::HighlineInputTerminal < DevSystem::InputTerminal
 
   def self.highline
+    require "highline"
     @highline ||= HighLine.new
   end
 

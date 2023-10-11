@@ -25,6 +25,7 @@ class DevSystem::HamlConverterGenerator < DevSystem::ConverterGenerator
     template_options = {}
     scope = Object.new
     locals = {}
+    require "haml"
     Haml::Template.new(template_options) { haml }.render(scope, locals)
   end
 

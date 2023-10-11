@@ -15,6 +15,7 @@ class DevSystem::HtmlFormatterGenerator < DevSystem::FormatterGenerator
     
     log "#{string.size} chars (options: #{options.inspect})" if log_details
 
+    require "htmlbeautifier"
     HtmlBeautifier.beautify string
   end
 
