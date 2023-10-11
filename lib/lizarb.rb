@@ -398,7 +398,6 @@ end
       pad = 18-box_class.name.size-sub_key.to_s.size
       log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel.class.last_namespace.ljust_blanks 20} and it configures #{controller_class.last_namespace}" if defined? $log_boot_low
     end
-    index += 1
     pad = 21-box_class.name.size
     log "CONNECTED  BOX            #{t.diff}s for #{color_box_class}#{"".ljust pad} to connect to #{index} panels" if defined? $log_boot_low
   end
