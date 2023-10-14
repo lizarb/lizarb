@@ -31,13 +31,13 @@ class DevBox < DevSystem::DevBox
     set :log_details, false
 
     # formatters
-    formatter :html if defined? HtmlBeautifier
+    formatter :html
 
     # converters
-    converter :html, :md     if defined? CommonMarker
-    converter :html, :haml   if defined? Haml
-    converter :js,   :coffee if defined? CoffeeScript
-    converter :css,  :scss   if defined? SassC
+    converter :html, :md
+    converter :html, :haml
+    converter :js,   :coffee
+    converter :css,  :scss
 
     # rescue_from declarations are checked bottom to top
 
@@ -79,8 +79,8 @@ class DevBox < DevSystem::DevBox
     # default :pry
 
     # input (pick one)
-    # input :highline # gem "highline"
-    input :tty # gem "tty-prompt"
+    # input :highline
+    input :tty
 
     # pallet (pick one)
     # pallet :solarized
