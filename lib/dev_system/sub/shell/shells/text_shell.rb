@@ -24,6 +24,21 @@ class DevSystem::TextShell < DevSystem::FileShell
     File.read path
   end
 
+  def self.read_lines path, log_level: self.log_level
+    log log_level, "Reading lines from #{path}"
+    return [] unless exist? path
+
+    File.readlines path
+  end
+
+  def self.read_lines! path, log_level: self.log_level
+    log log_level, "Reading lines from #{path}"
+    _raise_if_blank path
+    _raise_if_not_exists path
+
+    File.readlines path
+  end
+
   #
 
   def self.append_line_after_last_including(path:, newline:, after:)
