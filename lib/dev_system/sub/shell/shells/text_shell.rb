@@ -1,14 +1,8 @@
 class DevSystem::TextShell < DevSystem::FileShell
+
+  #
     
   set :create_dir, true
-  
-  def self.read path, log_level: self.log_level
-    log log_level, "Reading #{path}"
-    _raise_if_blank path
-    _raise_if_not_exists path
-
-    File.read path
-  end
   
   def self.write path, content, create_dir: nil, log_level: self.log_level
     log log_level, "Writing #{content.to_s.size} characters (#{content.encoding}) to #{path}"
@@ -20,8 +14,20 @@ class DevSystem::TextShell < DevSystem::FileShell
     File.write path, content
   end
 
+  #
+  
+  def self.read path, log_level: self.log_level
+    log log_level, "Reading #{path}"
+    _raise_if_blank path
+    _raise_if_not_exists path
+
+    File.read path
+  end
+
+  #
+
   def self.append_line_after_last_including(path:, newline:, after:)
-    log "appending to #{path}"
+    log "Appending to #{path}"
     state = nil
     lines = File.readlines(path)
     File.open(path, "w") do |out|
@@ -31,18 +37,14 @@ class DevSystem::TextShell < DevSystem::FileShell
         
         if state == :left_systems_region
           out.write("#{newline}\n")
-          log newline.strip.green if log_append?
+          log :low, newline.strip.green
           state = :done
         end
         
         out.write(line)
-        log line.strip.light_black if log_append?
+        log :low, line.strip.light_black
       end
     end
-  end
-
-  def self.log_append?
-    true
   end
 
 end
