@@ -7,13 +7,11 @@ class DevSystem::HtmlFormatterGenerator < DevSystem::FormatterGenerator
   # https://github.com/threedaymonk/htmlbeautifier
 
   def self.format string, options = {}
-    log_details = DevBox[:generator].get :log_details
-
-    log "default_options = #{default_options.inspect} | options = #{options.inspect}" if log_details
+    log :lower, "default_options = #{default_options.inspect} | options = #{options.inspect}"
 
     options = default_options.merge options if options.any? && default_options.any?
     
-    log "#{string.size} chars (options: #{options.inspect})" if log_details
+    log :lower, "#{string.size} chars (options: #{options.inspect})"
 
     require "htmlbeautifier"
     HtmlBeautifier.beautify string

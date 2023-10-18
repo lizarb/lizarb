@@ -7,7 +7,7 @@ class DevSystem::FormatterGenerator < DevSystem::Generator
   #
 
   def self.call args
-    log "args = #{args.inspect}" if DevBox[:generator].get :log_details
+    log :lower, "args = #{args.inspect}"
   end
 
 end

@@ -39,7 +39,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   end
 
   def _call_log string
-    log "#{string}" if get :log_details
+    log :lower, "#{string}"
   end
 
   #
@@ -51,7 +51,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
     hash = md.named_captures
-    log "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}" if get :log_details
+    log :lower, "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}"
     OpenStruct.new hash
   end
 
@@ -59,7 +59,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
   def find string
     k = Liza.const "#{string}_generator"
-    log k if get :log_details
+    log :lower, k
     k
   rescue Liza::ConstNotFound
     raise ParseError, "generator not found: #{string.inspect}"
@@ -94,10 +94,10 @@ class DevSystem::GeneratorPanel < Liza::Panel
   def format! format, string
     format = format.to_sym
     if format? format
-      log "formatter found" if get :log_details
+      log :lower, "formatter found"
       formatters[format][:generator].format string
     else
-      log "formatter not found" if get :log_details
+      log :lower, "formatter not found"
       raise FormatterError, "no formatter for #{format.inspect}"
     end
   end
@@ -105,10 +105,10 @@ class DevSystem::GeneratorPanel < Liza::Panel
   def format format, string, options = {}
     format = format.to_sym
     if format? format
-      log "formatter found" if get :log_details
+      log :lower, "formatter found"
       formatters[format][:generator].format string, options
     else
-      log "formatter not found" if get :log_details
+      log :lower, "formatter not found"
       string
     end
   end
@@ -145,10 +145,10 @@ class DevSystem::GeneratorPanel < Liza::Panel
   def convert! format, string, options = {}
     format = format.to_sym
     if convert? format
-      log "converter found" if get :log_details
+      log :lower, "converter found"
       converters[format][:generator].convert string
     else
-      log "converter not found" if get :log_details
+      log :lower, "converter not found"
       raise ConverterError, "no converter for #{format.inspect}"
     end
   end
@@ -156,10 +156,10 @@ class DevSystem::GeneratorPanel < Liza::Panel
   def convert format, string, options = {}
     format = format.to_sym
     if convert? format
-      log "converter found" if get :log_details
+      log :lower, "converter found"
       converters[format][:generator].convert string, options
     else
-      log "converter not found" if get :log_details
+      log :lower, "converter not found"
       string
     end
   end

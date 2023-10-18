@@ -10,7 +10,6 @@ class DevBox < DevSystem::DevBox
 
   configure :command do
     # set :log_level, ENV["dev.command.log_level"]
-    set :log_details, false
 
     short :b, :bench
     short :g, :generate
@@ -28,7 +27,6 @@ class DevBox < DevSystem::DevBox
 
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
-    set :log_details, false
 
     # formatters
     formatter :html
@@ -72,7 +70,6 @@ class DevBox < DevSystem::DevBox
 
   configure :terminal do
     # set :log_level, ENV["dev.terminal.log_level"]
-    set :log_details, false
     
     # default (pick one)
     default :irb

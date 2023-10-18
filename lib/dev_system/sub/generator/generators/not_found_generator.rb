@@ -7,7 +7,7 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
     puts
 
     rescuer = args.pop if args.last.is_a? Hash
-    log "rescuer = #{rescuer.inspect}" if rescuer and get :log_details
+    log :lower, "rescuer = #{rescuer.inspect}" if rescuer
 
     # 2. FIND generators
 
