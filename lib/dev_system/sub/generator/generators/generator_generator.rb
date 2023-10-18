@@ -166,7 +166,7 @@ class Error < Liza::Error; end
 
   #
 
-  set :log_color, :white
+  color :white
 
 # view box.rb.erb
 

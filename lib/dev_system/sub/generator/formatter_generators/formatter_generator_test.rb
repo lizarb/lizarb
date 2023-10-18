@@ -5,8 +5,7 @@ class DevSystem::FormatterGeneratorTest < DevSystem::GeneratorTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :green
+    assert_equality subject_class.log_level, 0
 
     assert_equality subject_class.token, :formatter
     assert_equality subject_class.singular, :formatter_generator

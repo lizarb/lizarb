@@ -5,8 +5,7 @@ class DevSystem::GemfileGeneratorTest < DevSystem::GeneratorTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :green
+    assert_equality subject_class.log_level, 0
   end
 
 end

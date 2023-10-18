@@ -2,8 +2,7 @@
 class Liza::TestTest < Liza::UnitTest
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :white
+    assert_equality subject_class.log_level, 0
   end
 
   test_methods_defined do

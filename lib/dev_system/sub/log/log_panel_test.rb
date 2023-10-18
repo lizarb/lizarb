@@ -11,7 +11,6 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
   test :settings do
     assert_equality subject_class.log_level, 0
-    assert_equality subject_class.log_color, :green
   end
 
   test :call, :unit_log_level, true do

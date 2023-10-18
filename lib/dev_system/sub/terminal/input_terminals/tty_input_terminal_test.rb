@@ -5,8 +5,7 @@ class DevSystem::TtyInputTerminalTest < DevSystem::InputTerminalTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :green
+    assert_equality subject_class.log_level, 0
 
     assert_equality subject_class.token, :tty
     assert_equality subject_class.singular, :tty_input_terminal
