@@ -21,7 +21,7 @@ Did you accidentally fall into an infinite loop?
       raise "@render_format or @format must be set, or format keyword-argument must be given" if format.nil?
       @render_format = format = format.to_sym
 
-      log_rendering = get :log_render
+      log_rendering = log_level? :low
       
       if keys.any?
         log_render_in keys, kaller: caller if log_rendering

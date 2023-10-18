@@ -29,7 +29,6 @@ class App
   # App settings
 
   set :log_erb, false
-  set :log_render, false
 
   # Your mode is where you get global environment variables from
 
