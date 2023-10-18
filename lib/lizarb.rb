@@ -221,12 +221,7 @@ module Lizarb
 
     # App settings are copied to Liza::Unit
 
-    log "      App settings are copied to Liza::Unit" if defined? $log_boot_lowest
-    App.settings.each do |k, v|
-      Liza::Unit.set k, v
-    end
-
-    Liza::Unit.set :division, Liza::Controller
+    forward_app_settings
 
     # bundle each System gem
 
@@ -398,6 +393,7 @@ end
       pad = 18-box_class.name.size-sub_key.to_s.size
       log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel.class.last_namespace.ljust_blanks 20} and it configures #{controller_class.last_namespace}" if defined? $log_boot_low
     end
+    index += 1
     pad = 21-box_class.name.size
     log "CONNECTED  BOX            #{t.diff}s for #{color_box_class}#{"".ljust pad} to connect to #{index} panels" if defined? $log_boot_low
   end
@@ -443,12 +439,25 @@ end
 
   def reload &block
     @mutex.synchronize do
-      Lizarb.loaders.map &:reload
+      loaders.map &:reload
+
+      forward_app_settings
+
       yield if block_given?
     end
 
     true
   end
+
+  def forward_app_settings
+    log "      App settings are copied to Liza::Unit" if defined? $log_boot_lowest
+    App.settings.each do |k, v|
+      Liza::Unit.set k, v
+    end
+
+    Liza::Unit.set :division, Liza::Controller
+  end
+
 
   # thread management
 
