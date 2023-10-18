@@ -4,7 +4,7 @@ class DevSystem::CommandPanel < Liza::Panel
   class NotFoundError < Error; end
 
   def call args
-    log "args = #{args.inspect}" if get :log_details
+    log :lower, "args = #{args.inspect}"
 
     return call_not_found args if args.none?
 
@@ -36,7 +36,7 @@ class DevSystem::CommandPanel < Liza::Panel
   end
 
   def _call_log string
-    log "#{string}" if get :log_details
+    log :lower, "#{string}"
   end
 
   #
@@ -48,7 +48,7 @@ class DevSystem::CommandPanel < Liza::Panel
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
     hash = md.named_captures
-    log "{#{hash.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}" if get :log_details
+    log :lower, "{#{hash.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
     OpenStruct.new hash
   end
 
@@ -56,7 +56,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def find string
     k = Liza.const "#{string}_command"
-    log k if get :log_details
+    log :lower, k
     k
   rescue Liza::ConstNotFound
     raise NotFoundError, "command not found: #{string.inspect}"

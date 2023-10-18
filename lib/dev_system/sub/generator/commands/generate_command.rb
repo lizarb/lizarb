@@ -1,13 +1,13 @@
 class DevSystem::GenerateCommand < DevSystem::Command
 
   def call args
-    log "args = #{args}" if DevBox[:generator].get :log_details
+    log :lower, "args = #{args}"
 
     DevBox[:generator].call args
   end
 
   def self.format args
-    log "args = #{args.inspect}" if DevBox[:generator].get :log_details
+    log :lower, "args = #{args.inspect}"
 
     raise ArgumentError, "args[0] must be present" unless args[0]
 
@@ -26,7 +26,7 @@ class DevSystem::GenerateCommand < DevSystem::Command
   end
 
   def self.convert args
-    log "args = #{args.inspect}" if DevBox[:generator].get :log_details
+    log :lower, "args = #{args.inspect}"
 
     raise ArgumentError, "args[0] must be present" unless args[0]
 

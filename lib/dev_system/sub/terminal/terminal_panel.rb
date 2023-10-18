@@ -2,7 +2,7 @@ class DevSystem::TerminalPanel < Liza::Panel
   class AlreadySet < Error; end
 
   def call args
-    log "args = #{args.inspect}" if get :log_details
+    log :lower, "args = #{args.inspect}"
 
     terminal = if args.any?
       find args[0]

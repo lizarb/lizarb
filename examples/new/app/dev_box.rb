@@ -3,8 +3,6 @@ class DevBox < DevSystem::DevBox
   # Configure your command panel
   
   configure :command do
-    set :log_details, false
-    
     short :b, :bench
     short :g, :generate
 
@@ -19,8 +17,6 @@ class DevBox < DevSystem::DevBox
   # Configure your generator panel
   
   configure :generator do
-    set :log_details, false
-
     # formatters
     # formatter :html
 
@@ -54,8 +50,6 @@ class DevBox < DevSystem::DevBox
   # Configure your terminal panel
   
   configure :terminal do
-    set :log_details, false
-
     # default (pick one)
     default :irb
     # default :pry

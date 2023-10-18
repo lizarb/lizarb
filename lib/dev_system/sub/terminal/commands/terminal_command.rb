@@ -1,19 +1,19 @@
 class DevSystem::TerminalCommand < DevSystem::Command
 
   def self.call args
-    log "args = #{args}" if DevBox[:terminal].get :log_details
+    log :lower, "args = #{args}"
 
     DevBox[:terminal].call args
   end
 
   def self.input args
-    log "args = #{args}" if DevBox[:terminal].get :log_details
+    log :lower, "args = #{args}"
 
     DevBox[:terminal].input.call args
   end
 
   def self.pallet args
-    log "args = #{args.inspect}"
+    log :lower, "args = #{args}"
 
     if args[0]
       args[0] = "#{args[0]}_pallet"

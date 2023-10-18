@@ -4,7 +4,7 @@ class DevSystem::NotFoundCommand < DevSystem::Command
     # 1. LOG
 
     rescuer = args.pop if args.last.is_a? Hash
-    log "rescuer = #{rescuer.inspect}" if rescuer and get :log_details
+    log :lower, "rescuer = #{rescuer.inspect}" if rescuer
 
     log "args = #{args.inspect}"
     puts
