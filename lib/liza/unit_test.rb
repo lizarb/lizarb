@@ -116,7 +116,6 @@ class Liza::UnitTest < Liza::Test
     assert_equality subject_class.settings, {
       log_level: 0,
       log_erb: false,
-      log_render: false
     }
   end
 

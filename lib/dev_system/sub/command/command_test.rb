@@ -12,7 +12,6 @@ class DevSystem::CommandTest < Liza::ControllerTest
   test :settings do
     assert_equality subject_class.log_level, 0
     assert_equality subject_class.get(:log_erb), false
-    assert_equality subject_class.get(:log_render), false
   end
 
 end
