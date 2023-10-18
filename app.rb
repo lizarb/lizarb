@@ -26,10 +26,6 @@ class App
   # log_level :lower
   # log_level :lowest
 
-  # App settings
-
-  set :log_erb, false
-
   # Your mode is where you get global environment variables from
 
   # mode :code # default

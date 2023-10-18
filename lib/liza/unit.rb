@@ -59,8 +59,6 @@ class Liza::Unit
 
   # LOG
 
-  set :log_erb, false
-
   def self.log_levels()= App::LOG_LEVELS
   def log_levels()= App::LOG_LEVELS
 
