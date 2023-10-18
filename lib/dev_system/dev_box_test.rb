@@ -10,7 +10,7 @@ class DevSystem::DevBoxTest < Liza::BoxTest
       :convert, :convert?, :converters, :converters_to,
       :format, :format?, :formatters,
       :input,
-      :pick_one
+      :pick_many, :pick_one
     on_instance
   end
 
