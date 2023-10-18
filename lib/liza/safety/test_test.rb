@@ -10,6 +10,7 @@ class Liza::TestTest < Liza::UnitTest
       :after, :after_stack,
       :before, :before_stack,
       :call,
+      :division,
       :group,
       :log_test_building, :log_test_building?,
       :subject_class,
@@ -22,6 +23,7 @@ class Liza::TestTest < Liza::UnitTest
       :assertions, :assertions=,
       :call,
       :critical,
+      :division,
       :group,
       :log_test_assertion, :log_test_assertion?,
       :log_test_assertion_message, :log_test_assertion_message?,
@@ -106,7 +108,7 @@ class Liza::TestTest < Liza::UnitTest
       if Shell.jruby?
         todo "jruby!"
       else
-        assert_equality instance_variables, [:@test_words, :@before_stack, :@after_stack, :@test_block]
+        assert_equality instance_variables, [:@test_words, :@before_stack, :@after_stack, :@test_block, :@settings]
       end
     end
 
