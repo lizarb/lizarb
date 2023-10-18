@@ -37,7 +37,7 @@ class DevSystem::SystemGenerator < DevSystem::Generator
         @superclass_name = "Liza::System"
         @template = :system
         @path = "lib/#{name.snakecase}_system.rb"
-        @color = [:black, :light_black, :red, :light_red, :green, :light_green, :yellow, :light_yellow, :blue, :light_blue, :magenta, :light_magenta, :cyan, :light_cyan, :white, :light_white].sample
+        @color = [:red, :green, :yellow, :blue, :magenta, :cyan, :white].sample
         @args = args
       end
     end
@@ -126,7 +126,7 @@ class Error < Liza::Error; end
 
   #
 
-  set :log_color, :<%= @color %>
+  color 0x<%= @color %>
 
 # view box.rb.erb
 

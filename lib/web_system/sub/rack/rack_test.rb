@@ -5,8 +5,7 @@ class WebSystem::RackTest < Liza::ControllerTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :blue
+    assert_equality subject_class.log_level, 0
   end
 
   # test :call do

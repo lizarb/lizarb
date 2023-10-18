@@ -5,8 +5,7 @@ class DevSystem::LineDiffShellTest < DevSystem::ShellTest
   end
 
   test :settings do
-    assert_equality subject_class.log_level, :normal
-    assert_equality subject_class.log_color, :green
+    assert_equality subject_class.log_level, 0
   end
 
 end

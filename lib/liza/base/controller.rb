@@ -9,8 +9,4 @@ class Liza::Controller < Liza::Unit
     division!
   end
 
-  def self.log_color
-    (box || system).log_color
-  end
-
 end

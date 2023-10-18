@@ -59,7 +59,6 @@ class Liza::Unit
 
   # LOG
 
-  set :log_color, :white
   set :log_erb, false
   set :log_render, false
 
@@ -128,10 +127,6 @@ class Liza::Unit
     else
       get :log_level
     end
-  end
-
-  def self.log_color
-    system.get :log_color
   end
 
   def self.log_hash hash, prefix: "", kaller: caller[1..-1]
