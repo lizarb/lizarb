@@ -19,11 +19,11 @@ class Liza::System < Liza::Unit
   #
 
   def self.subs
-    @subs ||= {}
+    @subs ||= []
   end
 
   def self.sub name
-    subs[name.to_sym] = nil
+    subs << name
   end
 
   def self.token
@@ -31,13 +31,7 @@ class Liza::System < Liza::Unit
   end
 
   def self.box
-    @box ||= Liza.const "#{token}_box"
-  rescue Liza::ConstNotFound
-    nil
-  end
-
-  def self.box?
-    !!box
+    @box ||= self.const_get "#{token}_box".camelize
   end
 
   # SYSTEM

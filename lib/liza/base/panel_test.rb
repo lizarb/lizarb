@@ -10,7 +10,8 @@ class Liza::PanelTest < Liza::UnitTest
   test_methods_defined do
     on_self :box,
     :controller, :division,
-    :on_connected, :puts
+    :puts,
+    :token
     on_instance \
       :box,
       :controller, :division,

@@ -219,10 +219,6 @@ module Lizarb
     loader.enable_reloading
     loader.setup
 
-    # App settings are copied to Liza::Unit
-
-    forward_app_settings
-
     # bundle each System gem
 
     Bundler.require :systems
@@ -367,8 +363,8 @@ end
       end
       log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
     end
-    pad = 21-system_class.name.size
-    log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
+    # pad = 21-system_class.name.size
+    # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
   end
 
   def connect_box key, system_class
@@ -379,23 +375,17 @@ end
 
     log "CONNECTING BOX                        #{color_box_class}" if defined? $log_boot_low
     index = 0
-    system_class.subs.keys.each do |sub_key|
-      box_class.configure(sub_key, &proc {}) unless box_class.panels.key? sub_key
-      panel = box_class[sub_key]
-      controller_class = system_class.const sub_key
-
-      panel.class.on_connected box_class, controller_class
-      controller_class.on_connected box_class, panel
-
-      system_class.subs[sub_key] = controller_class
+    # system_class.subs.keys.each do |sub_key|
+    system_class.subs.each do |sub_key|
+      panel_class_name      = "#{sub_key}_panel".camelize
+      controller_class_name = sub_key.to_s.camelize
 
       index += 1
-      pad = 18-box_class.name.size-sub_key.to_s.size
-      log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel.class.last_namespace.ljust_blanks 20} and it configures #{controller_class.last_namespace}" if defined? $log_boot_low
+      pad = 30-box_class.name.size-sub_key.to_s.size
+      log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel_class_name.ljust_blanks 20} and it configures #{controller_class_name}" if defined? $log_boot_low
     end
-    index += 1
-    pad = 21-box_class.name.size
-    log "CONNECTED  BOX            #{t.diff}s for #{color_box_class}#{"".ljust pad} to connect to #{index} panels" if defined? $log_boot_low
+
+    log "CONNECTED  BOX            #{t.diff}s" if defined? $log_boot_low
   end
 
   # parts
@@ -440,24 +430,11 @@ end
   def reload &block
     @mutex.synchronize do
       loaders.map &:reload
-
-      forward_app_settings
-
       yield if block_given?
     end
 
     true
   end
-
-  def forward_app_settings
-    log "      App settings are copied to Liza::Unit" if defined? $log_boot_lowest
-    App.settings.each do |k, v|
-      Liza::Unit.set k, v
-    end
-
-    Liza::Unit.set :division, Liza::Controller
-  end
-
 
   # thread management
 
