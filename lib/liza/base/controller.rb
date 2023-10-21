@@ -2,11 +2,18 @@ class Liza::Controller < Liza::Unit
 
   part :controller_subsystem
 
-  def self.on_connected box_klass, panel
-    # REMEMBER: these are top-level controllers
-    # REMEMBER: the class and its settings are already loaded at this point
-    subsystem! box_klass, panel
+  def self.on_connected
+    token = self.last_namespace.snakecase.to_sym
+    panel = system.const("#{token}_panel").new name
+
+    subsystem! system.box, panel
     division!
+  end
+
+  def self.inherited klass
+    super
+
+    klass.on_connected if klass.superclass == Liza::Controller
   end
 
 end

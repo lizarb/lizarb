@@ -1,26 +1,26 @@
 class Liza::Panel < Liza::Unit
 
+  #
+
   part :panel_rescuer
+
+  #
 
   set :box, Liza::Box
   set :controller, Liza::Controller
 
-  def self.on_connected box_class, controller_class
-    set :box, box_class
-    set :controller, controller_class
-    set :division, controller_class
-  end
+  #
 
   def self.box
-    get :box
+    system.box
   end
 
   def box
-    self.class.box
+    system.box
   end
 
   def self.controller
-    get :controller
+    @controller ||= system.const token
   end
 
   def controller
@@ -33,6 +33,10 @@ class Liza::Panel < Liza::Unit
 
   def division
     controller.division
+  end
+
+  def self.token
+    @token ||= last_namespace.gsub(/Panel$/, '').snakecase.to_sym
   end
 
   #

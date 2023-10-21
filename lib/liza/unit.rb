@@ -78,6 +78,13 @@ class Liza::Unit
 
   public :system
 
+  #
+
+  App.settings.each do |k, v|
+    set k, v
+  end
+  set :division, Liza::Controller
+  
 end
 
 __END__

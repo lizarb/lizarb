@@ -26,7 +26,7 @@ class DevSystem::OutputLogTest < DevSystem::LogTest
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "\e[38;2;0;255;0mDevBox\e[0m[:command].call                                      ",
+    assert_equality "\e[1m\e[38;2;0;255;0mDevSystem\e[0m::\e[38;2;0;255;0mDevBox\e[0m[:command].call                           ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),
