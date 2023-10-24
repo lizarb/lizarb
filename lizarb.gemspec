@@ -15,10 +15,10 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata = {
-    "homepage_uri"    => "https://github.com/rubyonrails-brasil/lizarb",
-    "changelog_uri"   => "https://github.com/rubyonrails-brasil/lizarb/blob/main/CHANGELOG.md",
-    "source_code_uri" => "https://github.com/rubyonrails-brasil/lizarb",
-    "bug_tracker_uri" => "https://github.com/rubyonrails-brasil/lizarb/issues"
+    "homepage_uri"    => "https://github.com/lizarb/lizarb",
+    "changelog_uri"   => "https://github.com/lizarb/lizarb/blob/main/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/lizarb/lizarb",
+    "bug_tracker_uri" => "https://github.com/lizarb/lizarb/issues"
   }
 
   # Specify which files should be added to the gem when it is released.
