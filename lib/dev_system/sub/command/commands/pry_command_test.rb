@@ -1,7 +1,7 @@
-class DevSystem::PryTerminalTest < DevSystem::TerminalTest
+class DevSystem::PryCommandTest < DevSystem::CommandTest
 
   test :subject_class do
-    assert subject_class == DevSystem::PryTerminal
+    assert subject_class == DevSystem::PryCommand
   end
 
   test :settings do

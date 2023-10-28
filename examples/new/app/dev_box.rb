@@ -5,8 +5,11 @@ class DevBox < DevSystem::DevBox
   configure :command do
     short :b, :bench
     short :g, :generate
+    short :i, :irb
+    short :p, :pry
     short :s, :shell
-
+    short :t, :test
+    
     # input (pick one)
     # input :highline
     input :tty
@@ -62,7 +65,7 @@ class DevBox < DevSystem::DevBox
   
   configure :terminal do
     # default (pick one)
-    default :irb
+    # default :irb
     # default :pry
 
     # pallet (pick one)

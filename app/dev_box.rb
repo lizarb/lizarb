@@ -13,8 +13,10 @@ class DevBox < DevSystem::DevBox
 
     short :b, :bench
     short :g, :generate
+    short :i, :irb
+    short :p, :pry
     short :s, :shell
-    short :t, :terminal
+    short :t, :test
 
     # input (pick one)
     # input :highline
@@ -77,7 +79,7 @@ class DevBox < DevSystem::DevBox
     # set :log_level, ENV["dev.terminal.log_level"]
     
     # default (pick one)
-    default :irb
+    # default :irb
     # default :pry
 
     # pallet (pick one)

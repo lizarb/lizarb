@@ -1,4 +1,4 @@
-class DevSystem::IrbTerminal < DevSystem::Terminal
+class DevSystem::IrbCommand < DevSystem::Command
 
   def self.call args
     log "args = #{args.inspect}"
