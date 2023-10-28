@@ -86,7 +86,7 @@ module Lizarb
       eval "$log_boot_#{k} = true" if v >= level
     end
     log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_high
-    log "#{self}.#{__method__}" if defined? $log_boot_normal
+    log "#{self}.#{__method__}" if defined? $log_boot_low
 
     lookup_and_set_mode
     lookup_and_load_settings
@@ -347,7 +347,7 @@ end
 
     color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
 
-    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
+    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_normal
     index = 0
     system_class.registrar.each do |string, target_block|
       reg_type, _sep, reg_target = string.to_s.lpartition "_"
