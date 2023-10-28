@@ -74,10 +74,4 @@ class DevSystem::DevBox < Liza::Box
     self[:shell].convert?(...)
   end
 
-  # Configure your terminal panel
-  
-  configure :terminal do
-    # set :log_level, ENV["dev.terminal.log_level"]
-  end
-
 end

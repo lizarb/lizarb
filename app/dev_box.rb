@@ -73,23 +73,4 @@ class DevBox < DevSystem::DevBox
     converter :css,  :scss
   end
 
-  # Configure your terminal panel
-
-  configure :terminal do
-    # set :log_level, ENV["dev.terminal.log_level"]
-    
-    # default (pick one)
-    # default :irb
-    # default :pry
-
-    # pallet (pick one)
-    # pallet :solarized
-    # pallet :nord
-
-    # rescue_from declarations are checked bottom to top
-
-    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
-  end
-
 end

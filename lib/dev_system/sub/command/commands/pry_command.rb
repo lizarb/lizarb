@@ -1,4 +1,4 @@
-class DevSystem::IrbCommand < DevSystem::Command
+class DevSystem::PryCommand < DevSystem::Command
 
   def self.call args
     require "pry"

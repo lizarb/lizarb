@@ -20,7 +20,7 @@ class DevSystem::DevBoxTest < Liza::BoxTest
 
   test :subsystems do
     a = subject_class.panels.keys
-    b = [:bench, :command, :generator, :log, :shell, :terminal]
+    b = [:bench, :command, :generator, :log, :shell]
     assert_equality a, b
     
     assert_sub :bench,     DevSystem::Bench,     DevSystem::BenchPanel
@@ -28,7 +28,6 @@ class DevSystem::DevBoxTest < Liza::BoxTest
     assert_sub :generator, DevSystem::Generator, DevSystem::GeneratorPanel
     assert_sub :log,       DevSystem::Log,       DevSystem::LogPanel
     assert_sub :shell,     DevSystem::Shell,     DevSystem::ShellPanel
-    assert_sub :terminal,  DevSystem::Terminal,  DevSystem::TerminalPanel
   end
 
 end
