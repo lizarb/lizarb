@@ -1,4 +1,4 @@
-class DevSystem::HighlineInputTerminal < DevSystem::InputTerminal
+class DevSystem::HighlineInputCommand < DevSystem::InputCommand
 
   def self.highline
     require "highline"

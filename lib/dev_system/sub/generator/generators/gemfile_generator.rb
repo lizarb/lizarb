@@ -86,6 +86,10 @@ end
 group :dev do
   # gems you only want to load if DevSystem is loaded
 
+  # Command gems
+  # gem "highline", "~> 2.1"
+  gem "tty-prompt", "~> 0.23.1"
+ 
   # Shell gems
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23.9"
@@ -95,6 +99,4 @@ group :dev do
   
   # Terminal gems
   gem "pry", "~> 0.14.1"
-  # gem "highline", "~> 2.1"
-  gem "tty-prompt", "~> 0.23.1"
 end

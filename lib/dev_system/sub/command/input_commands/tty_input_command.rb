@@ -1,4 +1,4 @@
-class DevSystem::TtyInputTerminal < DevSystem::InputTerminal
+class DevSystem::TtyInputCommand < DevSystem::InputCommand
 
   def self.prompt
     require "tty-prompt"

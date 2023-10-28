@@ -7,6 +7,10 @@ class DevBox < DevSystem::DevBox
     short :g, :generate
     short :s, :shell
 
+    # input (pick one)
+    # input :highline
+    input :tty
+
     # rescue_from declarations are checked bottom to top
 
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
@@ -60,10 +64,6 @@ class DevBox < DevSystem::DevBox
     # default (pick one)
     default :irb
     # default :pry
-
-    # input (pick one)
-    # input :highline # gem "highline"
-    input :tty # gem "tty-prompt"
 
     # pallet (pick one)
     # pallet :solarized

@@ -2,6 +2,7 @@ class DevSystem::CommandPanel < Liza::Panel
   class Error < StandardError; end
   class ParseError < Error; end
   class NotFoundError < Error; end
+  class AlreadySet < Error; end
 
   def call args
     log :lower, "args = #{args.inspect}"
@@ -66,6 +67,31 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def call_not_found args
     Liza[:NotFoundCommand].call args
+  end
+
+  #
+
+  def input name = nil
+    return (@input || InputCommand) if name.nil?
+    raise AlreadySet, "input already set to #{@input.inspect}, but trying to set to #{name.inspect}", caller if @input
+    @input = find "#{name}_input"
+  end
+
+  def pick_one title, options = ["Yes", "No"]
+    if log_level? :highest
+      puts
+      log "Pick One"
+    end
+    input.pick_one title, options
+  end
+
+  def pick_many title, options
+    if log_level? :highest
+      puts
+      log "Pick Many"
+    end
+    # input.pick_many title, options
+    TtyInputCommand.multi_select title, options
   end
 
 end

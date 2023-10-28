@@ -6,7 +6,7 @@ class DevSystem::TerminalPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self 
-    on_instance :call, :default, :find, :input, :pallet, :pick_many, :pick_one
+    on_instance :call, :default, :find, :pallet
   end
 
   test :settings do
