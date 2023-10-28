@@ -1,7 +1,7 @@
-class DevSystem::IrbTerminalTest < DevSystem::TerminalTest
+class DevSystem::IrbCommandTest < DevSystem::CommandTest
 
   test :subject_class do
-    assert subject_class == DevSystem::IrbTerminal
+    assert subject_class == DevSystem::IrbCommand
   end
 
   test :settings do
