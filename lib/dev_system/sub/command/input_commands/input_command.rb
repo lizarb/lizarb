@@ -1,4 +1,4 @@
-class DevSystem::InputTerminal < DevSystem::Terminal
+class DevSystem::InputCommand < DevSystem::Command
 
   #
 

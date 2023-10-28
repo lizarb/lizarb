@@ -6,7 +6,12 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance :call, :call_not_found, :find, :parse
+    on_instance \
+      :call, :call_not_found,
+      :find,
+      :input,
+      :parse,
+      :pick_many, :pick_one
   end
 
   test :settings do
