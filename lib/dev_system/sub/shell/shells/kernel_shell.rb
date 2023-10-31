@@ -3,7 +3,7 @@ class DevSystem::KernelShell < DevSystem::Shell
   # 
 
   def self.call_backticks(command)
-    log "#{command} | executing #{"and outputting result" if log? :lower}"
+    log "#{stick command, DevSystem.color} | executing #{"and outputting result" if log? :lower}"
     result = `#{command}`
     puts result if log? :lower
     result
