@@ -46,6 +46,14 @@ class DevSystem::ColorShell < DevSystem::Shell
     rgb_from_int hex.to_i(16)
   end
 
+  def self.rgb_to_str rgb
+    raise "Invalid type: #{rgb.class}" unless rgb.is_a? Array
+    raise "Invalid rgb color: #{rgb}" unless rgb.length == 3 && rgb.all? {|x| 0 <= x && x <= 0xff}
+
+    r, g, b = rgb
+    "##{"%02x" % r}#{"%02x" % g}#{"%02x" % b}"
+  end
+
   # Standard ANSI Colors:
 
   # red
