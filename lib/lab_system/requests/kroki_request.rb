@@ -1,103 +1,77 @@
 class LabSystem::KrokiRequest < WebSystem::SimpleRequest
 
   def call_index
-    @table = []
+    @kroki_clients = []
 
-    @table << KrokiClient.new_plantuml(:ab, :svg)
-    @table << KrokiClient.new_nomnoml(:ab, :svg)
+    @kroki_clients << KrokiClient.new_plantuml(:ab, :svg)
+    @kroki_clients << KrokiClient.new_nomnoml(:ab, :svg)
 
-    @table.map &:call
+    @kroki_clients.map &:call
   end
   
   #
 
   def call_plantuml
-    @table = []
+    @kroki_clients = []
     
-    @table << KrokiClient.new_plantuml(:ab, :svg)
+    @kroki_clients << KrokiClient.new_plantuml(:ab, :svg)
 
-    @table.map &:call
+    @kroki_clients.map &:call
   end
   
   #
 
   def call_nomnoml
-    @table = []
+    @kroki_clients = []
 
-    @table << KrokiClient.new_nomnoml(:ab, :svg)
+    @kroki_clients << KrokiClient.new_nomnoml(:ab, :svg)
 
-    @table.map &:call
+    @kroki_clients.map &:call
   end
   
   #
   
   def call_plantuml_liza
-    @table = []
+    @kroki_clients = []
 
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    Lizarb.loaders.map &:eager_load
+
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = Unit.subclasses.sort { _1.name <=> _2.name }.reverse
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Liza::System]
       @systems_in_objects = [DevSystem, NetSystem, WebSystem]
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Liza::System]
       @systems_in_objects = [HappySystem, LabSystem]
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
-      @units = [Liza::System]
-      @systems_in_objects = [DevSystem, NetSystem, WebSystem, WorkSystem, MicroSystem, DeskSystem]
-    }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Liza::System]
       @systems_in_objects = App.systems.values
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Box]
       @boxes = [DevBox]
       @subs = []
       @objects = []
       @systems = (@boxes+@subs+@objects).map(&:system).uniq
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Box]
-      @boxes = [DevBox, NetBox, WebBox, WorkBox]
+      @boxes = [DevBox, NetBox, WebBox]
       @subs = []
       @objects = []
       @systems = (@boxes+@subs+@objects).map(&:system).uniq
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Panel, Controller]
       @subs = [Command, Shell]
       @objects = []
       @systems = (@subs+@objects).map(&:system).uniq
     }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
-      @units = [Panel, Controller]
-      @subs = [Command]
-      @objects = [BestCommand]
-      @systems = (@subs+@objects).map(&:system).uniq
-    }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
-      @units = [Panel, Controller]
-      @subs = [Command]
-      @objects = [DockerCommand, BestCommand, LabSystem::DockerCommand]
-      @systems = (@subs+@objects).map(&:system).uniq
-    }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
-      @units = [Controller]
-      @subs = []
-      @objects = [Command, DockerCommand, BestCommand, LabSystem::DockerCommand]
-      @systems = (@subs+@objects).map(&:system).uniq
-    }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
-      @units = [Controller]
-      @subs = []
-      @objects = [Command, Shell, LabSystem::DockerCommand, DockerCommand, DockerShell]
-      @systems = (@subs+@objects).map(&:system).uniq
-    }
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Controller]
       @subs = []
       @objects = App.systems.values.map { _1.box.panels.values.map(&:division) }.flatten
@@ -106,7 +80,7 @@ class LabSystem::KrokiRequest < WebSystem::SimpleRequest
 
     # NetSystem
 
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Controller]
       @subs = []
       @objects = [Command, Database, Client, DatabaseCommand, *Database.descendants, *Client.descendants]
@@ -115,21 +89,21 @@ class LabSystem::KrokiRequest < WebSystem::SimpleRequest
 
     # WebSystem
 
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Controller]
       @subs = [Command, WebSystem::Rack]
       @objects = [RackCommand, MiddleRack, ServerRack, *MiddleRack.subclasses, *ServerRack.subclasses]
       @systems = (@subs+@objects).map(&:system).uniq
     }
 
-    @table << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
+    @kroki_clients << LizaKrokiClient.new_plantuml(:liza_1, :svg) {
       @units = [Controller]
       @subs = []
       @objects = [Command, Request, RequestCommand, *Request.descendants]
       @systems = (@subs+@objects).map(&:system).uniq
     }
 
-    @table.map &:call
+    @kroki_clients.map &:call
   end
 
 end
@@ -179,7 +153,7 @@ td code {
   </td>
 </tr>
 
-<% @table.each do |kroki| %>
+<% @kroki_clients.each do |kroki| %>
 <tr>
   <td>
     <%= kroki.action %>

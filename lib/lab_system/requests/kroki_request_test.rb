@@ -8,4 +8,4 @@ class LabSystem::KrokiRequestTest < WebSystem::SimpleRequestTest
     assert_equality subject_class.log_level, 0
   end
 
-end  
+end
