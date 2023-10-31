@@ -2,13 +2,15 @@ class WebSystem::RequestCommand < Liza::Command
 
   def self.call(args)
     log "args = #{args.inspect}"
-    path = args.first
+    path, qs = args.first.split("?")
 
     help(args) # always show help
 
     new.instance_exec do
       @env = {}
+
       @env["PATH_INFO"] = path
+      @env["QUERY_STRING"] = qs
 
       request_panel.find @env
 
@@ -28,13 +30,14 @@ class WebSystem::RequestCommand < Liza::Command
   def self.get(args)
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
-    path = args.first
+    path, qs = args.first.split("?")
     return help if path.nil?
     
     new.instance_exec do
       @env = {}
       @env["REQUEST_METHOD"] = "GET"
       @env["PATH_INFO"]   = path
+      @env["QUERY_STRING"] = qs
 
       @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
@@ -45,13 +48,14 @@ class WebSystem::RequestCommand < Liza::Command
   def self.post(args)
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
-    path = args.first
+    path, qs = args.first.split("?")
     return help if path.nil?
     
     new.instance_exec do
       @env = {}
       @env["REQUEST_METHOD"] = "POST"
       @env["PATH_INFO"]   = path
+      @env["QUERY_STRING"] = qs
 
       @status, @headers, @body = request_panel.call! @env
       log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
