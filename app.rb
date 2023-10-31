@@ -38,6 +38,7 @@ class App
   system :net
   system :web
   system :work
+  system :micro
   system :lab
 
 end
