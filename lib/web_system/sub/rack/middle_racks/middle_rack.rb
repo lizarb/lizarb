@@ -1,5 +1,11 @@
 class WebSystem::MiddleRack < WebSystem::Rack
 
+  #
+
+  division!
+
+  #
+  
   def initialize app
     @app = app
   end
