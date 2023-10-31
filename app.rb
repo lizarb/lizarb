@@ -37,6 +37,7 @@ class App
   system :happy
   system :net
   system :web
+  system :work
   system :lab
 
 end
