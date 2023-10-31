@@ -322,7 +322,7 @@ end
   end
 
   def connect_systems
-    log "  Lizarb.#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__} (#{App.systems.count})" if defined? $log_boot_low
     App.systems.each do |system_key, system_class|
       connect_system system_key, system_class
       connect_box system_key, system_class
