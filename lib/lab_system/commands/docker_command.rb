@@ -8,6 +8,12 @@ class LabSystem::DockerCommand < DevSystem::Command
     log "not implemented"
   end
 
+  # liza docker:kroki
+
+  def self.kroki args
+    KrokiDockerShell.start_blocking_server
+  end
+
   # liza docker:hello
 
   def self.hello args
