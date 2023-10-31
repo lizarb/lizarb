@@ -40,6 +40,7 @@ class App
   system :work
   system :micro
   system :desk
+  system :crypto
   system :lab
 
 end
