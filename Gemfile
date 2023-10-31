@@ -12,7 +12,7 @@ end
 group :dev do
   # gems used by DevSystem
 
-  # Generator gems
+  # Shell gems
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23.9"
   gem "haml", "~> 6.1"

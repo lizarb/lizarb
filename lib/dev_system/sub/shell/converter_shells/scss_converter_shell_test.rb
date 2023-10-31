@@ -1,7 +1,7 @@
-class DevSystem::ScssConverterGeneratorTest < DevSystem::ConverterGeneratorTest
+class DevSystem::ScssConverterShellTest < DevSystem::ConverterShellTest
 
   test :subject_class do
-    assert subject_class == DevSystem::ScssConverterGenerator
+    assert subject_class == DevSystem::ScssConverterShell
   end
 
   test :settings do

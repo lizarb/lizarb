@@ -1,7 +1,7 @@
-class DevSystem::HamlConverterGeneratorTest < DevSystem::ConverterGeneratorTest
+class DevSystem::HamlConverterShellTest < DevSystem::ConverterShellTest
 
   test :subject_class do
-    assert subject_class == DevSystem::HamlConverterGenerator
+    assert subject_class == DevSystem::HamlConverterShell
   end
 
   test :settings do

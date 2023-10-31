@@ -1,4 +1,4 @@
-class DevSystem::FormatterGenerator < DevSystem::Generator
+class DevSystem::FormatterShell < DevSystem::Shell
 
   #
 

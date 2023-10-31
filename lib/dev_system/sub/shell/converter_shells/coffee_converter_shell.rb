@@ -1,10 +1,10 @@
-class DevSystem::MdConverterGenerator < DevSystem::ConverterGenerator
+class DevSystem::CoffeeConverterShell < DevSystem::ConverterShell
 
   def self.default_options
-    DevBox[:generator].converters[:md][:options]
+    DevBox[:shell].converters[:coffee][:options]
   end
 
-  # https://github.com/gjtorikian/commonmarker#usage
+  # https://github.com/rails/ruby-coffee-script
 
   def self.convert string, options = {}
     log :lower, "default_options = #{default_options.inspect} | options = #{options.inspect}"
@@ -13,9 +13,9 @@ class DevSystem::MdConverterGenerator < DevSystem::ConverterGenerator
     
     log :lower, "#{string.size} chars (options: #{options.inspect})"
 
-    require "commonmarker"
-    # CommonMarker.render_html markdown, [:HARDBREAKS, :SOURCEPOS, :UNSAFE]
-    CommonMarker.render_html string, :DEFAULT
+    require "coffee-script"
+    
+    CoffeeScript.compile string
   end
 
 end
