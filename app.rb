@@ -41,6 +41,7 @@ class App
   system :micro
   system :desk
   system :crypto
+  system :art
   system :lab
 
 end
