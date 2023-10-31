@@ -42,6 +42,7 @@ class App
   system :desk
   system :crypto
   system :art
+  system :deep
   system :lab
 
 end
