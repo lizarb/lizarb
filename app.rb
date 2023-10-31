@@ -39,6 +39,7 @@ class App
   system :web
   system :work
   system :micro
+  system :desk
   system :lab
 
 end
