@@ -6,7 +6,9 @@ class DevSystem::ShellPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance
+    on_instance \
+      :convert, :convert!, :convert?, :converter, :converters, :converters_to,
+      :format, :format!, :format?, :formatter, :formatters
   end
 
   test :settings do

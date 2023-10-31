@@ -1,7 +1,7 @@
-class DevSystem::HamlConverterGenerator < DevSystem::ConverterGenerator
+class DevSystem::HamlConverterShell < DevSystem::ConverterShell
 
   def self.default_options
-    DevBox[:generator].converters[:haml][:options]
+    DevBox[:shell].converters[:haml][:options]
   end
 
   # https://github.com/gjtorikian/commonmarker#usage

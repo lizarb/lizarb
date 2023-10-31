@@ -1,7 +1,7 @@
-class DevSystem::CoffeeConverterGeneratorTest < DevSystem::ConverterGeneratorTest
+class DevSystem::CoffeeConverterShellTest < DevSystem::ConverterShellTest
 
   test :subject_class do
-    assert subject_class == DevSystem::CoffeeConverterGenerator
+    assert subject_class == DevSystem::CoffeeConverterShell
   end
 
   test :settings do

@@ -86,7 +86,7 @@ end
 group :dev do
   # gems you only want to load if DevSystem is loaded
 
-  # Generator gems
+  # Shell gems
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23.9"
   gem "haml", "~> 6.1"

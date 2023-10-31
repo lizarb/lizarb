@@ -1,7 +1,7 @@
-class DevSystem::HtmlFormatterGeneratorTest < DevSystem::FormatterGeneratorTest
+class DevSystem::HtmlFormatterShellTest < DevSystem::FormatterShellTest
 
   test :subject_class do
-    assert subject_class == DevSystem::HtmlFormatterGenerator
+    assert subject_class == DevSystem::HtmlFormatterShell
   end
 
   test :settings do

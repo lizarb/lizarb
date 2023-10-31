@@ -5,6 +5,7 @@ class DevBox < DevSystem::DevBox
   configure :command do
     short :b, :bench
     short :g, :generate
+    short :s, :shell
 
     # rescue_from declarations are checked bottom to top
 
@@ -17,15 +18,6 @@ class DevBox < DevSystem::DevBox
   # Configure your generator panel
   
   configure :generator do
-    # formatters
-    # formatter :html
-
-    # converters
-    # converter :html, :md
-    # converter :html, :haml
-    # converter :js,   :coffee
-    # converter :css,  :scss
-
     # rescue_from declarations are checked bottom to top
 
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
@@ -45,6 +37,21 @@ class DevBox < DevSystem::DevBox
 
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
+  end
+
+  # Configure your shell panel
+
+  configure :shell do
+    # set :log_level, ENV["dev.shell.log_level"]
+
+    # formatters
+    formatter :html
+
+    # converters
+    converter :html, :md
+    converter :html, :haml
+    converter :js,   :coffee
+    converter :css,  :scss
   end
 
   # Configure your terminal panel

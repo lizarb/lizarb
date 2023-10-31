@@ -13,6 +13,7 @@ class DevBox < DevSystem::DevBox
 
     short :b, :bench
     short :g, :generate
+    short :s, :shell
     short :t, :terminal
 
     # rescue_from declarations are checked bottom to top
@@ -27,15 +28,6 @@ class DevBox < DevSystem::DevBox
 
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
-
-    # formatters
-    formatter :html
-
-    # converters
-    converter :html, :md
-    converter :html, :haml
-    converter :js,   :coffee
-    converter :css,  :scss
 
     # rescue_from declarations are checked bottom to top
 
@@ -64,6 +56,15 @@ class DevBox < DevSystem::DevBox
 
   configure :shell do
     # set :log_level, ENV["dev.shell.log_level"]
+
+    # formatters
+    formatter :html
+
+    # converters
+    converter :html, :md
+    converter :html, :haml
+    converter :js,   :coffee
+    converter :css,  :scss
   end
 
   # Configure your terminal panel

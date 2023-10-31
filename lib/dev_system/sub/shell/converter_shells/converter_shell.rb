@@ -1,4 +1,4 @@
-class DevSystem::ConverterGenerator < DevSystem::Generator
+class DevSystem::ConverterShell < DevSystem::Shell
 
   #
 

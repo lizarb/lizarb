@@ -1,7 +1,7 @@
-class DevSystem::MdConverterGeneratorTest < DevSystem::ConverterGeneratorTest
+class DevSystem::MdConverterShellTest < DevSystem::ConverterShellTest
 
   test :subject_class do
-    assert subject_class == DevSystem::MdConverterGenerator
+    assert subject_class == DevSystem::MdConverterShell
   end
 
   test :settings do

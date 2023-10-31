@@ -1,7 +1,7 @@
-class DevSystem::ScssConverterGenerator < DevSystem::ConverterGenerator
+class DevSystem::ScssConverterShell < DevSystem::ConverterShell
 
   def self.default_options
-    DevBox[:generator].converters[:scss][:options]
+    DevBox[:shell].converters[:scss][:options]
   end
 
   # https://github.com/gjtorikian/commonmarker#usage
