@@ -22,11 +22,25 @@ end
 
 Lizarb.call
 
-class MainCommand < Liza::Command
-  def self.call args
-    puts "Hello World!"
+# DevSystem::DevBox
+
+class DevBox < DevSystem::DevBox
+  # Configure your log panel
+  configure :log do
+    handler :output
   end
 end
+
+# DevSystem::Command
+
+class MainCommand < DevSystem::Command
+  def self.call args
+    puts "Hello World! #{args.inspect}"
+    log "Hello World! #{args.inspect}"
+  end
+end
+
+# App.call
 
 App.call [:main, *ARGV]
 
