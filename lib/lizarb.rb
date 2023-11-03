@@ -265,6 +265,7 @@ module Lizarb
       to_collapse = []
 
       App.systems.each do |k, klass|
+        next if klass.subs.empty?
         box_dir  = "#{app_dir}/#{k}"
         box_file = "#{box_dir}_box.rb"
 
