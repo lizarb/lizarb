@@ -25,6 +25,10 @@ Lizarb.call
 # DevSystem::DevBox
 
 class DevBox < DevSystem::DevBox
+  # Configure your command panel
+  # configure :command do
+  #   short :i, :irb
+  # end
   # Configure your log panel
   configure :log do
     handler :output
@@ -42,6 +46,7 @@ end
 
 # App.call
 
+# App.call ARGV
 App.call [:main, *ARGV]
 
 Lizarb.exit
