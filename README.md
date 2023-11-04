@@ -12,7 +12,6 @@ You will get the following three shims:
 
     lizarb version
     liza version
-    lrb version
 
 ## Create a liza app
 
