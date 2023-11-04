@@ -8,7 +8,7 @@ Install the gem by executing:
 
     gem install lizarb
 
-You will get the following three shims:
+You will get the following shims:
 
     lizarb version
     liza version
@@ -28,9 +28,9 @@ Now you're ready to go and try some stuff!
 
 ## Try
 
-Try Liza with an interactive terminal
+Try Liza with Interactive Ruby
 
-    liza terminal
+    liza irb
 
 ## Running Tests
 
