@@ -1,3 +1,0 @@
-#!/usr/bin/env ruby
-
-load "#{__dir__}/lizarb"
