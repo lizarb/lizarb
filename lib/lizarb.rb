@@ -107,7 +107,7 @@ module Lizarb
       zeitwerk: Zeitwerk::VERSION,
       lizarb: VERSION,
       app: $APP,
-      mode: $MODE,
+      mode: App.mode,
       log_boot: App.log_boot,
       log_level: App.get(:log_level),
     }
@@ -182,7 +182,7 @@ module Lizarb
 
     $mode = App.mode
     log "    $mode = #{$mode.inspect}" if defined? $log_boot_lower
-    $coding = $mode == :code
+    $coding = App.coding?
     log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_lower
   end
 
