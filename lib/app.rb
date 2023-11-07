@@ -56,6 +56,10 @@ class App
     end
   end
 
+  def self.coding?
+    mode == :code
+  end
+
   # systems
 
   @systems = {}
