@@ -6,6 +6,7 @@ class DevBox < DevSystem::DevBox
     short :b, :bench
     short :g, :generate
     short :i, :irb
+    short :l, :log
     short :p, :pry
     short :s, :shell
     short :t, :test
