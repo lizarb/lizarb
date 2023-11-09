@@ -7,8 +7,10 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
   test_methods_defined do
     on_self
     on_instance \
+      :build_env,
       :call, :call_not_found,
       :find,
+      :forward, :forward_base_command, :forward_command,
       :input,
       :parse,
       :pick_many, :pick_one
@@ -19,49 +21,53 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
   end
 
   test :parse do
-    struct = subject.parse "generate"
-    assert_equality struct.command, "generate"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
+    def parse string
+      OpenStruct.new subject.parse(string)
+    end
 
-    struct = subject.parse "generate:install"
-    assert_equality struct.command, "generate"
-    assert_equality struct.class_method, "install"
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
+    struct = parse "generate"
+    assert_equality struct.command_given, "generate"
+    assert_equality struct.command_class_method, nil
+    assert_equality struct.command_instance_method, nil
+    assert_equality struct.command_method, nil
 
-    struct = subject.parse "generate#install"
-    assert_equality struct.command, "generate"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, "install"
-    assert_equality struct.method, nil
+    struct = parse "generate:install"
+    assert_equality struct.command_given, "generate"
+    assert_equality struct.command_class_method, "install"
+    assert_equality struct.command_instance_method, nil
+    assert_equality struct.command_method, nil
 
-    struct = subject.parse "generate.install"
-    assert_equality struct.command, "generate"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, "install"
+    struct = parse "generate#install"
+    assert_equality struct.command_given, "generate"
+    assert_equality struct.command_class_method, nil
+    assert_equality struct.command_instance_method, "install"
+    assert_equality struct.command_method, nil
 
-    struct = subject.parse "two_words"
-    assert_equality struct.command, "two_words"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
+    struct = parse "generate.install"
+    assert_equality struct.command_given, "generate"
+    assert_equality struct.command_class_method, nil
+    assert_equality struct.command_instance_method, nil
+    assert_equality struct.command_method, "install"
 
-    struct = subject.parse "word10"
-    assert_equality struct.command, "word10"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
+    struct = parse "two_words"
+    assert_equality struct.command_given, "two_words"
+    assert_equality struct.command_class_method, nil
+    assert_equality struct.command_instance_method, nil
+    assert_equality struct.command_method, nil
+
+    struct = parse "word10"
+    assert_equality struct.command_given, "word10"
+    assert_equality struct.command_class_method, nil
+    assert_equality struct.command_instance_method, nil
+    assert_equality struct.command_method, nil
   end
 
   test :find do
-    klass = subject.find "generate"
+    klass = subject._find "generate"
     assert_equality DevSystem::GenerateCommand, klass
 
     begin
-      klass = subject.find "g"
+      klass = subject._find "g"
       assert false
     rescue CommandPanel::NotFoundError
       assert true

@@ -9,58 +9,86 @@ class DevSystem::CommandPanel < Liza::Panel
 
     return call_not_found args if args.none?
 
-    struct = parse args[0]
-    struct.command = short struct.command
-    command = find struct.command
-
-    case
-    when struct.class_method
-      _call_log "#{command}.#{struct.class_method}(#{args[1..-1]})"
-      command.public_send struct.class_method, args[1..-1]
-    when struct.instance_method
-      _call_log "#{command}.new.#{struct.instance_method}(#{args[1..-1]})"
-      command.new.public_send struct.instance_method, args[1..-1]
-    when struct.method
-      if command.respond_to?(struct.method)
-        _call_log "#{command}.#{struct.method}(#{args[1..-1]})"
-        command.public_send struct.method, args[1..-1]
-      else
-        _call_log "#{command}.new.#{struct.method}(#{args[1..-1]})"
-        command.new.public_send struct.method, args[1..-1]
-      end
-    else
-      _call_log "#{command}.call(#{args[1..-1]})"
-      command.call args[1..-1]
-    end
+    env = build_env args
+    find env
+    forward env
   rescue Exception => e
     rescue_from_panel(e, with: args)
   end
 
-  def _call_log string
-    log :lower, "#{string}"
-  end
-
   #
 
-  PARSE_REGEX = /(?<command>[A-Za-z0-9_]+)(?::(?<class_method>[a-z0-9_]+))?(?:#(?<instance_method>[a-z0-9_]+))?(?:\.(?<method>[a-z0-9_]+))?/
+  PARSE_REGEX = /(?<command_given>[A-Za-z0-9_]+)(?::(?<command_class_method>[a-z0-9_]+))?(?:#(?<command_instance_method>[a-z0-9_]+))?(?:\.(?<command_method>[a-z0-9_]+))?/
 
-  # OpenStruct command class_method instance_method method
+  # Hash command_name class_method instance_method method
   def parse string
     md = string.to_s.match PARSE_REGEX
     raise ParseError if md.nil?
-    hash = md.named_captures
-    log :lower, "{#{hash.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
-    OpenStruct.new hash
+
+    env = md.named_captures.map { [_1.to_sym, _2] }.to_h
+    env[:command_arg] = string
+    log :lower, "{#{env.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
+    env
+  end
+
+  def build_env args
+    env = parse args[0]
+    env[:args] = Array(args[1..-1])
+    env[:command_name] = short env[:command_given]
+    env
   end
 
   #
 
-  def find string
+  def find env
+    raise "env[:command_name] is empty #{env}" if env[:command_name].empty?
+    env[:command_class] = Liza.const "#{env[:command_name]}_command"
+  rescue Liza::ConstNotFound
+    raise NotFoundError, "command not found: #{env[:command_name].inspect}"
+  end
+
+  def _find string
     k = Liza.const "#{string}_command"
     log :lower, k
     k
   rescue Liza::ConstNotFound
     raise NotFoundError, "command not found: #{string.inspect}"
+  end
+
+  #
+
+  def forward env
+    command_class = env[:command_class]
+    
+    return forward_base_command env if command_class < BaseCommand
+    return forward_command env if command_class < Command
+  end
+
+  def forward_base_command env
+    log :lower,  "forwarding"
+    env[:command_class].call env
+  end
+
+  def forward_command env
+    case
+    when env[:command_class_method]
+      log :lower,  "#{env[:command_class]}.#{env[:command_class_method]}(#{env[:args]})"
+      env[:command_class].public_send env[:command_class_method], env[:args]
+    when env[:command_instance_method]
+      log :lower,  "#{env[:command_class]}.new.#{env[:command_instance_method]}(#{env[:args]})"
+      env[:command_class].new.public_send env[:command_instance_method], env[:args]
+    when env[:command_method]
+      if env[:command_class].respond_to?(env[:command_method])
+        log :lower,  "#{env[:command_class]}.#{env[:command_method]}(#{env[:args]})"
+        env[:command_class].public_send env[:command_method], env[:args]
+      else
+        log :lower,  "#{env[:command_class]}.new.#{env[:command_method]}(#{env[:args]})"
+        env[:command_class].new.public_send env[:command_method], env[:args]
+      end
+    else
+      log :lower,  "#{env[:command_class]}.call(#{env[:args]})"
+      env[:command_class].call env[:args]
+    end
   end
 
   #
@@ -74,7 +102,7 @@ class DevSystem::CommandPanel < Liza::Panel
   def input name = nil
     return (@input || InputCommand) if name.nil?
     raise AlreadySet, "input already set to #{@input.inspect}, but trying to set to #{name.inspect}", caller if @input
-    @input = find "#{name}_input"
+    @input = _find "#{name}_input"
   end
 
   def pick_one title, options = ["Yes", "No"]
