@@ -9,9 +9,7 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     on_instance \
       :call,
       :call_not_found,
-      :convert, :convert!, :convert?, :converter, :converters, :converters_to,
       :find,
-      :format, :format!, :format?, :formatter, :formatters,
       :parse
   end
 
