@@ -1,8 +1,6 @@
 class DevSystem::GeneratorPanel < Liza::Panel
   class Error < StandardError; end
   class ParseError < Error; end
-  class FormatterError < Error; end
-  class ConverterError < Error; end
 
   #
 
@@ -69,99 +67,6 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
   def call_not_found args
     Liza[:NotFoundGenerator].call args
-  end
-
-  #
-
-  def formatter format, generator_key = format, options = {}
-    generator = options[:generator] || Liza.const("#{format}_formatter_generator")
-
-    formatters[generator_key] = {
-      format: format,
-      generator: generator,
-      options: options
-    }
-  end
-
-  def formatters
-    @formatters ||= {}
-  end
-
-  def format? format
-    formatters.key? format.to_sym
-  end
-
-  def format! format, string
-    format = format.to_sym
-    if format? format
-      log :lower, "formatter found"
-      formatters[format][:generator].format string
-    else
-      log :lower, "formatter not found"
-      raise FormatterError, "no formatter for #{format.inspect}"
-    end
-  end
-
-  def format format, string, options = {}
-    format = format.to_sym
-    if format? format
-      log :lower, "formatter found"
-      formatters[format][:generator].format string, options
-    else
-      log :lower, "formatter not found"
-      string
-    end
-  end
-
-  #
-
-  def converter to, from, generator_key = from, options = {}
-    generator = options[:generator] || Liza.const("#{generator_key}_converter_generator")
-
-    hash = {
-      to: to.to_sym,
-      from: from.to_sym,
-      generator: generator,
-      options: options
-    }
-    converters[generator_key] = hash
-    converters_to[to] ||= []
-    converters_to[to] << hash
-  end
-
-  def converters
-    @converters ||= {}
-  end
-
-  def converters_to
-    @converters_to ||= {}
-  end
-
-  def convert? format
-    format = format.to_sym
-    converters.values.any? { _1[:from] == format }
-  end
-
-  def convert! format, string, options = {}
-    format = format.to_sym
-    if convert? format
-      log :lower, "converter found"
-      converters[format][:generator].convert string
-    else
-      log :lower, "converter not found"
-      raise ConverterError, "no converter for #{format.inspect}"
-    end
-  end
-
-  def convert format, string, options = {}
-    format = format.to_sym
-    if convert? format
-      log :lower, "converter found"
-      converters[format][:generator].convert string, options
-    else
-      log :lower, "converter not found"
-      string
-    end
   end
 
 end
