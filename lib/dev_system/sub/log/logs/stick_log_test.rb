@@ -6,6 +6,21 @@ class DevSystem::StickLogTest < DevSystem::LogTest
     assert_equality DevSystem::StickLog, subject_class
   end
 
+  #
+
+  test :subject_class, :bundle do
+    string = \
+      subject_class.
+        bundle :red, :white, :b,
+          ["I"],
+          ["LOVE", :u],
+          ["RUBY", :u, :i]
+
+    assert_equality string, "\e[1m\e[38;2;204;0;0m\e[48;2;248;248;248mI\e[0m\e[1m\e[38;2;204;0;0m\e[48;2;248;248;248m \e[0m\e[1m\e[4m\e[38;2;204;0;0m\e[48;2;248;248;248mLOVE\e[0m\e[1m\e[38;2;204;0;0m\e[48;2;248;248;248m \e[0m\e[1m\e[3m\e[4m\e[38;2;204;0;0m\e[48;2;248;248;248mRUBY\e[0m"
+  end
+
+  #
+
   test :subject_class, :new do
     s = subject_class.new "I LOVE RUBY"
     assert_equality s.class, subject_class
