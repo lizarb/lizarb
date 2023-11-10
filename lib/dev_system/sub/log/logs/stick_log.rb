@@ -10,6 +10,20 @@ class DevSystem::StickLog < DevSystem::Log
     underlined: :u,
   }
 
+  #
+
+  def self.bundle *args
+    index = args.index { _1.is_a? Array and _1[0].is_a? String } or raise "missing array"
+    common_args, arrays = args[0..index-1], args[index..-1]
+    space = new(" ", *common_args).to_s
+    
+    arrays.map { |array|
+      new *[*common_args, *array]
+    }.join space
+  end
+
+  #
+
   attr_reader :text, :fore, :back, :bold, :italic, :underlined
 
   def initialize *args

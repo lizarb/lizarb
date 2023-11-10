@@ -49,6 +49,14 @@ class Liza::UnitLoggingPart < Liza::Part
       StickLog.new *args
     end
   
+    def self.sticks *args
+      StickLog.bundle *args
+    end
+  
+    def sticks *args
+      StickLog.bundle *args
+    end
+  
     #
   
     def self.log_level new_value = nil
