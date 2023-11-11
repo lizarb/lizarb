@@ -16,6 +16,22 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
 
   #
 
+  def self.pick_color title = "Pick a color", string: nil
+    options = ColorShell.colors.map { [(stick _2, "#{string} # #{_1}", :b), _1] }.to_h
+
+    prompt.select \
+      title,
+      options,
+      filter: true, show_help: :always, per_page: 28
+  rescue TTY::Reader::InputInterrupt
+    puts
+    puts
+    log "Control-C"
+    exit
+  end
+
+  #
+
   def self.multi_select title, choices
     raise "choices must be a hash" unless choices.is_a? Hash
     return choices if choices.empty?
