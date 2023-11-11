@@ -11,6 +11,7 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
       :call, :call_not_found,
       :find,
       :forward, :forward_base_command, :forward_command,
+      :inform,
       :input,
       :parse,
       :pick_many, :pick_one

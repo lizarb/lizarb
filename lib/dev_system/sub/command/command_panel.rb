@@ -12,6 +12,7 @@ class DevSystem::CommandPanel < Liza::Panel
     env = build_env args
     find env
     forward env
+    inform env
   rescue Exception => e
     rescue_from_panel(e, with: args)
   end
@@ -89,6 +90,28 @@ class DevSystem::CommandPanel < Liza::Panel
       log :lower,  "#{env[:command_class]}.call(#{env[:args]})"
       env[:command_class].call env[:args]
     end
+  end
+
+  #
+
+  def inform env
+    return if env[:simple] == nil
+    return if env[:simple] == [""]
+
+    env[:simple].shift if env[:simple][0] == ""
+
+    puts if log? :higher
+
+    args = "#{env[:args].join(" ")}#{env[:simple].join(" ")}"
+
+    log sticks :black, system.color, :b,
+      ["LIZA"],
+      ["HELPS",    :u],
+      ["YOU",      :u, :i],
+      ["REMEMBER", :i] \
+        if log? :higher
+    
+    log stick system.color, "#{$0} #{env[:command_arg]} #{args}" if log? :higher
   end
 
   #
