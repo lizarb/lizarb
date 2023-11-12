@@ -65,7 +65,12 @@ class DevSystem::TestCommand < DevSystem::Command
     end
   end
 
+
   def self._call_counting test_classes
+    puts
+    Liza.log ""
+    Liza.log stick :b, " TEST TOTALS ".center(140, "-")
+    Liza.log ""
     puts
     totals = Hash.new { 0 }
     last_namespace = nil
@@ -77,11 +82,32 @@ class DevSystem::TestCommand < DevSystem::Command
       test_class.totals.each do |k, v|
         totals[k] += v.size
       end
-      Liza.log "  #{"#{test_class}.totals".ljust 60} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
+      size = 60 - test_class.subject_class.to_s.size
+      Liza.log "#{_color_unit test_class.subject_class}#{".totals".ljust size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
     end
     puts
-    Liza.log "  #{"Total".ljust 60} #{totals}"
+    Liza.log "#{"Total".ljust 60} #{totals}"
     puts
+  end
+
+  def self._color_unit klass
+    return klass.to_s unless klass < Liza::Unit
+    return klass.to_s if klass.superclass == Liza::Unit
+
+    ret = ""
+    namespace, _sep, classname = klass.name.rpartition('::')
+    unless namespace.empty?
+      system_color = klass.system.color
+      ret << stick(namespace, system_color, :b).to_s
+      ret << "::"
+    end
+
+    klass = klass.division if klass.is_a? Liza::Controller
+    unit_color = nil
+    unit_color = klass.system.color
+
+    ret << stick(classname, unit_color).to_s
+    ret
   end
 
 end
