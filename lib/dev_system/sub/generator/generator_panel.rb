@@ -1,72 +1,98 @@
 class DevSystem::GeneratorPanel < Liza::Panel
   class Error < StandardError; end
-  class ParseError < Error; end
+  class NotFoundError < Error; end
 
   #
 
-  def call args
-    log "args = #{args}"
-    
-    return call_not_found args if args.none?
-
-    struct = parse args[0]
-    struct.generator = short struct.generator
-    generator = find struct.generator
-
-    case
-    when struct.class_method
-      _call_log "#{generator}.#{struct.class_method}(#{args[1..-1]})"
-      generator.public_send struct.class_method, args[1..-1]
-    when struct.instance_method
-      _call_log "#{generator}.new.#{struct.instance_method}(#{args[1..-1]})"
-      generator.new.public_send struct.instance_method, args[1..-1]
-    when struct.method
-      if generator.respond_to?(struct.method)
-        _call_log "#{generator}.#{struct.method}(#{args[1..-1]})"
-        generator.public_send struct.method, args[1..-1]
-      else
-        _call_log "#{generator}.new.#{struct.method}(#{args[1..-1]})"
-        generator.new.public_send struct.method, args[1..-1]
-      end
-    else
-      _call_log "#{generator}.call(#{args[1..-1]})"
-      generator.call args[1..-1]
-    end
+  def call env
+    log "env = #{env}"
+    parse env
+    find env
+    forward env
+    inform env
+    save env
   rescue Exception => e
-    rescue_from_panel(e, with: args)
-  end
-
-  def _call_log string
-    log :lower, "#{string}"
+    rescue_from_panel(e, with: env)
   end
 
   #
 
-  PARSE_REGEX = /(?<generator>[a-z_]+)(?::(?<class_method>[a-z_]+))?(?:#(?<instance_method>[a-z_]+))?(?:\.(?<method>[a-z_]+))?/
+  def parse env
+    if log_level? :low
+      puts
+      log "env.count is #{env.count}"
+    end
+    raise NotFoundError, "generator not found" if env[:args].none?
 
-  # OpenStruct generator class_method instance_method method
-  def parse string
-    md = string.to_s.match PARSE_REGEX
-    raise ParseError if md.nil?
-    hash = md.named_captures
-    log :lower, "{#{hash.map { ":#{_1} => #{_2.to_s.inspect}" }.join(", ") }}"
-    OpenStruct.new hash
+    generator_name, generator_coil = env[:args].first.split(":").map(&:to_sym)
+
+    env[:generator_name_original] = generator_name
+    env[:generator_name] = short(generator_name).to_sym
+    env[:generator_coil_original] = generator_coil
+    env[:generator_coil] = generator_coil || :default
+    log :higher, "generator:coil is #{env[:generator_name]}:#{env[:generator_coil]}"
   end
 
   #
 
-  def find string
-    k = Liza.const "#{string}_generator"
-    log :lower, k
-    k
-  rescue Liza::ConstNotFound
-    raise ParseError, "generator not found: #{string.inspect}"
+  def find env
+    if log_level? :low
+      puts
+      log "env.count is #{env.count}"
+    end
+    begin
+      k = Liza.const "#{env[:generator_name]}_generator"
+      log :lower, k
+      env[:generator_class] = k
+    rescue Liza::ConstNotFound
+      raise NotFoundError, "generator #{env[:generator_name].inspect} not found"
+    end
   end
 
   #
 
-  def call_not_found args
-    Liza[:NotFoundGenerator].call args
+  def forward env
+    generator_class = env[:generator_class]
+
+    return forward_base_generator env if generator_class < BaseGenerator
+    return forward_generator env if generator_class < Generator
+  end
+
+  def forward_base_generator env
+    log :lower,  "forwarding"
+    env[:args].shift
+    env[:generator_class].call env
+  end
+
+  def forward_generator env
+    method_name = env[:generator_coil]
+    method_name = :call if method_name == :default
+
+    args = env[:args][1..-1]
+    log :lower,  "#{env[:generator_class]}.#{method_name}(#{args})"
+    env[:generator_class].call method_name, args
+  end
+
+  #
+
+  def inform env
+    if log_level? :low
+      puts
+      log "env.count is #{env.count}"
+    end
+    env[:generator] or return log :lower, "not implemented"
+    env[:generator].inform
+  end
+
+  #
+
+  def save env
+    if log_level? :low
+      puts
+      log "env.count is #{env.count}"
+    end
+    env[:generator] or return log :lower, "not implemented"
+    env[:generator].save
   end
 
 end

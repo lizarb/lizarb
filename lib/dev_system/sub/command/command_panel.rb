@@ -102,7 +102,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     puts if log? :higher
 
-    args = "#{env[:args].join(" ")}#{env[:simple].join(" ")}"
+    args = [*env[:args], *env[:simple]].join(" ")
 
     log sticks :black, system.color, :b,
       ["LIZA"],
