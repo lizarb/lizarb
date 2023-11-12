@@ -35,6 +35,7 @@ class DevSystem::CommandPanel < Liza::Panel
   def build_env args
     env = parse args[0]
     env[:args] = Array(args[1..-1])
+    env[:command_args] = env[:args].dup
     env[:command_name] = short env[:command_given]
     env
   end
@@ -102,7 +103,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     puts if log? :higher
 
-    args = [*env[:args], *env[:simple]].join(" ")
+    args = [*env[:command_args], *env[:simple]].join(" ")
 
     log sticks :black, system.color, :b,
       ["LIZA"],

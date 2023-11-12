@@ -90,10 +90,75 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     add_change file
   end
 
-  #
+  # create_unit
+  
+  def create_unit unit, class_names, path, template = :unit
+    unit.sections.each do |section|
+      section[:content] = render! section[:name], format: :rb
+    end
+    unit.views.each do |view|
+      view[:content] = render! view[:name], format: view[:format]
+    end
+    @sections = unit.sections
+    @views = unit.views
+    @class_names = class_names
+
+    file = TextFileShell.new path
+    file.new_lines = render! template, format: :rb
+    file.new_lines = file.new_lines.split("\n").map { "#{_1}\n" }
+    add_change file
+  end
+
+  # helper classes
+
+  class UnitHelper
+    def section name, section = {}
+      sections << section
+      section[:name] = name
+    end
+
+    def view name, view = {}
+      views << view
+      view[:name] = name
+      view[:key] ||= name
+      view[:format] ||= :rb
+    end
+
+    def sections
+      @sections ||= []
+    end
+
+    def views
+      @views ||= []
+    end
+  end
+
+  # helper methods
 
   def puts_line
     puts "-" * 120
   end
 
 end
+
+__END__
+
+# view unit.rb.erb
+class <%= @class_names[0] %> < <%= @class_names[1] %>
+  <% @sections.each do |section| %>
+  # <%= section[:caption] %>
+<%= section[:content] -%>
+  <% end -%>
+
+end
+<% if @views.any? -%>
+
+<%= "__END__" %>
+
+<% @views.each do |view| -%>
+<%= "#" -%> view <%= view[:key] %>.<%= view[:format] %>.erb
+
+<%= view[:content] -%>
+
+<% end -%>
+<% end -%>

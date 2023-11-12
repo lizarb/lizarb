@@ -13,7 +13,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     log :lower, "env[:remember] is now #{stick system.color, (env[:simple].join " ")}", kaller: caller
   end
   
-  #
+  # 
 
   # key=value
   def simple_string(key, &block)
@@ -32,11 +32,54 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
   #
 
+  # key=value
   def simple_color(key, string: "I LOVE RUBY")
     simple_string key do
       TtyInputCommand.pick_color string: string
     end.to_sym.tap do |color|
       log :high, color.inspect
+    end
+  end
+
+  #
+
+  # arg0 arg1 arg2
+  def simple_arg(index, &block)
+    string = env[:args][index]
+    return string if string
+
+    value = yield
+    value = "" if value.nil?
+    value = value.inspect if value.include? " "
+    log :high, value.inspect
+
+    string = env[:simple][0]
+    string << " " unless string.empty?
+    string << value
+
+    log_simple_remember
+
+    value
+  end
+
+  #
+
+  # arg0 arg1 arg2
+  def simple_arg_ask(index, title)
+    simple_arg index do
+      TtyInputCommand.prompt.ask(title)
+    end
+  end
+
+  #
+
+  # arg0 arg1 arg2
+  def simple_arg_ask_snakecase(index, title)
+    simple_arg index do
+      TtyInputCommand.prompt.ask(title) do |q|
+        q.required true
+        q.validate /^[a-zA-Z_]*$/
+      end.snakecase
     end
   end
 
