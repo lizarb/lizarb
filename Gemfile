@@ -13,8 +13,7 @@ group :dev do
   # gems used by DevSystem
 
   # Command gems
-  # gem "highline", "~> 2.1"
-  gem "tty-prompt", "~> 0.23.1"
+  gem "pry", "~> 0.14.1"
 
   # Shell gems
   gem "htmlbeautifier", "~> 1.4"
@@ -22,9 +21,6 @@ group :dev do
   gem "haml", "~> 6.1"
   gem "sassc", "~> 2.4"
   gem "coffee-script", "~> 2.4"
-  
-  # Terminal gems
-  gem "pry", "~> 0.14.1"
 end
 
 group :happy do
