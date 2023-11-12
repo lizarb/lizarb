@@ -1,6 +1,8 @@
 class DevSystem::NotFoundGenerator < DevSystem::Generator
 
-  def self.call args
+  def self.call args_or_env
+    args = args_or_env.is_a?(Hash) ? args_or_env[:args] : args_or_env
+
     # 1. LOG
 
     log "args = #{args.inspect}"
@@ -16,8 +18,6 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
 
     generators.reject! { _1.name =~ /Record/ } unless defined? NetSystem
     generators.reject! { _1.name =~ /Request/ } unless defined? WebSystem
-    generators.reject! { _1 <= DevSystem::FormatterGenerator }
-    generators.reject! { _1 <= DevSystem::ConverterGenerator }
 
     # 3. LIST generators
 
@@ -38,6 +38,8 @@ class DevSystem::NotFoundGenerator < DevSystem::Generator
       DevSystem::NotFoundGenerator,
       DevSystem::NewGenerator,
       DevSystem::ControllerGenerator,
+      DevSystem::BaseGenerator,
+      DevSystem::SimpleGenerator,
     ].uniq.compact
   end
 

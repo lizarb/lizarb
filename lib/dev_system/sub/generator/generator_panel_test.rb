@@ -8,51 +8,72 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     on_self
     on_instance \
       :call,
-      :call_not_found,
       :find,
-      :parse
+      :forward, :forward_base_generator, :forward_generator,
+      :inform,
+      :parse,
+      :save
   end
 
   test :settings do
     assert_equality subject_class.log_level, 0
   end
-
-  test :parse do
-    struct = subject.parse "system"
-    assert_equality struct.generator, "system"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
-
-    struct = subject.parse "system:install"
-    assert_equality struct.generator, "system"
-    assert_equality struct.class_method, "install"
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, nil
-
-    struct = subject.parse "system#install"
-    assert_equality struct.generator, "system"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, "install"
-    assert_equality struct.method, nil
-
-    struct = subject.parse "system.install"
-    assert_equality struct.generator, "system"
-    assert_equality struct.class_method, nil
-    assert_equality struct.instance_method, nil
-    assert_equality struct.method, "install"
+  
+  #
+  
+  test :parse, true, :default do
+    env = {args: ["system"]}
+    subject.parse env
+    assert_equality env[:generator_name_original], :system
+    assert_equality env[:generator_name], :system
+    assert_equality env[:generator_coil_original], nil
+    assert_equality env[:generator_coil], :default
   end
-
-  test :find do
-    klass = subject.find "command"
-    assert_equality DevSystem::CommandGenerator, klass
-
-    begin
-      klass = subject.find "c"
-      assert false
-    rescue GeneratorPanel::ParseError
-      assert true
-    end
+  
+  test :parse, true, :coil do
+    env = {args: ["system:install"]}
+    subject.parse env
+    assert_equality env[:args], ["system:install"]
+    assert_equality env[:generator_name_original], :system
+    assert_equality env[:generator_name], :system
+    assert_equality env[:generator_coil_original], :install
+    assert_equality env[:generator_coil], :install
+  end
+  
+  test :parse, false, :default do
+    env = {args: ["x"]}
+    subject.parse env
+    assert_equality env[:args], ["x"]
+    assert_equality env[:generator_name_original], :x
+    assert_equality env[:generator_name], :x
+    assert_equality env[:generator_coil_original], nil
+    assert_equality env[:generator_coil], :default
+  end
+  
+  test :parse, false, :coil do
+    env = {args: ["x:y"]}
+    subject.parse env
+    assert_equality env[:args], ["x:y"]
+    assert_equality env[:generator_name_original], :x
+    assert_equality env[:generator_name], :x
+    assert_equality env[:generator_coil_original], :y
+    assert_equality env[:generator_coil], :y
+  end
+  
+  #
+  
+  test :find, true do
+    env = {generator_name: :command}
+    subject.find env
+    assert_equality env[:generator_class], CommandGenerator
+  end
+  
+  test :find, false do
+    env = {generator_name: :x}
+    subject.find env
+    assert false
+  rescue DevSystem::GeneratorPanel::NotFoundError
+    assert true  
   end
 
 end

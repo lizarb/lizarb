@@ -19,10 +19,6 @@ class DevBox < DevSystem::DevBox
     short :s, :shell
     short :t, :test
 
-    # input (pick one)
-    # input :highline
-    input :tty
-
     # rescue_from declarations are checked bottom to top
 
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
@@ -41,7 +37,7 @@ class DevBox < DevSystem::DevBox
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
 
-    rescue_from GeneratorPanel::ParseError, with: NotFoundGenerator
+    rescue_from GeneratorPanel::NotFoundError, with: NotFoundGenerator
   end
 
   # Configure your log panel
