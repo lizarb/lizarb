@@ -5,7 +5,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   #
 
   def call env
-    log "env = #{env}"
+    log :low, "env.count is #{env.count}"
     parse env
     find env
     forward env
