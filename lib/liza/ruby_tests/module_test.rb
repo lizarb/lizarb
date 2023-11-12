@@ -1,4 +1,4 @@
-class Liza::ModuleTest < Liza::RubyTest
+class Liza::ModuleTest < Liza::ObjectTest
   
   test :subject_class do
     assert subject_class == Module
