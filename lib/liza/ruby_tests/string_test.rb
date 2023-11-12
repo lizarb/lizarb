@@ -1,4 +1,4 @@
-class Liza::StringTest < Liza::RubyTest
+class Liza::StringTest < Liza::ObjectTest
   
   test :subject_class do
     assert subject_class == String

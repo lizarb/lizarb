@@ -1,4 +1,4 @@
-class Liza::AppTest < Liza::RubyTest
+class Liza::AppTest < Liza::ObjectTest
   
   test :subject_class do
     assert_equality subject_class, App
