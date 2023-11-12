@@ -168,7 +168,6 @@ DEPENDENCIES
   sassc (~> 2.4)
   sqlite3 (~> 1.5)
   thin (~> 1.6)
-  tty-prompt (~> 0.23.1)
 
 BUNDLED WITH
    2.3.22
