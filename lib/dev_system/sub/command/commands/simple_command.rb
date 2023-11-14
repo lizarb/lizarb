@@ -99,5 +99,37 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       end.snakecase
     end
   end
+  
+  #
+
+  # +key -key
+  def simple_boolean_yes(key, title)
+    simple_boolean key do
+      TtyInputCommand.prompt.yes? title
+    end
+  end
+
+  # +key -key
+  def simple_boolean_no(key, title)
+    simple_boolean key do
+      TtyInputCommand.prompt.no? title
+    end
+  end
+
+  # +key -key
+  def simple_boolean(key, &block)
+    return true  if env[:args].find { _1 == "+#{key}" }
+    return false if env[:args].find { _1 == "-#{key}" }
+
+    value = yield
+    log :high, value.inspect
+
+    env[:simple] << "+#{key}" if TrueClass === value
+    env[:simple] << "-#{key}" if FalseClass === value
+
+    log_simple_remember
+
+    value
+  end
 
 end
