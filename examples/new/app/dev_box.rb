@@ -35,7 +35,6 @@ class DevBox < DevSystem::DevBox
   configure :log do
     # handlers
     handler :output
-    # handler :logger
 
     # rescue_from declarations are checked bottom to top
 
