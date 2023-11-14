@@ -70,7 +70,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
     args = env[:args][1..-1]
     log :lower,  "#{env[:generator_class]}.#{method_name}(#{args})"
-    env[:generator_class].call method_name, args
+    env[:generator_class].public_send method_name, args
   end
 
   #

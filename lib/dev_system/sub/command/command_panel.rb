@@ -134,7 +134,8 @@ class DevSystem::CommandPanel < Liza::Panel
       puts
       log "Pick One"
     end
-    input.pick_one title, options
+    # input.pick_one title, options
+    TtyInputCommand.pick_one title, options
   end
 
   def pick_many title, options
