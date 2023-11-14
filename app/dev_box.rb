@@ -47,7 +47,6 @@ class DevBox < DevSystem::DevBox
 
     # handlers
     handler :output
-    # handler :logger
 
     # rescue_from declarations are checked bottom to top
 

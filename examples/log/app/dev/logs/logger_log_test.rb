@@ -1,7 +1,7 @@
-class DevSystem::LoggerLogTest < DevSystem::LogTest
+class LoggerLogTest < DevSystem::LogTest
 
   test :subject_class do
-    assert subject_class == DevSystem::LoggerLog
+    assert subject_class == LoggerLog
   end
 
   test_methods_defined do
