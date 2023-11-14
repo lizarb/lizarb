@@ -1,4 +1,4 @@
-class SortedBench < Liza::Bench
+class SortedBench < DevSystem::Bench
 
   def self.call args
     t = Time.now
