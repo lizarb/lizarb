@@ -61,6 +61,14 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   #
 
   # arg0 arg1 arg2
+  def simple_args
+    env[:args]
+      .reject { _1.start_with? "+" }
+      .reject { _1.start_with? "-" }
+      .reject { _1.include? "=" }
+  end
+
+  # arg0 arg1 arg2
   def simple_arg(index, &block)
     string = env[:args][index]
     return string if string
@@ -99,7 +107,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       end.snakecase
     end
   end
-  
+
   #
 
   # +key -key
