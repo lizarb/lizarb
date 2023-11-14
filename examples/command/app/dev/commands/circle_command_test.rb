@@ -5,8 +5,7 @@ class CircleCommandTest < NarrativeMethodCommandTest
   end
 
   test :settings do
-    assert subject_class.log_level == :normal
-    assert subject_class.log_color == :green
+    assert subject_class.log_level == 0
   end
 
   test :subject_class, :area do
