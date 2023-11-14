@@ -161,6 +161,47 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     add_change file
   end
 
+  #
+
+  def name!
+    @name = command.simple_arg_ask_snakecase 0, "Name your new #{@controller_class.last_namespace}:"
+    log "@name = #{@name.inspect}"
+  end
+
+  #
+
+  def place!
+    places = ControllerShell.places_for(@controller_class)
+    @place = command.simple_controller_placement :place, places
+    @path = places[@place]
+    log "@place, @path = #{@place.inspect}, #{@path.inspect}"
+  end
+
+  # create_controller
+
+  def create_controller(name, controller, place, path, &block)
+    unit, test = UnitHelper.new, UnitHelper.new
+
+    @class_name = "#{name.camelize}#{controller.last_namespace}"
+    @class_name = "#{place.split("/").first.camelize}System::#{@class_name}" unless place == "app"
+
+    unit_classes = [@class_name, controller.to_s]
+    test_classes = unit_classes.map { "#{_1}Test" }
+
+    unit_path = App.root.join(path).join("#{name}_#{controller.division.singular}.rb")
+    test_path = App.root.join(path).join("#{name}_#{controller.division.singular}_test.rb")
+
+    # decorate
+
+    yield unit, test
+
+    # create
+
+    create_unit unit, unit_classes, unit_path
+    create_unit test, test_classes, test_path
+
+    log "done"
+  end
 
   # helper methods
 
