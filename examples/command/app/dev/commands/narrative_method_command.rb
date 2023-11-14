@@ -1,4 +1,4 @@
-class NarrativeMethodCommand < Liza::Command
+class NarrativeMethodCommand < DevSystem::Command
   class Error < StandardError; end
   class Invalid < Error; end
 
