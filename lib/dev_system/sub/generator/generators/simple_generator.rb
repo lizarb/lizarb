@@ -179,13 +179,13 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   # create_controller
 
-  def create_controller(name, controller, place, path, &block)
+  def create_controller(name, controller, place, path, ancestor: controller, &block)
     unit, test = UnitHelper.new, UnitHelper.new
 
     @class_name = "#{name.camelize}#{controller.last_namespace}"
     @class_name = "#{place.split("/").first.camelize}System::#{@class_name}" unless place == "app"
 
-    unit_classes = [@class_name, controller.to_s]
+    unit_classes = [@class_name, ancestor.to_s]
     test_classes = unit_classes.map { "#{_1}Test" }
 
     unit_path = App.root.join(path).join("#{name}_#{controller.division.singular}.rb")
