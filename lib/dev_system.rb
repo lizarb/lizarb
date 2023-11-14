@@ -10,6 +10,5 @@ class DevSystem < Liza::System
   sub :generator
   sub :log
   sub :shell
-  sub :terminal
   
 end
