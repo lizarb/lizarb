@@ -1,11 +1,10 @@
-class DevSystem::BenchGeneratorTest < DevSystem::GeneratorTest
+class DevSystem::BenchGeneratorTest < DevSystem::SimpleGeneratorTest
 
-  test :subject_class do
-    assert subject_class == DevSystem::BenchGenerator
+  #
+  
+  test :subject do
+    assert_equality DevSystem::BenchGenerator, subject_class
+    assert_equality DevSystem::BenchGenerator, subject.class
   end
-
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
+  
 end
