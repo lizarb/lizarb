@@ -133,6 +133,35 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     end
   end
 
+  #
+
+  def copy_examples controller
+    app_name = $APP
+    singular = controller.singular
+    plural = controller.plural
+    sys = controller.system.token
+    copy_files "examples/#{singular}/app/#{sys}/#{plural}", "#{app_name}/#{sys}/#{plural}"
+  end
+
+  #
+
+  def copy_files from_folder, to_folder
+    Dir["#{from_folder}/**/*"].each do |source|
+      next if File.directory? source
+
+      target = source.sub(from_folder, to_folder)
+      copy_file source, target
+    end
+  end
+
+  def copy_file source, target
+    path = App.root.join target
+    file = TextFileShell.new path
+    file.new_lines = TextShell.read_lines source
+    add_change file
+  end
+
+
   # helper methods
 
   def puts_line

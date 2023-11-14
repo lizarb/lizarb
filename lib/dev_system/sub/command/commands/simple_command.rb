@@ -43,6 +43,23 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
   #
 
+  # key=value
+  def simple_controller_placement(key, places)
+    simple_string key do
+      options = places.map do |place, path|
+        [
+          "#{place.ljust 30} path: #{path}",
+          place
+        ]
+      end.to_h
+      TtyInputCommand.pick_one "Where should the controller be placed?", options
+    end.tap do |place|
+      log :high, place.inspect
+    end
+  end
+
+  #
+
   # arg0 arg1 arg2
   def simple_arg(index, &block)
     string = env[:args][index]
