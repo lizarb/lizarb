@@ -1,4 +1,4 @@
-class HappySystem::AxoCommandTest < DevSystem::CommandTest
+class HappySystem::AxoCommandTest < DevSystem::SimpleCommandTest
   
   test :subject_class, :subject do
     assert_equality HappySystem::AxoCommand, subject_class
