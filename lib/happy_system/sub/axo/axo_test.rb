@@ -6,7 +6,7 @@ class HappySystem::AxoTest < Liza::ControllerTest
 
   test_methods_defined do
     on_self :call
-    on_instance
+    on_instance :env, :env=
   end
 
   test :settings do

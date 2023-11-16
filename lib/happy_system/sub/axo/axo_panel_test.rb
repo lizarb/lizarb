@@ -6,7 +6,7 @@ class HappySystem::AxoPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance
+    on_instance :call
   end
 
   test :settings do
