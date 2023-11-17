@@ -1,4 +1,4 @@
-class FooRequest < Liza::SimpleRequest
+class FooRequest < WebSystem::SimpleRequest
 
   # GET /foo
 

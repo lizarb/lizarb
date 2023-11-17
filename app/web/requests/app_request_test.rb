@@ -1,4 +1,4 @@
-class AppRequestTest < Liza::RequestTest
+class AppRequestTest < WebSystem::RequestTest
 
   test :subject_class do
     assert subject_class == AppRequest

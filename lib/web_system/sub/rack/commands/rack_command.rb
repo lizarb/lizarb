@@ -1,4 +1,4 @@
-class WebSystem::RackCommand < Liza::Command
+class WebSystem::RackCommand < DevSystem::Command
 
   def call args
     log "args = #{args.inspect}"
