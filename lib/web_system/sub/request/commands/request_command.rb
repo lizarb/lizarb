@@ -1,4 +1,4 @@
-class WebSystem::RequestCommand < Liza::Command
+class WebSystem::RequestCommand < DevSystem::Command
 
   def self.call(args)
     log "args = #{args.inspect}"
