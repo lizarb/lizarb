@@ -1,62 +1,42 @@
-class WebSystem::RequestGenerator < DevSystem::Generator
-  main_dsl
+class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
 
-  FOLDER = "app/web/requests"
+  # liza g request name place=app
 
-  generate :controller do
-    folder "app/web/requests"
-    filename "#{name}_request.rb"
-    content request_content name
+  def call_default
+    @controller_class = Request
+
+    name!
+    place!
+
+    @args = command.simple_args[1..-1]
+
+    create_controller @name, @controller_class, @place, @path do |unit, test|
+      unit.section :controller_section_1, caption: ""
+      test.section :controller_test_section_1, caption: ""
+    end
   end
 
-  generate :controller_test do
-    folder "app/web/requests"
-    filename "#{name}_request_test.rb"
-    content request_test_content name
-  end
+end
 
-  # helper methods
+__END__
 
-  def request_content name
-    <<~CODE
-class #{name.camelize}Request < Liza::Request
+# view controller_section_1.rb.erb
 
-  def self.call env
+  def self.call(env)
     path = env["REQUEST_PATH"]
-    log "args = #{args.inspect}"
-
-    #
 
     status = 200
     headers = {
       "Framework" => "Liza \#{Lizarb::VERSION}"
     }
-    body = "It works!"
+    body = "It works! <%= @name.camelize %>Request"
 
-    #
-
-    log status
     [status, headers, [body]]
   end
 
-end
-    CODE
+# view controller_test_section_1.rb.erb
+
+  test :subject_class, :subject do
+    assert_equality <%= @class_name %>, subject_class
+    assert_equality <%= @class_name %>, subject.class
   end
-
-  def request_test_content name
-    <<~CODE
-class #{name.camelize}RequestTest < Liza::RequestTest
-
-  test :subject_class do
-    assert subject_class == #{name.camelize}Request
-  end
-
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
-end
-    CODE
-  end
-
-end
