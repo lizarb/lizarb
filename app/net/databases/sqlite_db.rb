@@ -1,4 +1,4 @@
-class SqliteDb < Liza::SqliteDb
+class SqliteDb < NetSystem::SqliteDb
 
   # Set up your database controllers per the DSL in http://guides.lizarb.org/controllers/database.html
 

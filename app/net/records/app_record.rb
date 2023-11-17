@@ -1,4 +1,4 @@
-class AppRecord < Liza::Record
+class AppRecord < NetSystem::Record
   db :sqlite
 
   def self.create_tables!

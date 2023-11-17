@@ -1,4 +1,4 @@
-class PostRecordTest < Liza::RecordTest
+class PostRecordTest < NetSystem::RecordTest
 
   test :subject_class do
     assert subject_class == PostRecord
