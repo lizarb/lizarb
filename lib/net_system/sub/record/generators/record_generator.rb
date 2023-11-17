@@ -1,45 +1,33 @@
-class NetSystem::RecordGenerator < DevSystem::Generator
-  main_dsl
+class NetSystem::RecordGenerator < DevSystem::SimpleGenerator
 
-  FOLDER = "app/net/records"
+  # liza g record name place=app
 
-  generate :controller do
-    folder FOLDER
-    filename "#{name}_record.rb"
-    content record_content name
+  def call_default
+    @controller_class = Record
+
+    name!
+    place!
+
+    @args = command.simple_args[1..-1]
+
+    create_controller @name, @controller_class, @place, @path do |unit, test|
+      unit.section :controller_section_1, caption: ""
+      test.section :controller_test_section_1, caption: ""
+    end
   end
-
-  generate :controller_test do
-    folder FOLDER
-    filename "#{name}_record_test.rb"
-    content record_test_content name
-  end
-
-  # helper methods
-
-  def record_content name
-    <<~CODE
-class #{name.camelize}Record < AppRecord
-  set :table, :#{name}s
-
+  
 end
-    CODE
+
+__END__
+
+# view controller_section_1.rb.erb
+
+  db :sqlite
+  set :table, :<%= @name %>s
+
+# view controller_test_section_1.rb.erb
+
+  test :subject_class, :subject do
+    assert_equality <%= @class_name %>, subject_class
+    assert_equality <%= @class_name %>, subject.class
   end
-
-  def record_test_content name
-    <<~CODE
-class #{name.camelize}RecordTest < Liza::RecordTest
-
-  test :subject_class do
-    assert subject_class == #{name.camelize}Record
-  end
-
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
-end
-    CODE
-  end
-
-end
