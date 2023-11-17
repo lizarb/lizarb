@@ -1,4 +1,4 @@
-class AppRecordTest < Liza::RecordTest
+class AppRecordTest < NetSystem::RecordTest
 
   test :subject_class do
     assert subject_class == AppRecord
