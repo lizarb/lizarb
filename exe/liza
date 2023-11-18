@@ -1,3 +1,8 @@
 #!/usr/bin/env ruby
 
-load "#{__dir__}/lizarb"
+is_mother_project = File.exist? "exe/lizarb"
+
+load \
+  is_mother_project \
+    ? "#{Dir.pwd}/exe/lizarb"
+    : "#{__dir__}/lizarb"
