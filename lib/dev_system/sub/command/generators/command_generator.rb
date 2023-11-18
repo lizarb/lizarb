@@ -33,11 +33,10 @@ __END__
   def call_default
     log :lower, "env.count is #{env.count}"
 
-    log "args is #{env[:args].inspect}"
+    log :lower, "args is #{env[:args].inspect}"
     log "simple_args is #{simple_args.inspect}"
 
-    color = ColorShell.colors.keys.sample
-    log stick :b, color, "I just think Ruby is the Best for coding!"
+    log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
 
     log "done at #{Time.now}"
     # 
@@ -49,11 +48,10 @@ __END__
   def call_<%= arg %>
     log :lower, "env.count is #{env.count}"
 
-    log "args is #{env[:args].inspect}"
+    log :lower, "args is #{env[:args].inspect}"
     log "simple_args is #{simple_args.inspect}"
 
-    color = ColorShell.colors.keys.sample
-    log stick :b, color, "I just think Ruby is the Best for coding!"
+    log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
 
     log "done at #{Time.now}"
     # 
