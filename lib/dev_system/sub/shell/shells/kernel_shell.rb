@@ -2,20 +2,20 @@ class DevSystem::KernelShell < DevSystem::Shell
   
   # 
 
-  def self.call_backticks(command)
-    log "#{stick command, DevSystem.color} | executing #{"and outputting result" if log? :lower}"
+  def self.call_backticks(command, log_level: :lower)
+    log log_level, "#{stick command, DevSystem.color} | executing and outputting result"
     result = `#{command}`
-    puts result if log? :lower
+    puts result if log? log_level
     result
   end
 
   #
 
-  def self.call_system(command)
-    log "#{command} | executing"
+  def self.call_system(command, log_level: :normal)
+    log log_level, "#{command} | executing"
     success = Kernel.system(command)
     message = success ? (stick :green, "successfully") : (stick :red, "failed")
-    log "Command executed #{message}"
+    log log_level, "Command executed #{message}"
     success
   end
 
