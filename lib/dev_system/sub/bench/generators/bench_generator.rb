@@ -8,7 +8,7 @@ class DevSystem::BenchGenerator < DevSystem::SimpleGenerator
     name!
     place!
 
-    @args = command.simple_args[1..-1]
+    @args = Array command.simple_args[1..-1]
     ancestor = @controller_class
 
     # THIS IS A HACK! WILL BE FIXED SOON!
