@@ -87,6 +87,7 @@ __END__
 # view index.html.erb
 <h1><%= self.class %></h1>
 <h2><%= action %></h2>
+<p>http_method: <%= http_method %></p>
 <p>request: <%= request %></p>
 <p>action: <%= action %></p>
 <p>format: <%= format %></p>
