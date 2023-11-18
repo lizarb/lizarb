@@ -1,9 +1,10 @@
-class DevSystem::NewCommand < DevSystem::Command
+class DevSystem::NewCommand < DevSystem::SimpleCommand
 
-  def call args
+  def call_default
+    log :lower, "env.count is #{env.count}"
+    args = env[:args] = ["new", *env[:args]]
     log "args = #{args.inspect}"
-
-    Liza[:GenerateCommand].call ["new", *args]
+    DevBox[:generator].call env
   end
 
 end
