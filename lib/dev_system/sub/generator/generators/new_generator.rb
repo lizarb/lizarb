@@ -42,9 +42,17 @@ class DevSystem::NewGenerator < DevSystem::Generator
 
     puts
 
-    `cd #{to}; liza generate gemfile; BUNDLE_GEMFILE=Gemfile bundle install`
+    KernelShell.call_backticks \
+      "cd #{to}; liza generate gemfile +confirm",
+      log_level: :normal
 
-    `cd #{to}; git init -b main; git add .; git commit -m "lizarb new app_1 (v#{Lizarb::VERSION})"`
+    KernelShell.call_backticks \
+      "cd #{to}; BUNDLE_GEMFILE=Gemfile bundle install",
+      log_level: :normal
+
+    KernelShell.call_backticks \
+      "cd #{to}; git init -b main; git add .; git commit -m 'lizarb new app_1 (v#{Lizarb::VERSION})'",
+      log_level: :normal
 
     log "Liza Application initialized at `#{to}`"
   end
