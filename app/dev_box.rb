@@ -24,7 +24,8 @@ class DevBox < DevSystem::DevBox
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
 
-    rescue_from CommandPanel::NotFoundError, with: NotFoundCommand
+    # uncomment below to override default setting to call NotFoundCommand
+    # rescue_from(CommandPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end
 
   # Configure your generator panel
@@ -37,7 +38,8 @@ class DevBox < DevSystem::DevBox
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
 
-    rescue_from GeneratorPanel::NotFoundError, with: NotFoundGenerator
+    # uncomment below to override default setting to call NotFoundGenerator
+    # rescue_from(GeneratorPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end
 
   # Configure your log panel

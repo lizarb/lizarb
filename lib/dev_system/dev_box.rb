@@ -10,6 +10,7 @@ class DevSystem::DevBox < Liza::Box
   
   configure :command do
     # set :log_level, ENV["dev.command.log_level"]
+    rescue_from CommandPanel::NotFoundError, with: NotFoundCommand
   end
 
   def self.command(...)
@@ -32,6 +33,7 @@ class DevSystem::DevBox < Liza::Box
   
   configure :generator do
     # set :log_level, ENV["dev.generator.log_level"]
+    rescue_from GeneratorPanel::NotFoundError, with: NotFoundGenerator
   end
 
   # Configure your log panel
