@@ -144,7 +144,8 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     singular = controller.singular
     plural = controller.plural
     sys = controller.system.token
-    copy_files "examples/#{singular}/app/#{sys}/#{plural}", "#{app_name}/#{sys}/#{plural}"
+    dir = Lizarb::GEM_DIR
+    copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{app_name}/#{sys}/#{plural}"
   end
 
   #
