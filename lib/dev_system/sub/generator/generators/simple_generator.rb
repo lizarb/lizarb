@@ -39,8 +39,12 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     }
     log "saving #{changes.count} files changed: #{diff[:"+"]} insertions(+), #{diff[:"-"]} deletions(-)"
 
-    choices = changes.map { |i| [i.relative_path.to_s, i] }.to_h
-    answers = box.pick_many "Approve all changes?", choices
+    if env[:args].include? "+confirm"
+      answers = changes
+    else
+      choices = changes.map { |i| [i.relative_path.to_s, i] }.to_h
+      answers = box.pick_many "Approve all changes?", choices
+    end
 
     #
 
