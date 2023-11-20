@@ -118,4 +118,10 @@ class App
     set :log_level, level
   end
 
+  # helpers
+
+  def self.global?
+    $APP == "app_global"
+  end
+
 end
