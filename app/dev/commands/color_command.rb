@@ -1,4 +1,4 @@
-class DevSystem::ColorCommand < DevSystem::SimpleCommand
+class ColorCommand < DevSystem::SimpleCommand
 
   def call_default
     log "args are #{env[:args].inspect}"
