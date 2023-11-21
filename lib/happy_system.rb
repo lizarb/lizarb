@@ -6,7 +6,7 @@ class HappySystem < Liza::System
 
   #
 
-  color :light_pink
+  color :coral
 
   sub :axo
 
