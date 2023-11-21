@@ -68,6 +68,11 @@ class WebSystem::RequestCommand < DevSystem::Command
   def request_panel
     @request_panel ||= WebBox[:request]
   end
+  
+  # TODO: fix this
+  def self.get_command_signatures
+    super << OpenStruct.new({name: "get", description: "# no description"})
+  end
 end
 
 __END__

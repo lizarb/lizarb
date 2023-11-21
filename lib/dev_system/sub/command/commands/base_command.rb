@@ -26,4 +26,23 @@ class DevSystem::BaseCommand < DevSystem::Command
     raise NoMethodError, "method not found: #{method_name.inspect}"
   end
 
+  #
+
+  def self.get_command_signatures
+
+    signatures = []
+    ancestors_until(BaseCommand).each do |c|
+      signatures +=
+        c.instance_methods_defined.select do |name|
+          name.start_with? "call_"
+        end.map do |name|
+          OpenStruct.new({
+            name: ( name.to_s.sub("call_", "").sub("default", "") ),
+            description: "# no description",
+          })
+        end
+    end
+    signatures
+  end
+
 end
