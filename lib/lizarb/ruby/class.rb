@@ -10,6 +10,10 @@ class Class
     ObjectSpace.each_object(Class).select { |klass| klass <= self }
   end
   
+  def ancestors_until klass
+    ancestors.take_while { _1 <= klass }
+  end
+
   def first_namespace
     name.rpartition('::')[0]
   end
