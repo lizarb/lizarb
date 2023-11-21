@@ -32,7 +32,8 @@ class DevSystem::NotFoundCommand < DevSystem::Command
     log "#{grouped_commands.values.flatten.count.to_s} command(s) found"
     puts
 
-    longest_name = grouped_commands.keys.map { _1.to_s.length }.max
+    longest_name = grouped_commands.keys.map { _1.to_s.length }.max+1
+    sidebar_length = 38
 
     grouped_commands.each do |ns, controllers|
       if ns == Object
@@ -46,7 +47,7 @@ class DevSystem::NotFoundCommand < DevSystem::Command
       end
       
       puts  [
-        (stick :b, color, "#{title.ljust 60-2} "),
+        (stick :b, color, "#{title.ljust sidebar_length-2, "-"} "),
         (stick :onyx, "#{controllers.count.to_s.rjust_zeroes 2} command(s) found in #{path}"),
       ].join " "
 
@@ -54,7 +55,17 @@ class DevSystem::NotFoundCommand < DevSystem::Command
       controllers.sort_by do |c|
         c.token
       end.each do |c|
-        log "liza #{c.token}"
+        c.get_command_signatures.each do |signature|
+          signature.name =
+            signature.name.empty? \
+              ? c.token.to_s
+              : "#{c.token}:#{signature.name}"
+        end.sort_by(&:name).map do |signature|
+          puts [
+            "liza #{signature.name}".ljust(sidebar_length),
+            signature.description
+          ].join ""
+        end
       end
       puts
     end
