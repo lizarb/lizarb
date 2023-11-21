@@ -7,7 +7,7 @@ class DevSystem::BenchCommand < DevSystem::Command
 
     # 2. FIND bench
 
-    return call_not_found args if args.none?
+    return NotFoundBench.call args args if args.none?
 
     bench = args[0]
 
@@ -22,10 +22,6 @@ class DevSystem::BenchCommand < DevSystem::Command
     # 3. CALL
 
     bench_klass.call args[1..-1]
-  end
-
-  def self.call_not_found args
-    Liza::NotFoundBench.call args
   end
 
 end
