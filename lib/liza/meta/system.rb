@@ -4,17 +4,21 @@ class Liza::System < Liza::Unit
     const_get name.to_s.camelize
   end
 
-  def self.insertion key, &block
-    if block_given?
-      registrar[:"insertion_#{key}"] = block
-    else
-      registrar[:"insertion_#{key}"]
-    end
-  end
+  # Ignore this for now.
+  # This feature has been commented out for simplicity purposes.
+  # It injects code into other classes just like Part does. Lizarb connects them
 
-  def self.registrar
-    @registrar ||= {}
-  end
+  # def self.insertion key, &block
+  #   if block_given?
+  #     registrar[:"insertion_#{key}"] = block
+  #   else
+  #     registrar[:"insertion_#{key}"]
+  #   end
+  # end
+
+  # def self.registrar
+  #   @registrar ||= {}
+  # end
 
   #
 
