@@ -85,7 +85,7 @@ module Lizarb
       puts "$log_boot_#{k} = #{v >= level}" if level == -3
       eval "$log_boot_#{k} = true" if v >= level
     end
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_high
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_higher
     log "#{self}.#{__method__}" if defined? $log_boot_low
 
     lookup_and_set_mode
@@ -348,22 +348,28 @@ end
 
     color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
 
-    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_normal
-    index = 0
-    system_class.registrar.each do |string, target_block|
-      reg_type, _sep, reg_target = string.to_s.lpartition "_"
+    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
+    
+    # Ignore this for now.
+    # This feature has been commented out for simplicity purposes.
+    # It injects code into other classes just like Part does. System defines them
 
-      index += 1
+    # index = 0
+    # system_class.registrar.each do |string, target_block|
+    #   reg_type, _sep, reg_target = string.to_s.lpartition "_"
 
-      target_klass = Liza.const reg_target
+    #   index += 1
 
-      if reg_type == "insertion"
-        target_klass.class_exec(&target_block)
-      else
-        raise "TODO: decide and implement system extension"
-      end
-      log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
-    end
+    #   target_klass = Liza.const reg_target
+
+    #   if reg_type == "insertion"
+    #     target_klass.class_exec(&target_block)
+    #   else
+    #     raise "TODO: decide and implement system extension"
+    #   end
+    #   log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
+    # end
+
     # pad = 21-system_class.name.size
     # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
   end
