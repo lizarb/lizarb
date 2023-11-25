@@ -5,6 +5,7 @@ PATH
       colorize (~> 0.8)
       diff-lcs (~> 1.5)
       dotenv (~> 2.8)
+      pry (~> 0.14.2)
       tty-prompt (~> 0.23.1)
       zeitwerk (~> 2.6)
 
@@ -159,7 +160,6 @@ DEPENDENCIES
   mongo (~> 2.19)
   mysql2 (~> 0.5.5)
   pg (~> 1.5)
-  pry (~> 0.14.1)
   puma (~> 6.3)
   rack (~> 3.0)
   rackup (~> 0.2.2)

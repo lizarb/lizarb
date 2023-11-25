@@ -12,9 +12,6 @@ end
 group :dev do
   # gems used by DevSystem
 
-  # Command gems
-  gem "pry", "~> 0.14.1"
-
   # Shell gems
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23.9"
