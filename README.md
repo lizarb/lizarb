@@ -32,6 +32,10 @@ Try Liza with Interactive Ruby
 
     liza irb
 
+Try Liza with Pry
+
+    liza pry
+
 ## Running Tests
 
 Run your Liza tests

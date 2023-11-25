@@ -38,9 +38,6 @@ end
 group :dev do
   # gems you only want to load if DevSystem is loaded
 
-  # Command
-  # gem "pry", "~> 0.14.1"
-
   # Shell
   # gem "htmlbeautifier", "~> 1.4"
   # gem "commonmarker", "~> 0.23.9"
