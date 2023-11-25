@@ -112,7 +112,7 @@ class DevSystem::CommandPanel < Liza::Panel
       ["REMEMBER", :i] \
         if log? :higher
     
-    log stick system.color, "#{$0} #{env[:command_arg]} #{args}" if log? :higher
+    log stick system.color, "#{ $0.split("/").last } #{ env[:command_arg] } #{ args }" if log? :higher
   end
 
   #
