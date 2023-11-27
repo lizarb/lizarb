@@ -9,7 +9,7 @@ class Liza::TestTreePart < Liza::Part
     def self.after_stack;  @after_stack  ||= superclass.after_stack.dup end
     
     def self.test_node; @test_node ||= test_tree end
-    def self.test_tree; @test_tree ||= Liza::TestTreePart::Extension.new nil, before_stack, after_stack end
+    def self.test_tree; @test_tree ||= Liza::TestTreePart.new nil, before_stack, after_stack end
     
     #
 
@@ -38,55 +38,50 @@ class Liza::TestTreePart < Liza::Part
 
   end
 
-  extension do
-    
-    def log *args
-      self.class.solder.log(*args)
-    end
+  #
 
-    def log_test_building?
-      Liza::Test.log_test_building?
-    end
-
-    attr_reader :tests, :parent, :children, :before_stack, :after_stack
-
-    def initialize parent, before_stack, after_stack
-      @tests = []
-      initialize_parenting parent
-      initialize_filters before_stack, after_stack
-    end
-
-    def initialize_parenting parent
-      @parent = parent || self
-      @children = []
-      @parent.children << self if @parent != self
-    end
-
-    def initialize_filters before_stack, after_stack
-      @before_top, @after_top = [], []
-      @before_stack = before_stack.push @before_top
-      @after_stack  = after_stack.unshift @after_top
-    end
-
-    def add_before &block
-      log "add_before to ##{object_id} #{block}" if log_test_building?
-      @before_top.push block
-    end
-
-    def add_test words, &block
-      log "add_test to ##{object_id} #{words} #{block}" if log_test_building?
-      tests << [words, block]
-    end
-
-    def add_after &block
-      log "add_after to ##{object_id} #{block}" if log_test_building?
-      @after_top.push block
-    end
-
-    def branch_out words, &block
-      self.class.new self, before_stack.dup, after_stack.dup
-    end
-
+  def log_test_building?
+    Liza::Test.log_test_building?
   end
+
+  attr_reader :tests, :parent, :children, :before_stack, :after_stack
+
+  def initialize parent, before_stack, after_stack
+    @tests = []
+    initialize_parenting parent
+    initialize_filters before_stack, after_stack
+  end
+
+  def initialize_parenting parent
+    @parent = parent || self
+    @children = []
+    @parent.children << self if @parent != self
+  end
+
+  def initialize_filters before_stack, after_stack
+    @before_top, @after_top = [], []
+    @before_stack = before_stack.push @before_top
+    @after_stack  = after_stack.unshift @after_top
+  end
+
+  def add_before &block
+    log "add_before to ##{object_id} #{block}" if log_test_building?
+    @before_top.push block
+  end
+
+  def add_test words, &block
+    log "add_test to ##{object_id} #{words} #{block}" if log_test_building?
+    tests << [words, block]
+  end
+
+  def add_after &block
+    log "add_after to ##{object_id} #{block}" if log_test_building?
+    @after_top.push block
+  end
+
+  def branch_out words, &block
+    self.class.new self, before_stack.dup, after_stack.dup
+  end
+
 
 end
