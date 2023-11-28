@@ -10,10 +10,10 @@ class Liza::TestTest < Liza::UnitTest
       :after, :after_stack,
       :before, :before_stack,
       :call,
-      :division,
       :group,
       :log_test_building, :log_test_building?,
       :subject_class,
+      :subsystem,
       :test, :test_node, :test_tree,
       :totals
     on_instance \
