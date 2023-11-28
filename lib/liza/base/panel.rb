@@ -39,6 +39,14 @@ class Liza::Panel < Liza::Unit
     @token ||= last_namespace.gsub(/Panel$/, '').snakecase.to_sym
   end
 
+  def self.subsystem
+    controller
+  end
+
+  def subsystem
+    controller
+  end
+
   #
 
   attr_reader :key
