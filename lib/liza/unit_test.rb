@@ -52,6 +52,7 @@ class Liza::UnitTest < Liza::Test
       subject_class.methods_for_rendering
     b = [
       :descendants_select,
+      :division,
       :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_settings,
       :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
       :part,
