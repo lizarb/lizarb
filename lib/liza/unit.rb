@@ -59,6 +59,12 @@ class Liza::Unit
       end
   end
 
+  # CONTROLLER
+
+  def self.division
+    Liza::Controller
+  end
+
   # SYSTEM
 
   def self.system
