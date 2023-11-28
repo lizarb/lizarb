@@ -9,15 +9,17 @@ class Liza::PanelTest < Liza::UnitTest
 
   test_methods_defined do
     on_self :box,
-    :controller, :division,
+    :controller,
     :puts,
+    :subsystem,
     :token
     on_instance \
       :box,
       :controller, :division,
       :key, :push,
       :rescue_from, :rescue_from_panel, :rescuers,
-      :short, :started
+      :short, :started,
+      :subsystem
   end
 
   #
