@@ -10,6 +10,15 @@ class Liza::UnitClassesPart < Liza::Part
       descendants.select { _1.system? system }
     end
 
+    def self.namespace
+      return @namespace if defined? @namespace
+
+      @namespace ||= Object unless to_s.include? "::"
+      @namespace ||= Liza if to_s.start_with? "Liza::"
+      @namespace ||= system
+      @namespace
+    end
+
     def self.system? system
       system = Liza.const "#{system}_system" if system.is_a? Symbol
       system == get(:system)

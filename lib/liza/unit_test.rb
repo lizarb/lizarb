@@ -55,6 +55,7 @@ class Liza::UnitTest < Liza::Test
       :division,
       :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_settings,
       :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
+      :namespace,
       :part,
       :procedure, :proceed,
       :reload!,
