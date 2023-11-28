@@ -26,6 +26,10 @@ class Liza::System < Liza::Unit
     @subs ||= []
   end
 
+  def self.subsystems
+    @subsystems ||= subs.map { const _1 }
+  end
+
   def self.sub name
     subs << name
   end
