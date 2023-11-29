@@ -7,7 +7,7 @@ class DevSystem::BenchCommand < DevSystem::Command
 
     # 2. FIND bench
 
-    return NotFoundBench.call args args if args.none?
+    return NotFoundBench.call args if args.none?
 
     bench = args[0]
 
