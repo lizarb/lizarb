@@ -47,6 +47,12 @@ class Liza::Panel < Liza::Unit
     controller
   end
 
+  # color
+
+  def self.color
+    system.color
+  end
+
   #
 
   attr_reader :key

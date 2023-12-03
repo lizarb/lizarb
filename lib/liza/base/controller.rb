@@ -16,4 +16,11 @@ class Liza::Controller < Liza::Unit
     klass.on_connected if klass.superclass == Liza::Controller
   end
 
+  # color
+
+  def self.color
+    return system.color if subsystem?
+    subsystem.color
+  end
+
 end
