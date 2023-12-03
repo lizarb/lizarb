@@ -4,14 +4,14 @@ class DevSystem::FileShell < DevSystem::Shell
     raise ArgumentError, "Path is required" if path.nil? || path.to_s.empty?
   end
 
-  def self._raise_if_not_exists path
-    raise ArgumentError, "File does not exist at '#{path}'" unless exist? path
+  def self._raise_if_not_exists path, log_level: self.log_level
+    raise ArgumentError, "File does not exist at '#{path}'" unless exist?(path, log_level: log_level)
   end
 
   #
 
-  def self.exist? path
-    log :normal, "Checking if file exists at '#{path}'"
+  def self.exist? path, log_level: self.log_level
+    log log_level, "Checking if file exists at '#{path}'"
     _raise_if_blank path
 
     File.exist? path
