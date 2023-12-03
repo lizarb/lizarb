@@ -19,7 +19,7 @@ class DevSystem::ColorShell < DevSystem::Shell
     @@colors
   end
 
-  def self.color k, v
+  def self.add k, v
     v = @@colors[v] if v.is_a? Symbol
     v = rgb_from_int v if v.is_a? Integer
     v = rgb_from_str v if v.is_a? String
@@ -57,333 +57,333 @@ class DevSystem::ColorShell < DevSystem::Shell
   # Standard ANSI Colors:
 
   # red
-  color :darkest_red,  0x330000
-  color :darker_red,   0x660000
-  color :dark_red,     0x990000
-  color :red,          0xcc0000
-  color :light_red,    0xff0000
-  color :lighter_red,  0xff3333
-  color :lightest_red, 0xff6666
+  add :darkest_red,  0x330000
+  add :darker_red,   0x660000
+  add :dark_red,     0x990000
+  add :red,          0xcc0000
+  add :light_red,    0xff0000
+  add :lighter_red,  0xff3333
+  add :lightest_red, 0xff6666
 
   # green
-  color :darkest_green,  0x003300
-  color :darker_green,   0x006600
-  color :dark_green,     0x009900
-  color :green,          0x00cc00
-  color :light_green,    0x00ff00
-  color :lighter_green,  0x33ff33
-  color :lightest_green, 0x66ff66
+  add :darkest_green,  0x003300
+  add :darker_green,   0x006600
+  add :dark_green,     0x009900
+  add :green,          0x00cc00
+  add :light_green,    0x00ff00
+  add :lighter_green,  0x33ff33
+  add :lightest_green, 0x66ff66
 
   # blue
-  color :darkest_blue,  0x000033
-  color :darker_blue,   0x000066
-  color :dark_blue,     0x000099
-  color :blue,          0x0000cc
-  color :light_blue,    0x0000ff
-  color :lighter_blue,  0x3333ff
-  color :lightest_blue, 0x6666ff
+  add :darkest_blue,  0x000033
+  add :darker_blue,   0x000066
+  add :dark_blue,     0x000099
+  add :blue,          0x0000cc
+  add :light_blue,    0x0000ff
+  add :lighter_blue,  0x3333ff
+  add :lightest_blue, 0x6666ff
 
   # yellow
-  color :darkest_yellow,  0x333300
-  color :darker_yellow,   0x666600
-  color :dark_yellow,     0x999900
-  color :yellow,          0xcccc00
-  color :light_yellow,    0xffff00
-  color :lighter_yellow,  0xffff33
-  color :lightest_yellow, 0xffff66
+  add :darkest_yellow,  0x333300
+  add :darker_yellow,   0x666600
+  add :dark_yellow,     0x999900
+  add :yellow,          0xcccc00
+  add :light_yellow,    0xffff00
+  add :lighter_yellow,  0xffff33
+  add :lightest_yellow, 0xffff66
 
   # magenta
-  color :darkest_magenta,  0x330033
-  color :darker_magenta,   0x660066
-  color :dark_magenta,     0x990099
-  color :magenta,          0xcc00cc
-  color :light_magenta,    0xff00ff
-  color :lighter_magenta,  0xff33ff
-  color :lightest_magenta, 0xff66ff
+  add :darkest_magenta,  0x330033
+  add :darker_magenta,   0x660066
+  add :dark_magenta,     0x990099
+  add :magenta,          0xcc00cc
+  add :light_magenta,    0xff00ff
+  add :lighter_magenta,  0xff33ff
+  add :lightest_magenta, 0xff66ff
 
   # cyan
-  color :darkest_cyan,  0x003333
-  color :darker_cyan,   0x006666
-  color :dark_cyan,     0x009999
-  color :cyan,          0x00cccc
-  color :light_cyan,    0x00ffff
-  color :lighter_cyan,  0x33ffff
-  color :lightest_cyan, 0x66ffff
+  add :darkest_cyan,  0x003333
+  add :darker_cyan,   0x006666
+  add :dark_cyan,     0x009999
+  add :cyan,          0x00cccc
+  add :light_cyan,    0x00ffff
+  add :lighter_cyan,  0x33ffff
+  add :lightest_cyan, 0x66ffff
 
   # Black to White Transition:
 
   # black
-  color :darkest_black,  0x000000
-  color :darker_black,   0x080808
-  color :dark_black,     0x101010
-  color :black,          0x181818
-  color :light_black,    0x202020
-  color :lighter_black,  0x282828
-  color :lightest_black, 0x303030
+  add :darkest_black,  0x000000
+  add :darker_black,   0x080808
+  add :dark_black,     0x101010
+  add :black,          0x181818
+  add :light_black,    0x202020
+  add :lighter_black,  0x282828
+  add :lightest_black, 0x303030
 
   # onyx
-  color :darkest_onyx,  0x383838
-  color :darker_onyx,   0x404040
-  color :dark_onyx,     0x484848
-  color :onyx,          0x505050
-  color :light_onyx,    0x585858
-  color :lighter_onyx,  0x606060
-  color :lightest_onyx, 0x686868
+  add :darkest_onyx,  0x383838
+  add :darker_onyx,   0x404040
+  add :dark_onyx,     0x484848
+  add :onyx,          0x505050
+  add :light_onyx,    0x585858
+  add :lighter_onyx,  0x606060
+  add :lightest_onyx, 0x686868
 
   # gray
-  color :darkest_gray,  0x707070
-  color :darker_gray,   0x787878
-  color :dark_gray,     0x808080
-  color :gray,          0x888888
-  color :light_gray,    0x909090
-  color :lighter_gray,  0x989898
-  color :lightest_gray, 0xa0a0a0
+  add :darkest_gray,  0x707070
+  add :darker_gray,   0x787878
+  add :dark_gray,     0x808080
+  add :gray,          0x888888
+  add :light_gray,    0x909090
+  add :lighter_gray,  0x989898
+  add :lightest_gray, 0xa0a0a0
 
   # silver
-  color :darkest_silver,  0xa8a8a8
-  color :darker_silver,   0xb0b0b0
-  color :dark_silver,     0xb8b8b8
-  color :silver,          0xc0c0c0
-  color :light_silver,    0xc8c8c8
-  color :lighter_silver,  0xd0d0d0
-  color :lightest_silver, 0xd8d8d8
+  add :darkest_silver,  0xa8a8a8
+  add :darker_silver,   0xb0b0b0
+  add :dark_silver,     0xb8b8b8
+  add :silver,          0xc0c0c0
+  add :light_silver,    0xc8c8c8
+  add :lighter_silver,  0xd0d0d0
+  add :lightest_silver, 0xd8d8d8
 
   # white
-  color :darkest_white,  0xe0e0e0
-  color :darker_white,   0xe8e8e8
-  color :dark_white,     0xf0f0f0
-  color :white,          0xf8f8f8
-  color :light_white,    0xffffff
-  color :lighter_white,  0xffffff
-  color :lightest_white, 0xffffff
+  add :darkest_white,  0xe0e0e0
+  add :darker_white,   0xe8e8e8
+  add :dark_white,     0xf0f0f0
+  add :white,          0xf8f8f8
+  add :light_white,    0xffffff
+  add :lighter_white,  0xffffff
+  add :lightest_white, 0xffffff
 
   # Red to Orange Transition:
 
   # ruby
-  color :darkest_ruby,  0x330000
-  color :darker_ruby,   0x660000
-  color :dark_ruby,     0x990000
-  color :ruby,          0xcc0000
-  color :light_ruby,    0xff3333
-  color :lighter_ruby,  0xff6666
-  color :lightest_ruby, 0xff9999
+  add :darkest_ruby,  0x330000
+  add :darker_ruby,   0x660000
+  add :dark_ruby,     0x990000
+  add :ruby,          0xcc0000
+  add :light_ruby,    0xff3333
+  add :lighter_ruby,  0xff6666
+  add :lightest_ruby, 0xff9999
 
   # ember
-  color :darkest_ember,  0x4B0000
-  color :darker_ember,   0x8F1B1B
-  color :dark_ember,     0xD23535
-  color :ember,          0xFF4A4A
-  color :light_ember,    0xFF6E6E
-  color :lighter_ember,  0xFF9292
-  color :lightest_ember, 0xFFB6B6
+  add :darkest_ember,  0x4B0000
+  add :darker_ember,   0x8F1B1B
+  add :dark_ember,     0xD23535
+  add :ember,          0xFF4A4A
+  add :light_ember,    0xFF6E6E
+  add :lighter_ember,  0xFF9292
+  add :lightest_ember, 0xFFB6B6
   
   # vermilion
-  color :darkest_vermilion,  0x661919
-  color :darker_vermilion,   0x993333
-  color :dark_vermilion,     0xcc4c4c
-  color :vermilion,          0xff6666
-  color :light_vermilion,    0xff9999
-  color :lighter_vermilion,  0xffcccc
-  color :lightest_vermilion, 0xffffe6
+  add :darkest_vermilion,  0x661919
+  add :darker_vermilion,   0x993333
+  add :dark_vermilion,     0xcc4c4c
+  add :vermilion,          0xff6666
+  add :light_vermilion,    0xff9999
+  add :lighter_vermilion,  0xffcccc
+  add :lightest_vermilion, 0xffffe6
 
   # coral
-  color :darkest_coral,  0x801b1b
-  color :darker_coral,   0xff4040
-  color :dark_coral,     0xff6b6b
-  color :coral,          0xff9595
-  color :light_coral,    0xffbfbf
-  color :lighter_coral,  0xffdfdf
-  color :lightest_coral, 0xffefef
+  add :darkest_coral,  0x801b1b
+  add :darker_coral,   0xff4040
+  add :dark_coral,     0xff6b6b
+  add :coral,          0xff9595
+  add :light_coral,    0xffbfbf
+  add :lighter_coral,  0xffdfdf
+  add :lightest_coral, 0xffefef
 
   # Orange to Yellow Transition:
 
   # saffron
-  color :darkest_saffron,  0x993300
-  color :darker_saffron,   0xff6600
-  color :dark_saffron,     0xff9900
-  color :saffron,          0xffcc00
-  color :light_saffron,    0xffe066
-  color :lighter_saffron,  0xfff299
-  color :lightest_saffron, 0xffffcc
+  add :darkest_saffron,  0x993300
+  add :darker_saffron,   0xff6600
+  add :dark_saffron,     0xff9900
+  add :saffron,          0xffcc00
+  add :light_saffron,    0xffe066
+  add :lighter_saffron,  0xfff299
+  add :lightest_saffron, 0xffffcc
 
   # orange
-  color :darkest_orange,  0x331900
-  color :darker_orange,   0x663300
-  color :dark_orange,     0x994c00
-  color :orange,          0xcc6600
-  color :light_orange,    0xff8000
-  color :lighter_orange,  0xff9933
-  color :lightest_orange, 0xffb266
+  add :darkest_orange,  0x331900
+  add :darker_orange,   0x663300
+  add :dark_orange,     0x994c00
+  add :orange,          0xcc6600
+  add :light_orange,    0xff8000
+  add :lighter_orange,  0xff9933
+  add :lightest_orange, 0xffb266
 
   # umber
-  color :darkest_umber,  0x3d1f00
-  color :darker_umber,   0x7a3f00
-  color :dark_umber,     0xb85f00
-  color :umber,          0xf57f00
-  color :light_umber,    0xff9f40
-  color :lighter_umber,  0xffbf80
-  color :lightest_umber, 0xffdfbf
+  add :darkest_umber,  0x3d1f00
+  add :darker_umber,   0x7a3f00
+  add :dark_umber,     0xb85f00
+  add :umber,          0xf57f00
+  add :light_umber,    0xff9f40
+  add :lighter_umber,  0xffbf80
+  add :lightest_umber, 0xffdfbf
 
   # beige
-  color :darkest_beige,  0x664c33
-  color :darker_beige,   0x998066
-  color :dark_beige,     0xccb499
-  color :beige,          0xffe8cc
-  color :light_beige,    0xfff4e6
-  color :lighter_beige,  0xfff9f2
-  color :lightest_beige, 0xfffcf8
+  add :darkest_beige,  0x664c33
+  add :darker_beige,   0x998066
+  add :dark_beige,     0xccb499
+  add :beige,          0xffe8cc
+  add :light_beige,    0xfff4e6
+  add :lighter_beige,  0xfff9f2
+  add :lightest_beige, 0xfffcf8
 
   # Yellow to Green Transition:
 
   # topaz
-  color :darkest_topaz,  0x665c33
-  color :darker_topaz,   0x997f33
-  color :dark_topaz,     0xcca233
-  color :topaz,          0xffc533
-  color :light_topaz,    0xffd966
-  color :lighter_topaz,  0xffec99
-  color :lightest_topaz, 0xffffcc
+  add :darkest_topaz,  0x665c33
+  add :darker_topaz,   0x997f33
+  add :dark_topaz,     0xcca233
+  add :topaz,          0xffc533
+  add :light_topaz,    0xffd966
+  add :lighter_topaz,  0xffec99
+  add :lightest_topaz, 0xffffcc
 
   # olive
-  color :darkest_olive,  0x333300
-  color :darker_olive,   0x666600
-  color :dark_olive,     0x999900
-  color :olive,          0xcccc00
-  color :light_olive,    0xe6e600
-  color :lighter_olive,  0xf2f233
-  color :lightest_olive, 0xffff66
+  add :darkest_olive,  0x333300
+  add :darker_olive,   0x666600
+  add :dark_olive,     0x999900
+  add :olive,          0xcccc00
+  add :light_olive,    0xe6e600
+  add :lighter_olive,  0xf2f233
+  add :lightest_olive, 0xffff66
 
   # chartreuse
-  color :darkest_chartreuse,  0x336600
-  color :darker_chartreuse,   0x66cc00
-  color :dark_chartreuse,     0x99ff00
-  color :chartreuse,          0xccff33
-  color :light_chartreuse,    0xe6ff66
-  color :lighter_chartreuse,  0xf2ff99
-  color :lightest_chartreuse, 0xffffcc
+  add :darkest_chartreuse,  0x336600
+  add :darker_chartreuse,   0x66cc00
+  add :dark_chartreuse,     0x99ff00
+  add :chartreuse,          0xccff33
+  add :light_chartreuse,    0xe6ff66
+  add :lighter_chartreuse,  0xf2ff99
+  add :lightest_chartreuse, 0xffffcc
 
   # jade
-  color :darkest_jade,  0x003320
-  color :darker_jade,   0x006640
-  color :dark_jade,     0x009960
-  color :jade,          0x00cc80
-  color :light_jade,    0x33ffa0
-  color :lighter_jade,  0x66ffc0
-  color :lightest_jade, 0x99ffe0
+  add :darkest_jade,  0x003320
+  add :darker_jade,   0x006640
+  add :dark_jade,     0x009960
+  add :jade,          0x00cc80
+  add :light_jade,    0x33ffa0
+  add :lighter_jade,  0x66ffc0
+  add :lightest_jade, 0x99ffe0
 
   # Green to Blue Transition:
 
   # turquoise
-  color :darkest_turquoise,  0x004545
-  color :darker_turquoise,   0x008080
-  color :dark_turquoise,     0x00bfbf
-  color :turquoise,          0x00efef
-  color :light_turquoise,    0x33ffff
-  color :lighter_turquoise,  0x66ffff
-  color :lightest_turquoise, 0x99ffff
+  add :darkest_turquoise,  0x004545
+  add :darker_turquoise,   0x008080
+  add :dark_turquoise,     0x00bfbf
+  add :turquoise,          0x00efef
+  add :light_turquoise,    0x33ffff
+  add :lighter_turquoise,  0x66ffff
+  add :lightest_turquoise, 0x99ffff
 
   # cerulean
-  color :darkest_cerulean,  0x003366
-  color :darker_cerulean,   0x006699
-  color :dark_cerulean,     0x0099cc
-  color :cerulean,          0x00ccff
-  color :light_cerulean,    0x33e6ff
-  color :lighter_cerulean,  0x66ffff
-  color :lightest_cerulean, 0x99ffff
+  add :darkest_cerulean,  0x003366
+  add :darker_cerulean,   0x006699
+  add :dark_cerulean,     0x0099cc
+  add :cerulean,          0x00ccff
+  add :light_cerulean,    0x33e6ff
+  add :lighter_cerulean,  0x66ffff
+  add :lightest_cerulean, 0x99ffff
 
   # azure
-  color :darkest_azure,  0x003366
-  color :darker_azure,   0x0066cc
-  color :dark_azure,     0x0099ff
-  color :azure,          0x00ccff
-  color :light_azure,    0x33daff
-  color :lighter_azure,  0x66e6ff
-  color :lightest_azure, 0x99f2ff
+  add :darkest_azure,  0x003366
+  add :darker_azure,   0x0066cc
+  add :dark_azure,     0x0099ff
+  add :azure,          0x00ccff
+  add :light_azure,    0x33daff
+  add :lighter_azure,  0x66e6ff
+  add :lightest_azure, 0x99f2ff
 
   # cobalt
-  color :darkest_cobalt,  0x001933
-  color :darker_cobalt,   0x003366
-  color :dark_cobalt,     0x004c99
-  color :cobalt,          0x0066cc
-  color :light_cobalt,    0x3380ff
-  color :lighter_cobalt,  0x6699ff
-  color :lightest_cobalt, 0x99b3ff
+  add :darkest_cobalt,  0x001933
+  add :darker_cobalt,   0x003366
+  add :dark_cobalt,     0x004c99
+  add :cobalt,          0x0066cc
+  add :light_cobalt,    0x3380ff
+  add :lighter_cobalt,  0x6699ff
+  add :lightest_cobalt, 0x99b3ff
 
   # Blue to Purple Transition:
 
   # periwinkle
-  color :darkest_periwinkle,  0x666699
-  color :darker_periwinkle,   0x9999cc
-  color :dark_periwinkle,     0xccccff
-  color :periwinkle,          0xe6e6ff
-  color :light_periwinkle,    0xf2f2ff
-  color :lighter_periwinkle,  0xf8f8ff
-  color :lightest_periwinkle, 0xfcfcff
+  add :darkest_periwinkle,  0x666699
+  add :darker_periwinkle,   0x9999cc
+  add :dark_periwinkle,     0xccccff
+  add :periwinkle,          0xe6e6ff
+  add :light_periwinkle,    0xf2f2ff
+  add :lighter_periwinkle,  0xf8f8ff
+  add :lightest_periwinkle, 0xfcfcff
 
   # amethyst
-  color :darkest_amethyst,  0x330066
-  color :darker_amethyst,   0x660099
-  color :dark_amethyst,     0x9933cc
-  color :amethyst,          0xcc66ff
-  color :light_amethyst,    0xe699ff
-  color :lighter_amethyst,  0xf2ccff
-  color :lightest_amethyst, 0xfae6ff
+  add :darkest_amethyst,  0x330066
+  add :darker_amethyst,   0x660099
+  add :dark_amethyst,     0x9933cc
+  add :amethyst,          0xcc66ff
+  add :light_amethyst,    0xe699ff
+  add :lighter_amethyst,  0xf2ccff
+  add :lightest_amethyst, 0xfae6ff
 
   # indigo
-  color :darkest_indigo,  0x1c0033
-  color :darker_indigo,   0x3d0066
-  color :dark_indigo,     0x5f0099
-  color :indigo,          0x8000cc
-  color :light_indigo,    0xa133ff
-  color :lighter_indigo,  0xc266ff
-  color :lightest_indigo, 0xe399ff
+  add :darkest_indigo,  0x1c0033
+  add :darker_indigo,   0x3d0066
+  add :dark_indigo,     0x5f0099
+  add :indigo,          0x8000cc
+  add :light_indigo,    0xa133ff
+  add :lighter_indigo,  0xc266ff
+  add :lightest_indigo, 0xe399ff
 
   # lavender
-  color :darkest_lavender,  0x4c3366
-  color :darker_lavender,   0x9966cc
-  color :dark_lavender,     0xcc99ff
-  color :lavender,          0xe6ccff
-  color :light_lavender,    0xf2e6ff
-  color :lighter_lavender,  0xf8f2ff
-  color :lightest_lavender, 0xfcfaff
+  add :darkest_lavender,  0x4c3366
+  add :darker_lavender,   0x9966cc
+  add :dark_lavender,     0xcc99ff
+  add :lavender,          0xe6ccff
+  add :light_lavender,    0xf2e6ff
+  add :lighter_lavender,  0xf8f2ff
+  add :lightest_lavender, 0xfcfaff
 
   # Purple to Red Transition:
 
   # mauve
-  color :darkest_mauve,  0x663366
-  color :darker_mauve,   0x996699
-  color :dark_mauve,     0xcc99cc
-  color :mauve,          0xffccff
-  color :light_mauve,    0xffe6ff
-  color :lighter_mauve,  0xfff2ff
-  color :lightest_mauve, 0xfff8ff
+  add :darkest_mauve,  0x663366
+  add :darker_mauve,   0x996699
+  add :dark_mauve,     0xcc99cc
+  add :mauve,          0xffccff
+  add :light_mauve,    0xffe6ff
+  add :lighter_mauve,  0xfff2ff
+  add :lightest_mauve, 0xfff8ff
 
   # mulberry
-  color :darkest_mulberry,  0x660033
-  color :darker_mulberry,   0x990066
-  color :dark_mulberry,     0xcc0099
-  color :mulberry,          0xff00cc
-  color :light_mulberry,    0xff33e6
-  color :lighter_mulberry,  0xff66f2
-  color :lightest_mulberry, 0xff99fa
+  add :darkest_mulberry,  0x660033
+  add :darker_mulberry,   0x990066
+  add :dark_mulberry,     0xcc0099
+  add :mulberry,          0xff00cc
+  add :light_mulberry,    0xff33e6
+  add :lighter_mulberry,  0xff66f2
+  add :lightest_mulberry, 0xff99fa
 
   # fuchsia
-  color :darkest_fuchsia,  0x660066
-  color :darker_fuchsia,   0x990099
-  color :dark_fuchsia,     0xcc00cc
-  color :fuchsia,          0xff00ff
-  color :light_fuchsia,    0xff33ff
-  color :lighter_fuchsia,  0xff66ff
-  color :lightest_fuchsia, 0xff99ff
+  add :darkest_fuchsia,  0x660066
+  add :darker_fuchsia,   0x990099
+  add :dark_fuchsia,     0xcc00cc
+  add :fuchsia,          0xff00ff
+  add :light_fuchsia,    0xff33ff
+  add :lighter_fuchsia,  0xff66ff
+  add :lightest_fuchsia, 0xff99ff
 
   # pink
-  color :darkest_pink,  0x330019
-  color :darker_pink,   0x660033
-  color :dark_pink,     0x99004c
-  color :pink,          0xcc0066
-  color :light_pink,    0xff007f
-  color :lighter_pink,  0xff3399
-  color :lightest_pink, 0xff66b2
+  add :darkest_pink,  0x330019
+  add :darker_pink,   0x660033
+  add :dark_pink,     0x99004c
+  add :pink,          0xcc0066
+  add :light_pink,    0xff007f
+  add :lighter_pink,  0xff3399
+  add :lightest_pink, 0xff66b2
 
 
 end
