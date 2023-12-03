@@ -16,4 +16,9 @@ class Liza::Box < Liza::Unit
     panel.push block
   end
 
+  # color
+
+  def self.color
+    system.color
+  end
 end

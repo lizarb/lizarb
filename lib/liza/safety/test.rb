@@ -11,4 +11,9 @@ class Liza::Test < Liza::Unit
     subject_class.subsystem
   end
 
+  # color
+
+  def self.color
+    subject_class.color
+  end
 end
