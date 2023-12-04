@@ -43,3 +43,8 @@ group :web do
   gem "puma", "~> 6.3"
   gem "thin", "~> 1.6"
 end
+
+group :desk do
+  # gems used by DeskSystem
+  gem "glimmer-dsl-libui", "~> 0.11.6"
+end
