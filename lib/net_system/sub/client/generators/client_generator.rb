@@ -14,6 +14,12 @@ class NetSystem::ClientGenerator < DevSystem::SimpleGenerator
     end
   end
   
+  # liza g client:examples
+  
+  def call_examples
+    copy_examples Client
+  end
+  
 end
 
 __END__
