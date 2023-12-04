@@ -1,5 +1,5 @@
 class App
-  path :app
+  folder "../lizarb_blank/app"
   mode :code
   system :dev
 end
