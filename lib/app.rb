@@ -31,15 +31,21 @@ class App
     root.join "#{$APP}.rb"
   end
 
-  # path
+  # folder
 
-  def self.path path = nil
-    if path
-      @relative_path = Pathname(path.to_s)
-      @path = Pathname("#{Lizarb::APP_DIR}/#{path}")
+  def self.folder folder = nil
+    raise "locked" if @locked
+    if folder
+      @folder = folder
+      @relative_path = Pathname(folder)
+      @path = Pathname("#{Lizarb::APP_DIR}/#{folder}")
     else
-      @path
+      @folder
     end
+  end
+
+  def self.path
+    @path
   end
 
   def self.relative_path
