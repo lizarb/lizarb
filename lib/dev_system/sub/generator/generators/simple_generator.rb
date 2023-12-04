@@ -140,18 +140,33 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   #
 
   def copy_examples controller
-    app_name = $APP
+    puts
+    log controller.to_s
     singular = controller.singular
     plural = controller.plural
     sys = controller.system.token
-    dir = Lizarb::GEM_DIR
-    copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{app_name}/#{sys}/#{plural}"
+    
+    [
+      Lizarb::GEM_DIR,
+      Lizarb::APP_DIR,
+    ].uniq.each do |dir|
+      FileShell.directory? "#{dir}/examples/#{singular}" or next
+      copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{App.folder}/#{sys}/#{plural}"
+    end
   end
 
   #
 
   def copy_files from_folder, to_folder
-    Dir["#{from_folder}/**/*"].each do |source|
+    from_pattern = "#{from_folder}/**/*"
+    log "from_pattern = #{from_pattern}"
+
+    from_files = Dir[from_pattern]
+    log "from_files"
+    log_array from_files
+    puts
+
+    from_files.each do |source|
       next if File.directory? source
 
       target = source.sub(from_folder, to_folder)
