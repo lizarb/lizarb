@@ -26,6 +26,12 @@ end
 
 group :net do
   # gems used by NetSystem
+
+  # client gems
+  gem "nori", "~> 2.6"
+  gem "rexml", "~> 3.2"
+
+  # database gems
   gem "redis", "~> 5.0"
   gem "mongo", "~> 2.19"
   gem "sqlite3", "~> 1.5"
