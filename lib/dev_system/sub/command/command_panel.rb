@@ -13,8 +13,9 @@ class DevSystem::CommandPanel < Liza::Panel
     find env
     forward env
     inform env
-  rescue Exception => e
-    rescue_from_panel(e, with: args)
+  # rescue Exception => e
+  rescue Error => e
+    rescue_from_panel(e, with: env)
   end
 
   #
