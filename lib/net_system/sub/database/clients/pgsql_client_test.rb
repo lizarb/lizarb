@@ -13,13 +13,13 @@ class NetSystem::PgsqlClientTest < NetSystem::ClientTest
     assert_equality result.class,    PG::Result
     assert_equality result[0].class, Hash
     assert_equality result[0].keys,  ["version"]
-  end
+  end if ENV["DBTEST"]
 
   test :now do
     result = subject.now
     assert_equality result.class,    PG::Result
     assert_equality result[0].class, Hash
     assert_equality result[0].keys,  ["now"]
-  end
+  end if ENV["DBTEST"]
 
 end

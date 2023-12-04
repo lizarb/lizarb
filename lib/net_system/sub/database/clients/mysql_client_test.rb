@@ -18,6 +18,6 @@ class NetSystem::MysqlClientTest < NetSystem::ClientTest
     result = subject.now
     assert_equality result.class, Mysql2::Result
     assert_equality result.first.keys, ["UTC_TIMESTAMP()"]
-  end
+  end if ENV["DBTEST"]
 
 end

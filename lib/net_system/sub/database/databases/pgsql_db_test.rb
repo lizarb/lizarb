@@ -12,7 +12,7 @@ class NetSystem::PgsqlDbTest < NetSystem::DatabaseTest
     t = subject.now
     assert! t.is_a? Time
     assert_equality t.yday, Time.now.yday
-  end
+  end if ENV["DBTEST"]
 
   # test :call do
   #   todo "write this"
