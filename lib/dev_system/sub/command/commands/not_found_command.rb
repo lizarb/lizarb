@@ -116,6 +116,8 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
     }
 
     klasses.each { print_class _1, description: _2 }
+
+    5.times { puts }
   end
 
   # typography helpers
