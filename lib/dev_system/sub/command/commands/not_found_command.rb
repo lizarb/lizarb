@@ -1,103 +1,154 @@
-class DevSystem::NotFoundCommand < DevSystem::Command
+class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
-  def self.call args
-    # 1. LOG
-
-    rescuer = args.pop if args.last.is_a? Hash
-    log :lower, "rescuer = #{rescuer.inspect}" if rescuer
-
-    log "args = #{args.inspect}"
+  def call_default
+    h3 "Liza is a light application framework written in Ruby ❤", color: DevSystem.color
+    h5 "We're optimizing for happiness. Come join us!", color: ColorShell.colors.keys.sample
     puts
 
-    # 2. FIND commands
-
-    commands = commands_visible
-
-    grouped_commands = App.systems.values.map { [_1, []] }.to_h
-    grouped_commands[Object] = []
-    grouped_commands = commands.inject(grouped_commands) do |h, c|
-      ns = (c.to_s.include? "::") ? c.system : Object
-      h[ns] << c
-      h
+    if App.global?
+      print_global
+    else
+      print_systems
+      print_app
     end
-
-    grouped_commands.select! do |ns, controllers|
-      controllers.any?
-    end
-
-    # 3. LIST commands
-
-    keys = commands.map { _1.last_namespace.snakecase[0..-9] }.uniq.sort
-
-    log "#{grouped_commands.values.flatten.count.to_s} command(s) found"
-    puts
-
-    longest_name = grouped_commands.keys.map { _1.to_s.length }.max+1
-    sidebar_length = 38
-
-    grouped_commands.each do |ns, controllers|
-      if ns == Object
-        color = :white
-        title = "App".ljust longest_name
-        path = "#{App.relative_path}/dev/**/*_command.rb"
-      else
-        color = ns.color
-        title = ns.to_s.ljust longest_name
-        path = "lib/#{ns.to_s.snakecase}/**/*_command.rb"
-      end
-      
-      puts  [
-        (stick :b, color, "#{title.ljust sidebar_length-2, "-"} "),
-        (stick :onyx, "#{controllers.count.to_s.rjust_zeroes 2} command(s) found in #{path}"),
-      ].join " "
-
-      puts
-      controllers.sort_by do |c|
-        c.token
-      end.each do |c|
-        c.get_command_signatures.each do |signature|
-          signature.name =
-            signature.name.empty? \
-              ? c.token.to_s
-              : "#{c.token}:#{signature.name}"
-        end.sort_by(&:name).map do |signature|
-          puts [
-            "liza #{signature.name}".ljust(sidebar_length),
-            signature.description
-          ].join ""
-        end
-      end
-      puts
-    end
-    puts
   end
 
+  # color helpers
+
+  def color klass
+    return klass unless klass < Liza::Unit
+
+    namespace, _sep, classname = klass.to_s.rpartition('::')
+
+    if namespace.empty?
+      return stick classname, Liza.const(classname).system.color
+    end
+
+    "#{
+      stick namespace, Liza.const(namespace).system.color
+    }::#{
+      stick classname, Liza.const(classname).color
+    }"
+  end
+
+  # print helpers
+
+  def print_class klass, description: nil
+    loc = klass.to_s
+
+    sidebar_length = 30
+    klass.get_command_signatures.each do |signature|
+      signature.name =
+        signature.name.empty? \
+          ? klass.token.to_s
+          : "#{klass.token}:#{signature.name}"
+      #
+    end.sort_by(&:name).map do |signature|
+      puts [
+        "liza #{signature.name}".ljust(sidebar_length),
+        (description or signature.description)
+      ].join ""
+    end
+  end
+  
   #
 
-  def self.commands_visible
-    commands = DevSystem::Command.descendants
-    commands -= commands_ignored
-    commands
+  def print_systems
+    h1 "SYSTEMS"
+    AppShell.consts[:systems].each do |system_name, tree_system|
+      system = tree_system["system"][0]
+
+      h4 system
+      tree_system["controllers"].each do |family, klasses|
+        klasses = tree_system["controllers"][family].to_a.select { _1 < Command }
+        next if klasses.empty?
+
+        h5 "lib/#{system_name}_system/#{family.plural}/", color: system.color
+        klasses.each { print_class _1 }
+      end
+
+      print_system_sub system, system_name, tree_system
+    end
+    puts
   end
 
-  def self.commands_visible
-    [
-      DevSystem::NotFoundCommand,
-      DevSystem::NewCommand,
-      DevSystem::GenerateCommand,
-    ]
-  end if App.global?
+  def print_system_sub system, system_name, tree_system
+    tree_system["subsystems"].each do |subsystem, tree_subsystem|
+      klasses = tree_subsystem["controllers"].values.flatten.select { _1 < Command }
+      next if klasses.empty?
 
-  def self.commands_ignored
-    [
-      self,
-      DevSystem::NotFoundCommand,
-      DevSystem::NewCommand,
-      (DevSystem::NarrativeMethodCommand if defined? NarrativeMethodCommand),
-      *DevSystem::InputCommand.and_descendants,
-      DevSystem::BaseCommand,
-      DevSystem::SimpleCommand,
-    ].uniq.compact
+      tree_subsystem["controllers"].each do |controller_class, klasses|
+        klasses = klasses.select { _1 < Command }
+        klasses = klasses.reject { _1 <= InputCommand } # TODO: setting to hide command classes
+        klasses = klasses.reject { _1 == BaseCommand }
+        klasses = klasses.reject { _1 == SimpleCommand }
+        klasses = klasses.reject { _1 == NewCommand }
+        next if klasses.empty?
+
+        h5 "lib/#{system_name}_system/sub/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
+        klasses.each { print_class _1 }
+      end
+    end
+  end
+
+  def print_app
+    h1 "TEAM CODE AT app/"
+
+    system_name = "dev"
+    tree_system = AppShell.consts[:app]["dev"]
+
+    system = Liza.const "#{system_name}_system"
+    tree_system["controllers"].each do |family, structure|
+      structure.each do |division, klasses|
+        klasses = klasses.select { _1 < Command }
+        if klasses.any?
+          h5 "app/#{system_name}/#{division.plural}/", color: system.color
+          klasses.each { print_class _1 }
+        end
+      end
+    end
+  end
+
+  def print_global
+    klasses = {
+      NewCommand => "# Create a new project",
+      NotFoundCommand => "# This command",
+    }
+
+    klasses.each { print_class _1, description: _2 }
+  end
+
+  # typography helpers
+
+  def h1 text
+    puts stick " #{ text } ".center(80, "="), :b
+  end
+
+  def h2 text, color: :white
+    puts stick " #{ text } ".center(80, "-"), :b, color
+  end
+
+  def h3 text, color: :white
+    puts
+    puts stick " #{ text } ".center(80, " "), :b, color
+  end
+
+  def h4 system
+    puts
+    s = system.to_s
+    s1 = s
+    s1 = "#{ color(system) }" if system < Liza::Unit
+    color = system.color rescue :white
+    t = s.rjust(80, " ")
+    t = "#{ stick t, :b, color }"
+    t = t.gsub(s, s1)
+    puts t
+  end
+
+  def h5 text, color: :white
+    puts
+    puts stick text.ljust(80, " "), color
+    puts
   end
 
 end
