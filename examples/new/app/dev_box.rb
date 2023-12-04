@@ -55,6 +55,7 @@ class DevBox < DevSystem::DevBox
   configure :shell do
     # formatters
     formatter :html
+    formatter :html, :xml
 
     # converters
     converter :html, :md

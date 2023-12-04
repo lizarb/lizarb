@@ -1,15 +1,15 @@
 class DevSystem::DevBox < Liza::Box
 
-  # Configure your bench panel
+  # Preconfigure your bench panel
   
   configure :bench do
-    # set :log_level, ENV["dev.bench.log_level"]
+    # 
   end
 
-  # Configure your command panel
+  # Preconfigure your command panel
   
   configure :command do
-    # set :log_level, ENV["dev.command.log_level"]
+    # 
     rescue_from CommandPanel::NotFoundError, with: NotFoundCommand
   end
 
@@ -29,23 +29,23 @@ class DevSystem::DevBox < Liza::Box
     self[:command].pick_many(...)
   end
   
-  # Configure your generator panel
+  # Preconfigure your generator panel
   
   configure :generator do
-    # set :log_level, ENV["dev.generator.log_level"]
+    # 
     rescue_from GeneratorPanel::NotFoundError, with: NotFoundGenerator
   end
 
-  # Configure your log panel
+  # Preconfigure your log panel
 
   configure :log do
-    # set :log_level, ENV["dev.log.log_level"]
+    # 
   end
 
-  # Configure your shell panel
+  # Preconfigure your shell panel
 
   configure :shell do
-    # set :log_level, ENV["dev.shell.log_level"]
+    # 
   end
 
   def self.formatters
