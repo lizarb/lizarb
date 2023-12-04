@@ -15,6 +15,6 @@ class NetSystem::MongoClientTest < NetSystem::ClientTest
   test :now do
     result = subject.now
     assert_equality result.class, Time
-  end
+  end if ENV["DBTEST"]
 
 end

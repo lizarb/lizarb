@@ -12,7 +12,7 @@ class NetSystem::MongoDbTest < NetSystem::DatabaseTest
     t = subject.now
     assert! t.is_a? Time
     assert_equality t.yday, Time.now.utc.yday
-  end
+  end if ENV["DBTEST"]
 
   # test :call do
   #   todo "write this"

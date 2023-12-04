@@ -16,12 +16,12 @@ class NetSystem::RedisClientTest < NetSystem::ClientTest
     result = subject.call :keys
     assert result.class == Array
     assert result.count == 0
-  end
+  end if ENV["DBTEST"]
 
   test :now do
     result = subject.now
     assert result.class == Array
     assert result.map(&:class) == [Integer, Integer]
-  end
+  end if ENV["DBTEST"]
 
 end

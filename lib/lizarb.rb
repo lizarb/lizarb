@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# This flag allows database connection tests
+# ENV["DBTEST"] ||= "1"
+
 $boot_time = Time.now
 
 require "colorize"

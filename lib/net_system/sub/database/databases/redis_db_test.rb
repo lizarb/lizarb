@@ -12,7 +12,7 @@ class NetSystem::RedisDbTest < NetSystem::DatabaseTest
     t = subject.now
     assert! t.is_a? Time
     assert t.yday == Time.now.yday
-  end
+  end if ENV["DBTEST"]
 
   # test :call do
   #   todo "write this"
