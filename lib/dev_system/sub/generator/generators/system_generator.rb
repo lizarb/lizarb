@@ -35,11 +35,17 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   end
 
   def create_box
-    unit = UnitHelper.new
-    classes = ["#{@name.camelize}System::#{@name.camelize}Box", "Liza::Box"]
-    path = App.root.join("lib/#{@name.snakecase}_system/#{@name.snakecase}_box.rb")
+    unit, test = UnitHelper.new, UnitHelper.new
+    unit_classes = ["#{@name.camelize}System::#{@name.camelize}Box", "Liza::Box"]
+    test_classes = ["#{@name.camelize}System::#{@name.camelize}BoxTest", "Liza::BoxTest"]
+    unit_path = App.root.join("lib/#{@name.snakecase}_system/#{@name.snakecase}_box.rb")
+    test_path = App.root.join("lib/#{@name.snakecase}_system/#{@name.snakecase}_box_test.rb")
+
+    @class_name = unit_classes[0]
+    test.section :box_test_section_1, caption: ""
     
-    create_unit unit, classes, path, :unit
+    create_unit unit, unit_classes, unit_path, :unit
+    create_unit test, test_classes, test_path, :unit
   end
 
 end
@@ -55,3 +61,10 @@ class <%= @class_names[0] %> < <%= @class_names[1] %>
   color :<%= @color %>
 
 end
+
+# view box_test_section_1.rb.erb
+
+  test :subject_class, :subject do
+    assert_equality <%= @class_name %>, subject_class
+    assert_equality <%= @class_name %>, subject.class
+  end
