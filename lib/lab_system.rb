@@ -3,6 +3,6 @@ class LabSystem < Liza::System
 
   #
 
-  color :darkest_white
+  color :gray
 
 end
