@@ -32,11 +32,14 @@ Gem::Specification.new do |spec|
   spec.executables = ["liza", "lizarb"]
   spec.require_paths = ["lib"]
 
-  # dependencies
+  # dependencies (Lizarb)
 
-  spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "dotenv", "~> 2.8"
   spec.add_dependency "zeitwerk", "~> 2.6"
+
+  # dependencies (DevSystem)
+
+  spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "pry", "~> 0.14.2"
   spec.add_dependency "diff-lcs", "~> 1.5"
   spec.add_dependency "tty-prompt", "~> 0.23.1"
