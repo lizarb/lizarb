@@ -95,16 +95,16 @@ class App
 
   # advanced settings
 
-  DEFAULT_LOG_LEVEL = 0
+  DEFAULT_LOG_LEVEL = 4
 
   LOG_LEVELS = {
-    :highest => 3,
-    :higher  => 2,
-    :high    => 1,
-    :normal  => 0,
-    :low     => -1,
-    :lower   => -2,
-    :lowest  => -3,
+    :highest => 7,
+    :higher  => 6,
+    :high    => 5,
+    :normal  => 4,
+    :low     => 3,
+    :lower   => 2,
+    :lowest  => 1,
   }
   @log_boot = DEFAULT_LOG_LEVEL
   set :log_level, DEFAULT_LOG_LEVEL
