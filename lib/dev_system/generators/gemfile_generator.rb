@@ -22,8 +22,8 @@ __END__
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-
 <% if @gemspec_name -%>
+
 # Specify your gem's dependencies in <%= @gemspec_name %>.gemspec
 # gemspec path: "../path/to/<%= @gemspec_name %>"
 gemspec :<%= @gemspec_name %>
