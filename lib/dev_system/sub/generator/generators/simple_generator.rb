@@ -194,7 +194,8 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   def place!
     places = ControllerShell.places_for(@controller_class)
-    @place = command.simple_controller_placement :place, places
+    @place = places.keys[0] if places.count == 1
+    @place ||= command.simple_controller_placement :place, places
     @path = places[@place]
     log "@place, @path = #{@place.inspect}, #{@path.inspect}"
   end
