@@ -22,9 +22,11 @@ So you can run your experiments:
 Then enter your automagically generated liza app:
 
     cd app_1
-    bundle install
+    liza help
 
 Now you're ready to go and try some stuff!
+
+---
 
 ## Try
 
@@ -36,11 +38,49 @@ Try Liza with Pry
 
     liza pry
 
+---
+
 ## Running Tests
 
 Run your Liza tests
 
     liza test
+
+
+## DevSystem
+
+Generate a command
+
+    liza generate
+    liza generate command
+    liza generate command my
+    liza my
+    liza my 1 2 3
+
+Generate a system
+
+    liza generate
+    liza generate system my
+    liza generate system my
+
+Generate a command in a system
+
+    liza generate
+    liza generate command
+    liza generate command other
+    liza generate command other place=my
+    liza other
+
+Gemify a system
+
+    # TODO
+
+Investigate the framework
+
+    liza loc
+    liza shell
+
+---
 
 ## Development
 
@@ -56,9 +96,9 @@ To build and install lizarb in your local machine
 
     bundle exec rake install
 
+<!--
 For systems in development, see [README_SYSTEMS.md](https://github.com/lizarb/lizarb/blob/master/README_SYSTEMS.md).
 
-<!--
 ## Release
 
 To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
