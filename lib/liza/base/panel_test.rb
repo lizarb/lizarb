@@ -9,6 +9,7 @@ class Liza::PanelTest < Liza::UnitTest
 
   test_methods_defined do
     on_self :box,
+    :color,
     :controller,
     :puts,
     :subsystem,
