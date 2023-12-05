@@ -5,7 +5,7 @@ class DevSystem::GeneratorTest < Liza::ControllerTest
   end
 
   test_methods_defined do
-    on_self :main_dsl
+    on_self :get_generator_signatures
     on_instance
   end
 
