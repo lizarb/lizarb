@@ -28,9 +28,9 @@ class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
     end
   end
 
-  # liza g request:raw name place=app
+  # liza g request:base name place=app
 
-  def call_raw
+  def call_base
     @controller_class = Request
 
     name!
@@ -39,7 +39,7 @@ class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
     @args = Array command.simple_args[1..-1]
 
     create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_raw_1, caption: ""
+      unit.section :controller_section_base_1, caption: ""
       test.section :controller_test_section_1, caption: ""
     end
   end
@@ -74,7 +74,7 @@ __END__
 <p>qs: <%%= qs %></p>
 <p>segments: <%%= segments %></p>
 
-# view controller_section_raw_1.rb.erb
+# view controller_section_base_1.rb.erb
 
   def self.call(env)
     path = env["REQUEST_PATH"]
