@@ -17,7 +17,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
     log :lower, "env.count is #{env.count}"
     @env = env
     
-    method_name = "call_#{env[:generator_coil]}"
+    method_name = "call_#{env[:generator_coil] || :default}"
     return public_send method_name if respond_to? method_name
 
     log "method not found: #{method_name.inspect}"
