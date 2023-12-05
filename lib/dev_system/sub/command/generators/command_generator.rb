@@ -11,7 +11,34 @@ class DevSystem::CommandGenerator < DevSystem::SimpleGenerator
 
     ancestor = SimpleCommand
     create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
-      unit.section :controller_section_1
+      unit.section :controller_section_1,
+        caption: "liza #{ @name }",
+        method_name: "default"
+      
+      @args.each.with_index do |arg, i|
+        unit.section :controller_section_1,
+          caption: "liza #{ @name }:#{ arg }",
+          method_name: arg
+      end
+
+      test.section :controller_test_section_1
+    end
+  end
+
+  # liza g command:base name place=app
+
+  def call_base
+    @controller_class = Command
+
+    name!
+    place!
+    @args = Array command.simple_args[1..-1]
+
+    ancestor = BaseCommand
+    create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
+      unit.section :base_command_section_1,
+        caption: "liza #{ @name }"
+      
       test.section :controller_test_section_1
     end
   end
@@ -28,36 +55,27 @@ __END__
 
 # view controller_section_1.rb.erb
 
-  # liza <%= @name %> a b c
-
-  def call_default
-    log :lower, "env.count is #{env.count}"
-
-    log :lower, "args is #{env[:args].inspect}"
-    log "simple_args is #{simple_args.inspect}"
+  def call_<%= @current_section[:method_name] %>
+    args = env[:args]
+    log :lower, "args is #{ args.inspect }"
+    log "simple_args is #{ simple_args.inspect }"
 
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
 
-    log "done at #{Time.now}"
-    # 
+    log "done at #{ Time.now }"
   end
 
-<% @args.each do |arg| -%>
-  # liza <%= @name %>:<%= arg %> a b c
+# view base_command_section_1.rb.erb
 
-  def call_<%= arg %>
-    log :lower, "env.count is #{env.count}"
-
-    log :lower, "args is #{env[:args].inspect}"
-    log "simple_args is #{simple_args.inspect}"
+  def self.call(env)
+    args = env[:args]
+    log :lower, "args is #{ args.inspect }"
 
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
 
-    log "done at #{Time.now}"
-    # 
+    log "done at #{ Time.now }"
   end
 
-<% end -%>
 # view controller_test_section_1.rb.erb
 
   test :subject_class, :subject do
