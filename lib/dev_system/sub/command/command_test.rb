@@ -5,7 +5,7 @@ class DevSystem::CommandTest < Liza::ControllerTest
   end
 
   test_methods_defined do
-    on_self :call
+    on_self :call, :get_command_signatures
     on_instance :call
   end
 
