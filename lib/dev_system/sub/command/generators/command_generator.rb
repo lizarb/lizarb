@@ -3,6 +3,12 @@ class DevSystem::CommandGenerator < DevSystem::SimpleGenerator
   # liza g command name place=app
 
   def call_default
+    call_simple
+  end
+
+  # liza g command:simple name place=app
+
+  def call_simple
     @controller_class = Command
 
     name!
