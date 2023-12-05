@@ -98,9 +98,11 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   
   def create_unit unit, class_names, path, template = :unit
     unit.sections.each do |section|
+      @current_section = section
       section[:content] = render! section[:name], format: :rb
     end
     unit.views.each do |view|
+      @current_view = view
       view[:content] = render! view[:name], format: view[:format]
     end
     @sections = unit.sections
