@@ -5,7 +5,7 @@ GEM
     colorize (0.8.1)
     diff-lcs (1.5.0)
     dotenv (2.8.1)
-    lizarb (1.0.4)
+    lizarb (1.0.5)
       colorize (~> 0.8)
       diff-lcs (~> 1.5)
       dotenv (~> 2.8)
@@ -38,4 +38,4 @@ DEPENDENCIES
   lizarb (~> 1.0)
 
 BUNDLED WITH
-   2.5.0.dev
+   2.3.22
