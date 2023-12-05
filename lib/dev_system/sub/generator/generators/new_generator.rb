@@ -1,10 +1,7 @@
-class DevSystem::NewGenerator < DevSystem::Generator
-  def self.call(args)
-    log "args = #{args.inspect}"
-    new.call args
-  end
+class DevSystem::NewGenerator < DevSystem::SimpleGenerator
 
-  def call(args)
+  def call_default
+    args = env[:args]
     log "args = #{args.inspect}"
     # setup
 
