@@ -21,13 +21,13 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
   
   #
   
-  test :parse, true, :default do
+  test :parse, true do
     env = {args: ["system"]}
     subject.parse env
     assert_equality env[:generator_name_original], :system
     assert_equality env[:generator_name], :system
     assert_equality env[:generator_coil_original], nil
-    assert_equality env[:generator_coil], :default
+    assert_equality env[:generator_coil], nil
   end
   
   test :parse, true, :coil do
@@ -40,14 +40,14 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_coil], :install
   end
   
-  test :parse, false, :default do
+  test :parse, false do
     env = {args: ["x"]}
     subject.parse env
     assert_equality env[:args], ["x"]
     assert_equality env[:generator_name_original], :x
     assert_equality env[:generator_name], :x
     assert_equality env[:generator_coil_original], nil
-    assert_equality env[:generator_coil], :default
+    assert_equality env[:generator_coil], nil
   end
   
   test :parse, false, :coil do

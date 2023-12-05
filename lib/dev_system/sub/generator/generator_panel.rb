@@ -29,7 +29,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
     env[:generator_name_original] = generator_name
     env[:generator_name] = short(generator_name).to_sym
     env[:generator_coil_original] = generator_coil
-    env[:generator_coil] = generator_coil || :default
+    env[:generator_coil] = generator_coil
     log :higher, "generator:coil is #{env[:generator_name]}:#{env[:generator_coil]}"
   end
 
