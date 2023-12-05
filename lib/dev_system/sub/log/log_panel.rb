@@ -16,7 +16,7 @@ class DevSystem::LogPanel < Liza::Panel
   end
 
   def handler key
-    handlers[key] ||= DevSystem.const("#{key}_log")
+    handlers[key] ||= Liza.const("#{key}_log")
   end
 
   def handlers
