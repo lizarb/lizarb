@@ -9,7 +9,7 @@ class Liza::TestTest < Liza::UnitTest
     on_self \
       :after, :after_stack,
       :before, :before_stack,
-      :call,
+      :call, :color,
       :group,
       :log_test_building, :log_test_building?,
       :subject_class,
