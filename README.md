@@ -2,7 +2,17 @@
 
 Liza is a light, experimental framework primarily developed to help study the Ruby language and the Ruby ecosystem.
 
-## Install
+Liza is a < 2500 LOC framework, which provides an abstract architecture for organizing Ruby code using systems.
+
+It defines 3 top level constants [Lizarb, App, Liza]and works with any gem or app that doesn't implement these constants.
+
+## Author note
+
+I am happy with the project and I am starting to focus on documentation.
+
+I will be updating the website https://lizarb.org/ to include more vivid examples and tutorials.
+
+## Installing
 
 Install the gem by executing:
 
@@ -12,6 +22,13 @@ You will get the following shims:
 
     lizarb version
     liza version
+
+## REPL
+
+Try Liza with IRB or Pry:
+
+    liza irb
+    liza pry
 
 ## Create a liza app
 
@@ -28,24 +45,15 @@ Now you're ready to go and try some stuff!
 
 ---
 
-## Try
-
-Try Liza with Interactive Ruby
-
-    liza irb
-
-Try Liza with Pry
-
-    liza pry
-
----
-
 ## Running Tests
 
-Run your Liza tests
+OK, one more thing!
+
+> All controllers you generate come paired with a test file.
+
+You can run the tests with:
 
     liza test
-
 
 ## DevSystem
 
@@ -82,11 +90,15 @@ Investigate the framework
 
 ---
 
-## Development
+## Check out our beta features
 
-To install dependencies, run this bash script:
+To clone this repository, run this bash script:
 
-    bin/setup
+    gh repo clone lizarb/lizarb
+
+To install dependencies, run this:
+
+    bundle
 
 For development experiments, use the local executable script
 
