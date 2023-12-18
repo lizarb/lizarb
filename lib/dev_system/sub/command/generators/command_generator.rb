@@ -62,7 +62,6 @@ __END__
 # view controller_section_1.rb.erb
 
   def call_<%= @current_section[:method_name] %>
-    args = env[:args]
     log :lower, "args is #{ args.inspect }"
     log "simple_args is #{ simple_args.inspect }"
 
@@ -74,7 +73,6 @@ __END__
 # view base_command_section_1.rb.erb
 
   def self.call(env)
-    args = env[:args]
     log :lower, "args is #{ args.inspect }"
 
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"

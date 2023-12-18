@@ -29,7 +29,6 @@ class DevSystem::BaseCommand < DevSystem::Command
   #
 
   def self.get_command_signatures
-
     signatures = []
     ancestors_until(BaseCommand).each do |c|
       signatures +=
@@ -43,6 +42,12 @@ class DevSystem::BaseCommand < DevSystem::Command
         end
     end
     signatures
+  end
+
+  #
+
+  def args
+    env[:args]
   end
 
 end

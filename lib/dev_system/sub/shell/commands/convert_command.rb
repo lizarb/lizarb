@@ -3,7 +3,6 @@ class DevSystem::ConvertCommand < DevSystem::SimpleCommand
   # liza convert FORMAT FILENAME
 
   def call_default
-    args = env[:args]
     log :lower, "args = #{args.inspect}"
 
     raise ArgumentError, "args[0] must be present" unless args[0]
