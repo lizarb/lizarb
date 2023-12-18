@@ -3,7 +3,7 @@ class DevSystem < Liza::System
 
   #
 
-  color :light_green
+  color :green
 
   sub :bench
   sub :command
