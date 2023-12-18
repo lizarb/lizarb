@@ -24,7 +24,7 @@ class DevSystem::FileShell < DevSystem::Shell
     File.size path
   end
 
-  #
+  # category
 
   def self.directory? path, log_level: self.log_level
     log log_level, "Checking if '#{path}' is a directory"
@@ -38,6 +38,22 @@ class DevSystem::FileShell < DevSystem::Shell
     _raise_if_blank path
 
     File.file? path
+  end
+
+  def self.symbolic_link? path, log_level: self.log_level
+    log log_level, "Checking if '#{path}' is a symbolic link"
+    _raise_if_blank path
+
+    File.symlink? path
+  end
+
+  def self.category_for path, log_level: self.log_level
+    log log_level, "Getting category for '#{path}'"
+    _raise_if_blank path
+
+    return :directory     if directory?     path, log_level: :lowest
+    return :file          if file?          path, log_level: :lowest
+    return :symbolic_link if symbolic_link? path, log_level: :lowest
   end
 
   #
