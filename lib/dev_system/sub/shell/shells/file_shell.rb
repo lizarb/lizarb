@@ -17,8 +17,8 @@ class DevSystem::FileShell < DevSystem::Shell
     File.exist? path
   end
 
-  def self.size path
-    log :normal, "Getting size of file at '#{path}'"
+  def self.size path, log_level: self.log_level
+    log log_level, "Getting size of file at '#{path}'"
     _raise_if_not_exists path
 
     File.size path
@@ -26,15 +26,15 @@ class DevSystem::FileShell < DevSystem::Shell
 
   #
 
-  def self.directory? path
-    log :normal, "Checking if '#{path}' is a directory"
+  def self.directory? path, log_level: self.log_level
+    log log_level, "Checking if '#{path}' is a directory"
     _raise_if_blank path
 
     File.directory? path
   end
 
-  def self.file? path
-    log :normal, "Checking if '#{path}' is a file"
+  def self.file? path, log_level: self.log_level
+    log log_level, "Checking if '#{path}' is a file"
     _raise_if_blank path
 
     File.file? path
@@ -42,8 +42,8 @@ class DevSystem::FileShell < DevSystem::Shell
 
   #
 
-  def self.touch path
-    log :normal, "Touching '#{path}'"
+  def self.touch path, log_level: self.log_level
+    log log_level, "Touching '#{path}'"
     _raise_if_blank path
 
     dir = File.dirname(path)
