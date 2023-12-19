@@ -95,6 +95,7 @@ module Lizarb
     lookup_and_load_settings
     require_liza_and_systems
     connect_systems
+    log "  Lizarb.#{__method__} done" if defined? $log_boot_low
   end
 
   # called from exe/lizarb
@@ -191,18 +192,22 @@ module Lizarb
 
   def lookup_and_load_settings
     log "  Lizarb.#{__method__}" if defined? $log_boot_low
-    files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
     require "dotenv"
+    log "    required Dotenv" if defined? $log_boot_lower
+
+    files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
     Dotenv.load(*files)
+    log "    Dotenv.load(*#{files.inspect})" if defined? $log_boot_lowest
   end
 
   def require_liza_and_systems
     log "  Lizarb.#{__method__}" if defined? $log_boot_low
 
-    log "    require Zeitwerk and Liza" if defined? $log_boot_lower
-
     require "zeitwerk"
+    log "    required Zeitwerk" if defined? $log_boot_lower
+
     require "liza"
+    log "    required Liza" if defined? $log_boot_lower
 
     # loaders[0] first loads Liza, then each System class
 
@@ -219,8 +224,11 @@ module Lizarb
 
     # loader setup
 
+    log "      Setting up" if $log_boot_lower
     loader.enable_reloading
+    log "        loader.enable_reloading" if $log_boot_lowest
     loader.setup
+    log "        loader.setup" if $log_boot_lowest
 
     # bundle each System gem
 
@@ -316,20 +324,22 @@ end
 
     # loader setup
 
+    log "      Setting up" if $log_boot_lower
     loader.enable_reloading
+    log "        loader.enable_reloading" if $log_boot_lowest
     loader.setup
+    log "        loader.setup" if $log_boot_lowest
 
     # App connects to systems
 
-    log "    Zeitwerk loaders eager load" if defined? $log_boot_lowest
     loaders.map &:eager_load
+    log "    All Zeitwerk loaders have been eager loaded" if defined? $log_boot_lower
   end
 
   def connect_systems
     log "  Lizarb.#{__method__} (#{App.systems.count})" if defined? $log_boot_low
     App.systems.each do |system_key, system_class|
       connect_system system_key, system_class
-      connect_box system_key, system_class
     end
   end
 
@@ -344,19 +354,16 @@ end
   end
 
   def connect_system key, system_class
-    t = Time.now
-    puts if defined? $log_boot_low
-
+    # t = Time.now
     system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
 
-    color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
-
-    log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
-    
     # Ignore this for now.
     # This feature has been commented out for simplicity purposes.
     # It injects code into other classes just like Part does. System defines them
-
+    #
+    # color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
+    # log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
+    
     # index = 0
     # system_class.registrar.each do |string, target_block|
     #   reg_type, _sep, reg_target = string.to_s.lpartition "_"
@@ -377,33 +384,12 @@ end
     # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
   end
 
-  def connect_box key, system_class
-    t = Time.now
-
-    box_class = system_class.box
-    color_box_class = Liza::Unit.stick(system_class.color, box_class.name).to_s
-
-    log "CONNECTING BOX                        #{color_box_class}" if defined? $log_boot_low
-    index = 0
-    # system_class.subs.keys.each do |sub_key|
-    system_class.subs.each do |sub_key|
-      panel_class_name      = "#{sub_key}_panel".camelize
-      controller_class_name = sub_key.to_s.camelize
-
-      index += 1
-      pad = 30-box_class.name.size-sub_key.to_s.size
-      log "CONNECTED  BOX TO PANEL               #{"#{color_box_class}[:#{sub_key}]"}#{"".ljust pad} is an instance of #{panel_class_name.ljust_blanks 20} and it configures #{controller_class_name}" if defined? $log_boot_low
-    end
-
-    log "CONNECTED  BOX            #{t.diff}s" if defined? $log_boot_low
-  end
-
   # parts
 
   def connect_part unit_class, key, part_class, system
     if defined? $log_boot_lowest
       t = Time.now
-      string = "      #{unit_class}.part :#{key}"
+      string = "          #{unit_class}.part :#{key}"
       log string
     end
 
@@ -424,7 +410,7 @@ end
     end
 
     if defined? $log_boot_lowest
-      log "      ."
+      log "          ."
     end
   end
 
