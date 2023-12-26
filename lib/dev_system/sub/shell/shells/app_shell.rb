@@ -28,6 +28,10 @@ class DevSystem::AppShell < DevSystem::Shell
 
   #
 
+  def self.classes
+    liza_classes + implementation_classes
+  end
+
   def self.liza_classes
     Lizarb.loaders[0].__to_unload.keys.map { Object.const_get _1 }
   end
