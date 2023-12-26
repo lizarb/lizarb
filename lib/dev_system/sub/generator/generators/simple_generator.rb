@@ -149,8 +149,8 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     sys = controller.system.token
     
     [
-      Lizarb::GEM_DIR,
-      Lizarb::APP_DIR,
+      Lizarb.gem_dir,
+      Lizarb.app_dir,
     ].uniq.each do |dir|
       FileShell.directory? "#{dir}/examples/#{singular}" or next
       copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{App.folder}/#{sys}/#{plural}"

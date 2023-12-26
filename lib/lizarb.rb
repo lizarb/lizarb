@@ -3,7 +3,11 @@
 # This flag allows database connection tests
 # ENV["DBTEST"] ||= "1"
 
+$VERBOSE ||= ENV["VERBOSE"]
+$main = self
 $boot_time = Time.now
+
+puts "$VERBOSE = true" if $VERBOSE
 
 require "colorize"
 require "json"
@@ -13,31 +17,10 @@ require "lerb"
 
 require_relative "lizarb/version"
 
-$APP ||= "app"
-
 module Lizarb
   class Error < StandardError; end
   class ModeNotFound < Error; end
   class SystemNotFound < Error; end
-
-  #
-
-  CUR_DIR = Dir.pwd
-  begin
-    SPEC    = Gem::Specification.find_by_name("lizarb")
-    GEM_DIR = SPEC.gem_dir
-  rescue Gem::MissingSpecError
-    SPEC    = nil
-    GEM_DIR = CUR_DIR
-  end
-
-  IS_APP_DIR = File.file? "#{CUR_DIR}/app.rb"
-  IS_LIZ_DIR = File.file? "#{CUR_DIR}/lib/lizarb.rb"
-  IS_GEM_DIR = File.file? "#{CUR_DIR}/lizarb.gemspec"
-
-  APP_DIR = IS_APP_DIR ? CUR_DIR : GEM_DIR
-
-  $APP = "app_global" if not IS_APP_DIR
 
   #
 
@@ -62,35 +45,107 @@ module Lizarb
     RUBY_ENGINE != "jruby"
   end
 
-  # called from exe/lizarb
+  singleton_class.class_eval do
+    attr_reader :root
+    attr_reader :spec
+    attr_reader :setup_type
+    attr_reader :config_path
+    #
+    attr_reader :app_dir
+    attr_reader :gem_dir
+    attr_reader :liz_dir
+    attr_reader :is_app_dir
+    attr_reader :is_liz_dir
+    attr_reader :is_gem_dir
+  end
+
+  #
+
+  def setup_sfa pwd, sfa:
+    @root = Pathname pwd
+    @setup_type = :sfa
+    # NOTE: arg sfa is not being stored anywhere
+    $APP = "app_global"
+    setup
+  end
+
+  def setup_project pwd, project:
+    @root = Pathname pwd
+    @setup_type = :project
+    # NOTE: arg project is not being stored anywhere
+    $APP = ENV["APP"] || "app"
+    setup
+  end
+
+  def setup_script pwd, script: , script_app:
+    @root = Pathname pwd
+    @setup_type = :script
+    # NOTE: arg script is not being stored anywhere
+    $APP = script_app
+    setup
+  end
+
+  # Setup sets these variables:
+  #
+  # root setup_type spec
+  # is_app_dir is_liz_dir is_gem_dir
+  #    app_dir    liz_dir    gem_dir
+  #
+  # The setup phase cannot get configurations from App.
   def setup
-    lookup_and_load_core_ext
-    lookup_and_set_gemfile
-  end
-
-  # called from exe/lizarb
-  def app &block
-    require "app"
-    if block_given?
-      App.class_exec(&block)
-    else
-      lookup_and_require_app
+    if $VERBOSE
+      puts "        Lizarb.root       = #{root.inspect}"
+      puts "        Lizarb.setup_type = #{setup_type.inspect}"
+      # puts "        Lizarb._sfa       = #{_sfa.inspect}" if setup_type == :sfa
+      # puts "        Lizarb._project   = #{_project.inspect}" if setup_type == :project
+      # puts "        Lizarb._script    = #{_script.inspect}" if setup_type == :script
     end
+
+    # NOTE: calling an unset instance variable returns nil
+    # NOTE: these file calls are pretty fast
+    @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
+    @is_liz_dir = File.file? "#{root}/lib/lizarb.rb"
+    @is_gem_dir = File.file? "#{root}/lizarb.gemspec" if @is_liz_dir
+
+    if $VERBOSE
+      puts "               Lizarb.root does #{ @is_app_dir ? "   " : "not" } have a configuration app.rb file"
+      puts "               Lizarb.root does #{ @is_liz_dir ? "   " : "not" } have a lib/lizarb.rb file"
+      puts "               Lizarb.root does #{ @is_gem_dir ? "   " : "not" } have a lizarb.gemspec file"
+    end
+
+    begin
+      @spec    = Gem::Specification.find_by_name("lizarb")
+      @gem_dir = Pathname @spec.gem_dir
+    rescue Gem::MissingSpecError
+      @gem_dir = root
+    end
+    @app_dir = @is_app_dir ? root : @gem_dir
+    @liz_dir = @is_liz_dir ? root : @gem_dir
+
+    if $VERBOSE
+      puts "                      Lizarb.spec    = #{spec}"
+      puts "                      Lizarb.app_dir = #{@app_dir.inspect}"
+      puts "                      Lizarb.liz_dir = #{@liz_dir.inspect}"
+      puts "                      Lizarb.gem_dir = #{@gem_dir.inspect}"
+      puts
+    end
+
+    setup_and_load_ruby_extensions
+    puts "Lizarb  #{__FILE__}" if $VERBOSE
+    setup_and_configure_app
+    puts "App     #{@config_path}\n\n" if $VERBOSE
   end
 
-  # called from exe/lizarb
+  # The call phase can get configurations from App, but not from any system.
   def call
-    require "bundler/setup"
-
-    level = App.log_boot
-    is_lowest = level == -3
-    App::LOG_LEVELS.each do |k, v|
-      puts "$log_boot_#{k} = #{v >= level}" if level == -3
-      eval "$log_boot_#{k} = true" if v >= level
-    end
+    override_app_settings_with_env_variables
+    define_log_levels
     log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_higher
     log "#{self}.#{__method__}" if defined? $log_boot_low
-
+    log "  log_boot is set to #{App.log_boot}" if defined? $log_boot_lower
+    log "  log_level is set to #{App.log_level}" if defined? $log_boot_lower
+    
+    determine_gemfile
     lookup_and_set_mode
     lookup_and_load_settings
     require_liza_and_systems
@@ -123,22 +178,75 @@ module Lizarb
 
   # setup phase
 
-  def lookup_and_load_core_ext
-    files =
-      if IS_GEM_DIR
-        Dir["#{CUR_DIR}/lib/lizarb/ruby/*.rb"]
-      else
-        Dir["#{GEM_DIR}/lib/lizarb/ruby/*.rb"] + Dir["#{CUR_DIR}/lib/lizarb/ruby/*.rb"]
-      end
-
-    files.each do |file_name|
-      log "#{self} loading #{file_name}" if $VERBOSE
-      load file_name
+  def setup_and_load_ruby_extensions
+    puts "loading #{@liz_dir}/lib/lizarb/ruby/*.rb" if $VERBOSE
+    Dir["#{@liz_dir}/lib/lizarb/ruby/*.rb"].each do |file_name|
+      Kernel.load file_name
     end
   end
 
-  def lookup_and_set_gemfile
-    gemfile = nil
+  def setup_and_configure_app
+    require "app"
+
+    finder = \
+      proc do |path, file|
+        lib_name = "#{path}/#{file}"
+        app_config_path = "#{lib_name}.rb"
+        puts "        #{app_config_path} exists?" if $VERBOSE
+        if File.file? app_config_path
+          require lib_name
+          @config_path = Pathname app_config_path
+          return
+        end
+      end
+
+    finder.call @app_dir, $APP unless $APP == "app_global"
+    finder.call @liz_dir, $APP
+
+    raise Error, "Could not find #{$APP}.rb in #{@app_dir} or #{@liz_dir}"
+  end
+
+  # call phase
+
+  def override_app_settings_with_env_variables
+    if env_app_folder = ENV["APP_FOLDER"]
+      App.folder env_app_folder
+    end
+
+    if s = ENV["LOG_BOOT"] || ENV["LOG"]
+      App.log_boot (s.length == 1) ? s.to_i : s.to_sym
+    end
+
+    if s = ENV["LOG_LEVEL"] || ENV["LOG"]
+      App.log_level (s.length == 1) ? s.to_i : s.to_sym
+    end
+
+    if env_mode = ENV["MODE"]
+      App.mode env_mode
+    end
+
+    if env_gemfile = ENV["GEMFILE"]
+      App.gemfile env_gemfile
+    end
+
+    if env_systems = ENV["SYSTEMS"]
+      env_systems.split(",").each do |system|
+        App.system system
+      end
+    end
+  end
+
+  def define_log_levels
+    level = App.log_boot
+    # is_lowest = level == 1
+    App::LOG_LEVELS.each do |k, v|
+      puts "$log_boot_#{k} = #{v >= level}" if level == 1
+      eval "$log_boot_#{k} = true" if v >= level
+    end
+  end
+  
+  def determine_gemfile
+    log "#{self}.#{__method__}" if defined? $log_boot_low
 
     finder = \
       proc do |file_name|
@@ -150,36 +258,15 @@ module Lizarb
         end
       end
 
-    gemfile ||= finder.call "#{CUR_DIR}/#{$APP}.gemfile.rb"
-    gemfile ||= finder.call "#{GEM_DIR}/#{$APP}.gemfile.rb" unless IS_GEM_DIR
-    gemfile ||= finder.call "#{CUR_DIR}/Gemfile"
-    gemfile ||= finder.call "#{GEM_DIR}/app_global.gemfile.rb"
+    gemfile ||= finder.call "#{@root}/#{$APP}.gemfile.rb"
+    gemfile ||= finder.call "#{@gem_dir}/#{$APP}.gemfile.rb" unless @is_gem_dir
+    gemfile ||= finder.call "#{@root}/Gemfile"
+    gemfile ||= finder.call "#{@gem_dir}/app_global.gemfile.rb"
 
-    log "#{self} setting BUNDLE_GEMFILE to #{gemfile}" if $VERBOSE
+    log "  ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if defined? $log_boot_lower
     ENV["BUNDLE_GEMFILE"] = gemfile
+    require "bundler/setup"
   end
-
-  # app phase
-
-  def lookup_and_require_app
-    finder = \
-      proc do |lib_name, file_name|
-        log "#{self} checking if #{file_name} exists" if $VERBOSE
-        if File.file? "#{file_name}"
-          require lib_name
-          true
-        else
-          false
-        end
-      end
-
-    return if finder.call "#{CUR_DIR}/#{$APP}", "#{CUR_DIR}/#{$APP}.rb"
-    return if finder.call "#{GEM_DIR}/#{$APP}", "#{GEM_DIR}/#{$APP}.rb"
-
-    raise Error, "Could not find #{$APP}.rb in #{CUR_DIR} or #{GEM_DIR}"
-  end
-
-  # call phase
 
   def lookup_and_set_mode
     log "  Lizarb.#{__method__}" if defined? $log_boot_low

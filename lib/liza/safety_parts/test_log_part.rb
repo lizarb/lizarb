@@ -53,7 +53,7 @@ class Liza::TestLogPart < Liza::Part
       kaller = e.backtrace
 
       source_location = _caller_line_split(kaller[0])[0]
-      source_location = source_location.gsub("#{Lizarb::CUR_DIR}/", "")
+      source_location = source_location.gsub("#{App.root}/", "")
 
       log "                #{prefix} #{e.class.to_s.ljust 20} #{source_location}"
 
@@ -83,7 +83,7 @@ class Liza::TestLogPart < Liza::Part
     end
 
     def log_test_call prefix, &block
-      source_location = block.source_location.join(":").gsub("#{Lizarb::CUR_DIR}/", "")
+      source_location = block.source_location.join(":").gsub("#{App.root}/", "")
       source_location = source_location[0..-1]
       log "          #{prefix}                                #{source_location}"
     end
@@ -93,7 +93,7 @@ class Liza::TestLogPart < Liza::Part
       prefix = "#{assertions.to_s.rjust 2, "0"} #{_log_test_assertion_tag method_name}"
 
       source_location = _caller_line_split(kaller[0])[0]
-      source_location = source_location.gsub("#{Lizarb::CUR_DIR}/", "")
+      source_location = source_location.gsub("#{App.root}/", "")
 
       log "             #{prefix} #{source_location}" if log_test_assertion?
     end
@@ -103,7 +103,7 @@ class Liza::TestLogPart < Liza::Part
     end
 
     def self._log_test_block test_block
-      test_block.source_location.join(":").gsub("#{Lizarb::CUR_DIR}/", "")
+      test_block.source_location.join(":").gsub("#{App.root}/", "")
     end
 
     def _log_test_block test_block

@@ -12,8 +12,8 @@ class DevSystem::TestCommand < DevSystem::Command
 
     _call_silence_base_units
     
-    if Lizarb::IS_APP_DIR
-      test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb::APP_DIR }
+    if Lizarb.is_app_dir
+      test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb.app_dir.to_s }
     end
 
     test_classes = _call_sort test_classes
