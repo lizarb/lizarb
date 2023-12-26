@@ -3,8 +3,8 @@ class NetSystem < Liza::System
 
   color :ruby
   
-  sub :client
-  sub :database
-  sub :record
+  panel :client
+  panel :database
+  panel :record
 
 end
