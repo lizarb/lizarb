@@ -5,7 +5,7 @@ class WebSystem < Liza::System
 
   color :dark_cerulean
 
-  sub :rack
-  sub :request
+  panel :rack
+  panel :request
 
 end

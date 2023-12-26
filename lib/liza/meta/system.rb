@@ -30,7 +30,8 @@ class Liza::System < Liza::Unit
     @subsystems ||= subs.map { const _1 }
   end
 
-  def self.sub name
+  # Adds a subsystem to the system
+  def self.panel name
     subs << name
   end
 
