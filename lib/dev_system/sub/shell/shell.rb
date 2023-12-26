@@ -1,5 +1,10 @@
 class DevSystem::Shell < Liza::Controller
 
+  # Returns all descendants of Shell
+  def self.all
+    @all ||= AppShell.classes.select { _1 <= self }
+  end
+
   # Check if the current platform is Windows
   def self.windows?
     @windows || Gem.win_platform?
