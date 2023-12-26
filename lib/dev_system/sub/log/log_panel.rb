@@ -15,8 +15,10 @@ class DevSystem::LogPanel < Liza::Panel
     end
   end
 
-  def handler key
-    handlers[key] ||= Liza.const("#{key}_log")
+  def handler *keys
+    Array(keys).each do |k|
+      handlers[k] ||= Liza.const("#{k}_log")
+    end
   end
 
   def handlers
