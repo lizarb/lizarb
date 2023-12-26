@@ -1,18 +1,7 @@
 #!/usr/bin/env ruby
 
-$APP = ENV["APP"]
-
-$VERBOSE = ENV["VERBOSE"]
-
-$LOAD_PATH.unshift "#{Dir.pwd}/lib"
-
-require_relative "../lib/lizarb.rb"
-
-Lizarb.setup
-
-Lizarb.app
-
-Lizarb.call
+require_relative "../lib/lizarb/project"
+Lizarb.project __FILE__
 
 App.call ARGV
 

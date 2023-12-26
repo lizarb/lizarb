@@ -18,13 +18,11 @@ class App
   end
 
   def self.cwd
-    Pathname Dir.pwd
+    root
   end
 
-  @root = cwd
-
   def self.root
-    @root
+    Lizarb.root
   end
 
   def self.filename
@@ -38,7 +36,7 @@ class App
     if folder
       @folder = folder
       @relative_path = Pathname(folder)
-      @path = Pathname("#{Lizarb::APP_DIR}/#{folder}")
+      @path = Pathname("#{Lizarb.app_dir}/#{folder}")
     else
       @folder
     end
@@ -50,6 +48,17 @@ class App
 
   def self.relative_path
     @relative_path or raise "@relative_path not set"
+  end
+
+  # gemfile
+
+  def self.gemfile gemfile = :unset
+    raise "locked" if @locked
+    if gemfile != :unset
+      @gemfile = gemfile
+    else
+      @gemfile
+    end
   end
 
   # mode
@@ -117,7 +126,8 @@ class App
     @log_boot = level
   end
 
-  def self.log_level level
+  def self.log_level level = nil
+    return get :log_level if level.nil?
     level = LOG_LEVELS[level] if level.is_a? Symbol
     raise Error, "invalid log level `#{level}`", caller unless LOG_LEVELS.values.include? level
 
@@ -128,6 +138,24 @@ class App
 
   def self.global?
     $APP == "app_global"
+  end
+
+  #
+
+  def self.type
+    Lizarb.setup_type
+  end
+
+  def self.sfa?
+    type == :sfa
+  end
+
+  def self.project?
+    type == :project
+  end
+
+  def self.script?
+    type == :script
   end
 
 end

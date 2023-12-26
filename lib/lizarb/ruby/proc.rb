@@ -2,7 +2,9 @@
 
 class Proc
   def relative_source
-    absolute_source.gsub "#{Lizarb::APP_DIR}/", ""
+    absolute_source
+      .sub("#{Lizarb.app_dir}/", "")
+      .sub("#{Lizarb.root}/", "")
   end
 
   def absolute_source
