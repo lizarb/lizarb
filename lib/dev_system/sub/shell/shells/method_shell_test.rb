@@ -14,16 +14,16 @@ class DevSystem::MethodShellTest < DevSystem::ShellTest
   end
 
   test :subject, :method, :line, :line_location, :signature_has_single_parameter_named? do
-    subject = subject_class.new FileShell, :touch
-    assert_equality subject.method, FileShell.method(:touch)
+    subject = subject_class.new BaseGenerator, :call
+    assert_equality subject.method, BaseGenerator.method(:call)
 
-    assert_equality subject.object, FileShell
-    assert_equality subject.method_name, :touch
+    assert_equality subject.object, BaseGenerator
+    assert_equality subject.method_name, :call
 
-    assert_equality subject.line, "def self.touch path"
-    assert_equality subject.line_location, "lib/dev_system/sub/shell/shells/file_shell.rb:45"
+    assert_equality subject.line, "def self.call(env)"
+    assert_equality subject.line_location, "lib/dev_system/sub/generator/generators/base_generator.rb:5"
 
-    assert subject.signature_has_single_parameter_named? :path
+    assert subject.signature_has_single_parameter_named? :env
     refute subject.signature_has_single_parameter_named? :wrong
   end
 
