@@ -99,11 +99,11 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   #
 
   # arg0 arg1 arg2
-  def simple_arg_ask_snakecase(index, title)
+  def simple_arg_ask_snakecase(index, title, regexp: /^[a-zA-Z_]*$/)
     simple_arg index do
       TtyInputCommand.prompt.ask(title) do |q|
         q.required true
-        q.validate /^[a-zA-Z_]*$/
+        q.validate regexp
       end.snakecase
     end
   end
