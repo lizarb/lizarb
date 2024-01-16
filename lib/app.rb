@@ -17,10 +17,6 @@ class App
     puts
   end
 
-  def self.cwd
-    root
-  end
-
   def self.root
     Lizarb.root
   end
