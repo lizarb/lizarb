@@ -4,11 +4,11 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     log "args = #{args.inspect}"
     # setup
 
-    name = args.shift || "app_1"
+    name! "project"
 
     from = "#{Lizarb.app_dir}/examples/new"
     log "from: #{from}"
-    to = "#{Dir.pwd}/#{name}"
+    to = "#{Dir.pwd}/#{@name}"
 
     return log "Directory #{to.light_green} already exists." if Dir.exist? to
 
@@ -52,6 +52,40 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
 
     log "Liza Application initialized at `#{to}`"
   end
+
+  # liza g new:script script_name
+
+  def call_script
+    raise Error, "You can only generate a script inside a project" if !App.project? or App.global?
+    name_with_period! "script"
+
+    @systems = ["dev"]
+
+    create_file "scripts/#{@name}", :script_1, :rb
+  end
+
+  # liza g new:sfa sfa_name
+
+  def call_sfa
+    name_with_period! "sfa"
+
+    @systems = ["dev"]
+
+    create_file @name, :sfa_1, :rb
+  end
+
+  # helper methods
+
+  def name! name
+    @name = command.simple_arg_ask_snakecase 0, "Name your new #{name}:"
+    log "@name = #{@name.inspect}"
+  end
+
+  def name_with_period! name
+    @name = command.simple_arg_ask_snakecase 0, "Name your new #{name}:", regexp: /^[a-zA-Z_\.]*$/
+    log "@name = #{@name.inspect}"
+  end
+
 end
 
 __END__
@@ -71,3 +105,45 @@ ruby <%= RUBY_VERSION %>
 # HEROKU EXAMPLE
 
 web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
+
+# view script_1.rb.erb
+#!/usr/bin/env ruby
+
+require "lizarb/sfa"
+Lizarb.sfa :dev, pwd: __dir__
+puts "#{$boot_time.diff}s to boot" if defined? $log_boot_high
+
+# YOUR CODE HERE
+
+# use Shell instead of DevSystem::Shell
+DevSystem::MainShell.easy!
+
+puts
+puts stick " MainShell ".center(100, "-"), :b, :black, :green
+puts
+
+log "MainShell is a wrapper for main: #{self}"
+
+# DevSystem::DevBox.command ["shell"]
+DevBox.command ["shell"]
+
+# view sfa_1.rb.erb
+#!/usr/bin/env ruby
+
+require "lizarb/sfa"
+Lizarb.sfa :dev, pwd: __dir__
+puts "#{$boot_time.diff}s to boot" if defined? $log_boot_high
+
+# YOUR CODE HERE
+
+# use Shell instead of DevSystem::Shell
+DevSystem::MainShell.easy!
+
+puts
+puts stick " MainShell ".center(100, "-"), :b, :black, :green
+puts
+
+log "MainShell is a wrapper for main: #{self}"
+
+# DevSystem::DevBox.command ["shell"]
+DevBox.command ["shell"]
