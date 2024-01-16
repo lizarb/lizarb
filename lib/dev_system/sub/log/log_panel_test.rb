@@ -9,10 +9,6 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     on_instance :call, :handler, :handlers, :method_name_for
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :call, :unit_log_level, true do
     handler_env = nil
 

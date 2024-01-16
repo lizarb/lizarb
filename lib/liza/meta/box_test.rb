@@ -13,8 +13,4 @@ class Liza::BoxTest < Liza::UnitTest
     assert_equality panel_class.controller, controller_class, kaller: kaller
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
 end

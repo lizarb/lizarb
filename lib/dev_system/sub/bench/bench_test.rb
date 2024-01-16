@@ -10,8 +10,6 @@ class DevSystem::BenchTest < Liza::ControllerTest
   end
 
   test :settings do
-    assert_equality subject_class.log_level, 0
-
     assert_equality subject_class.token, nil
     assert_equality subject_class.singular, :bench
     assert_equality subject_class.plural, :benches

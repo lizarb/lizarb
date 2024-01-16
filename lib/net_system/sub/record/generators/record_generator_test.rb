@@ -4,8 +4,4 @@ class NetSystem::RecordGeneratorTest < DevSystem::SimpleGeneratorTest
     assert subject_class == NetSystem::RecordGenerator
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
 end

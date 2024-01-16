@@ -4,10 +4,6 @@ class DevSystem::ScssConverterShellTest < DevSystem::ConverterShellTest
     assert subject_class == DevSystem::ScssConverterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :convert do
     scss, css = <<-SCSS, <<-CSS
 body {

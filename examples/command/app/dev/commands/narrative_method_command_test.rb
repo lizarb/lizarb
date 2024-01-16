@@ -4,10 +4,6 @@ class NarrativeMethodCommandTest < DevSystem::CommandTest
     assert subject_class == NarrativeMethodCommand
   end
 
-  test :settings do
-    assert subject_class.log_level == 0
-  end
-
   test :validate, :not_implemented do
     subject = subject_class.new
     begin

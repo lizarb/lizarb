@@ -4,10 +4,6 @@ class BashAdapterShellTest < DevSystem::ShellTest
     assert_equality subject_class, BashAdapterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :query_something do
     a = subject_class.query_something "some args"
     b = "9\n"

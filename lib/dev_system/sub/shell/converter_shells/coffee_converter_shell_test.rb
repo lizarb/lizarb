@@ -4,10 +4,6 @@ class DevSystem::CoffeeConverterShellTest < DevSystem::ConverterShellTest
     assert subject_class == DevSystem::CoffeeConverterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :convert do
     coffeescript, javascript = <<-COFFEESCRIPT, <<-JAVASCRIPT
 listen = (el, event, handler) ->

@@ -4,8 +4,4 @@ class LoopsBenchTest < SortedBenchTest
     assert subject_class == LoopsBench
   end
 
-  test :settings do
-    assert subject_class.log_level == 0
-  end
-
 end

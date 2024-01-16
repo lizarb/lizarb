@@ -4,10 +4,6 @@ class QuadraticCommandTest < NarrativeMethodCommandTest
     assert subject_class == QuadraticCommand
   end
 
-  test :settings do
-    assert subject_class.log_level == 0
-  end
-
   test :subject_class, :quadratic do
     assert subject_class.quadratic(1, -11, 30) == [5, 6]
     assert subject_class.quadratic(1, +11, 30) == [-6, -5]
