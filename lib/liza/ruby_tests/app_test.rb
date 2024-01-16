@@ -8,9 +8,6 @@ class Liza::AppTest < Liza::ObjectTest
     # returns a Pathname
     assert_equality App.root.class, Pathname
 
-    # returns a new object each time
-    refute_equality App.cwd.object_id, App.cwd.object_id
-    
     # returns the same object each time
     assert_equality App.root.object_id, App.root.object_id
 
@@ -18,11 +15,11 @@ class Liza::AppTest < Liza::ObjectTest
     refute_equality App.root.object_id, App.root.join("lib").object_id
 
     # matches the current working directory
-    assert_equality App.root, App.cwd
+    assert_equality App.root.to_s, Dir.pwd
     Dir.chdir "lib" do
-      refute_equality App.root, App.cwd
+      refute_equality App.root.to_s, Dir.pwd
     end
-    assert_equality App.root, App.cwd
+    assert_equality App.root.to_s, Dir.pwd
   end
 
   test :path, :relative_path do
