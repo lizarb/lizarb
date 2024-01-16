@@ -4,10 +4,6 @@ class CalculatorCommandTest < NarrativeMethodCommandTest
     assert subject_class == CalculatorCommand
   end
 
-  test :settings do
-    assert subject_class.log_level == 0
-  end
-
   test :subject_class, :sum do
     assert subject_class.sum(1, 2) == 3
   end

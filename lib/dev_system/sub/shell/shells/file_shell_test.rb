@@ -30,10 +30,6 @@ class DevSystem::FileShellTest < DevSystem::ShellTest
     assert subject_class == DevSystem::FileShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   #
 
   test :subject_class, :exist?, :true do

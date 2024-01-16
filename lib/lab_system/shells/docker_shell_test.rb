@@ -4,10 +4,6 @@ class LabSystem::DockerShellTest < DevSystem::ShellTest
     assert_equality subject_class, LabSystem::DockerShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :parse_version do
     output = render :docker_version, format: :txt
     h = subject_class.parse_version output

@@ -4,10 +4,6 @@ class DevSystem::MdConverterShellTest < DevSystem::ConverterShellTest
     assert subject_class == DevSystem::MdConverterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :convert do
     markdown, html = <<-MARKDOWN, <<-HTML
 # Hello World

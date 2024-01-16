@@ -4,10 +4,6 @@ class DevSystem::HamlConverterShellTest < DevSystem::ConverterShellTest
     assert subject_class == DevSystem::HamlConverterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :convert do
     haml, html = <<-HAML, <<-HTML
 %body

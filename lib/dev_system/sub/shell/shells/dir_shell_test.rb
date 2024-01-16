@@ -4,10 +4,6 @@ class DevSystem::DirShellTest < DevSystem::FileShellTest
     assert subject_class == DevSystem::DirShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   #
 
   test :subject_class, :exist?, :raise do

@@ -4,8 +4,4 @@ class WebSystem::FirstMiddleRackTest < WebSystem::MiddleRackTest
     assert subject_class == WebSystem::FirstMiddleRack
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
 end

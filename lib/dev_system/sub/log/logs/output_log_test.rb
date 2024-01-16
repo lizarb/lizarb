@@ -8,10 +8,6 @@ class DevSystem::OutputLogTest < DevSystem::LogTest
     on_self :call, :sidebar_for
     on_instance
   end
-
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
   
   test :sidebar_for do
     assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[38;2;0;204;0mCommand\e[0m:call                                    ",

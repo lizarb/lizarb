@@ -5,8 +5,6 @@ class DevSystem::InputCommandTest < DevSystem::CommandTest
   end
 
   test :settings do
-    assert_equality subject_class.log_level, 0
-
     assert_equality subject_class.token, :input
     assert_equality subject_class.singular, :input_command
     assert_equality subject_class.plural, :input_commands

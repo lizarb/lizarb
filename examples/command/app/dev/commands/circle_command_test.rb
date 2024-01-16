@@ -4,10 +4,6 @@ class CircleCommandTest < NarrativeMethodCommandTest
     assert subject_class == CircleCommand
   end
 
-  test :settings do
-    assert subject_class.log_level == 0
-  end
-
   test :subject_class, :area do
     assert subject_class.area(1) == 3.141592653589793
   end

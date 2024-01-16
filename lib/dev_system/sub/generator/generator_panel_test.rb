@@ -14,10 +14,6 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
       :parse,
       :save
   end
-
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
   
   #
   

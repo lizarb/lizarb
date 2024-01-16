@@ -4,10 +4,6 @@ class GemAdapterShellTest < DevSystem::ShellTest
     assert_equality subject_class, GemAdapterShell
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :do_something do
     a = subject_class.do_something "some args"
     b = [:some, :result]

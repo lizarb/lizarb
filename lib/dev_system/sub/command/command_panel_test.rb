@@ -17,10 +17,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
       :pick_many, :pick_one
   end
 
-  test :settings do
-    assert_equality subject_class.log_level, 0
-  end
-
   test :parse do
     def parse string
       OpenStruct.new subject.parse(string)

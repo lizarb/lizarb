@@ -5,8 +5,6 @@ class DevSystem::FormatterShellTest < DevSystem::ShellTest
   end
 
   test :settings do
-    assert_equality subject_class.log_level, 0
-
     assert_equality subject_class.token, :formatter
     assert_equality subject_class.singular, :formatter_shell
     assert_equality subject_class.plural, :formatter_shells

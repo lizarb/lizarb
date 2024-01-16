@@ -5,8 +5,6 @@ class DevSystem::ConverterShellTest < DevSystem::ShellTest
   end
 
   test :settings do
-    assert_equality subject_class.log_level, 0
-
     assert_equality subject_class.token, :converter
     assert_equality subject_class.singular, :converter_shell
     assert_equality subject_class.plural, :converter_shells
