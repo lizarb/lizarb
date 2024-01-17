@@ -4,7 +4,7 @@ class DevSystem::TestCommand < DevSystem::Command
     log "args = #{args.inspect}"
 
     now = Time.now
-    test_classes = Liza::Test.descendants
+    test_classes = _get_test_classes
 
     if args.any?
       test_classes = test_classes.select { |tc| args.any? { tc.source_location_radical.snakecase.include? _1.snakecase } }
@@ -15,8 +15,6 @@ class DevSystem::TestCommand < DevSystem::Command
     if Lizarb.is_app_dir
       test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb.app_dir.to_s }
     end
-
-    test_classes = _call_sort test_classes
 
     log "Testing #{test_classes}"
     _call_testing test_classes
@@ -40,22 +38,51 @@ class DevSystem::TestCommand < DevSystem::Command
     end
   end
 
-  def self._call_sort test_classes
-    test_classes.sort_by! &:name
+  def self._get_test_classes
+    ret = []
+    app = AppShell.new
 
-    proc_namespaced = proc { |tc| tc.name.include? "::" }
-    proc_liza = proc { |tc| tc.name[0..3] == "Liza" }
+    only_tests = proc { |klasses| klasses.select { _1 < Liza::Test } }
 
-    tc_app        = test_classes.reject(&proc_namespaced)
-    tc_namespaced = test_classes.select(&proc_namespaced)
+    list = AppShell.consts[:liza].to_a
+    list = [list[-1]] + list[0..-2]
+    list[0][1].tap do
+      _1.delete ObjectTest
+      _1.delete AppTest
+      list[0][1] = [ObjectTest, *_1, AppTest]
+    end
+    list.each do |category, klasses|
+      ret += only_tests.call klasses
+    end
 
-    tc_liza   = tc_namespaced.select(&proc_liza)
-    tc_system = tc_namespaced.reject(&proc_liza)
+    AppShell.consts[:systems].each do |system_name, tree_system|
+      system = tree_system["system"][0]
 
-    tc_app.sort_by! &:source_location
-    tc_liza.sort_by! &:source_location
+      ret += only_tests.call tree_system["system"]
+      ret += only_tests.call tree_system["box"]
+      tree_system["controllers"].each do |family, klasses|
+        ret += only_tests.call klasses
+      end
 
-    [tc_liza, tc_system, tc_app].flatten
+      tree_system["subsystems"].each do |subsystem, tree_subsystem|
+        ret += only_tests.call tree_subsystem["panel"]
+        ret += only_tests.call tree_subsystem["controller"]
+        tree_subsystem["controllers"].each do |controller_class, klasses|
+          ret += only_tests.call klasses
+        end
+      end
+    end
+
+    AppShell.consts[:app].each do |system_name, tree_system|
+      system = Liza.const "#{system_name}_system"
+      tree_system["controllers"].each do |family, structure|
+        structure.each do |division, klasses|
+          ret += only_tests.call klasses
+        end
+      end
+    end
+
+    ret
   end
 
   def self._call_testing test_classes
