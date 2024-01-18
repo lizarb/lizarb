@@ -101,6 +101,7 @@ GEM
     iodine (0.7.57)
     libui (0.1.2.pre)
     libui (0.1.2.pre-arm64-darwin)
+    libui (0.1.2.pre-x86_64-darwin)
     localhost (1.1.10)
     mapping (1.1.1)
     matrix (0.4.2)
@@ -157,6 +158,7 @@ GEM
     sassc (2.4.0)
       ffi (~> 1.9)
     sqlite3 (1.6.8-arm64-darwin)
+    sqlite3 (1.6.8-x86_64-darwin)
     sqlite3 (1.6.8-x86_64-linux)
     super_module (1.4.1)
       method_source (>= 0.8.2, < 1.1.0)
@@ -186,6 +188,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
