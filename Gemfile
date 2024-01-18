@@ -34,21 +34,13 @@ group :net do
   # database gems
   gem "redis", "~> 5.0"
   gem "mongo", "~> 2.19"
-  # gem "sqlite3", "~> 1.5"
+  gem "sqlite3", "~> 1.5"
+
   # gem "sqlite3", "~> 1.5", platforms: [:ruby_31, :ruby_32]
   # gem "sqlite3", "~> 1.6", platforms: [:ruby_33]
 
-gem "sqlite3", "~> 1.5" if RUBY_VERSION < "3.3.0"
-gem "sqlite3", "~> 1.6" if RUBY_VERSION >= "3.3.0"
-
-
-
-  # gem "sqlite3", "~> 1.5", platforms: [:ruby, "!= 3.3.0"]
-  # gem "sqlite3", "~> 1.6", "< 1.7", platforms: :ruby
-
-
-# gem "sqlite3", "~> 1.5", platforms: [:ruby, "!= 3.3.0"]
-# gem "sqlite3", "~> 1.6", ">= 1.6", "< 1.7", platforms: :ruby
+  # gem "sqlite3", "~> 1.5" if RUBY_VERSION < "3.3.0"
+  # gem "sqlite3", "~> 1.6" if RUBY_VERSION >= "3.3.0"
 
   gem "mysql2", "~> 0.5.5"
   gem "pg", "~> 1.5"
