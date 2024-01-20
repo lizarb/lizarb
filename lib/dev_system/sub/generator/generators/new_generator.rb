@@ -6,7 +6,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
 
     name! "project"
 
-    from = "#{Lizarb.app_dir}/examples/new"
+    from = "#{Lizarb.liz_dir}/examples/new"
     log "from: #{from}"
     to = "#{Dir.pwd}/#{@name}"
 
@@ -29,7 +29,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     # TextShell.write "#{to}/Procfile", render(:Procfile, format: :yml)
     TextShell.write "#{to}/.tool-versions", render(:toolversions, format: :txt)
 
-    FileUtils.cp_r "#{Lizarb.app_dir}/README.md",
+    FileUtils.cp_r "#{Lizarb.liz_dir}/README.md",
                    "#{to}/README.md",
                    verbose: true
     # FileUtils.cp_r "#{Lizarb.app_dir}/web_files",
