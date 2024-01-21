@@ -107,6 +107,8 @@ module Lizarb
     @is_liz_dir = File.file? "#{root}/lib/lizarb.rb"
     @is_gem_dir = File.file? "#{root}/lizarb.gemspec" if @is_liz_dir
 
+    $APP = "app_global" unless @is_app_dir
+
     if $VERBOSE
       puts "               Lizarb.root does #{ @is_app_dir ? "   " : "not" } have a configuration app.rb file"
       puts "               Lizarb.root does #{ @is_liz_dir ? "   " : "not" } have a lib/lizarb.rb file"
