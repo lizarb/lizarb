@@ -111,7 +111,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
   def print_global
     klasses = {
-      NewCommand => "# Create a new project",
+      NewCommand => "# Create a new project, script, or single-file-application",
       NotFoundCommand => "# This command",
     }
 
