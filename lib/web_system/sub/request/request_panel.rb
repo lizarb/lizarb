@@ -38,7 +38,12 @@ class WebSystem::RequestPanel < Liza::Panel
   def find env
     _prepare env
 
-    routers.values.first.call(env)
+    routers.values.each do |router|
+      request_class = router.call env
+      return request_class if request_class
+    end
+
+    NotFoundRequest
   end
 
   #

@@ -5,14 +5,16 @@ class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
     segments = env["LIZA_SEGMENTS"].dup
     request = segments.shift || "root"
     action  = segments.shift || "index"
-
-    env["LIZA_REQUEST"] = request
-    env["LIZA_ACTION"] = action
     format = env["LIZA_FORMAT"]
 
     log({request:, action:, format:})
+    request_class = _find_request_class request
     
-    env["LIZA_REQUEST_CLASS"] = _find_request_class request
+    env["LIZA_REQUEST"] = request
+    env["LIZA_ACTION"] = action
+    env["LIZA_REQUEST_CLASS"] = request_class
+
+    request_class
   end
 
   def self._find_request_class request
