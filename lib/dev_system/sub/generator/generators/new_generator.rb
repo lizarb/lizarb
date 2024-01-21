@@ -109,9 +109,8 @@ web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
 # view script_1.rb.erb
 #!/usr/bin/env ruby
 
-require "lizarb/sfa"
-Lizarb.sfa :dev, pwd: __dir__
-puts "#{$boot_time.diff}s to boot" if defined? $log_boot_high
+require "lizarb/script"
+Lizarb.script :dev, app: "app"
 
 # YOUR CODE HERE
 
