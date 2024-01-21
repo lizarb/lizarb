@@ -33,8 +33,8 @@ class DevSystem::TestCommand < DevSystem::Command
       Liza::Panel,
       Liza::Controller,
     ].each do |x|
-      def x.log(...) end
-      def x.puts(...) end
+      def x.log(...) super(...) if self == TestCommand end
+      def x.puts(...) super(...) if self == TestCommand end
     end
   end
 
