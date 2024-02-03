@@ -248,7 +248,7 @@ module Lizarb
   end
   
   def determine_gemfile
-    log "#{self}.#{__method__}" if $log_boot_high
+    log "  #{self}.#{__method__}" if $log_boot_high
 
     finder = \
       proc do |file_name|
@@ -265,7 +265,7 @@ module Lizarb
     gemfile ||= finder.call "#{@root}/Gemfile"
     gemfile ||= finder.call "#{@gem_dir}/app_global.gemfile.rb"
 
-    log "  ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if $log_boot_higher
+    log "    ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if $log_boot_higher
     ENV["BUNDLE_GEMFILE"] = gemfile
     require "bundler/setup"
   end
