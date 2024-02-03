@@ -5,7 +5,7 @@ class DevSystem::CommandPanel < Liza::Panel
   class AlreadySet < Error; end
 
   def call args
-    log :lower, "args = #{args.inspect}"
+    log :higher, "args = #{args.inspect}"
 
     return call_not_found args if args.none?
 
@@ -29,7 +29,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     env = md.named_captures.map { [_1.to_sym, _2] }.to_h
     env[:command_arg] = string
-    log :lower, "{#{env.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
+    log :higher, "{#{env.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
     env
   end
 
@@ -52,7 +52,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def _find string
     k = Liza.const "#{string}_command"
-    log :lower, k
+    log :higher, k
     k
   rescue Liza::ConstNotFound
     raise NotFoundError, "command not found: #{string.inspect}"
@@ -68,28 +68,28 @@ class DevSystem::CommandPanel < Liza::Panel
   end
 
   def forward_base_command env
-    log :lower,  "forwarding"
+    log :higher,  "forwarding"
     env[:command_class].call env
   end
 
   def forward_command env
     case
     when env[:command_class_method]
-      log :lower,  "#{env[:command_class]}.#{env[:command_class_method]}(#{env[:args]})"
+      log :higher,  "#{env[:command_class]}.#{env[:command_class_method]}(#{env[:args]})"
       env[:command_class].public_send env[:command_class_method], env[:args]
     when env[:command_instance_method]
-      log :lower,  "#{env[:command_class]}.new.#{env[:command_instance_method]}(#{env[:args]})"
+      log :higher,  "#{env[:command_class]}.new.#{env[:command_instance_method]}(#{env[:args]})"
       env[:command_class].new.public_send env[:command_instance_method], env[:args]
     when env[:command_method]
       if env[:command_class].respond_to?(env[:command_method])
-        log :lower,  "#{env[:command_class]}.#{env[:command_method]}(#{env[:args]})"
+        log :higher,  "#{env[:command_class]}.#{env[:command_method]}(#{env[:args]})"
         env[:command_class].public_send env[:command_method], env[:args]
       else
-        log :lower,  "#{env[:command_class]}.new.#{env[:command_method]}(#{env[:args]})"
+        log :higher,  "#{env[:command_class]}.new.#{env[:command_method]}(#{env[:args]})"
         env[:command_class].new.public_send env[:command_method], env[:args]
       end
     else
-      log :lower,  "#{env[:command_class]}.call(#{env[:args]})"
+      log :higher,  "#{env[:command_class]}.call(#{env[:args]})"
       env[:command_class].call env[:args]
     end
   end
@@ -102,7 +102,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     env[:simple].shift if env[:simple][0] == ""
 
-    puts if log? :higher
+    puts if log? :lower
 
     args = [*env[:command_args], *env[:simple]].join(" ")
 
@@ -111,9 +111,9 @@ class DevSystem::CommandPanel < Liza::Panel
       ["HELPS",    :u],
       ["YOU",      :u, :i],
       ["REMEMBER", :i] \
-        if log? :higher
+        if log? :lower
     
-    log stick system.color, "#{ $0.split("/").last } #{ env[:command_arg] } #{ args }" if log? :higher
+    log stick system.color, "#{ $0.split("/").last } #{ env[:command_arg] } #{ args }" if log? :lower
   end
 
   #
@@ -131,7 +131,7 @@ class DevSystem::CommandPanel < Liza::Panel
   end
 
   def pick_one title, options = ["Yes", "No"]
-    if log_level? :highest
+    if log_level? :lowest
       puts
       log "Pick One"
     end
@@ -140,7 +140,7 @@ class DevSystem::CommandPanel < Liza::Panel
   end
 
   def pick_many title, options
-    if log_level? :highest
+    if log_level? :lowest
       puts
       log "Pick Many"
     end

@@ -7,7 +7,7 @@ class DevSystem::ConverterShell < DevSystem::Shell
   #
 
   def self.call args
-    log :lower, "args = #{args.inspect}"
+    log :higher, "args = #{args.inspect}"
   end
 
 end

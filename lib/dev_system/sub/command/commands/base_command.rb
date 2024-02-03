@@ -3,7 +3,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   #
 
   def self.call(env)
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     
     command = env[:command] = new
     command.call env
@@ -14,7 +14,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   attr_reader :env
 
   def call(env)
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     @env = env
     
     method_name = env[:command_arg]

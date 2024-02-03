@@ -10,7 +10,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   #
 
   def log_simple_remember
-    log :lower, "env[:remember] is now #{stick system.color, (env[:simple].join " ")}", kaller: caller
+    log :higher, "env[:remember] is now #{stick system.color, (env[:simple].join " ")}", kaller: caller
   end
   
   # 
@@ -21,7 +21,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     return string unless string.empty?
 
     value = yield.to_s.split(" ")[0]
-    log :high, value.inspect
+    log :low, value.inspect
 
     env[:simple] << "#{key}=#{value}"
 
@@ -37,7 +37,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     simple_string key do
       TtyInputCommand.pick_color string: string
     end.to_sym.tap do |color|
-      log :high, color.inspect
+      log :low, color.inspect
     end
   end
 
@@ -54,7 +54,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       end.to_h
       TtyInputCommand.pick_one "Where should the controller be placed?", options
     end.tap do |place|
-      log :high, place.inspect
+      log :low, place.inspect
     end
   end
 
@@ -76,7 +76,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     value = yield
     value = "" if value.nil?
     value = value.inspect if value.include? " "
-    log :high, value.inspect
+    log :low, value.inspect
 
     string = env[:simple][0]
     string << " " unless string.empty?
@@ -130,7 +130,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     return false if env[:args].find { _1 == "-#{key}" }
 
     value = yield
-    log :high, value.inspect
+    log :low, value.inspect
 
     env[:simple] << "+#{key}" if TrueClass === value
     env[:simple] << "-#{key}" if FalseClass === value

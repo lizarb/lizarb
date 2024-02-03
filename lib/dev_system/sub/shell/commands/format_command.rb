@@ -3,7 +3,7 @@ class DevSystem::FormatCommand < DevSystem::SimpleCommand
   # liza format FORMAT FILENAME
 
   def call_default
-    log :lower, "args = #{args.inspect}"
+    log :higher, "args = #{args.inspect}"
 
     raise ArgumentError, "args[0] must be present" unless args[0]
 

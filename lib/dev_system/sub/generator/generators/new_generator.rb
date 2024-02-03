@@ -1,5 +1,5 @@
 class DevSystem::NewGenerator < DevSystem::SimpleGenerator
-
+  
   def call_default
     log "args = #{args.inspect}"
     # setup

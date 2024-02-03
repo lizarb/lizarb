@@ -5,7 +5,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   #
 
   def call env
-    log :low, "env.count is #{env.count}"
+    log :high, "env.count is #{env.count}"
     parse env
     find env
     forward env
@@ -18,7 +18,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   #
 
   def parse env
-    if log_level? :low
+    if log_level? :high
       puts
       log "env.count is #{env.count}"
     end
@@ -30,19 +30,19 @@ class DevSystem::GeneratorPanel < Liza::Panel
     env[:generator_name] = short(generator_name).to_sym
     env[:generator_coil_original] = generator_coil
     env[:generator_coil] = generator_coil
-    log :higher, "generator:coil is #{env[:generator_name]}:#{env[:generator_coil]}"
+    log :lower, "generator:coil is #{env[:generator_name]}:#{env[:generator_coil]}"
   end
 
   #
 
   def find env
-    if log_level? :low
+    if log_level? :high
       puts
       log "env.count is #{env.count}"
     end
     begin
       k = Liza.const "#{env[:generator_name]}_generator"
-      log :lower, k
+      log :higher, k
       env[:generator_class] = k
     rescue Liza::ConstNotFound
       raise NotFoundError, "generator #{env[:generator_name].inspect} not found"
@@ -59,7 +59,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   end
 
   def forward_base_generator env
-    log :lower,  "forwarding"
+    log :higher,  "forwarding"
     env[:args].shift
     env[:generator_class].call env
   end
@@ -69,29 +69,29 @@ class DevSystem::GeneratorPanel < Liza::Panel
     method_name = :call if method_name == :default
 
     args = env[:args][1..-1]
-    log :lower,  "#{env[:generator_class]}.#{method_name}(#{args})"
+    log :higher,  "#{env[:generator_class]}.#{method_name}(#{args})"
     env[:generator_class].public_send method_name, args
   end
 
   #
 
   def inform env
-    if log_level? :low
+    if log_level? :high
       puts
       log "env.count is #{env.count}"
     end
-    env[:generator] or return log :lower, "not implemented"
+    env[:generator] or return log :higher, "not implemented"
     env[:generator].inform
   end
 
   #
 
   def save env
-    if log_level? :low
+    if log_level? :high
       puts
       log "env.count is #{env.count}"
     end
-    env[:generator] or return log :lower, "not implemented"
+    env[:generator] or return log :higher, "not implemented"
     env[:generator].save
   end
 

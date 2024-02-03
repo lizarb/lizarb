@@ -51,9 +51,9 @@ class DevSystem::FileShell < DevSystem::Shell
     log log_level, "Getting category for '#{path}'"
     _raise_if_blank path
 
-    return :directory     if directory?     path, log_level: :lowest
-    return :file          if file?          path, log_level: :lowest
-    return :symbolic_link if symbolic_link? path, log_level: :lowest
+    return :directory     if directory?     path, log_level: :highest
+    return :file          if file?          path, log_level: :highest
+    return :symbolic_link if symbolic_link? path, log_level: :highest
   end
 
   #

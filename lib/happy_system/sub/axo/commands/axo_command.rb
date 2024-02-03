@@ -22,8 +22,8 @@ class HappySystem::AxoCommand < DevSystem::SimpleCommand
     @axo = pick_axo
     @name = @axo.last_namespace.snakecase
   ensure
-    log :high, "@name = #{@name}"
-    log :high, "@axo = #{@axo}"
+    log :low, "@name = #{@name}"
+    log :low, "@axo = #{@axo}"
   end
 
   def pick_axo

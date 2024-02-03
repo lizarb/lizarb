@@ -7,11 +7,11 @@ class DevSystem::HtmlFormatterShell < DevSystem::FormatterShell
   # https://github.com/threedaymonk/htmlbeautifier
 
   def self.format string, options = {}
-    log :lower, "default_options = #{default_options.inspect} | options = #{options.inspect}"
+    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
 
     options = default_options.merge options if options.any? && default_options.any?
     
-    log :lower, "#{string.size} chars (options: #{options.inspect})"
+    log :higher, "#{string.size} chars (options: #{options.inspect})"
 
     require "htmlbeautifier"
     HtmlBeautifier.beautify string

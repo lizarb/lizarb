@@ -9,7 +9,7 @@ class DevSystem::NewCommand < DevSystem::SimpleCommand
   # liza new:sfa [app_name]
 
   def call_sfa
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     args = env[:args] = ["new:sfa", *env[:args]]
     log "args = #{args.inspect}"
     DevBox[:generator].call env
@@ -18,7 +18,7 @@ class DevSystem::NewCommand < DevSystem::SimpleCommand
   # liza new:project [app_name]
 
   def call_project
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     args = env[:args] = ["new", *env[:args]]
     log "args = #{args.inspect}"
     DevBox[:generator].call env
@@ -27,7 +27,7 @@ class DevSystem::NewCommand < DevSystem::SimpleCommand
   # liza new:script [app_name]
 
   def call_script
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     args = env[:args] = ["new:script", *env[:args]]
     log "args = #{args.inspect}"
     DevBox[:generator].call env

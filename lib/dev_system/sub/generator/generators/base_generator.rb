@@ -3,7 +3,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   #
 
   def self.call(env)
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     
     generator = env[:generator] = new
     generator.call env
@@ -14,7 +14,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   attr_reader :env
 
   def call(env)
-    log :lower, "env.count is #{env.count}"
+    log :higher, "env.count is #{env.count}"
     @env = env
     
     method_name = "call_#{env[:generator_coil] || :default}"

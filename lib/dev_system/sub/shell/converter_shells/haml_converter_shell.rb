@@ -12,11 +12,11 @@ class DevSystem::HamlConverterShell < DevSystem::ConverterShell
   # Haml::Template.options[:escape_html] = true
 
   def self.convert string, options = {}
-    log :lower, "default_options = #{default_options.inspect} | options = #{options.inspect}"
+    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
 
     options = default_options.merge options if options.any? && default_options.any?
     
-    log :lower, "#{string.size} chars (options: #{options.inspect})"
+    log :higher, "#{string.size} chars (options: #{options.inspect})"
 
     haml = string
     # template_options = {escape_html: true}

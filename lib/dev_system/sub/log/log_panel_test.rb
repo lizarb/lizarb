@@ -35,7 +35,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     input_env = {
       caller: caller,
       unit_log_level: :normal,
-      message_log_level: :low
+      message_log_level: :high
     }
     subject.call input_env
 

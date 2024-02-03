@@ -28,6 +28,7 @@ class Liza::UnitLoggingPart < Liza::Part
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
       return unless log_level? log_level
+
   
       env = {}
       env[:type] = :log
@@ -126,12 +127,12 @@ class Liza::UnitLoggingPart < Liza::Part
   
     def self.log_level? log_level = App::DEFAULT_LOG_LEVEL
       log_level = log_levels[log_level] if log_level.is_a? Symbol
-      log_level >= self.log_level
+      log_level <= self.log_level
     end
   
     def log_level? log_level = App::DEFAULT_LOG_LEVEL
       log_level = log_levels[log_level] if log_level.is_a? Symbol
-      log_level >= self.log_level
+      log_level <= self.log_level
     end
   
   end

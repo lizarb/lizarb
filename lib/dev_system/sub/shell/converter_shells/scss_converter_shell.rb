@@ -7,11 +7,11 @@ class DevSystem::ScssConverterShell < DevSystem::ConverterShell
   # https://github.com/gjtorikian/commonmarker#usage
 
   def self.convert string, options = {}
-    log :lower, "default_options = #{default_options.inspect} | options = #{options.inspect}"
+    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
 
     options = default_options.merge options if options.any? && default_options.any?
     
-    log :lower, "#{string.size} chars (options: #{options.inspect})"
+    log :higher, "#{string.size} chars (options: #{options.inspect})"
 
     require "sassc"
     # output = SassC::Engine.new(scss, line_comments: true).render

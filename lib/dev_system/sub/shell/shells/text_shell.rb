@@ -52,12 +52,12 @@ class DevSystem::TextShell < DevSystem::FileShell
         
         if state == :left_systems_region
           out.write("#{newline}\n")
-          log :low, newline.strip.green
+          log :high, newline.strip.green
           state = :done
         end
         
         out.write(line)
-        log :low, line.strip.light_black
+        log :high, line.strip.light_black
       end
     end
   end

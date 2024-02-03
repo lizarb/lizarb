@@ -3,7 +3,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   #
 
   def inform
-    log :highest, "informing #{changes.count} changes"
+    log :lowest, "informing #{changes.count} changes"
 
     changes.each do |change|
       puts_line
@@ -20,9 +20,9 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       bit = diff.map { "#{_1}#{_2}" }.join(" ")
       relative = Pathname(change.path).relative_path_from(App.root)
       string = "#{action.ljust 8} | #{"#{bit}".rjust 8} lines | #{relative}"
-      log :highest, string
+      log :lowest, string
 
-      if log_level? :high
+      if log_level? :low
         puts relative
         LineDiffShell.log_diff(change.old_lines, change.new_lines) if diff.values.sum.positive?
       end
@@ -60,7 +60,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
         log "skipping #{change.path}"
       else
         log "writing #{change.path}"
-        TextShell.write change.path, change.new_lines.join(""), log_level: :lower
+        TextShell.write change.path, change.new_lines.join(""), log_level: :higher
       end
     end
   end
@@ -76,7 +76,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   end
 
   def add_change change
-    log :lower, "#{change.class}"
+    log :higher, "#{change.class}"
     @last_change = change
     changes << change
     self
