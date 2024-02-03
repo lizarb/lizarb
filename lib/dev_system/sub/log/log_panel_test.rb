@@ -9,7 +9,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     on_instance :call, :handler, :handlers, :method_name_for
   end
 
-  test :call, :unit_log_level, true do
+  test :call, :unit_log_level, :higher do
     handler_env = nil
 
     assert_equality subject.handlers, {}
@@ -17,8 +17,25 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
     input_env = {
       caller: caller,
-      unit_log_level: :normal,
-      message_log_level: :normal
+      unit_log_level: 4,
+      message_log_level: 5
+    }
+    subject.call input_env
+
+    # it has not passed the filter
+    assert_equality handler_env, nil
+  end
+
+  test :call, :unit_log_level do
+    handler_env = nil
+
+    assert_equality subject.handlers, {}
+    subject.handlers[:test] = -> env { handler_env = env }
+
+    input_env = {
+      caller: caller,
+      unit_log_level: 4,
+      message_log_level: 4
     }
     subject.call input_env
 
@@ -26,7 +43,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     assert_equality handler_env.object_id, input_env.object_id
   end
 
-  test :call, :unit_log_level, false do
+  test :call, :unit_log_level, :lower do
     handler_env = nil
 
     assert_equality subject.handlers, {}
@@ -34,13 +51,13 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
     input_env = {
       caller: caller,
-      unit_log_level: :normal,
-      message_log_level: :high
+      unit_log_level: 4,
+      message_log_level: 3
     }
     subject.call input_env
 
-    # it has not passed the filter
-    assert_equality handler_env, nil
+    # it has passed the filter
+    assert_equality handler_env.object_id, input_env.object_id
   end
 
 end
