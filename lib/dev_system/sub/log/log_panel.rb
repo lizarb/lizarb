@@ -4,9 +4,10 @@ class DevSystem::LogPanel < Liza::Panel
     env[:instance] ||= env[:unit_class] != env[:unit]
     env[:method_name] ||= method_name_for env
 
-    # The unit determines the smallest log level it wants to log
-    # Therefore, a message of lower log level will not be logged
-    return if env[:message_log_level] < env[:unit_log_level]
+    # NOTE: this is an intentional redundancy with Unit#log_level?
+    # The unit determines the lowest log level it wants to log
+    # Therefore, a message of higher log level will not be logged
+    return unless env[:message_log_level] <= env[:unit_log_level]
 
     handlers.values.each do |handler|
       handler.call env

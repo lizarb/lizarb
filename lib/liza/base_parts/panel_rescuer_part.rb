@@ -83,7 +83,7 @@ class Liza::PanelRescuerPart < Liza::Part
 
       ret = nil
 
-      log :lower, "rescuer = #{rescuer.inspect}"
+      log :higher, "rescuer = #{rescuer.inspect}"
       case with
       when Array
         with.push(rescuer)
@@ -102,7 +102,7 @@ class Liza::PanelRescuerPart < Liza::Part
 
     def _rescue_from_panel_find(exception)
       rescuer = rescuers.reverse.find { exception.class.ancestors.include? _1[:exception_class] }
-      log :lower, "rescuer = #{rescuer.inspect}"
+      log :higher, "rescuer = #{rescuer.inspect}"
       return nil unless rescuer
       rescuer = rescuer.dup
       rescuer[:exception] = exception

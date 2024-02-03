@@ -25,10 +25,10 @@ class DevSystem::ShellPanel < Liza::Panel
   def format! format, string
     format = format.to_sym
     if format? format
-      log :lower, "formatter found"
+      log :higher, "formatter found"
       formatters[format][:shell].format string
     else
-      log :lower, "formatter not found"
+      log :higher, "formatter not found"
       raise FormatterError, "no formatter for #{format.inspect}"
     end
   end
@@ -36,10 +36,10 @@ class DevSystem::ShellPanel < Liza::Panel
   def format format, string, options = {}
     format = format.to_sym
     if format? format
-      log :lower, "formatter found"
+      log :higher, "formatter found"
       formatters[format][:shell].format string, options
     else
-      log :lower, "formatter not found"
+      log :higher, "formatter not found"
       string
     end
   end
@@ -76,10 +76,10 @@ class DevSystem::ShellPanel < Liza::Panel
   def convert! format, string, options = {}
     format = format.to_sym
     if convert? format
-      log :lower, "converter found"
+      log :higher, "converter found"
       converters[format][:shell].convert string
     else
-      log :lower, "converter not found"
+      log :higher, "converter not found"
       raise ConverterError, "no converter for #{format.inspect}"
     end
   end
@@ -87,10 +87,10 @@ class DevSystem::ShellPanel < Liza::Panel
   def convert format, string, options = {}
     format = format.to_sym
     if convert? format
-      log :lower, "converter found"
+      log :higher, "converter found"
       converters[format][:shell].convert string, options
     else
-      log :lower, "converter not found"
+      log :higher, "converter not found"
       string
     end
   end

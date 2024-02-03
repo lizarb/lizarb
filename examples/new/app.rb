@@ -9,7 +9,7 @@ class App
 
   folder "app"
 
-  # Choose your level of log opacity
+  # Choose your level of log transparency
 
   # log_boot :highest
   # log_boot :higher
@@ -19,7 +19,7 @@ class App
   # log_boot :lower
   # log_boot :lowest
 
-  # Choose your level of log opacity
+  # Choose your level of log transparency
 
   # log_level :highest
   # log_level :higher

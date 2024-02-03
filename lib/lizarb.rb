@@ -27,7 +27,7 @@ module Lizarb
   module_function
 
   def log s
-    print "#{$boot_time.diff}s " if defined? $log_boot_low
+    print "#{$boot_time.diff}s " if $log_boot_high
     puts s
   end
 
@@ -142,22 +142,22 @@ module Lizarb
   def call
     override_app_settings_with_env_variables
     define_log_levels
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_higher
-    log "#{self}.#{__method__}" if defined? $log_boot_low
-    log "  log_boot is set to #{App.log_boot}" if defined? $log_boot_lower
-    log "  log_level is set to #{App.log_level}" if defined? $log_boot_lower
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
+    log "#{self}.#{__method__}" if $log_boot_high
+    log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
+    log "  log_level is set to #{App.log_level}" if $log_boot_higher
     
     determine_gemfile
     lookup_and_set_mode
     lookup_and_load_settings
     require_liza_and_systems
     connect_systems
-    log "  Lizarb.#{__method__} done" if defined? $log_boot_low
+    log "  Lizarb.#{__method__} done" if $log_boot_high
   end
 
   # called from exe/lizarb
   def exit
-    exit_messages if defined? $log_boot_normal
+    exit_messages if $log_boot_normal
     super 0
   end
 
@@ -240,15 +240,15 @@ module Lizarb
 
   def define_log_levels
     level = App.log_boot
-    # is_lowest = level == 1
+    is_highest = level == 1
     App::LOG_LEVELS.each do |k, v|
-      puts "$log_boot_#{k} = #{v >= level}" if level == 1
-      eval "$log_boot_#{k} = true" if v >= level
+      puts "$log_boot_#{k} = #{v <= level}" if is_highest
+      eval "$log_boot_#{k} = true" if v <= level
     end
   end
   
   def determine_gemfile
-    log "#{self}.#{__method__}" if defined? $log_boot_low
+    log "#{self}.#{__method__}" if $log_boot_high
 
     finder = \
       proc do |file_name|
@@ -265,42 +265,42 @@ module Lizarb
     gemfile ||= finder.call "#{@root}/Gemfile"
     gemfile ||= finder.call "#{@gem_dir}/app_global.gemfile.rb"
 
-    log "  ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if defined? $log_boot_lower
+    log "  ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if $log_boot_higher
     ENV["BUNDLE_GEMFILE"] = gemfile
     require "bundler/setup"
   end
 
   def lookup_and_set_mode
-    log "  Lizarb.#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if $log_boot_high
 
     $mode = App.mode
-    log "    $mode = #{$mode.inspect}" if defined? $log_boot_lower
+    log "    $mode = #{$mode.inspect}" if $log_boot_higher
     $coding = App.coding?
-    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_lower
+    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && $log_boot_higher
   end
 
   def lookup_and_load_settings
-    log "  Lizarb.#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if $log_boot_high
     require "dotenv"
-    log "    required Dotenv" if defined? $log_boot_lower
+    log "    required Dotenv" if $log_boot_higher
 
     files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
     Dotenv.load(*files)
-    log "    Dotenv.load(*#{files.inspect})" if defined? $log_boot_lowest
+    log "    Dotenv.load(*#{files.inspect})" if $log_boot_highest
   end
 
   def require_liza_and_systems
-    log "  Lizarb.#{__method__}" if defined? $log_boot_low
+    log "  Lizarb.#{__method__}" if $log_boot_high
 
     require "zeitwerk"
-    log "    required Zeitwerk" if defined? $log_boot_lower
+    log "    required Zeitwerk" if $log_boot_higher
 
     require "liza"
-    log "    required Liza" if defined? $log_boot_lower
+    log "    required Liza" if $log_boot_higher
 
     # loaders[0] first loads Liza, then each System class
 
-    log "    Zeitwerk loaders [0] first loads Liza, then each System class" if defined? $log_boot_lower
+    log "    Zeitwerk loaders [0] first loads Liza, then each System class" if $log_boot_higher
 
     loaders << loader = Zeitwerk::Loader.new
     loader.tag = Liza.to_s
@@ -313,11 +313,11 @@ module Lizarb
 
     # loader setup
 
-    log "      Setting up" if $log_boot_lower
+    log "      Setting up" if $log_boot_higher
     loader.enable_reloading
-    log "        loader.enable_reloading" if $log_boot_lowest
+    log "        loader.enable_reloading" if $log_boot_highest
     loader.setup
-    log "        loader.setup" if $log_boot_lowest
+    log "        loader.setup" if $log_boot_highest
 
     # bundle each System gem
 
@@ -325,7 +325,7 @@ module Lizarb
 
     # load each System class
 
-    log "      App.systems is Hash containing all system classes" if defined? $log_boot_lowest
+    log "      App.systems is Hash containing all system classes" if $log_boot_highest
     App.systems.keys.each do |k|
       key = "#{k}_system"
 
@@ -338,7 +338,7 @@ module Lizarb
     App.systems.freeze
 
     # loaders[1] first loads each System, then the App
-    log "    Zeitwerk loaders [1] first loads each System, then the App" if defined? $log_boot_lower
+    log "    Zeitwerk loaders [1] first loads each System, then the App" if $log_boot_higher
     loaders << loader = Zeitwerk::Loader.new
 
     # collapse each System paths
@@ -353,14 +353,14 @@ module Lizarb
 
     app_dir = App.path
     if app_dir
-      log "      Application Directory: #{app_dir}" if defined? $log_boot_lowest
+      log "      Application Directory: #{app_dir}" if $log_boot_highest
       list = Dir["#{app_dir}/*"].to_set
     end
 
     if app_dir.nil? || list.empty?
-      log "      Application Directory is empty" if defined? $log_boot_lowest
+      log "      Application Directory is empty" if $log_boot_highest
     else
-      log "      Application Directory found #{list.count} items to collapse" if defined? $log_boot_lowest
+      log "      Application Directory found #{list.count} items to collapse" if $log_boot_highest
 
       to_collapse = []
 
@@ -379,13 +379,13 @@ end
           RUBY
         end
 
-        log "        Found box file    #{box_file}" if defined? $log_boot_lowest
+        log "        Found box file    #{box_file}" if $log_boot_highest
         to_collapse << box_file
 
         if !list.include? box_dir
-          log "        Missd controllers #{box_dir}" if defined? $log_boot_lowest
+          log "        Missd controllers #{box_dir}" if $log_boot_highest
         else
-          log "        Found controllers #{box_dir}" if defined? $log_boot_lowest
+          log "        Found controllers #{box_dir}" if $log_boot_highest
           to_collapse << box_dir
         end
 
@@ -394,12 +394,12 @@ end
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
       to_ignore = list - to_collapse
       to_ignore.each do |file|
-        log "      Ignoring   #{file}" if $log_boot_lowest
+        log "      Ignoring   #{file}" if $log_boot_highest
         loader.ignore file
       end
 
       to_collapse.each do |path|
-        log "      Collapsing #{path}" if $log_boot_lowest
+        log "      Collapsing #{path}" if $log_boot_highest
         if path.end_with? ".rb"
           loader.collapse path
         else
@@ -413,20 +413,20 @@ end
 
     # loader setup
 
-    log "      Setting up" if $log_boot_lower
+    log "      Setting up" if $log_boot_higher
     loader.enable_reloading
-    log "        loader.enable_reloading" if $log_boot_lowest
+    log "        loader.enable_reloading" if $log_boot_highest
     loader.setup
-    log "        loader.setup" if $log_boot_lowest
+    log "        loader.setup" if $log_boot_highest
 
     # App connects to systems
 
     loaders.map &:eager_load
-    log "    All Zeitwerk loaders have been eager loaded" if defined? $log_boot_lower
+    log "    All Zeitwerk loaders have been eager loaded" if $log_boot_higher
   end
 
   def connect_systems
-    log "  Lizarb.#{__method__} (#{App.systems.count})" if defined? $log_boot_low
+    log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
     App.systems.each do |system_key, system_class|
       connect_system system_key, system_class
     end
@@ -435,7 +435,7 @@ end
   # systems
 
   def require_system key
-    log "        require '#{key}'" if defined? $log_boot_lowest
+    log "        require '#{key}'" if $log_boot_highest
     require key
   rescue LoadError => e
     def e.backtrace; []; end
@@ -451,7 +451,7 @@ end
     # It injects code into other classes just like Part does. System defines them
     #
     # color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
-    # log "CONNECTING SYSTEM                     #{color_system_class}" if defined? $log_boot_low
+    # log "CONNECTING SYSTEM                     #{color_system_class}" if $log_boot_high
     
     # index = 0
     # system_class.registrar.each do |string, target_block|
@@ -466,17 +466,17 @@ end
     #   else
     #     raise "TODO: decide and implement system extension"
     #   end
-    #   log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if defined? $log_boot_low
+    #   log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if $log_boot_high
     # end
 
     # pad = 21-system_class.name.size
-    # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if defined? $log_boot_normal
+    # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if $log_boot_normal
   end
 
   # parts
 
   def connect_part unit_class, key, part_class, system
-    if defined? $log_boot_lowest
+    if $log_boot_highest
       t = Time.now
       string = "          #{unit_class}.part :#{key}"
       log string
@@ -498,7 +498,7 @@ end
       part_class::Extension.class_exec(&part_class.extension)
     end
 
-    if defined? $log_boot_lowest
+    if $log_boot_highest
       log "          ."
     end
   end
