@@ -39,7 +39,6 @@ Gem::Specification.new do |spec|
 
   # dependencies (DevSystem)
 
-  spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "pry", "~> 0.14"
   spec.add_dependency "diff-lcs", "~> 1.5"
   spec.add_dependency "tty-prompt", "~> 0.23"

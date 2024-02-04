@@ -121,26 +121,26 @@ Did you accidentally fall into an infinite loop?
       converters = DevBox.converters_to[format] || []
       converters_from = converters.map { _1[:from] }
       format_with_converters_from = [format, *converters_from]
-      log "names #{names.join(" ").green} | formats #{format_with_converters_from.join(" ").green}" if log_erb
+      log "names #{stick :light_green, names.join(" ")} | formats #{stick :light_green, format_with_converters_from.join(" ")}" if log_erb
 
       names.each do |name|
         name_string = name.to_s
-        log "      #{name_string}#{".*.erb # filtering name  "} #{renderable_names.join(" ")}".light_black if log_erb
+        log stick :onyx, "      #{name_string}#{".*.erb # filtering name  "} #{renderable_names.join(" ")}" if log_erb
         
         name_candidates = renderable_formats_for name_string
         if name_candidates.none?
 
           if allow_missing
-            log "      #{name_string}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb
+            log stick :light_yellow, "      #{name_string}.#{format}.erb not found, but allow_missing: true" if log_erb
             found = Liza::Unit.erbs_defined.first
           else
-            log "    #{name}.#{format}.erb not found, and allow_missing: false".red
+            log stick :light_red, "    #{name}.#{format}.erb not found, and allow_missing: false"
             raise RendererNotFound, "ERB #{name}.#{format}.erb not found"
           end
 
         else
 
-          log "      #{name_string}#{".*.erb # filtering format "}#{name_candidates.map(&:format).join(" ")}".light_black if log_erb
+          log stick :onyx, "      #{name_string}#{".*.erb # filtering format "}#{name_candidates.map(&:format).join(" ")}" if log_erb
 
           found = name_candidates.find do |erb|
             erb_format_sym = erb.format.to_sym
@@ -148,13 +148,13 @@ Did you accidentally fall into an infinite loop?
           end
 
           if found
-            log "      #{found.key} found".green if log_erb
+            log stick :light_green, "      #{found.key} found" if log_erb
           else
             if allow_missing
-              log "    #{name}.#{format}.erb not found, but allow_missing: true".light_yellow if log_erb
+              log stick :light_yellow, "    #{name}.#{format}.erb not found, but allow_missing: true" if log_erb
               found = Liza::Unit.erbs_defined.first
             else
-              log "    #{name}.#{format}.erb not found, and allow_missing: false".red
+              log stick :light_red, "    #{name}.#{format}.erb not found, and allow_missing: false"
               raise RendererNotFound, "ERB #{name}.#{format}.erb not found"
             end
           end

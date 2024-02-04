@@ -12,7 +12,7 @@ class DevSystem::LogPanel < Liza::Panel
     handlers.values.each do |handler|
       handler.call env
     rescue Exception => e
-      log "#{e.class} #{e.message.inspect} on #{e.backtrace[0]}".yellow
+      log stick :light_yellow, "#{e.class} #{e.message.inspect} on #{e.backtrace[0]}"
     end
   end
 

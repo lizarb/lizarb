@@ -41,7 +41,7 @@ class Liza::PanelRescuerPart < Liza::Part
       rescuer[:block] = block
 
       if with.nil? && block.nil?
-        puts "rescue_from #{e_class} with: or block: is required".red
+        puts stick :light_red, "rescue_from #{e_class} with: or block: is required"
         raise ArgumentError, "with: or block: is required", caller
       end
 
@@ -54,7 +54,7 @@ class Liza::PanelRescuerPart < Liza::Part
       Object.const_get(arg.to_s.camelcase)
     rescue NameError => e
       msg = "rescue_from parsed to #{arg.to_s.camelcase} which does not exist"
-      puts msg.red
+      puts stick :light_red, msg
       raise e, msg, caller
     end
 
@@ -64,7 +64,7 @@ class Liza::PanelRescuerPart < Liza::Part
         namespace.const_get("#{args[1].to_s.camelcase}Error")
       rescue NameError => e
         msg = "rescue_from parsed to #{args[0].to_s.camelcase}::#{args[1].to_s.camelcase}Error which does not exist"
-        puts msg.red
+        puts stick :light_red, msg
         raise e, msg, caller
       end
     end
