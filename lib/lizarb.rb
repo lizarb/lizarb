@@ -240,7 +240,7 @@ module Lizarb
 
   def define_log_levels
     level = App.log_boot
-    is_highest = level == 1
+    is_highest = level == 7
     App::LOG_LEVELS.each do |k, v|
       puts "$log_boot_#{k} = #{v <= level}" if is_highest
       eval "$log_boot_#{k} = true" if v <= level
