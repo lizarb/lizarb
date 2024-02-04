@@ -9,7 +9,6 @@ $boot_time = Time.now
 
 puts "$VERBOSE = true" if $VERBOSE
 
-require "colorize"
 require "json"
 require "pathname"
 require "fileutils"

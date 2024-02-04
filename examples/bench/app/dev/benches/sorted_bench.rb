@@ -40,8 +40,8 @@ class SortedBench < DevSystem::Bench
       tms = tms.format "%10.6u     %10.6y         %10.6t"
       s = "[#{i.next.to_s.rjust_zeroes 2}/#{marks.count.to_s.rjust_zeroes 2}]      #{label.rjust_blanks length}   #{tms}"
 
-      s = s.green if i == 0
-      s = s.red if i == marks.count-1
+      s = (stick s, :light_green).to_s if i == 0
+      s = (stick s, :light_red  ).to_s if i == marks.count-1
       log s
     end
     puts

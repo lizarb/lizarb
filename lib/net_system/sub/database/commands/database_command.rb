@@ -15,18 +15,16 @@ class NetSystem::DatabaseCommand < DevSystem::Command
     # mysql_time  = ::MysqlDb.current.now
     # pgsql_time  = ::PgsqlDb.current.now
 
-    log "Time for Ruby:    #{_red ruby_time}".bold
-    log "Time for Redis:   #{_red redis_time}".bold
-    log "Time for Mongo:   #{_red mongo_time}".bold
-    log "Time for Sqlite:  #{_red sqlite_time}".bold
-    log "Time for Mysql:   #{_red mysql_time}".bold
-    log "Time for Pgsql:   #{_red pgsql_time}".bold
-
-
+    log "Time for Ruby:    #{_red ruby_time}"
+    log "Time for Redis:   #{_red redis_time}"
+    log "Time for Mongo:   #{_red mongo_time}"
+    log "Time for Sqlite:  #{_red sqlite_time}"
+    log "Time for Mysql:   #{_red mysql_time}"
+    log "Time for Pgsql:   #{_red pgsql_time}"
   end
 
   def self._red s
-    s.to_s.light_red
+    stick :light_red, s
   end
 
 end

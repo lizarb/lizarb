@@ -4,7 +4,7 @@ class Liza::TestDslPart < Liza::Part
     def self.call class_index, class_count
       counter_class = "#{class_index.to_s.rjust 3, "0"}/#{class_count.to_s.rjust 3, "0"}"
 
-      log "+ #{counter_class} #{self} class".bold.white
+      log stick :bold, :white, "+ #{counter_class} #{self} class"
 
       array = [test_tree]
       while array.any?

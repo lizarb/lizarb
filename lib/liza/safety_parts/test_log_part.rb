@@ -48,7 +48,7 @@ class Liza::TestLogPart < Liza::Part
     end
 
     def log_test_call_rescue e
-      prefix = "error".yellow
+      prefix = stick :light_yellow, "error"
 
       kaller = e.backtrace
 
@@ -57,11 +57,11 @@ class Liza::TestLogPart < Liza::Part
 
       log "                #{prefix} #{e.class.to_s.ljust 20} #{source_location}"
 
-      puts "Exception!".red
-      puts e.class.to_s.red
-      puts e.message.red
+      puts stick :light_red, "Exception!"
+      puts stick :light_red, e.class.to_s
+      puts stick :light_red, e.message
       puts
-      puts e.backtrace.join("\n").red
+      puts stick :light_red, e.backtrace.join("\n")
     end
 
     def self.log_test_building node, test_block
@@ -99,7 +99,7 @@ class Liza::TestLogPart < Liza::Part
     end
 
     def _log_test_assertion_tag method_name
-      "#{log_test_assertion_result} #{method_name.to_s.ljust(20).bold.white}"
+      "#{log_test_assertion_result} #{stick :bold, :white, method_name.to_s.ljust(20)}"
     end
 
     def self._log_test_block test_block
@@ -113,11 +113,11 @@ class Liza::TestLogPart < Liza::Part
     def log_test_assertion_result
       case @last_result
       when :todo
-        "  todo".blue
+        (stick "  todo", :light_blue).to_s
       when :passed
-        "passed".green
+        (stick "passed", :light_green).to_s
       when :failed
-        "failed".red
+        (stick "failed", :light_red).to_s
       else
         raise "Unknown result: #{@last_result}"
       end
@@ -125,9 +125,9 @@ class Liza::TestLogPart < Liza::Part
 
     def log_test_assertion_message b, msg
       if b
-        log "                passed #{msg}".green 
+        log stick :light_green, "                passed #{msg}"
       else
-        log "                failed #{msg}".red
+        log stick :light_red, "                failed #{msg}"
       end
     end
 

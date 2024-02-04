@@ -10,7 +10,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     log "from: #{from}"
     to = "#{Dir.pwd}/#{@name}"
 
-    return log "Directory #{to.light_green} already exists." if Dir.exist? to
+    return log "Directory #{stick :light_green, to} already exists." if Dir.exist? to
 
     log "Liza Application initializing at `#{to}`"
 
@@ -131,7 +131,7 @@ DevBox.command ["shell"]
 
 require "lizarb/sfa"
 Lizarb.sfa :dev, pwd: __dir__
-puts "#{$boot_time.diff}s to boot" if defined? $log_boot_high
+puts "#{$boot_time.diff}s to boot" if $log_boot_high
 
 # YOUR CODE HERE
 

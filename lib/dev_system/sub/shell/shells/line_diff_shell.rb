@@ -13,10 +13,10 @@ class DevSystem::LineDiffShell < DevSystem::Shell
       diff.each do |change|
         # If it's a deletion (present in old but not in new)
         if change.action == "-"
-          puts "- #{change.element.chomp.red}"
+          puts "- #{stick change.element.chomp, :light_red}"
         # If it's an addition (present in new but not in old)
         elsif change.action == "+"
-          puts "+ #{change.element.chomp.green}"
+          puts "+ #{stick change.element.chomp, :light_green}"
         end
       end
     end

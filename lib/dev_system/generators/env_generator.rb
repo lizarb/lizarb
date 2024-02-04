@@ -10,7 +10,7 @@ class DevSystem::EnvGenerator < DevSystem::Generator
     log "args = #{args.inspect}"
 
     if app_env_exists?
-      log "env files already exist".red.blink
+      log stick :light_red, "env files already exist"
     else
       write_env_files
     end
@@ -30,21 +30,21 @@ class DevSystem::EnvGenerator < DevSystem::Generator
     @env_name = nil
     content = render :env, format: :env
     puts "-" * 80
-    puts content.green
+    puts stick :light_green, content
     TextShell.write "app.env",      content
 
     # app.code
     @env_name = :code
     content = render :env, format: :env
     puts "-" * 80
-    puts content.green
+    puts stick :light_green, content
     TextShell.write "app.code.env", content
 
     # app.demo
     @env_name = :demo
     content = render :env, format: :env
     puts "-" * 80
-    puts content.green
+    puts stick :light_green, content
     TextShell.write "app.demo.env", content
   end
 

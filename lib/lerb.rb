@@ -37,9 +37,9 @@ class LERB < ERB
 
     #
 
-    puts "#{erbs.size} erbs".on_red
+    puts "#{erbs.size} erbs"
     erbs.each do |h|
-      puts "key: #{h.key}".on_green
+      puts "key: #{h.key}"
     end
 
     erbs
@@ -51,18 +51,18 @@ class LERB < ERB
     is_accepting_views = false
     
     puts
-    puts "LERB filename: #{filename}".on_red
+    puts "LERB filename: #{filename}"
     
-    puts "LERB is_erb: #{is_erb}".on_red
-    puts "LERB is_ignoring_ruby: #{is_ignoring_ruby}".on_red
-    puts "LERB is_accepting_views: #{is_accepting_views}".on_red
+    puts "LERB is_erb: #{is_erb}"
+    puts "LERB is_ignoring_ruby: #{is_ignoring_ruby}"
+    puts "LERB is_accepting_views: #{is_accepting_views}"
 
     current_lineno = 0
     current_content = ""
     current_key = is_erb ? filename.split("/").last : DEFAULT_KEY
 
     if current_key
-      puts "LERB declare: #{current_key} | because not erb".green
+      puts "LERB declare: #{current_key} | because not erb"
     end
 
     File.readlines(filename).each.with_index do |line, lineno|
@@ -72,12 +72,12 @@ class LERB < ERB
       # move to next line if ignoring ruby lines
 
       if is_ignoring_ruby
-        puts "LERB ignore: #{lineno}: #{line[0..-2]}".light_black
+        puts "LERB ignore: #{lineno}: #{line[0..-2]}"
         if is_line_end
           is_ignoring_ruby = false
           is_accepting_views = true
           current_lineno = lineno + 1
-          puts "LERB declare: #{current_key} | current".green if current_key
+          puts "LERB declare: #{current_key} | current" if current_key
         end
         next
       end
@@ -87,14 +87,14 @@ class LERB < ERB
         current_key = line[7..-1].strip
         current_lineno = lineno + 1
         current_content = ""
-        puts "LERB declare: #{current_key} | #{lineno}: #{line[0..-2]}".green
+        puts "LERB declare: #{current_key} | #{lineno}: #{line[0..-2]}"
       else
         current_content += line
-        puts "LERB keeping: #{lineno}: #{line[0..-2]}".bold.white
+        puts "LERB keeping: #{lineno}: #{line[0..-2]}"
       end
 
       if is_line_end
-        puts "LERB warning: #{lineno}: #{line[0..-2]} found! No longer accepting views".light_yellow
+        puts "LERB warning: #{lineno}: #{line[0..-2]} found! No longer accepting views"
         is_accepting_views = false
       end
     end
