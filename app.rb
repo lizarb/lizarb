@@ -29,6 +29,7 @@ class App
   system :micro
   system :desk
   system :crypto
+  system :media
   system :art
   system :deep
   system :lab
