@@ -492,11 +492,6 @@ end
       unit_class.class_exec(&part_class.insertion)
     end
 
-    if part_class.extension
-      part_class.const_set :Extension, Class.new(Liza::PartExtension)
-      part_class::Extension.class_exec(&part_class.extension)
-    end
-
     if $log_boot_highest
       log "          ."
     end
