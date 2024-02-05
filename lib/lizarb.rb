@@ -365,29 +365,18 @@ module Lizarb
 
       App.systems.each do |k, klass|
         next if klass.subs.empty?
+
         box_dir  = "#{app_dir}/#{k}"
         box_file = "#{box_dir}_box.rb"
-
-        if !list.include? box_file
-          log "        Missd box file    #{box_file}! Generating it"
-
-          File.write box_file, <<-RUBY
-class #{k.to_s.camelize}Box < #{k.to_s.camelize}System::#{k.to_s.camelize}Box
-
-end
-          RUBY
-        end
+        next if !list.include? box_file
 
         log "        Found box file    #{box_file}" if $log_boot_highest
         to_collapse << box_file
 
-        if !list.include? box_dir
-          log "        Missd controllers #{box_dir}" if $log_boot_highest
-        else
+        if list.include? box_dir
           log "        Found controllers #{box_dir}" if $log_boot_highest
           to_collapse << box_dir
         end
-
       end
 
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH

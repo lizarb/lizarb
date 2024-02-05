@@ -22,3 +22,11 @@ class Liza::Box < Liza::Unit
     system.color
   end
 end
+
+__END__
+
+# view default.rb.erb
+<% token = system.token.to_s.capitalize -%>
+class <%= token %>Box < <%= token %>System::<%= token %>Box
+
+end
