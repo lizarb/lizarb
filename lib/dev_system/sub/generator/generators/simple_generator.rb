@@ -94,6 +94,15 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     add_change file
   end
 
+  def create_file_contents name, contents
+    path = App.root.join name
+    file = TextFileShell.new path
+
+    file.new_lines = contents.split("\n").map { "#{_1}\n" }
+
+    add_change file
+  end
+
   # create_unit
   
   def create_unit unit, class_names, path, template = :unit
