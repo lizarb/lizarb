@@ -4,7 +4,7 @@ class Liza::PartTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :extension, :insertion
+    on_self :insertion
     on_instance
   end
 
