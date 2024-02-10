@@ -6,12 +6,12 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
 
   test :writable_systems do
     a = subject_class.writable_systems.keys
-    b = [:dev, :happy, :net, :web, :work, :micro, :desk, :crypto, :art, :deep, :lab]
+    b = [:dev, :happy, :net, :web, :work, :micro, :desk, :crypto, :media, :art, :deep, :lab]
     assert_equality a, b
   end
 
   test :subject do
-    system_keys = ["dev", "happy", "net", "web", "work", "micro", "desk", "crypto", "art", "deep", "lab"]
+    system_keys = ["dev", "happy", "net", "web", "work", "micro", "desk", "crypto", "media", "art", "deep", "lab"]
     assert_equality subject.consts.keys,           [:top_level, :liza, :systems, :app]
     assert_equality subject.consts[:top_level],    [Lizarb, App, Liza]
     assert_equality subject.consts[:liza].keys,    ["unit", "base", "safety", "meta", "ruby_tests"]
