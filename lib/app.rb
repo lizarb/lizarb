@@ -9,7 +9,7 @@ class App
 
   # called from exe/lizarb
   def self.call argv
-    log "#{$boot_time.diff}s to boot" if defined? $log_boot_high
+    log "#{$boot_time.diff}s to boot" if defined? $log_boot_low
     puts
     args = argv.dup
     argv.clear
