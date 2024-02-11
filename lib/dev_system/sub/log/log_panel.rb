@@ -26,6 +26,14 @@ class DevSystem::LogPanel < Liza::Panel
     @handlers ||= {}
   end
 
+  def sidebar_size sidebar_size = nil
+    if sidebar_size
+      @sidebar_size = sidebar_size
+    else
+      @sidebar_size
+    end
+  end
+
   # NOTE: improve logs performance and readability
 
   def method_name_for env

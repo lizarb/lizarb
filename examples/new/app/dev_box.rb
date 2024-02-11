@@ -41,6 +41,8 @@ class DevBox < DevSystem::DevBox
   # Configure your log panel
 
   configure :log do
+    sidebar_size 40
+
     # handlers
     handler :output
 

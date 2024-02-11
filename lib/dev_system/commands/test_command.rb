@@ -1,6 +1,8 @@
 class DevSystem::TestCommand < DevSystem::Command
 
   def self.call args
+    DevBox[:log].sidebar_size 60
+
     log "args = #{args.inspect}"
 
     now = Time.now

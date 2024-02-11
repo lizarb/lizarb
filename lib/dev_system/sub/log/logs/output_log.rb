@@ -1,7 +1,5 @@
 class DevSystem::OutputLog < DevSystem::Log
 
-  SIDEBAR_LENGTH = 60
-  
   def self.call(env)
     env[:sidebar] ||= sidebar_for env
 
@@ -64,7 +62,7 @@ class DevSystem::OutputLog < DevSystem::Log
     sidebar << env[:method_name]
     size += env[:method_name].size
 
-    size = SIDEBAR_LENGTH - size - 1
+    size = DevBox[:log].sidebar_size - size - 1
     size = 0 if size < 0
     sidebar << " " * size
 

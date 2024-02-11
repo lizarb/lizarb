@@ -6,7 +6,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance :call, :handler, :handlers, :method_name_for
+    on_instance :call, :handler, :handlers, :method_name_for, :sidebar_size
   end
 
   test :call, :unit_log_level, :higher do

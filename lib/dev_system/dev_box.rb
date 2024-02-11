@@ -40,6 +40,7 @@ class DevSystem::DevBox < Liza::Box
 
   configure :log do
     # 
+    sidebar_size 40
   end
 
   # Preconfigure your shell panel
