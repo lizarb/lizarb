@@ -51,9 +51,11 @@ class App
 
   # gemfile
 
-  def self.gemfile gemfile = :unset
+  def self.gemfile(gemfile = :unset, &block)
     raise "locked" if @locked
-    if gemfile != :unset
+    if block_given?
+      @gemfile = block
+    elsif gemfile != :unset
       @gemfile = gemfile
     else
       @gemfile

@@ -5,6 +5,10 @@
 
 class App
 
+  # Choose your Gemfile
+
+  gemfile "Gemfile"
+
   # Choose your Application Directory
 
   folder "app"

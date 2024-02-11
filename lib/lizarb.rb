@@ -146,7 +146,6 @@ module Lizarb
     log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
     log "  log_level is set to #{App.log_level}" if $log_boot_higher
     
-    determine_gemfile
     require_bundler
     require_default_gems
     lookup_and_set_mode
@@ -200,6 +199,7 @@ module Lizarb
         if File.file? app_config_path
           # app.rb
           require lib_name
+          @config_folder = path
           @config_path = app_config_path
           return
         end
@@ -250,31 +250,21 @@ module Lizarb
     end
   end
   
-  def determine_gemfile
-    log "  #{self}.#{__method__}" if $log_boot_high
-
-    finder = \
-      proc do |file_name|
-        log "#{self}.#{__method__} #{file_name}" if $VERBOSE
-        if File.file? file_name
-          file_name
-        else
-          false
-        end
-      end
-
-    gemfile ||= finder.call "#{@root}/#{$APP}.gemfile.rb"
-    gemfile ||= finder.call "#{@gem_dir}/#{$APP}.gemfile.rb" unless @is_gem_dir
-    gemfile ||= finder.call "#{@root}/Gemfile"
-    gemfile ||= finder.call "#{@gem_dir}/app_global.gemfile.rb"
-
-    log "    ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if $log_boot_higher
-    ENV["BUNDLE_GEMFILE"] = gemfile
-  end
-
   def require_bundler
     log "  Lizarb.#{__method__}" if $log_boot_high
-    require "bundler/setup"
+
+    gf = App.gemfile
+    if gf.is_a? String
+      string = "#{ @config_folder }/#{ gf }"
+      ENV["BUNDLE_GEMFILE"] = string
+      log "    ENV['BUNDLE_GEMFILE'] = #{ string.inspect }" if $log_boot_higher
+      require "bundler/setup"
+    else
+      string = App.gemfile.source_location
+      log "    bundler inline with #{ string }" if $log_boot_higher
+      require "bundler/inline"
+      gemfile(false, &App.gemfile)
+    end
   rescue Gem::LoadError => e
     puts
     puts "    Bundler could not load #{e.name} version #{e.requirement}"
