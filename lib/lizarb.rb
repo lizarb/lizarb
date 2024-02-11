@@ -9,11 +9,6 @@ $boot_time = Time.now
 
 puts "$VERBOSE = true" if $VERBOSE
 
-require "json"
-require "pathname"
-require "fileutils"
-require "lerb"
-
 require_relative "lizarb/version"
 
 module Lizarb
@@ -66,7 +61,7 @@ module Lizarb
   #
 
   def setup_sfa pwd, sfa:
-    @root = Pathname pwd
+    @root = pwd.to_s
     @setup_type = :sfa
     # NOTE: arg sfa is not being stored anywhere
     $APP = "app_global"
@@ -74,7 +69,7 @@ module Lizarb
   end
 
   def setup_project pwd, project:
-    @root = Pathname pwd
+    @root = pwd.to_s
     @setup_type = :project
     # NOTE: arg project is not being stored anywhere
     $APP = ENV["APP"] || "app"
@@ -82,7 +77,7 @@ module Lizarb
   end
 
   def setup_script pwd, script: , script_app:
-    @root = Pathname pwd
+    @root = pwd.to_s
     @setup_type = :script
     # NOTE: arg script is not being stored anywhere
     $APP = script_app
@@ -121,7 +116,7 @@ module Lizarb
 
     begin
       @spec    = Gem::Specification.find_by_name("lizarb")
-      @gem_dir = Pathname @spec.gem_dir
+      @gem_dir = @spec.gem_dir
     rescue Gem::MissingSpecError
       @gem_dir = root
     end
@@ -152,6 +147,8 @@ module Lizarb
     log "  log_level is set to #{App.log_level}" if $log_boot_higher
     
     determine_gemfile
+    require_bundler
+    require_default_gems
     lookup_and_set_mode
     lookup_and_load_settings
     require_liza_and_systems
@@ -192,6 +189,7 @@ module Lizarb
   end
 
   def setup_and_configure_app
+    # lib/app.rb
     require "app"
 
     finder = \
@@ -200,8 +198,9 @@ module Lizarb
         app_config_path = "#{lib_name}.rb"
         puts "        #{app_config_path} exists?" if $VERBOSE
         if File.file? app_config_path
+          # app.rb
           require lib_name
-          @config_path = Pathname app_config_path
+          @config_path = app_config_path
           return
         end
       end
@@ -271,7 +270,49 @@ module Lizarb
 
     log "    ENV['BUNDLE_GEMFILE'] = #{gemfile.inspect}" if $log_boot_higher
     ENV["BUNDLE_GEMFILE"] = gemfile
+  end
+
+  def require_bundler
+    log "  Lizarb.#{__method__}" if $log_boot_high
     require "bundler/setup"
+  rescue Gem::LoadError => e
+    puts
+    puts "    Bundler could not load #{e.name} version #{e.requirement}"
+    puts
+    puts "      Please run the following commands to fix the error:"
+    3.times { puts }
+    puts "        gem uninstall #{e.name} -aI"
+    puts "        BUNDLE_GEMFILE=#{ENV["BUNDLE_GEMFILE"]} bundle install"
+    3.times { puts }
+    puts "           Error Details:"
+    raise
+  end
+
+  def require_default_gems
+    log "  Lizarb.#{__method__}" if $log_boot_high
+    
+    log "    requiring default gems" if $log_boot_higher
+    log "      require 'lerb'" if $log_boot_highest
+    require "lerb"
+    
+    log "      require 'pathname'" if $log_boot_highest
+    require "pathname"
+    
+    log "      require 'fileutils'" if $log_boot_highest
+    require "fileutils"
+    
+    log "      require 'json'" if $log_boot_highest
+    require "json"
+
+    log "    fixing instance variables" if $log_boot_higher
+    @root = Pathname(@root)
+    @gem_dir = Pathname(@gem_dir)
+    @config_path = Pathname(@config_path)
+
+    App.instance_eval do
+      @relative_path = Pathname(@relative_path)
+      @path = Pathname(@path)
+    end
   end
 
   def lookup_and_set_mode

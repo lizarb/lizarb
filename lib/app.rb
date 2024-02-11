@@ -34,8 +34,8 @@ class App
     raise "locked" if @locked
     if folder
       @folder = folder
-      @relative_path = Pathname(folder)
-      @path = Pathname("#{Lizarb.app_dir}/#{folder}")
+      @relative_path = folder
+      @path = "#{Lizarb.app_dir}/#{folder}"
     else
       @folder
     end
