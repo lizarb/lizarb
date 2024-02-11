@@ -34,13 +34,13 @@ Gem::Specification.new do |spec|
 
   # dependencies (Lizarb)
 
-  spec.add_dependency "zeitwerk", "~> 2.6"
+  spec.add_dependency "zeitwerk", "2.6.13"
 
   # dependencies (DevSystem)
 
-  spec.add_dependency "pry", "~> 0.14"
-  spec.add_dependency "diff-lcs", "~> 1.5"
-  spec.add_dependency "tty-prompt", "~> 0.23"
+  spec.add_dependency "pry", "0.14.2"
+  spec.add_dependency "diff-lcs", "1.5.1"
+  spec.add_dependency "tty-prompt", "0.23.1"
 
   # development dependencies
 
