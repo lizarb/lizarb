@@ -58,6 +58,11 @@ module Lizarb
     attr_reader :is_gem_dir
   end
 
+  # ["/path/to/lizarb.rb", 1]
+  def source_location
+    [__FILE__, 1]
+  end
+
   #
 
   def setup_sfa pwd, sfa:
