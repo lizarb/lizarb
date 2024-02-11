@@ -16,10 +16,10 @@ end
 
 task :custom_gemfiles do
   puts "... Bundling app_global.gemfile.rb"
-  system "VERBOSE=1 BUNDLE_GEMFILE=app_global.gemfile.rb bundle update"
+  system "VERBOSE=1 BUNDLE_GEMFILE=app_global.gemfile.rb bundle install"
 
   puts "... Bundling Gemfile"
-  system "VERBOSE=1 BUNDLE_GEMFILE=Gemfile bundle"
+  system "VERBOSE=1 BUNDLE_GEMFILE=Gemfile bundle install"
 
   puts "... Installing lizarb"
 end
