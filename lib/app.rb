@@ -10,11 +10,14 @@ class App
   # called from exe/lizarb
   def self.call argv
     log "#{$boot_time.diff}s to boot" if defined? $log_boot_low
-    puts
+
+    should_log = log_level >= 4
+    puts if should_log
+    log "#{self}.#{__method__}(#{argv.inspect})" if should_log
     args = argv.dup
     argv.clear
     Liza[:DevBox].command args
-    puts
+    puts if should_log
   end
 
   def self.root
