@@ -322,6 +322,8 @@ module Lizarb
     files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
     Dotenv.load(*files)
     log "    Dotenv.load(*#{files.inspect})" if $log_boot_highest
+  rescue LoadError
+    log "    did not require Dotenv" if $log_boot_higher
   end
 
   def require_liza_and_systems

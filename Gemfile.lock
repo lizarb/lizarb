@@ -3,7 +3,6 @@ PATH
   specs:
     lizarb (1.0.5)
       diff-lcs (~> 1.5)
-      dotenv (~> 2.8)
       pry (~> 0.14)
       tty-prompt (~> 0.23)
       zeitwerk (~> 2.6)
@@ -199,6 +198,7 @@ DEPENDENCIES
   agoo (~> 2.15)
   coffee-script (~> 2.4)
   commonmarker (~> 0.23)
+  dotenv (~> 2.8)
   falcon (~> 0.42)
   glimmer-dsl-libui (~> 0.11)
   haml (~> 6.1)

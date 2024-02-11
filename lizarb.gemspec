@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
 
   # dependencies (Lizarb)
 
-  spec.add_dependency "dotenv", "~> 2.8"
   spec.add_dependency "zeitwerk", "~> 2.6"
 
   # dependencies (DevSystem)
