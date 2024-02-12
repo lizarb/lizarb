@@ -141,7 +141,7 @@ module Lizarb
   def call
     override_app_settings_with_env_variables
     define_log_levels
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
+    log "LizaRB v#{Lizarb.version}                                                 https://lizarb.org" if $log_boot_lower
     log "#{self}.#{__method__}" if $log_boot_high
     log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
     log "  log_level is set to #{App.log_level}" if $log_boot_higher
@@ -162,18 +162,21 @@ module Lizarb
   end
 
   def exit_messages
+    authors = ["Thiago Pinto", "Michal Papis"]
+    authors = authors.map { Liza::Unit.stick _1, :green }.join(", ")
+    puts "LizaRB by #{ authors }"
+
     info = {
       ruby: RUBY_VERSION,
-      bundler: Bundler::VERSION,
-      zeitwerk: Zeitwerk::VERSION,
       lizarb: VERSION,
       app: $APP,
       mode: App.mode,
       log_boot: App.log_boot,
       log_level: App.get(:log_level),
     }
-    github = "https://github.com/lizarb/lizarb"
     puts info.to_s
+    
+    github = spec.metadata["homepage_uri"]
     puts "Report bugs at #{github}/issues"
     puts "Fork us on Github at #{github}/fork"
   end
