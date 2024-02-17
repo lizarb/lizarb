@@ -2,9 +2,12 @@ class WebSystem::RequestPanel < Liza::Panel
 
   def call env, allow_raise: false
     t = Time.now
+    log "#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}"
+
     request_klass = find env
     ret = request_klass.call env
     _format env, ret
+    
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     ret
   rescue => e
@@ -57,10 +60,7 @@ class WebSystem::RequestPanel < Liza::Panel
   end
 
   def _prepare env
-    log "#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}"
-
     path = env["PATH_INFO"]
-
     path, _sep, format = path.lpartition "."
     format = "html" if format.empty?
 
