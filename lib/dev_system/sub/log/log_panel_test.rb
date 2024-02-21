@@ -6,7 +6,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance :call, :handler, :handlers, :method_name_for, :sidebar_size
+    on_instance :call, :handler, :handler_keys, :handlers, :method_name_for, :sidebar_size
   end
 
   test :call, :unit_log_level, :higher do
@@ -58,6 +58,22 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
     # it has passed the filter
     assert_equality handler_env.object_id, input_env.object_id
+  end
+
+  test :handler do
+    todo "write this"
+  end
+
+  test :handlers do
+    todo "write this"
+  end
+
+  test :method_name_for do
+    todo "write this"
+  end
+
+  test :sidebar_size do
+    todo "write this"
   end
 
 end

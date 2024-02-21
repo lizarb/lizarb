@@ -17,13 +17,17 @@ class DevSystem::LogPanel < Liza::Panel
   end
 
   def handler *keys
-    Array(keys).each do |k|
-      handlers[k] ||= Liza.const("#{k}_log")
-    end
+    handler_keys.concat keys
+  end
+
+  def handler_keys
+    @handler_keys ||= []
   end
 
   def handlers
-    @handlers ||= {}
+    @handlers ||= handler_keys.map do |k|
+      [k, Liza.const("#{k}_log")]
+    end.to_h
   end
 
   def sidebar_size sidebar_size = nil
