@@ -19,12 +19,12 @@ class WebSystem::RackPanel < Liza::Panel
 
   def server name = nil
     if name
-      @server = Liza.const(:"#{name}_server_rack")
+      @server_key = name
       set :server, name
-    elsif @server.nil?
+    elsif @server_key.nil?
       raise NotSet, "Please set your rack server on your web_box.rb file", caller 
     else
-      @server
+      @server ||= Liza.const(:"#{@server_key}_server_rack")
     end
   end
 
