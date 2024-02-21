@@ -28,12 +28,22 @@ class WebSystem::RequestPanel < Liza::Panel
   #
 
   def router(name, &block)
-    router = routers[name] ||= Liza.const "#{name}_router_request"
-    router.instance_eval(&block) if block_given?
+    _routers[name] ||= []
+    _routers[name].push block if block_given?
   end
 
   def routers
-    @routers ||= {}
+    @routers ||= _routers.map do |name, blocks|
+      router = Liza.const "#{name}_router_request"
+      blocks.each do |block|
+        router.instance_eval(&block)
+      end
+      [name, router]
+    end.to_h
+  end
+
+  def _routers
+    @_routers ||= {}
   end
 
   #

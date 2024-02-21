@@ -1,5 +1,18 @@
 class WebSystem::RequestPanelTest < Liza::PanelTest
 
+  test :subject_class do
+    assert_equality subject_class, WebSystem::RequestPanel
+    refute_equality subject, WebBox[:request]
+  end
+
+  test_methods_defined do
+    on_self
+    on_instance \
+      :call, :call!,
+      :find,
+      :router, :routers
+  end
+
   #
 
   test :call! do
@@ -56,6 +69,14 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     assert_equality subject.routers.keys, [:simple]
     request_class = subject.find env
     assert_equality request_class, RootRequest
+  end
+
+  test :router do
+    todo "write this"
+  end
+
+  test :routers do
+    todo "write this"
   end
 
 end
