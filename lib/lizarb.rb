@@ -293,6 +293,10 @@ module Lizarb
     
     log "      require 'json'" if $log_boot_highest
     require "json"
+    
+    log "      require 'time'" if $log_boot_highest
+    # this adds method Time.parse
+    require "time"
 
     log "    fixing instance variables" if $log_boot_higher
     @root = Pathname(@root)
