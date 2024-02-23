@@ -8,21 +8,11 @@ class NetSystem::Record < Liza::Controller
     raise "please rename #{sub.name} to #{sub.name}Record"
   end
 
-  def self.db database_id = nil
-    if database_id.nil?
-      db = get :db
-      if db
-        NetBox[:database].get(db)
-      else
-        raise "please set a db to record #{self}"
-      end
+  def self.db db = nil
+    if db
+      set :db, Liza.const("#{db}_db")
     else
-      valid = NetBox[:database].settings.keys
-      if valid.include? database_id
-        set :db, database_id
-      else
-        raise "invalid db `#{database_id}`, valid options are #{valid}"
-      end
+      (get :db) || raise("please set a db to record #{self}")
     end
   end
 

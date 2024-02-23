@@ -1,7 +1,11 @@
 class NetSystem::RecordTest < Liza::ControllerTest
 
   test :subject_class do
-    assert subject_class == NetSystem::Record
+    assert_equality subject_class, NetSystem::Record
   end
+
+  # test :db do
+  #   todo "write this"
+  # end
 
 end
