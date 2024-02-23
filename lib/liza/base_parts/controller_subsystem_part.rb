@@ -11,16 +11,18 @@ class Liza::ControllerSubsystemPart < Liza::Part
       get(:subsystem) == self
     end
 
-    def self.subsystem! box_klass, panel
+    def self.subsystem! box_klass, token
       # FIRST, subsystem settings
+      panel = box_klass[token]
       set :subsystem, self
       set :box, box_klass
       set :panel, panel
 
       # LAST, panel settings
       panel.settings.each do |k, v|
+        next if settings.key? k
         set k, v
-      end  
+      end
     end
 
     # box and panel

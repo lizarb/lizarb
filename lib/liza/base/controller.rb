@@ -4,9 +4,7 @@ class Liza::Controller < Liza::Unit
 
   def self.on_connected
     token = self.last_namespace.snakecase.to_sym
-    panel = system.const("#{token}_panel").new name
-
-    subsystem! system.box, panel
+    subsystem! system.box, token
     division!
   end
 

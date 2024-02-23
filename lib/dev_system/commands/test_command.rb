@@ -1,6 +1,7 @@
 class DevSystem::TestCommand < DevSystem::Command
 
   def self.call args
+    Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
 
     log "args = #{args.inspect}"

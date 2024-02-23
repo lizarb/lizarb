@@ -451,8 +451,8 @@ module Lizarb
 
     # App connects to systems
 
-    loaders.map &:eager_load
-    log "    All Zeitwerk loaders have been eager loaded" if $log_boot_higher
+    loaders[0].eager_load
+    log "    Zeitwerk has eager-loaded Liza Core" if $log_boot_higher
   end
 
   def connect_systems
@@ -544,6 +544,10 @@ module Lizarb
     end
 
     true
+  end
+
+  def eager_load!
+    loaders[1].eager_load
   end
 
   # thread management
