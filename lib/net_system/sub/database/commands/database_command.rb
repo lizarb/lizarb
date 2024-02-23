@@ -24,7 +24,7 @@ class NetSystem::DatabaseCommand < DevSystem::Command
   end
 
   def self._red s
-    stick :light_red, s
+    stick NetSystem.color, s.to_s
   end
 
 end
