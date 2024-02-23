@@ -26,12 +26,6 @@ class NetBox < NetSystem::NetBox
   # Configure your database panel
 
   configure :database do
-    define :redis, RedisDb
-    define :mongo, MongoDb
-    define :sql, SqliteDb
-    define :sqlite, SqliteDb
-    define :mysql, MysqlDb
-    define :pgsql, PgsqlDb
 
   end
 

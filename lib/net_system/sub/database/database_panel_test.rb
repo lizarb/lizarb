@@ -1,7 +1,8 @@
 class NetSystem::DatabasePanelTest < Liza::PanelTest
 
   test :subject_class do
-    assert subject_class == NetSystem::DatabasePanel
+    assert_equality subject_class, NetSystem::DatabasePanel
+    refute_equality subject, NetBox[:database]
   end
 
   # test :call do
