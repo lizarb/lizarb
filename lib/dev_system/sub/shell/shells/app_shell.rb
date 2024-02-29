@@ -17,6 +17,7 @@ class DevSystem::AppShell < DevSystem::Shell
   attr_reader :consts
 
   def initialize
+    Lizarb.eager_load!
     liza_classes = self.class.liza_classes
     liza_categories = self.class.liza_categories
     h = @consts = {}
