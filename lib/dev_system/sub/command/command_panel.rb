@@ -1,8 +1,16 @@
 class DevSystem::CommandPanel < Liza::Panel
-  class Error < StandardError; end
-  class ParseError < Error; end
-  class NotFoundError < Error; end
-  class AlreadySet < Error; end
+  
+  define_error(:parse) do |args|
+    "could not parse #{args[0].inspect}"
+  end
+
+  define_error(:not_found) do |args|
+    "command not found: #{args[0].inspect}"
+  end
+
+  define_error(:already_set) do |args|
+    "input already set to #{@input.inspect}, but trying to set to #{args[0].inspect}"
+  end
 
   def call args
     log :higher, "args = #{args.inspect}"
@@ -15,7 +23,7 @@ class DevSystem::CommandPanel < Liza::Panel
     inform env
   # rescue Exception => e
   rescue Error => e
-    rescue_from_panel(e, with: env)
+    rescue_from_panel(e, env)
   end
 
   #
@@ -25,7 +33,7 @@ class DevSystem::CommandPanel < Liza::Panel
   # Hash command_name class_method instance_method method
   def parse string
     md = string.to_s.match PARSE_REGEX
-    raise ParseError if md.nil?
+    raise_error :parse, string if md.nil?
 
     env = md.named_captures.map { [_1.to_sym, _2] }.to_h
     env[:command_arg] = string
@@ -47,7 +55,7 @@ class DevSystem::CommandPanel < Liza::Panel
     raise "env[:command_name] is empty #{env}" if env[:command_name].empty?
     env[:command_class] = Liza.const "#{env[:command_name]}_command"
   rescue Liza::ConstNotFound
-    raise NotFoundError, "command not found: #{env[:command_name].inspect}"
+    raise_error :not_found, env[:command_name]
   end
 
   def _find string
@@ -55,7 +63,7 @@ class DevSystem::CommandPanel < Liza::Panel
     log :higher, k
     k
   rescue Liza::ConstNotFound
-    raise NotFoundError, "command not found: #{string.inspect}"
+    raise_error :not_found, string
   end
 
   #
@@ -126,7 +134,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def input name = nil
     return (@input || InputCommand) if name.nil?
-    raise AlreadySet, "input already set to #{@input.inspect}, but trying to set to #{name.inspect}", caller if @input
+    raise_error :already_set, name
     @input = _find "#{name}_input"
   end
 

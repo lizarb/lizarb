@@ -8,17 +8,19 @@ class Liza::PanelTest < Liza::UnitTest
   end
 
   test_methods_defined do
-    on_self :box,
-    :color,
-    :controller,
-    :puts,
-    :subsystem,
-    :token
+    on_self \
+      :box,
+      :color,
+      :controller,
+      :define_error, :errors,
+      :puts,
+      :subsystem,
+      :token
     on_instance \
       :box,
       :controller, :division,
       :key, :push,
-      :rescue_from, :rescue_from_panel, :rescuers,
+      :raise_error, :rescue_from, :rescue_from_panel, :rescuers,
       :short, :started,
       :subsystem
   end
@@ -51,13 +53,17 @@ class Liza::PanelTest < Liza::UnitTest
 
   #
 
+  test :define_error do
+    todo "test this"
+  end
+
+  test :raise_error do
+    todo "test this"
+  end
+
   test :rescue_from, :validations do
     assert_raises_2 ArgumentError do
       subject.rescue_from(Liza)
-    end
-    
-    assert_raises_2 ArgumentError do
-      subject.rescue_from(Liza::Error)
     end
     
     refute_raises_2 ArgumentError do
@@ -65,40 +71,44 @@ class Liza::PanelTest < Liza::UnitTest
     end
     
     refute_raises_2 ArgumentError do
-      subject.rescue_from(Liza::Error, with: Controller)
+      subject.rescue_from(Liza::Error)
     end
 
     assert_raises_2 ArgumentError do
-      subject.rescue_from(Liza::Error, with: Controller) {  }
+      subject.rescue_from(Liza::Error, Controller) {  }
     end
   end
 
   test :rescue_from, :rescuers, :rescue_from_panel do
+    subject = CommandPanel.new(:command)
     assert_equality subject.rescuers, []
     
-    #
+    # 1 arg, block
 
-    subject.rescue_from(:command_panel, :parse) {  }
+    subject.rescue_from(:parse) {  }
     actual = subject.rescuers.last
     
-    #
-
-    assert_equality actual.class, Liza::PanelRescuerPart::Rescuer
+    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
     assert_equality actual[:exception_class], CommandPanel::ParseError
-    assert_equality actual[:with], nil
-    assert_equality actual[:block].class, Proc
+    assert_equality actual[:callable].class, Proc
 
-    #
+    # 2 args, no block
 
-    subject.rescue_from(:command_panel, :parse, with: NotFoundCommand)
+    subject.rescue_from(:parse, :not_found)
     actual = subject.rescuers.last
     
-    #
-
-    assert_equality actual.class, Liza::PanelRescuerPart::Rescuer
+    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
     assert_equality actual[:exception_class], CommandPanel::ParseError
-    assert_equality actual[:with], DevSystem::NotFoundCommand
-    assert_equality actual[:block], nil
+    assert_equality actual[:callable], :not_found_command
+
+    # 1 arg, no block
+
+    subject.rescue_from(:not_found)
+    actual = subject.rescuers.last
+    
+    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
+    assert_equality actual[:exception_class], CommandPanel::NotFoundError
+    assert_equality actual[:callable], :not_found_command
   end
 
   test :rescue_from, :rescuers, :_rescue_from_panel_find do
@@ -111,7 +121,7 @@ class Liza::PanelTest < Liza::UnitTest
 
     actual = subject._rescue_from_panel_find CommandPanel::ParseError.new
 
-    assert_equality actual.class, Liza::PanelRescuerPart::Rescuer
+    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
     refute_equality actual, original_rescuer
 
     assert_equality original_rescuer[:exception], nil
@@ -122,28 +132,11 @@ class Liza::PanelTest < Liza::UnitTest
     todo "test this"
   end
 
-  test :_rescue_from_parse_symbol do
-    actual = subject._rescue_from_parse_symbol(:error)
-    assert_equality Liza::Error, actual
-
+  test :_rescue_from_parse_error do
     assert_raises_2 NameError do
-      subject._rescue_from_parse_symbol(:errorx)
+      subject._rescue_from_parse_error(:x)
     end
   end
-
-  test :_rescue_from_parse_symbols do
-    actual = subject._rescue_from_parse_symbols([:command_panel, :parse])
-    assert_equality CommandPanel::ParseError, actual
-
-    actual = subject._rescue_from_parse_symbols([:command_panel, :not_found])
-    assert_equality CommandPanel::NotFoundError, actual
-
-    assert_raises_2 NameError do
-      subject._rescue_from_parse_symbols([:command_panel, :not_foxund])
-    end
-  end
-
-  #
 
   #
 

@@ -1,5 +1,8 @@
 class WebSystem::RackPanel < Liza::Panel
-  class NotSet < Error; end
+
+  define_error(:not_set) do |args|
+    "Please set your rack server on your web_box.rb file"
+  end
 
   def call env
     puts
@@ -22,7 +25,7 @@ class WebSystem::RackPanel < Liza::Panel
       @server_key = name
       set :server, name
     elsif @server_key.nil?
-      raise NotSet, "Please set your rack server on your web_box.rb file", caller 
+      raise_error :not_set
     else
       @server ||= Liza.const(:"#{@server_key}_server_rack")
     end

@@ -1,6 +1,8 @@
 class DevSystem::GeneratorPanel < Liza::Panel
-  class Error < StandardError; end
-  class NotFoundError < Error; end
+  
+  define_error(:not_found) do |args|
+    "generator not found: #{args[0].inspect}"
+  end
 
   #
 
@@ -11,8 +13,8 @@ class DevSystem::GeneratorPanel < Liza::Panel
     forward env
     inform env
     save env
-  rescue Exception => e
-    rescue_from_panel(e, with: env)
+  rescue Exception => exception
+    rescue_from_panel(exception, env)
   end
 
   #
@@ -22,7 +24,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
       puts
       log "env.count is #{env.count}"
     end
-    raise NotFoundError, "generator not found" if env[:args].none?
+    raise_error :not_found, "" if env[:args].none?
 
     generator_name, generator_coil = env[:args].first.split(":").map(&:to_sym)
 
@@ -45,7 +47,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
       log :higher, k
       env[:generator_class] = k
     rescue Liza::ConstNotFound
-      raise NotFoundError, "generator #{env[:generator_name].inspect} not found"
+      raise_error :not_found, env[:generator_name]
     end
   end
 

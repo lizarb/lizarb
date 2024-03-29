@@ -2,7 +2,7 @@ class Liza::Panel < Liza::Unit
 
   #
 
-  part :panel_rescuer
+  part :panel_errors
 
   #
 

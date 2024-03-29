@@ -1,24 +1,45 @@
-class Liza::PanelRescuerPart < Liza::Part
+class Liza::PanelErrorsPart < Liza::Part
   insertion do
 
     #
 
-    def rescue_from(*args, with: nil, &block)
-      rescuer = Rescuer.new
+    def self.errors
+      @errors ||= {}
+    end
 
-      raise ArgumentError, "either with: or block is required, but not both" if with && block
+    def self.define_error(error_key, &block)
+      self.const_set :Error, Class.new(StandardError) unless defined? Error
 
+      error_class = Error
+      error_class = Class.new error_class
+      error_class = self.const_set "#{error_key.to_s.camelcase}Error", error_class
+      
+      errors[error_key] = [error_class, block]
+    end
+
+    def raise_error(error_key, *args)
+      error, message_block = self.class.errors[error_key]
+      raise error, message_block.call(args), caller
+    end
+
+    def rescue_from(*args, &block)
       case args.count
       when 1
 
         e_class = args[0]
-        e_class = _rescue_from_parse_symbol(e_class) if Symbol === e_class
+        e_class = _rescue_from_parse_error(e_class) if Symbol === e_class
+
+        callable = block if block_given?
+        callable ||= :"#{args[0]}_#{key}"
 
       when 2
-        
+
         e_class = args[0]
-        e_class = _rescue_from_parse_symbols(args) if Symbol === e_class
-      
+        e_class = _rescue_from_parse_error(e_class) if Symbol === e_class
+
+        callable = :"#{args[1]}_#{key}"
+        raise ArgumentError, "wrong number of arguments (2 arguments and a block is not allowed)" if block_given?
+
       else
       
         raise ArgumentError, "wrong number of arguments (given #{args.count}, expected 1..2)"
@@ -36,37 +57,20 @@ class Liza::PanelRescuerPart < Liza::Part
         raise ArgumentError, msg
       end
 
+      rescuer = Rescuer.new
       rescuer[:exception_class] = e_class
-      rescuer[:with] = with
-      rescuer[:block] = block
-
-      if with.nil? && block.nil?
-        puts stick :light_red, "rescue_from #{e_class} with: or block: is required"
-        raise ArgumentError, "with: or block: is required", caller
-      end
+      rescuer[:callable] = callable
 
       rescuers.push(rescuer)
     end
 
-    def _rescue_from_parse_symbol(arg)
-      return Liza::Error if arg == :error
-
-      Object.const_get(arg.to_s.camelcase)
+    def _rescue_from_parse_error(symbol)
+      s = "#{symbol}_error".camelcase
+      self.class.const_get(s)
     rescue NameError => e
-      msg = "rescue_from parsed to #{arg.to_s.camelcase} which does not exist"
+      msg = "rescue_from parsed to #{self.class}::#{s} which does not exist"
       puts stick :light_red, msg
       raise e, msg, caller
-    end
-
-    def _rescue_from_parse_symbols(args)
-      namespace = Liza.const(args[0])
-      begin
-        namespace.const_get("#{args[1].to_s.camelcase}Error")
-      rescue NameError => e
-        msg = "rescue_from parsed to #{args[0].to_s.camelcase}::#{args[1].to_s.camelcase}Error which does not exist"
-        puts stick :light_red, msg
-        raise e, msg, caller
-      end
     end
 
     #
@@ -77,21 +81,21 @@ class Liza::PanelRescuerPart < Liza::Part
 
     #
 
-    def rescue_from_panel(exception, with: )
+    def rescue_from_panel(exception, env)
       rescuer = _rescue_from_panel_find exception
       raise exception.class, exception.message, caller[1..-1] unless rescuer
 
       ret = nil
 
       log :higher, "rescuer = #{rescuer.inspect}"
-      case with
+      case env
       when Array
-        with.push(rescuer)
-        rescuer[:args] = with
+        env.push(rescuer)
+        rescuer[:args] = env
         ret = rescuer.call
       when Hash
-        with[:rescuer] = rescuer
-        rescuer[:env] = with
+        env[:rescuer] = rescuer
+        rescuer[:env] = env
         ret = rescuer.call
       else
         raise ArgumentError, "wrong argument type #{with.class} (expected Array or Hash)"
@@ -116,12 +120,16 @@ class Liza::PanelRescuerPart < Liza::Part
         if self[:block]
           self[:block].call self
         elsif self[:env]
-          self[:with].call self[:env]
+          callable.call self[:env]
         elsif self[:args]
-          self[:with].call self[:args]
+          callable.call self[:args]
         else
           raise "not expected"
         end
+      end
+
+      def callable
+        @callable ||= (self[:callable].is_a? Symbol) ? Liza.const(self[:callable]) : self[:callable]
       end
     end
 

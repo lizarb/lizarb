@@ -10,7 +10,7 @@ class DevSystem::DevBox < Liza::Box
   
   configure :command do
     # 
-    rescue_from CommandPanel::NotFoundError, with: :not_found
+    rescue_from :not_found
   end
 
   def self.command(...)
@@ -33,7 +33,7 @@ class DevSystem::DevBox < Liza::Box
   
   configure :generator do
     # 
-    rescue_from GeneratorPanel::NotFoundError, with: :not_found
+    rescue_from :not_found
   end
 
   # Preconfigure your log panel
