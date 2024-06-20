@@ -92,45 +92,7 @@ module Lizarb
   #
   # The setup phase cannot get configurations from App.
   def setup
-    if $VERBOSE
-      puts "        Lizarb.root       = #{root.inspect}"
-      puts "        Lizarb.setup_type = #{setup_type.inspect}"
-      # puts "        Lizarb._sfa       = #{_sfa.inspect}" if setup_type == :sfa
-      # puts "        Lizarb._project   = #{_project.inspect}" if setup_type == :project
-      # puts "        Lizarb._script    = #{_script.inspect}" if setup_type == :script
-    end
-
-    # NOTE: calling an unset instance variable returns nil
-    # NOTE: these file calls are pretty fast
-    @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
-    @is_liz_dir = File.file? "#{root}/lib/lizarb.rb"
-    @is_gem_dir = File.file? "#{root}/lizarb.gemspec" if @is_liz_dir
-
-    $APP = "app_global" unless @is_app_dir
-
-    if $VERBOSE
-      puts "               Lizarb.root does #{ @is_app_dir ? "   " : "not" } have a configuration app.rb file"
-      puts "               Lizarb.root does #{ @is_liz_dir ? "   " : "not" } have a lib/lizarb.rb file"
-      puts "               Lizarb.root does #{ @is_gem_dir ? "   " : "not" } have a lizarb.gemspec file"
-    end
-
-    begin
-      @spec    = Gem::Specification.find_by_name("lizarb")
-      @gem_dir = @spec.gem_dir
-    rescue Gem::MissingSpecError
-      @gem_dir = root
-    end
-    @app_dir = @is_app_dir ? root : @gem_dir
-    @liz_dir = @is_liz_dir ? root : @gem_dir
-
-    if $VERBOSE
-      puts "                      Lizarb.spec    = #{spec}"
-      puts "                      Lizarb.app_dir = #{@app_dir.inspect}"
-      puts "                      Lizarb.liz_dir = #{@liz_dir.inspect}"
-      puts "                      Lizarb.gem_dir = #{@gem_dir.inspect}"
-      puts
-    end
-
+    setup_and_determine_environment
     setup_and_load_ruby_extensions
     puts "Lizarb  #{__FILE__}" if $VERBOSE
     setup_and_configure_app
@@ -179,6 +141,48 @@ module Lizarb
   end
 
   # setup phase
+
+  def setup_and_determine_environment
+    if $VERBOSE
+      puts "determining environment"
+      puts "        Lizarb.root       = #{root.inspect}"
+      puts "        Lizarb.setup_type = #{setup_type.inspect}"
+      # puts "        Lizarb._sfa       = #{_sfa.inspect}" if setup_type == :sfa
+      # puts "        Lizarb._project   = #{_project.inspect}" if setup_type == :project
+      # puts "        Lizarb._script    = #{_script.inspect}" if setup_type == :script
+    end
+
+    # NOTE: calling an unset instance variable returns nil
+    # NOTE: these file calls are pretty fast
+    @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
+    @is_liz_dir = File.file? "#{root}/lib/lizarb.rb"
+    @is_gem_dir = File.file? "#{root}/lizarb.gemspec" if @is_liz_dir
+
+    $APP = "app_global" unless @is_app_dir
+
+    if $VERBOSE
+      puts "               Lizarb.root does #{ @is_app_dir ? "   " : "not" } have a configuration app.rb file"
+      puts "               Lizarb.root does #{ @is_liz_dir ? "   " : "not" } have a lib/lizarb.rb file"
+      puts "               Lizarb.root does #{ @is_gem_dir ? "   " : "not" } have a lizarb.gemspec file"
+    end
+
+    begin
+      @spec    = Gem::Specification.find_by_name("lizarb")
+      @gem_dir = @spec.gem_dir
+    rescue Gem::MissingSpecError
+      @gem_dir = root
+    end
+    @app_dir = @is_app_dir ? root : @gem_dir
+    @liz_dir = @is_liz_dir ? root : @gem_dir
+
+    if $VERBOSE
+      puts "                      Lizarb.spec    = #{spec}"
+      puts "                      Lizarb.app_dir = #{@app_dir.inspect}"
+      puts "                      Lizarb.liz_dir = #{@liz_dir.inspect}"
+      puts "                      Lizarb.gem_dir = #{@gem_dir.inspect}"
+      puts
+    end
+  end
 
   def setup_and_load_ruby_extensions
     puts "loading #{@liz_dir}/lib/lizarb/ruby/*.rb" if $VERBOSE
