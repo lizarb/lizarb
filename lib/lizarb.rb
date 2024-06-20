@@ -60,6 +60,17 @@ module Lizarb
 
   #
 
+  ### Setup Methods for Different Contexts
+  #
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
+  #
+  # Sets up the environment for SFA (Single File Application).
+  #
+  # An SFA is a Ruby script that contains the entire application code in a single file.
+  #
+  # This method is a main entry point.
+  # A method Lizarb.sfa is defined at `lib/lizarb/sfa.rb` which calls Lizarb.setup_sfa internally.
   def setup_sfa pwd, sfa:
     @root = pwd.to_s
     @setup_type = :sfa
@@ -68,6 +79,18 @@ module Lizarb
     setup
   end
 
+  ### Setup Methods for Different Contexts
+  #
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
+  #
+  # Sets up the environment for a project.
+  #
+  # A project is a directory that contains an application app.rb file.
+  #
+  # This method is a main entry point.
+  # A method Lizarb.project is defined at `lib/lizarb/project.rb` which calls Lizarb.setup_project internally.
+  #
   def setup_project pwd, project:
     @root = pwd.to_s
     @setup_type = :project
@@ -76,6 +99,18 @@ module Lizarb
     setup
   end
 
+  ### Setup Methods for Different Contexts
+  #
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
+  #
+  # Sets up the environment for a script.
+  #
+  # A script acts like an SFA, but exists inside a project.
+  #
+  # This method is a main entry point.
+  # A method Lizarb.script is defined at `lib/lizarb/script.rb` which calls Lizarb.setup_script internally.
+  #
   def setup_script pwd, script: , script_app:
     @root = pwd.to_s
     @setup_type = :script
@@ -84,25 +119,26 @@ module Lizarb
     setup
   end
 
-  # Setup sets these variables:
+  # The setup phase is determined by containing the least amount of code needed before requiring configuration class App.
   #
-  # root setup_type spec
-  # is_app_dir is_liz_dir is_gem_dir
-  #    app_dir    liz_dir    gem_dir
-  #
-  # The setup phase cannot get configurations from App.
+  # The `setup` method orchestrates the following steps:
+  # 1. Determines the environment by setting various directory and configuration variables.
+  # 2. Loads necessary Ruby extensions from the LizaRB library.
+  # 3. Configures the application by loading the main application configuration file.
+  # 4. Overwrites Application settings with environment variables.
+  # 5. Defines log levels for the application based on the boot log level setting.
   def setup
     setup_and_determine_environment
     setup_and_load_ruby_extensions
     puts "Lizarb  #{__FILE__}" if $VERBOSE
     setup_and_configure_app
     puts "App     #{@config_path}\n\n" if $VERBOSE
+    setup_and_overwrite_app_settings
+    setup_and_define_log_levels
   end
 
   # The call phase can get configurations from App, but not from any system.
   def call
-    override_app_settings_with_env_variables
-    define_log_levels
     log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
     log "#{self}.#{__method__}" if $log_boot_high
     log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
@@ -140,8 +176,12 @@ module Lizarb
     puts "Fork us on Github at #{github}/fork"
   end
 
-  # setup phase
-
+  # This method is called internally by `setup` and is not intended for direct use.
+  #
+  # - Checks for the presence of its signature files (`app.rb`, `lib/lizarb.rb`, and `lizarb.gemspec`) in the current directory.
+  # - Stores those boolean values in instance variables (`@is_app_dir`, `@is_liz_dir`, `@is_gem_dir`).
+  # - Determines key directories (`@app_dir`, `@liz_dir`, `@gem_dir`) and configuration specs (`@spec`).
+  # - Prints verbose output if `$VERBOSE` is enabled.
   def setup_and_determine_environment
     if $VERBOSE
       puts "determining environment"
@@ -184,6 +224,10 @@ module Lizarb
     end
   end
 
+  # This method is called internally by `setup` and is not intended for direct use.
+  #
+  # - Loads files from `lib/lizarb/ruby/*.rb` which reopen some of Ruby's core classes and add methods to them.
+  # - Prints verbose output if `$VERBOSE` is enabled.
   def setup_and_load_ruby_extensions
     puts "loading #{@liz_dir}/lib/lizarb/ruby/*.rb" if $VERBOSE
     Dir["#{@liz_dir}/lib/lizarb/ruby/*.rb"].each do |file_name|
@@ -191,8 +235,15 @@ module Lizarb
     end
   end
 
+  # This method is called internally by `setup` and is not intended for direct use.
+  #
+  # - Requires the application definitions file `lizarb/app.rb`.
+  # - Searches for the application configuration file `app.rb` in both the application directory and the LizaRB directory.
+  # - Requires the configuration file if found.
+  # - Raises an error if the configuration file is not found.
+  # - Prints verbose output if `$VERBOSE` is enabled.
   def setup_and_configure_app
-    # lib/app.rb
+    # This is lib/app.rb
     require "app"
 
     finder = \
@@ -201,7 +252,7 @@ module Lizarb
         app_config_path = "#{lib_name}.rb"
         puts "        #{app_config_path} exists?" if $VERBOSE
         if File.file? app_config_path
-          # app.rb
+          # This is app.rb
           require lib_name
           @config_folder = path
           @config_path = app_config_path
@@ -215,9 +266,17 @@ module Lizarb
     raise Error, "Could not find #{$APP}.rb in #{@app_dir} or #{@liz_dir}"
   end
 
-  # call phase
-
-  def override_app_settings_with_env_variables
+  # This method is called internally by `setup` and is not intended for direct use.
+  #
+  # Overwrites Application settings with the following environment variables:
+  #
+  # - App.folder    with APP_FOLDER        example: `APP_FOLDER=app liza irb`
+  # - App.log_boot  with LOG_BOOT or LOG   example: `LOG=highest liza irb`
+  # - App.log_level with LOG_LEVEL or LOG  example: `LOG=highest liza irb`
+  # - App.mode      with MODE              example: `MODE=production liza irb`
+  # - App.gemfile   with GEMFILE           example: `GEMFILE=Gemfile liza irb`
+  # - App.system    with ENV["SYSTEMS"]    example: `SYSTEMS=dev,happy,deep,lab liza irb`
+  def setup_and_overwrite_app_settings
     if env_app_folder = ENV["APP_FOLDER"]
       App.folder env_app_folder
     end
@@ -245,7 +304,23 @@ module Lizarb
     end
   end
 
-  def define_log_levels
+  # This method is called internally by `setup` and is not intended for direct use.
+  #
+  # Defines log levels for the application based on the boot log level setting:
+  #
+  # - Prints corresponding log messages if verbose output is enabled.
+  # - Sets `$log_boot_*` global variables as `true` if application boot level settings.
+  #
+  # In other words:
+  #
+  # $log_boot_highest = true if App.log_boot >= 7 # this number is for :highest
+  # $log_boot_higher  = true if App.log_boot >= 6 # this number is for :higher
+  # $log_boot_high    = true if App.log_boot >= 5 # this number is for :high
+  # $log_boot_normal  = true if App.log_boot >= 4 # this number is for :normal
+  # $log_boot_low     = true if App.log_boot >= 3 # this number is for :low
+  # $log_boot_lower   = true if App.log_boot >= 2 # this number is for :lower
+  # $log_boot_lowest  = true if App.log_boot >= 1 # this number is for :lowest
+  def setup_and_define_log_levels
     level = App.log_boot
     is_highest = level == 7
     App::LOG_LEVELS.each do |k, v|
@@ -253,6 +328,8 @@ module Lizarb
       eval "$log_boot_#{k} = true" if v <= level
     end
   end
+
+  # call phase
   
   def require_bundler
     log "  Lizarb.#{__method__}" if $log_boot_high
