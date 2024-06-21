@@ -137,19 +137,30 @@ module Lizarb
     setup_and_define_log_levels
   end
 
-  # The call phase can get configurations from App, but not from any system.
+  # The call phase is determined by containing the least amount of code needed after requiring configuration class App.
+  #
+  # The `call` method orchestrates the following steps:
+  # 1. Properly requires gem "bundler" for managing gem your dependencies.
+  # 2. Requires essential Ruby libraries, not required by default.
+  # 3. Enables or disables coding mode for debugging purposes.
+  # 4. Loads environment variables from the following `.env` files.
+  # 5. Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
+  # 6. Requires the Liza module, and its constants are required on demand by zeitwerk:
+  # 7. Requires all system-gems, then requires each system class:
+  # 8. Initializes Zeitwerk.loaders[1] with the systems directories and the application directory:
   def call
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
-    log "#{self}.#{__method__}" if $log_boot_high
-    log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
-    log "  log_level is set to #{App.log_level}" if $log_boot_higher
-    
-    require_bundler
-    require_default_gems
-    lookup_and_set_mode
-    lookup_and_load_settings
-    require_liza_and_systems
-    connect_systems
+    log "  Lizarb.#{__method__}" if $log_boot_high
+
+    call_require_bundler
+    call_require_default_gems
+    call_define_mode
+    call_require_dotenv
+    call_zeitwerk
+    call_zeitwerk_loader_0_liza
+    call_require_system_classes
+    call_zeitwerk_loader_1_app
+    App.after if defined? App.after
+
     log "  Lizarb.#{__method__} done" if $log_boot_high
   end
 
@@ -327,24 +338,42 @@ module Lizarb
       puts "$log_boot_#{k} = #{v <= level}" if is_highest
       eval "$log_boot_#{k} = true" if v <= level
     end
+
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
+    log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
+    log "  log_level is set to #{App.log_level}" if $log_boot_higher
   end
 
-  # call phase
-  
-  def require_bundler
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Properly requires gem "bundler" for managing gem your dependencies:
+  #
+  # Up until now, require referred to the Ruby standard library.
+  # From this point on, require will refer to what is in the Gemfile.
+  #
+  # - If App.gemfile is a String, sets the BUNDLE_GEMFILE environment variable to the specified gemfile.
+  # - If App.gemfile is a Proc, requires Bundler inline and evaluates the gemfile block.
+  # - Raises an error if App.gemfile is neither a String nor a Proc.
+  def call_require_bundler
     log "  Lizarb.#{__method__}" if $log_boot_high
 
     gf = App.gemfile
-    if gf.is_a? String
+    case gf
+    when String
       string = "#{ @config_folder }/#{ gf }"
+      log "    requiring 'bundler/setup'" if $log_boot_higher
+      log "      ENV['BUNDLE_GEMFILE'] = #{ string.inspect }" if $log_boot_highest
       ENV["BUNDLE_GEMFILE"] = string
-      log "    ENV['BUNDLE_GEMFILE'] = #{ string.inspect }" if $log_boot_higher
-      require "bundler/setup"
+      log "      require 'bundler/setup'" if $log_boot_highest
+      require 'bundler/setup'
+    when Proc
+      string = gf.source_location
+      log "    requiring 'bundler/inline' with #{ string }" if $log_boot_higher
+      require 'bundler/inline'
+      log "      required 'bundler/inline'" if $log_boot_highest
+      gemfile(false, &gf)
     else
-      string = App.gemfile.source_location
-      log "    bundler inline with #{ string }" if $log_boot_higher
-      require "bundler/inline"
-      gemfile(false, &App.gemfile)
+      raise "App.gemfile is not a String or a Proc"
     end
   rescue Gem::LoadError => e
     puts
@@ -359,27 +388,40 @@ module Lizarb
     raise
   end
 
-  def require_default_gems
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Requires essential Ruby libraries, not required by default:
+  #
+  # Requires the following default gems:
+  # - `pathname` for handling file paths.
+  # - `json` for JSON parsing.
+  # - `time` for Time parsing.
+  #
+  # Converts the following instance variables to Pathname objects:
+  # - `Lizarb`: `@root`, `@gem_dir`, `@config_path`
+  # - `App`: `@relative_path`, `@path`
+  def call_require_default_gems
     log "  Lizarb.#{__method__}" if $log_boot_high
     
-    log "    requiring default gems" if $log_boot_higher
-    log "      require 'lerb'" if $log_boot_highest
+    # This local class is in the process of being moved to DevSystem::ErbShell
+    log "    require 'lerb'" if $log_boot_higher
     require "lerb"
     
-    log "      require 'pathname'" if $log_boot_highest
+    log "    require 'pathname'" if $log_boot_higher
     require "pathname"
     
-    log "      require 'fileutils'" if $log_boot_highest
+    # This gem is in the process of being replaced by Pathname (above)
+    log "    require 'fileutils'" if $log_boot_higher
     require "fileutils"
     
-    log "      require 'json'" if $log_boot_highest
+    log "    require 'json'" if $log_boot_higher
     require "json"
     
-    log "      require 'time'" if $log_boot_highest
     # this adds method Time.parse
+    log "    require 'time'" if $log_boot_higher
     require "time"
 
-    log "    fixing instance variables" if $log_boot_higher
+    log "      fixing instance variables" if $log_boot_highest
     @root = Pathname(@root)
     @gem_dir = Pathname(@gem_dir)
     @config_path = Pathname(@config_path)
@@ -390,7 +432,13 @@ module Lizarb
     end
   end
 
-  def lookup_and_set_mode
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Enables or disables coding mode for debugging purposes:
+  #
+  # - Sets the global `$mode` variable to the application mode.
+  # - Sets the global `$coding` variable to `true` if the application mode is `:code`.
+  def call_define_mode
     log "  Lizarb.#{__method__}" if $log_boot_high
 
     $mode = App.mode
@@ -399,7 +447,15 @@ module Lizarb
     log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && $log_boot_higher
   end
 
-  def lookup_and_load_settings
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Loads environment variables from the following `.env` files, as follows:
+  #
+  # If App name and mode are `app_global` and `:code`       loads files `app_global.code.env`, app_global.env`
+  # If App name and mode are `app`        and `:code`       loads files `app.code.env`,        app.env`
+  # If App name and mode are `app`        and `:demo`       loads files `app.demo.env`,        app.env`
+  # If App name and mode are `app`        and `:production` loads files `app.production.env`,  app.env`
+  def call_require_dotenv
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "dotenv"
     log "    required Dotenv" if $log_boot_higher
@@ -411,12 +467,27 @@ module Lizarb
     log "    did not require Dotenv" if $log_boot_higher
   end
 
-  def require_liza_and_systems
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
+  def call_zeitwerk
     log "  Lizarb.#{__method__}" if $log_boot_high
-
     require "zeitwerk"
     log "    required Zeitwerk" if $log_boot_higher
+  end
 
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Requires the Liza module, and its constants are required on demand by zeitwerk:
+  #
+  # - Requires the Liza module.
+  # - Initializes Zeitwerk.loaders[0] with the liza directory.
+  #
+  # lib/liza.rb
+  # lib/liza/unit.rb
+  # lib/liza/**/*.rb
+  def call_zeitwerk_loader_0_liza
+    log "  Lizarb.#{__method__}" if $log_boot_high
     require "liza"
     log "    required Liza" if $log_boot_higher
 
@@ -440,9 +511,23 @@ module Lizarb
     log "        loader.enable_reloading" if $log_boot_highest
     loader.setup
     log "        loader.setup" if $log_boot_highest
+    loader.eager_load
+    log "        loader.eager_load" if $log_boot_highest
+  end
+
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Requires all system-gems, then requires each system class:
+  #
+  # - Requires all system-gems. These gems must be added to the gemfile under group :systems.
+  # - Requires each system class.
+  # - Freezes the App.systems hash.
+  def call_require_system_classes
+    log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
 
     # bundle each System gem
 
+    log "    Bundler.require :systems" if $log_boot_higherß
     Bundler.require :systems
 
     # load each System class
@@ -451,13 +536,36 @@ module Lizarb
     App.systems.keys.each do |k|
       key = "#{k}_system"
 
-      require_system key
+      call_systems_require key
       klass = Object.const_get key.camelize
 
       App.systems[k] = klass
     end
 
     App.systems.freeze
+  end
+
+  def call_systems_require key
+    log "        require '#{key}'" if $log_boot_highest
+    require key
+  rescue LoadError => e
+    def e.backtrace; []; end
+    raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
+  end
+
+  # This method is called internally by `call` and is not intended for direct use.
+  #
+  # Initializes Zeitwerk.loaders[1] with the systems directories and the application directory:
+  #
+  # - For each system found in the application file, Zeitwerk namespaces their classes under the Liza::System sub-class.
+  #   lib/dev_system.rb
+  #   lib/dev_system/**/*.rb
+  #
+  # - For each box found in the application directory, Zeitwerk namespaces their Liza-Controller sub-classes under Object.
+  #   app/dev_box.rb
+  #   app/dev/**/*.rb
+  def call_zeitwerk_loader_1_app
+    log "  Lizarb.#{__method__}  (#{App.systems.count})" if $log_boot_high
 
     # loaders[1] first loads each System, then the App
     log "    Zeitwerk loaders [1] first loads each System, then the App" if $log_boot_higher
@@ -532,28 +640,12 @@ module Lizarb
 
     # App connects to systems
 
-    loaders[0].eager_load
-    log "    Zeitwerk has eager-loaded Liza Core" if $log_boot_higher
-  end
-
-  def connect_systems
-    log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
     App.systems.each do |system_key, system_class|
-      connect_system system_key, system_class
+      call_app_system_connect system_key, system_class
     end
   end
 
-  # systems
-
-  def require_system key
-    log "        require '#{key}'" if $log_boot_highest
-    require key
-  rescue LoadError => e
-    def e.backtrace; []; end
-    raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
-  end
-
-  def connect_system key, system_class
+  def call_app_system_connect key, system_class
     # t = Time.now
     system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
 
