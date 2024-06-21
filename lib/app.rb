@@ -49,6 +49,25 @@ class App
     @relative_path or raise "@relative_path not set"
   end
 
+  def self.sys_folder sys_folder = nil
+    raise "locked" if @locked
+    if sys_folder
+      @sys_folder = sys_folder
+      @sys_relative_path = sys_folder
+      @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
+    else
+      @sys_folder
+    end
+  end
+
+  def self.sys_path
+    @sys_path
+  end
+
+  def self.sys_relative_path
+    @sys_relative_path or raise "@sys_relative_path not set"
+  end
+
   # gemfile
 
   def self.gemfile(gemfile = :unset, &block)

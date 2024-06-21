@@ -29,7 +29,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   def create_system
     unit    = UnitHelper.new
     classes = ["#{@name.camelize}System", "Liza::System"]
-    path    = App.root.join("lib/#{@name.snakecase}_system.rb")
+    path    = App.sys_path.join "#{@name.snakecase}_system.rb"
     
     create_unit unit, classes, path, :system
   end
@@ -38,8 +38,8 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     unit, test = UnitHelper.new, UnitHelper.new
     unit_classes = ["#{@name.camelize}System::#{@name.camelize}Box", "Liza::Box"]
     test_classes = ["#{@name.camelize}System::#{@name.camelize}BoxTest", "Liza::BoxTest"]
-    unit_path = App.root.join("lib/#{@name.snakecase}_system/#{@name.snakecase}_box.rb")
-    test_path = App.root.join("lib/#{@name.snakecase}_system/#{@name.snakecase}_box_test.rb")
+    unit_path = App.sys_path.join "#{@name.snakecase}_system/#{@name.snakecase}_box.rb"
+    test_path = App.sys_path.join "#{@name.snakecase}_system/#{@name.snakecase}_box_test.rb"
 
     @class_name = unit_classes[0]
     test.section :box_test_section_1, caption: ""

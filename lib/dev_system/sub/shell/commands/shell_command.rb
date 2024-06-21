@@ -9,6 +9,7 @@ class DevSystem::ShellCommand < DevSystem::Command
     puts "App.folder   #{ App.folder || "nil" }"
     puts "App.root     #{ App.root }/"
     puts "App.path     #{ App.path ? "#{App.path}/" : "nil" }"
+    puts "App.sys_path #{App.sys_path}/"
     puts
 
     largest_system_name = AppShell.consts[:systems].keys.map(&:to_s).map(&:size).max

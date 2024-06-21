@@ -292,6 +292,10 @@ module Lizarb
       App.folder env_app_folder
     end
 
+    if env_systems_folder = ENV["SYS_FOLDER"]
+      App.sys_folder env_systems_folder
+    end
+
     if s = ENV["LOG_BOOT"] || ENV["LOG"]
       App.log_boot (s.length == 1) ? s.to_i : s.to_sym
     end
@@ -429,6 +433,8 @@ module Lizarb
     App.instance_eval do
       @relative_path = Pathname(@relative_path)
       @path = Pathname(@path)
+      @sys_relative_path = Pathname (defined? @sys_relative_path) ? @sys_relative_path : "lib"
+      @sys_path = Pathname (defined? @sys_path) ? @sys_path : "#{Lizarb.app_dir}/lib"
     end
   end
 
@@ -474,6 +480,12 @@ module Lizarb
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "zeitwerk"
     log "    required Zeitwerk" if $log_boot_higher
+
+    if App.sys_folder
+      path = "#{App.root}/#{App.sys_folder}"
+      $LOAD_PATH << path
+      log "    $LOAD_PATH << #{path}" if $log_boot_higher
+    end
   end
 
   # This method is called internally by `call` and is not intended for direct use.

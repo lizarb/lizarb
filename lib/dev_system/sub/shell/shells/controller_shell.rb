@@ -8,9 +8,10 @@ class DevSystem::ControllerShell < DevSystem::Shell
     }
 
     AppShell.writable_systems.each do |system_key, system|
-      ret[system_key.to_s] = "lib/#{system_key}_system/#{controller.plural}"
+      path = system.source_location_radical.gsub "#{App.root}/", ""
+      ret[system_key.to_s] = "#{path}/#{controller.plural}"
       system.subs.each do |sub|
-        ret["#{system_key}/#{sub}"] = "lib/#{system_key}_system/sub/#{sub}/#{controller.plural}"
+        ret["#{system_key}/#{sub}"] = "#{path}/sub/#{sub}/#{controller.plural}"
       end
     end
 
