@@ -3,7 +3,13 @@ class DevSystem::LogGenerator < DevSystem::SimpleGenerator
   # liza g log name place=app
 
   def call_default
-    @controller_class = Log
+    call_handler
+  end
+  
+  # liza g log:handler name place=app
+
+  def call_handler
+    @controller_class = HandlerLog
 
     name!
     place!

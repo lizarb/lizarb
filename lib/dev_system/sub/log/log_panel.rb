@@ -26,7 +26,7 @@ class DevSystem::LogPanel < Liza::Panel
 
   def handlers
     @handlers ||= handler_keys.map do |k|
-      [k, Liza.const("#{k}_log")]
+      [k, Liza.const("#{k}_handler_log")]
     end.to_h
   end
 

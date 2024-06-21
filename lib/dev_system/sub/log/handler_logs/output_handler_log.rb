@@ -1,4 +1,4 @@
-class DevSystem::OutputLog < DevSystem::Log
+class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
 
   def self.call(env)
     env[:sidebar] ||= sidebar_for env
