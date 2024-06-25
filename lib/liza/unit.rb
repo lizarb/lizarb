@@ -7,7 +7,13 @@ class Liza::Unit
   # PART
 
   def self.part key, klass = nil, system: nil
-    Lizarb.connect_part self, key, klass, system
+    part_class ||= if system.nil?
+                Liza.const "#{key}_part"
+              else
+                Liza.const("#{system}_system")
+                    .const "#{key}_part"
+              end
+    self.class_exec(&part_class.insertion) if part_class.insertion
   end
 
   # CONST MISSING
