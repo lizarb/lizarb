@@ -668,7 +668,8 @@ module Lizarb
 
   def reload &block
     @mutex.synchronize do
-      loaders.map &:reload
+      loaders[0].reload if @is_liz_dir
+      loaders[1].reload
       yield if block_given?
     end
 
