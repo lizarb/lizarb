@@ -545,21 +545,19 @@ module Lizarb
     # load each System class
 
     log "      App.systems is Hash containing all system classes" if $log_boot_highest
-    App.systems.keys.each do |k|
-      key = "#{k}_system"
-
-      call_systems_require key
-      klass = Object.const_get key.camelize
-
-      App.systems[k] = klass
+    App.systems.keys.each do |key|
+      klass = _require_system key
+      App.systems[key] = klass
     end
 
     App.systems.freeze
   end
 
-  def call_systems_require key
+  def _require_system key
+    key = "#{key}_system"
     log "        require '#{key}'" if $log_boot_highest
     require key
+    Object.const_get key.camelize
   rescue LoadError => e
     def e.backtrace; []; end
     raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
