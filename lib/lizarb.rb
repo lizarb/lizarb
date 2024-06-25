@@ -657,31 +657,6 @@ module Lizarb
     end
   end
 
-  # parts
-
-  def connect_part unit_class, key, part_class, system
-    if $log_boot_highest
-      t = Time.now
-      string = "          #{unit_class}.part :#{key}"
-      log string
-    end
-
-    part_class ||= if system.nil?
-                Liza.const "#{key}_part"
-              else
-                Liza.const("#{system}_system")
-                    .const "#{key}_part"
-              end
-
-    if part_class.insertion
-      unit_class.class_exec(&part_class.insertion)
-    end
-
-    if $log_boot_highest
-      log "          ."
-    end
-  end
-
   # loaders
 
   @loaders = []
