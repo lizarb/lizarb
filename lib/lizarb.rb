@@ -653,39 +653,8 @@ module Lizarb
     # App connects to systems
 
     App.systems.each do |system_key, system_class|
-      call_app_system_connect system_key, system_class
+      system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
     end
-  end
-
-  def call_app_system_connect key, system_class
-    # t = Time.now
-    system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
-
-    # Ignore this for now.
-    # This feature has been commented out for simplicity purposes.
-    # It injects code into other classes just like Part does. System defines them
-    #
-    # color_system_class = Liza::Unit.stick(system_class.color, system_class.name).to_s
-    # log "CONNECTING SYSTEM                     #{color_system_class}" if $log_boot_high
-    
-    # index = 0
-    # system_class.registrar.each do |string, target_block|
-    #   reg_type, _sep, reg_target = string.to_s.lpartition "_"
-
-    #   index += 1
-
-    #   target_klass = Liza.const reg_target
-
-    #   if reg_type == "insertion"
-    #     target_klass.class_exec(&target_block)
-    #   else
-    #     raise "TODO: decide and implement system extension"
-    #   end
-    #   log "CONNECTING SYSTEM-PART                #{color_system_class}.#{reg_type.to_s.ljust 11} to #{target_klass.to_s.ljust 30} at #{target_block.source_location * ":"}  " if $log_boot_high
-    # end
-
-    # pad = 21-system_class.name.size
-    # log "CONNECTED  SYSTEM         #{t.diff}s for #{color_system_class}#{"".ljust pad} to connect to #{index} system parts" if $log_boot_normal
   end
 
   # parts
