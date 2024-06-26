@@ -567,11 +567,11 @@ module Lizarb
   #
   # Initializes Zeitwerk.loaders[1] with the systems directories and the application directory:
   #
-  # - For each system found in the application file, Zeitwerk namespaces their classes under the Liza::System sub-class.
+  # - For each system found in the application file, Zeitwerk namespaces their Liza::Unit sub-classes under the Liza::System sub-class.
   #   lib/dev_system.rb
   #   lib/dev_system/**/*.rb
   #
-  # - For each box found in the application directory, Zeitwerk namespaces their Liza-Controller sub-classes under Object.
+  # - For each box found in the application directory, Zeitwerk namespaces their Liza::Controller sub-classes under Object.
   #   app/dev_box.rb
   #   app/dev/**/*.rb
   def call_zeitwerk_loader_1_app
