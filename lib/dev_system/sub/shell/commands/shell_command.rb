@@ -27,6 +27,13 @@ class DevSystem::ShellCommand < DevSystem::Command
     end
 
     puts
+
+    puts "$LOAD_PATH"
+    $LOAD_PATH.each do |path|
+      puts path
+    end
+
+    puts
   end
 
   # color helpers
