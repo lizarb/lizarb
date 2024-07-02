@@ -71,6 +71,7 @@ module Lizarb
   #
   # This method is a main entry point.
   # A method Lizarb.sfa is defined at `lib/lizarb/sfa.rb` which calls Lizarb.setup_sfa internally.
+  #
   def setup_sfa pwd, sfa:
     @root = pwd.to_s
     @setup_type = :sfa
@@ -127,6 +128,7 @@ module Lizarb
   # 3. Configures the application by loading the main application configuration file.
   # 4. Overwrites Application settings with environment variables.
   # 5. Defines log levels for the application based on the boot log level setting.
+  #
   def setup
     setup_and_determine_environment
     setup_and_load_ruby_extensions
@@ -145,9 +147,10 @@ module Lizarb
   # 3. Enables or disables coding mode for debugging purposes.
   # 4. Loads environment variables from the following `.env` files.
   # 5. Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
-  # 6. Requires the Liza module, and its constants are required on demand by zeitwerk:
-  # 7. Requires all system-gems, then requires each system class:
-  # 8. Initializes Zeitwerk.loaders[1] with the systems directories and the application directory:
+  # 6. Requires the Liza module, and its constants are required on demand by zeitwerk.
+  # 7. Requires all system-gems, then requires each system class.
+  # 8. Initializes Zeitwerk.loaders[1] with the systems directories and the application directory.
+  #
   def call
     log "  Lizarb.#{__method__}" if $log_boot_high
 
@@ -192,6 +195,7 @@ module Lizarb
   # - Checks for the presence of its signature files (`app.rb`, `lib/lizarb.rb`, and `lizarb.gemspec`) in the current directory.
   # - Stores those boolean values in instance variables (`@is_app_dir`, `@is_liz_dir`, `@is_gem_dir`).
   # - Determines key directories (`@app_dir`, `@liz_dir`, `@gem_dir`) and configuration specs (`@spec`).
+  #
   # - Prints verbose output if `$VERBOSE` is enabled.
   def setup_and_determine_environment
     if $VERBOSE
@@ -239,6 +243,7 @@ module Lizarb
   #
   # - Loads files from `lib/lizarb/ruby/*.rb` which reopen some of Ruby's core classes and add methods to them.
   # - Prints verbose output if `$VERBOSE` is enabled.
+  #
   def setup_and_load_ruby_extensions
     puts "loading #{@liz_dir}/lib/lizarb/ruby/*.rb" if $VERBOSE
     Dir["#{@liz_dir}/lib/lizarb/ruby/*.rb"].each do |file_name|
@@ -253,6 +258,7 @@ module Lizarb
   # - Requires the configuration file if found.
   # - Raises an error if the configuration file is not found.
   # - Prints verbose output if `$VERBOSE` is enabled.
+  #
   def setup_and_configure_app
     # This is lib/app.rb
     require "app"
@@ -287,6 +293,7 @@ module Lizarb
   # - App.mode      with MODE              example: `MODE=production liza irb`
   # - App.gemfile   with GEMFILE           example: `GEMFILE=Gemfile liza irb`
   # - App.system    with ENV["SYSTEMS"]    example: `SYSTEMS=dev,happy,deep,lab liza irb`
+  #
   def setup_and_overwrite_app_settings
     if env_app_folder = ENV["APP_FOLDER"]
       App.folder env_app_folder
@@ -335,6 +342,7 @@ module Lizarb
   # $log_boot_low     = true if App.log_boot >= 3 # this number is for :low
   # $log_boot_lower   = true if App.log_boot >= 2 # this number is for :lower
   # $log_boot_lowest  = true if App.log_boot >= 1 # this number is for :lowest
+  #
   def setup_and_define_log_levels
     level = App.log_boot
     is_highest = level == 7
@@ -358,6 +366,7 @@ module Lizarb
   # - If App.gemfile is a String, sets the BUNDLE_GEMFILE environment variable to the specified gemfile.
   # - If App.gemfile is a Proc, requires Bundler inline and evaluates the gemfile block.
   # - Raises an error if App.gemfile is neither a String nor a Proc.
+  #
   def call_require_bundler
     log "  Lizarb.#{__method__}" if $log_boot_high
 
@@ -404,6 +413,7 @@ module Lizarb
   # Converts the following instance variables to Pathname objects:
   # - `Lizarb`: `@root`, `@gem_dir`, `@config_path`
   # - `App`: `@relative_path`, `@path`
+  #
   def call_require_default_gems
     log "  Lizarb.#{__method__}" if $log_boot_high
     
@@ -444,6 +454,7 @@ module Lizarb
   #
   # - Sets the global `$mode` variable to the application mode.
   # - Sets the global `$coding` variable to `true` if the application mode is `:code`.
+  #
   def call_define_mode
     log "  Lizarb.#{__method__}" if $log_boot_high
 
@@ -461,6 +472,7 @@ module Lizarb
   # If App name and mode are `app`        and `:code`       loads files `app.code.env`,        app.env`
   # If App name and mode are `app`        and `:demo`       loads files `app.demo.env`,        app.env`
   # If App name and mode are `app`        and `:production` loads files `app.production.env`,  app.env`
+  #
   def call_require_dotenv
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "dotenv"
@@ -476,6 +488,7 @@ module Lizarb
   # This method is called internally by `call` and is not intended for direct use.
   #
   # Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
+  #
   def call_zeitwerk
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "zeitwerk"
@@ -498,6 +511,7 @@ module Lizarb
   # lib/liza.rb
   # lib/liza/unit.rb
   # lib/liza/**/*.rb
+  #
   def call_zeitwerk_loader_0_liza
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "liza"
@@ -534,6 +548,7 @@ module Lizarb
   # - Requires all system-gems. These gems must be added to the gemfile under group :systems.
   # - Requires each system class.
   # - Freezes the App.systems hash.
+  #
   def call_require_system_classes
     log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
 
@@ -574,6 +589,7 @@ module Lizarb
   # - For each box found in the application directory, Zeitwerk namespaces their Liza::Controller sub-classes under Object.
   #   app/dev_box.rb
   #   app/dev/**/*.rb
+  #
   def call_zeitwerk_loader_1_app
     log "  Lizarb.#{__method__}  (#{App.systems.count})" if $log_boot_high
 
@@ -678,7 +694,7 @@ module Lizarb
     loaders[1].eager_load
   end
 
-  # thread management
+  # naive thread management
 
   def thread_object_id
     Thread.current.object_id
