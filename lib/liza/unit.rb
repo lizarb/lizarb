@@ -84,9 +84,7 @@ class Liza::Unit
 
   #
 
-  App.settings.each do |k, v|
-    set k, v
-  end
+  set :log_level, App.log_level
   set :division, Liza::Controller
   
 end
