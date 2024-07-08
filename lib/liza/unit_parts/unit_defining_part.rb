@@ -13,6 +13,14 @@ class Liza::UnitDefiningPart < Liza::Part
       a.sort!
     end
 
+    def self.methods_for_erroring
+      [:define_error, :errors, :raise_error]
+    end
+
+    def self.instance_methods_for_erroring
+      [:raise_error]
+    end
+
     def self.methods_for_rendering
       methods_defined.select { _1[0..5] == "render" || _1[0..2] == "erb" }.sort
     end

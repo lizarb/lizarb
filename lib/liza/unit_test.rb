@@ -47,14 +47,15 @@ class Liza::UnitTest < Liza::Test
   test :subject_class, :methods_defined do
     a = \
       subject_class.methods_defined -
+      subject_class.methods_for_erroring -
       subject_class.methods_for_setting -
       subject_class.methods_for_logging -
       subject_class.methods_for_rendering
     b = [
       :descendants_select,
       :division,
-      :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_setting,
-      :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_setting,
+      :instance_methods_defined, :instance_methods_for_erroring, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_setting,
+      :methods_defined, :methods_for_erroring, :methods_for_logging, :methods_for_rendering, :methods_for_setting,
       :namespace,
       :part,
       :reload!,
@@ -67,10 +68,23 @@ class Liza::UnitTest < Liza::Test
   test :subject_class, :instance_methods_defined do
     a = \
       subject_class.instance_methods_defined -
+      subject_class.instance_methods_for_erroring -
       subject_class.instance_methods_for_setting -
       subject_class.instance_methods_for_logging -
       subject_class.instance_methods_for_rendering
     b = [:reload!, :system]
+    assert_equality a, b
+  end
+
+  test :subject_class, :methods_for_erroring do
+    a = subject_class.methods_for_erroring
+    b = [:define_error, :errors, :raise_error]
+    assert_equality a, b
+  end
+
+  test :subject_class, :instance_methods_for_erroring do
+    a = subject_class.instance_methods_for_erroring
+    b = [:raise_error]
     assert_equality a, b
   end
 
