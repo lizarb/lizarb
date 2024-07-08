@@ -12,7 +12,6 @@ class Liza::PanelTest < Liza::UnitTest
       :box,
       :color,
       :controller,
-      :define_error, :errors,
       :puts,
       :subsystem,
       :token
@@ -20,7 +19,7 @@ class Liza::PanelTest < Liza::UnitTest
       :box,
       :controller, :division,
       :key, :push,
-      :raise_error, :rescue_from, :rescue_from_panel, :rescuers,
+      :rescue_from, :rescue_from_panel, :rescuers,
       :short, :started,
       :subsystem
   end

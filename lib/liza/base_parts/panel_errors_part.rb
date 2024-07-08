@@ -3,25 +3,6 @@ class Liza::PanelErrorsPart < Liza::Part
 
     #
 
-    def self.errors
-      @errors ||= {}
-    end
-
-    def self.define_error(error_key, &block)
-      self.const_set :Error, Class.new(StandardError) unless defined? Error
-
-      error_class = Error
-      error_class = Class.new error_class
-      error_class = self.const_set "#{error_key.to_s.camelcase}Error", error_class
-      
-      errors[error_key] = [error_class, block]
-    end
-
-    def raise_error(error_key, *args)
-      error, message_block = self.class.errors[error_key]
-      raise error, message_block.call(args), caller
-    end
-
     def rescue_from(*args, &block)
       case args.count
       when 1
