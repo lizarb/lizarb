@@ -18,22 +18,14 @@ class Liza::Unit
 
   # CONST MISSING
 
-  if Lizarb.ruby_supports_raise_cause?
-
-    def self.const_missing name
-      Liza.const name
-    rescue Liza::ConstNotFound
+  def self.const_missing name
+    Liza.const name
+  rescue Liza::ConstNotFound
+    if Lizarb.ruby_supports_raise_cause?
       raise NameError, "uninitialized constant #{name}", caller[1..], cause: nil
+    else
+      raise NameError, "uninitialized constant #{name}", caller
     end
-
-  else
-
-    def self.const_missing name
-      Liza.const name
-    rescue Liza::ConstNotFound
-      raise NameError, "uninitialized constant #{name}", caller[1..]
-    end
-
   end
 
   # PARTS
