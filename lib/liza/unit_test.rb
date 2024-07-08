@@ -47,17 +47,16 @@ class Liza::UnitTest < Liza::Test
   test :subject_class, :methods_defined do
     a = \
       subject_class.methods_defined -
-      subject_class.methods_for_settings -
+      subject_class.methods_for_setting -
       subject_class.methods_for_logging -
       subject_class.methods_for_rendering
     b = [
       :descendants_select,
       :division,
-      :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_settings,
-      :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_settings,
+      :instance_methods_defined, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_setting,
+      :methods_defined, :methods_for_logging, :methods_for_rendering, :methods_for_setting,
       :namespace,
       :part,
-      :procedure, :proceed,
       :reload!,
       :subclasses_select, :system, :system?,
       :test_class
@@ -68,21 +67,21 @@ class Liza::UnitTest < Liza::Test
   test :subject_class, :instance_methods_defined do
     a = \
       subject_class.instance_methods_defined -
-      subject_class.instance_methods_for_settings -
+      subject_class.instance_methods_for_setting -
       subject_class.instance_methods_for_logging -
       subject_class.instance_methods_for_rendering
-    b = [:procedure, :proceed, :reload!, :system]
+    b = [:reload!, :system]
     assert_equality a, b
   end
 
-  test :subject_class, :methods_for_settings do
-    a = subject_class.methods_for_settings
+  test :subject_class, :methods_for_setting do
+    a = subject_class.methods_for_setting
     b = [:add, :fetch, :get, :set, :settings]
     assert_equality a, b
   end
 
-  test :subject_class, :instance_methods_for_settings do
-    a = subject_class.instance_methods_for_settings
+  test :subject_class, :instance_methods_for_setting do
+    a = subject_class.instance_methods_for_setting
     b = [:add, :fetch, :get, :set, :settings]
     assert_equality a, b
   end

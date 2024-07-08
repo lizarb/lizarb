@@ -44,7 +44,7 @@ class Liza::Unit
   class RenderStackIsEmpty < RenderError; end
   part :unit_renderer
 
-  part :unit_settings
+  part :unit_setting
 
   # TEST
 
