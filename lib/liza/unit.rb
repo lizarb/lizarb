@@ -36,8 +36,6 @@ class Liza::Unit
 
   part :unit_methods
 
-  part :unit_procedure
-  
   class RenderError < Error; end
   class RendererNotFound < RenderError; end
   class RenderStackIsFull < RenderError; end
