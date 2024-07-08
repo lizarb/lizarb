@@ -32,9 +32,9 @@ class Liza::Unit
 
   part :unit_associating
 
-  part :unit_logging
+  part :unit_defining
 
-  part :unit_methods
+  part :unit_logging
 
   class RenderError < Error; end
   class RendererNotFound < RenderError; end

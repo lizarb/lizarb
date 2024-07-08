@@ -1,4 +1,4 @@
-class Liza::UnitMethodsPart < Liza::Part
+class Liza::UnitDefiningPart < Liza::Part
 
   insertion do
     def self.methods_defined
@@ -30,6 +30,15 @@ class Liza::UnitMethodsPart < Liza::Part
       array = instance_methods_defined.select { _1[0..2] == "log" }.sort
       [*array, :stick, :sticks]
     end
+
+    def self.methods_for_setting
+      [:add, :fetch, :get, :set, :settings].sort
+    end
+  
+    def self.instance_methods_for_setting
+      [:add, :fetch, :get, :set, :settings].sort
+    end
+  
   end
 
 end
