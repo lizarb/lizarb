@@ -1,14 +1,6 @@
 class Liza::UnitSettingPart < Liza::Part
 
   insertion do
-    def self.methods_for_setting
-      [:add, :fetch, :get, :set, :settings].sort
-    end
-  
-    def self.instance_methods_for_setting
-      [:add, :fetch, :get, :set, :settings].sort
-    end
-  
     def self.settings
       @settings ||= {}
     end
