@@ -15,14 +15,14 @@ class Liza::UnitErroringPart < Liza::Part
       errors[error_key] = [error_class, block]
     end
 
-    def self.raise_error(error_key, *args)
+    def self.raise_error(error_key, *args, kaller: caller)
       error, message_block = errors[error_key]
-      raise error, message_block.call(args), caller
+      raise error, message_block.call(args), kaller
     end
 
-    def raise_error(error_key, *args)
+    def raise_error(error_key, *args, kaller: caller)
       error, message_block = self.class.errors[error_key]
-      raise error, message_block.call(args), caller
+      raise error, message_block.call(args), kaller
     end
 
   end

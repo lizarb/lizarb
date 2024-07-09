@@ -1,17 +1,26 @@
-class Liza::UnitRendererPart < Liza::Part
+class Liza::UnitRenderingPart < Liza::Part
 
-  RENDER_STACK_IS_EMPTY_MESSAGE = <<~STRING
+  insertion do
+    
+    define_error(:renderer_not_found) do |args|
+      "ERB \"#{args[0]}.#{args[1]}.erb\" not found"
+    end
+
+    define_error(:render_stack_is_empty) do |args|
+      <<~STRING
 You called render without ERB keys,
 but the render stack is empty.
 Did you forget to add ERB keys?
-  STRING
+      STRING
+    end
 
-  RENDER_STACK_IS_FULL_MESSAGE = <<~STRING
+    define_error(:render_stack_is_full) do |args|
+      <<~STRING
 You called render with too many ERB keys.
 Did you accidentally fall into an infinite loop?
-  STRING
+      STRING
+    end
 
-  insertion do
     def render! *keys, format: nil
       render *keys, format: format, allow_missing: false
     end
@@ -42,14 +51,14 @@ Did you accidentally fall into an infinite loop?
   
           render_stack.push s
 
-          raise RenderStackIsFull RENDER_STACK_IS_FULL_MESSAGE, caller if render_stack.size > 10
+          raise_error :render_stack_is_full, kaller: caller if render_stack.size > 10
         end
   
         render_stack.pop
       elsif render_stack.any?
         render_stack.pop
       else
-        raise RenderStackIsEmpty, RENDER_STACK_IS_EMPTY_MESSAGE, caller
+        raise_error :render_stack_is_empty, kaller: caller
       end
     end
 
@@ -135,7 +144,7 @@ Did you accidentally fall into an infinite loop?
             found = Liza::Unit.erbs_defined.first
           else
             log stick :light_red, "    #{name}.#{format}.erb not found, and allow_missing: false"
-            raise RendererNotFound, "ERB #{name}.#{format}.erb not found"
+            raise_error :renderer_not_found, name, format
           end
 
         else
@@ -155,7 +164,7 @@ Did you accidentally fall into an infinite loop?
               found = Liza::Unit.erbs_defined.first
             else
               log stick :light_red, "    #{name}.#{format}.erb not found, and allow_missing: false"
-              raise RendererNotFound, "ERB #{name}.#{format}.erb not found"
+              raise_error :renderer_not_found, name, format
             end
           end
 

@@ -21,14 +21,6 @@ class Liza::UnitDefiningPart < Liza::Part
       [:raise_error]
     end
 
-    def self.methods_for_rendering
-      methods_defined.select { _1[0..5] == "render" || _1[0..2] == "erb" }.sort
-    end
-
-    def self.instance_methods_for_rendering
-      instance_methods_defined.select { _1[0..5] == "render" || _1[0..2] == "erb" }.sort
-    end
-
     def self.methods_for_logging
       array = methods_defined.select { _1[0..2] == "log" }.sort
       [*array, :stick, :sticks]
@@ -37,6 +29,14 @@ class Liza::UnitDefiningPart < Liza::Part
     def self.instance_methods_for_logging
       array = instance_methods_defined.select { _1[0..2] == "log" }.sort
       [*array, :stick, :sticks]
+    end
+
+    def self.methods_for_rendering
+      methods_defined.select { _1[0..5] == "render" || _1[0..2] == "erb" }.sort
+    end
+
+    def self.instance_methods_for_rendering
+      instance_methods_defined.select { _1[0..5] == "render" || _1[0..2] == "erb" }.sort
     end
 
     def self.methods_for_setting
