@@ -1,4 +1,4 @@
-class Liza::UnitRendererPartTest < Liza::UnitTest
+class Liza::UnitRenderingPartTest < Liza::UnitTest
 
   test :erbs_defined do
     erbs_defined = Unit.erbs_defined.map(&:key)

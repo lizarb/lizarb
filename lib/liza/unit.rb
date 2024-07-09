@@ -38,11 +38,7 @@ class Liza::Unit
 
   part :unit_logging
 
-  class RenderError < Error; end
-  class RendererNotFound < RenderError; end
-  class RenderStackIsFull < RenderError; end
-  class RenderStackIsEmpty < RenderError; end
-  part :unit_renderer
+  part :unit_rendering
 
   part :unit_setting
 
