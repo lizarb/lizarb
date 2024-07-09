@@ -5,8 +5,8 @@ require_relative "lib/lizarb/version"
 Gem::Specification.new do |spec|
   spec.name = "lizarb"
   spec.version = Lizarb::VERSION
-  spec.authors = "Thiago Pinto"
-  spec.email = "thiagopintodev@gmail.com"
+  spec.authors = "Thiago Almeida"
+  spec.email = "thiago@lizarb.org"
 
   spec.summary = "Application Framework"
   spec.description = "Liza is a light, experimental framework primarily developed to help study the Ruby language and the Ruby ecosystem."
