@@ -1,5 +1,3 @@
-# ENV["VERBOSE"] ||= "1"
-
 class App
 
   # Choose your Gemfile

@@ -1,7 +1,5 @@
 # This is a LizaRB Application
-# Learn more: http://lizarb.org/
-
-# ENV["VERBOSE"] ||= "1"
+# Learn more: https://lizarb.org/
 
 class App
 
