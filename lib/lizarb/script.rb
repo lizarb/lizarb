@@ -9,8 +9,6 @@ module Lizarb
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     require_relative "../lizarb"
     cl = caller_locations(1, 1)[0]
-    puts "LIZARB WARNING: You are calling Lizarb.script from #{cl.label}, instead of <main>." unless cl.label == "<main>"
-    # Rake is a special case here
     
     raise Lizarb::Error, "Lizarb.script does not support app_global, use Lizarb.sfa" if app == "app_global"
     raise Lizarb::Error, "#{app.inspect} does not start with 'app_'" unless app == "app" or app.to_s.start_with? "app_"
@@ -26,6 +24,6 @@ module Lizarb
         system key
       end
     end
-    Lizarb.call
+    Lizarb.load
   end
 end

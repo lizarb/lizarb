@@ -10,6 +10,6 @@ module Lizarb
 
     App.systems.clear if ENV["SYSTEMS"]
 
-    Lizarb.call
+    Lizarb.load
   end
 end

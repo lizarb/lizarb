@@ -139,9 +139,9 @@ module Lizarb
     setup_and_define_log_levels
   end
 
-  # The call phase is determined by containing the least amount of code needed after requiring configuration class App.
+  # The load phase is determined by containing the least amount of code needed after requiring configuration class App.
   #
-  # The `call` method orchestrates the following steps:
+  # The `load` method orchestrates the following steps:
   # 1. Properly requires gem "bundler" for managing gem your dependencies.
   # 2. Requires essential Ruby libraries, not required by default.
   # 3. Enables or disables coding mode for debugging purposes.
@@ -151,17 +151,17 @@ module Lizarb
   # 7. Requires all system-gems, then requires each system class.
   # 8. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
   #
-  def call
+  def load
     log "  Lizarb.#{__method__}" if $log_boot_high
 
-    call_require_bundler
-    call_require_default_gems
-    call_define_mode
-    call_require_dotenv
-    call_zeitwerk
-    call_zeitwerk_loader_0_liza
-    call_require_system_classes
-    call_zeitwerk_loader_1_app
+    load_and_require_bundler
+    load_and_require_default_gems
+    load_and_define_mode
+    load_and_require_dotenv
+    load_and_zeitwerk
+    load_and_zeitwerk_loader_0_liza
+    load_and_require_system_classes
+    load_and_zeitwerk_loader_1_app
     App.after if defined? App.after
 
     log "  Lizarb.#{__method__} done" if $log_boot_high
@@ -356,7 +356,7 @@ module Lizarb
     log "  log_level is set to #{App.log_level}" if $log_boot_higher
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Properly requires gem "bundler" for managing gem your dependencies:
   #
@@ -367,7 +367,7 @@ module Lizarb
   # - If App.gemfile is a Proc, requires Bundler inline and evaluates the gemfile block.
   # - Raises an error if App.gemfile is neither a String nor a Proc.
   #
-  def call_require_bundler
+  def load_and_require_bundler
     log "  Lizarb.#{__method__}" if $log_boot_high
 
     gf = App.gemfile
@@ -401,7 +401,7 @@ module Lizarb
     raise
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Requires essential Ruby libraries, not required by default:
   #
@@ -414,7 +414,7 @@ module Lizarb
   # - `Lizarb`: `@root`, `@gem_dir`, `@config_path`
   # - `App`: `@relative_path`, `@path`
   #
-  def call_require_default_gems
+  def load_and_require_default_gems
     log "  Lizarb.#{__method__}" if $log_boot_high
     
     # This local class is in the process of being moved to DevSystem::ErbShell
@@ -448,14 +448,14 @@ module Lizarb
     end
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Enables or disables coding mode for debugging purposes:
   #
   # - Sets the global `$mode` variable to the application mode.
   # - Sets the global `$coding` variable to `true` if the application mode is `:code`.
   #
-  def call_define_mode
+  def load_and_define_mode
     log "  Lizarb.#{__method__}" if $log_boot_high
 
     $mode = App.mode
@@ -464,7 +464,7 @@ module Lizarb
     log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && $log_boot_higher
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Loads environment variables from the following `.env` files, as follows:
   #
@@ -473,7 +473,7 @@ module Lizarb
   # If App name and mode are `app`        and `:demo`       loads files `app.demo.env`,        app.env`
   # If App name and mode are `app`        and `:production` loads files `app.production.env`,  app.env`
   #
-  def call_require_dotenv
+  def load_and_require_dotenv
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "dotenv"
     log "    required Dotenv" if $log_boot_higher
@@ -485,11 +485,11 @@ module Lizarb
     log "    did not require Dotenv" if $log_boot_higher
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
   #
-  def call_zeitwerk
+  def load_and_zeitwerk
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "zeitwerk"
     log "    required Zeitwerk" if $log_boot_higher
@@ -501,7 +501,7 @@ module Lizarb
     end
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Requires the Liza module, and its constants are required on demand by zeitwerk:
   #
@@ -512,7 +512,7 @@ module Lizarb
   # lib/liza/unit.rb
   # lib/liza/**/*.rb
   #
-  def call_zeitwerk_loader_0_liza
+  def load_and_zeitwerk_loader_0_liza
     log "  Lizarb.#{__method__}" if $log_boot_high
     require "liza"
     log "    required Liza" if $log_boot_higher
@@ -541,7 +541,7 @@ module Lizarb
     log "        loader.eager_load" if $log_boot_highest
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Requires all system-gems, then requires each system class:
   #
@@ -549,7 +549,7 @@ module Lizarb
   # - Requires each system class.
   # - Freezes the App.systems hash.
   #
-  def call_require_system_classes
+  def load_and_require_system_classes
     log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
 
     # bundle each System gem
@@ -578,7 +578,7 @@ module Lizarb
     raise SystemNotFound, "FILE #{key}.rb not found on $LOAD_PATH", []
   end
 
-  # This method is called internally by `call` and is not intended for direct use.
+  # This method is called internally by `load` and is not intended for direct use.
   #
   # Initializes Lizarb.loaders[1] with the systems directories and the application directory:
   #
@@ -590,7 +590,7 @@ module Lizarb
   #   app/dev_box.rb
   #   app/dev/**/*.rb
   #
-  def call_zeitwerk_loader_1_app
+  def load_and_zeitwerk_loader_1_app
     log "  Lizarb.#{__method__}  (#{App.systems.count})" if $log_boot_high
 
     # loaders[1] first loads each System, then the App

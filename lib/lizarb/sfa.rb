@@ -19,7 +19,6 @@ module Lizarb
     log_level ||= :normal
     
     cl = caller_locations(1, 1)[0]
-    # puts "LIZARB WARNING: You are calling Lizarb.sfa from #{cl.label}, instead of <main>." unless cl.label == "<main>"
     
     sfa = cl.absolute_path
 
@@ -37,7 +36,7 @@ module Lizarb
       end
     end
     
-    Lizarb.call
+    Lizarb.load
 
     DevSystem::DevBox.configure :log do
       handler log_handler
