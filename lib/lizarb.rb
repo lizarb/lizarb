@@ -149,7 +149,7 @@ module Lizarb
   # 5. Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
   # 6. Requires the Liza module, and its constants are required on demand by zeitwerk.
   # 7. Requires all system-gems, then requires each system class.
-  # 8. Initializes Zeitwerk.loaders[1] with the systems directories and the application directory.
+  # 8. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
   #
   def call
     log "  Lizarb.#{__method__}" if $log_boot_high
@@ -506,7 +506,7 @@ module Lizarb
   # Requires the Liza module, and its constants are required on demand by zeitwerk:
   #
   # - Requires the Liza module.
-  # - Initializes Zeitwerk.loaders[0] with the liza directory.
+  # - Initializes Lizarb.loaders[0] with the liza directory.
   #
   # lib/liza.rb
   # lib/liza/unit.rb
@@ -580,7 +580,7 @@ module Lizarb
 
   # This method is called internally by `call` and is not intended for direct use.
   #
-  # Initializes Zeitwerk.loaders[1] with the systems directories and the application directory:
+  # Initializes Lizarb.loaders[1] with the systems directories and the application directory:
   #
   # - For each system found in the application file, Zeitwerk namespaces their Liza::Unit sub-classes under the Liza::System sub-class.
   #   lib/dev_system.rb
