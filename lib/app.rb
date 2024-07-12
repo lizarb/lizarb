@@ -110,20 +110,6 @@ class App
 
   # settings
 
-  def self.settings
-    @settings ||= {}
-  end
-
-  def self.set key, value
-    settings[key] = value
-  end
-
-  def self.get key
-    settings[key]
-  end
-
-  # advanced settings
-
   DEFAULT_LOG_LEVEL = 4
 
   LOG_LEVELS = {
@@ -136,7 +122,7 @@ class App
     :lowest  => 1,
   }
   @log_boot = DEFAULT_LOG_LEVEL
-  set :log_level, DEFAULT_LOG_LEVEL
+  @log_level = DEFAULT_LOG_LEVEL
 
   def self.log_boot level = nil
     return @log_boot if level.nil?
@@ -147,11 +133,11 @@ class App
   end
 
   def self.log_level level = nil
-    return get :log_level if level.nil?
+    return @log_level if level.nil?
     level = LOG_LEVELS[level] if level.is_a? Symbol
     raise Error, "invalid log level `#{level}`", caller unless LOG_LEVELS.values.include? level
 
-    set :log_level, level
+    @log_level = level
   end
 
   # helpers

@@ -182,7 +182,7 @@ module Lizarb
       app: $APP,
       mode: App.mode,
       log_boot: App.log_boot,
-      log_level: App.get(:log_level),
+      log_level: App.log_level,
     }
     github = "https://github.com/lizarb/lizarb"
     puts info.to_s
