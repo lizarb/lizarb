@@ -44,12 +44,11 @@ end
 group :web do
   # gems used by WebSystem
   gem "rack", "~> 3.0"
-  gem "rackup", "~> 0.2"
   gem "agoo", "~> 2.15"
-  gem "falcon", "~> 0.42"
+  gem "falcon", "~> 0.47"
   gem "iodine", "~> 0.7"
-  gem "puma", "~> 6.3"
-  gem "thin", "~> 1.6"
+  gem "puma", "~> 6.4"
+  # gem "thin", "~> 1.6" is not compatible with Rack 3
 end
 
 group :desk do
