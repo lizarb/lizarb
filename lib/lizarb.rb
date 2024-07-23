@@ -434,6 +434,9 @@ module Lizarb
     # this adds method Time.parse
     log "    require 'time'" if $log_boot_higher
     require "time"
+    
+    log "    require 'ostruct'" if $log_boot_higher
+    require "ostruct"
 
     log "      fixing instance variables" if $log_boot_highest
     @root = Pathname(@root)

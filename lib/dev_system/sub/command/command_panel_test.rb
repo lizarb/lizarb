@@ -18,7 +18,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
   end
 
   test :parse do
-    require "ostruct"
     def parse string
       OpenStruct.new subject.parse(string)
     end
