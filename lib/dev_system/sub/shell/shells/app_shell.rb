@@ -54,7 +54,7 @@ class DevSystem::AppShell < DevSystem::Shell
   #
 
   def self.liza_categories
-    ["unit", "base", "safety", "meta", "ruby_tests"]
+    ["unit", "helper_units", "systemic_units", "subsystemic_units", "ruby_tests"]
   end
 
   #
@@ -68,19 +68,19 @@ class DevSystem::AppShell < DevSystem::Shell
         .select { _1.source_location_radical.include? "/liza/unit" }
         .sort_by { _1.to_s }
 
-    ret["base"] =
+    ret["helper_units"] =
       liza_classes
-        .select { _1.source_location_radical.include? "/liza/base" }
+        .select { _1.source_location_radical.include? "/liza/helper_units" }
         .sort_by { _1.to_s }
 
-    ret["safety"] =
+    ret["systemic_units"] =
       liza_classes
-        .select { _1.source_location_radical.include? "/liza/safety" }
+        .select { _1.source_location_radical.include? "/liza/systemic_units" }
         .sort_by { _1.to_s }
 
-    ret["meta"] =
+    ret["subsystemic_units"] =
       liza_classes
-        .select { _1.source_location_radical.include? "/liza/meta" }
+        .select { _1.source_location_radical.include? "/liza/subsystemic_units" }
         .sort_by { _1.to_s }
 
     ret["ruby_tests"] =
