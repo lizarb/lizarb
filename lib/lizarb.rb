@@ -69,9 +69,38 @@ module Lizarb
     load
   end
 
+  ### Initialize LizaRB as a dependent script.
+  #
+  # - You must provide the app key.
+  # - You may provide an array of system keys.
+  def init_script_dependent!(
+    *systems,
+    app:
+  )
+    pwd = Dir.pwd
+    $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
+    cl = caller_locations(1, 1)[0]
+    
+    raise Lizarb::Error, "Lizarb.#{__method__} does not support app_global, use Lizarb.sfa" if app == "app_global"
+    raise Lizarb::Error, "#{app.inspect} does not start with 'app_'" unless app == "app" or app.to_s.start_with? "app_"
+
+    segments = cl.absolute_path.split("/")
+    root, script = segments[0..-3].join("/"), segments[-2..-1].join("/")
+
+    setup_script_dependent root, script: script, script_app: app
+
+    App.class_exec do
+      self.systems.clear if systems.any?
+      systems.each do |key|
+        system key
+      end
+    end
+    load
+  end
+
   ### Setup Methods for Different Contexts
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
   # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
   #
   # Sets up the environment for SFA (Single File Application).
@@ -91,7 +120,7 @@ module Lizarb
 
   ### Setup Methods for Different Contexts
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
   # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
   #
   # Sets up the environment for a project.
@@ -108,19 +137,16 @@ module Lizarb
 
   ### Setup Methods for Different Contexts
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script.
+  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
   # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
   #
   # Sets up the environment for a script.
   #
-  # A script acts like an SFA, but exists inside a project.
+  # A script_dependent must be placed in a directory which parent directory is a project directory.
   #
-  # This method is a main entry point.
-  # A method Lizarb.script is defined at `lib/lizarb/script.rb` which calls Lizarb.setup_script internally.
-  #
-  def setup_script pwd, script: , script_app:
+  def setup_script_dependent pwd, script: , script_app:
     @root = pwd.to_s
-    @setup_type = :script
+    @setup_type = :script_dependent
     # NOTE: arg script is not being stored anywhere
     $APP = script_app
     setup
@@ -209,8 +235,8 @@ module Lizarb
       puts "        Lizarb.root       = #{root.inspect}"
       puts "        Lizarb.setup_type = #{setup_type.inspect}"
       # puts "        Lizarb._sfa       = #{_sfa.inspect}" if setup_type == :sfa
-      # puts "        Lizarb._project   = #{_project.inspect}" if setup_type == :project
-      # puts "        Lizarb._script    = #{_script.inspect}" if setup_type == :script
+      # puts "        Lizarb._project            = #{_project.inspect}" if setup_type == :project
+      # puts "        Lizarb._script_dependent   = #{_script_dependent.inspect}" if setup_type == :script_dependent
     end
 
     # NOTE: calling an unset instance variable returns nil

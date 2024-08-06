@@ -53,15 +53,25 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     log "Liza Application initialized at `#{to}`"
   end
 
-  # liza g new:script script_name
+  # liza g new:script name
 
   def call_script
-    raise Error, "You can only generate a script inside a project" if !App.project? or App.global?
+    if !App.project? or App.global?
+      call_script_independent
+    else
+      call_script_dependent
+    end
+    
+  end
+
+  # liza g new:script_dependent name
+
+  def call_script_dependent
     name_with_period! "script"
 
     @systems = ["dev"]
 
-    create_file "scripts/#{@name}", :script_1, :rb
+    create_file "scripts/#{@name}", :script_dependent, :rb
   end
 
   # liza g new:sfa sfa_name
@@ -106,11 +116,11 @@ ruby <%= RUBY_VERSION %>
 
 web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
 
-# view script_1.rb.erb
+# view script_dependent.rb.erb
 #!/usr/bin/env ruby
 
-require "lizarb/script"
-Lizarb.script :dev, app: "app"
+require "lizarb"
+Lizarb.init_script_dependent! :dev, app: "app"
 
 # YOUR CODE HERE
 
