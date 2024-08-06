@@ -74,14 +74,14 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     create_file "scripts/#{@name}", :script_dependent, :rb
   end
 
-  # liza g new:sfa sfa_name
+  # liza g new:script_independent name
 
-  def call_sfa
-    name_with_period! "sfa"
+  def call_script_independent
+    name_with_period! "script"
 
     @systems = ["dev"]
 
-    create_file @name, :sfa_1, :rb
+    create_file @name, :script_independent, :rb
   end
 
   # helper methods
@@ -136,11 +136,11 @@ log "MainShell is a wrapper for main: #{self}"
 # DevSystem::DevBox.command ["shell"]
 DevBox.command ["shell"]
 
-# view sfa_1.rb.erb
+# view script_independent.rb.erb
 #!/usr/bin/env ruby
 
-require "lizarb/sfa"
-Lizarb.sfa :dev, pwd: __dir__
+require "lizarb"
+Lizarb.init_script_independent! :dev, pwd: __dir__
 puts "#{$boot_time.diff}s to boot" if $log_boot_high
 
 # YOUR CODE HERE
