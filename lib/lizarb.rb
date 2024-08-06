@@ -58,7 +58,16 @@ module Lizarb
     [__FILE__, 1]
   end
 
+  ### Initialize LizaRB as a project
   #
+  # - You must provide __FILE__ as argument to this method.
+  def init_project! executable
+    pwd = Dir.pwd
+    $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
+    setup_project pwd, project: executable
+    App.systems.clear if ENV["SYSTEMS"]
+    load
+  end
 
   ### Setup Methods for Different Contexts
   #
@@ -88,9 +97,6 @@ module Lizarb
   # Sets up the environment for a project.
   #
   # A project is a directory that contains an application app.rb file.
-  #
-  # This method is a main entry point.
-  # A method Lizarb.project is defined at `lib/lizarb/project.rb` which calls Lizarb.setup_project internally.
   #
   def setup_project pwd, project:
     @root = pwd.to_s
