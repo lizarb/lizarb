@@ -98,29 +98,55 @@ module Lizarb
     load
   end
 
-  ### Setup Methods for Different Contexts
+  ### Initialize LizaRB as an independent script.
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
-  # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
-  #
-  # Sets up the environment for SFA (Single File Application).
-  #
-  # An SFA is a Ruby script that contains the entire application code in a single file.
-  #
-  # This method is a main entry point.
-  # A method Lizarb.sfa is defined at `lib/lizarb/sfa.rb` which calls Lizarb.setup_sfa internally.
-  #
-  def setup_sfa pwd, sfa:
-    @root = pwd.to_s
-    @setup_type = :sfa
-    # NOTE: arg sfa is not being stored anywhere
-    $APP = "app_global"
-    setup
+  # - You may provide all app configurations.
+  # - You may provide some dev_box configurations.
+  # - You may provide an array of system keys.
+  def init_script_independent!(
+    *systems,
+    mode: :code,
+    folder: nil,
+    gemfile: nil,
+    log_handler: :output,
+    log_boot: nil,
+    log_level: nil,
+    log: nil,
+    pwd: 
+  )
+    log_boot  ||= log if log
+    log_level ||= log if log
+    log_boot  ||= :normal
+    log_level ||= :normal
+    
+    cl = caller_locations(1, 1)[0]
+    
+    script = cl.absolute_path
+
+    setup_script_independent pwd, script: script
+
+    App.class_exec do
+      self.gemfile gemfile if gemfile
+      self.folder folder if folder
+      self.log_boot log_boot
+      self.log_level log_level
+      self.mode mode
+      system :dev
+      systems.each do |key|
+        system key
+      end
+    end
+    
+    load
+
+    DevSystem::DevBox.configure :log do
+      handler log_handler
+    end
   end
 
   ### Setup Methods for Different Contexts
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
+  # The LizaRB framework provides specific setup methods for different contexts: project, script_dependent, and script_independent.
   # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
   #
   # Sets up the environment for a project.
@@ -137,7 +163,7 @@ module Lizarb
 
   ### Setup Methods for Different Contexts
   #
-  # The LizaRB framework provides specific setup methods for different contexts: SFA, project, and script_dependent.
+  # The LizaRB framework provides specific setup methods for different contexts: project, script_dependent, and script_independent.
   # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
   #
   # Sets up the environment for a script.
@@ -149,6 +175,23 @@ module Lizarb
     @setup_type = :script_dependent
     # NOTE: arg script is not being stored anywhere
     $APP = script_app
+    setup
+  end
+
+  ### Setup Methods for Different Contexts
+  #
+  # The LizaRB framework provides specific setup methods for different contexts: project, script_dependent, and script_independent.
+  # Each method sets the `@root` and `@setup_type` instance variables and calls the `setup` method.
+  #
+  # Sets up the environment for a script.
+  #
+  # A script_independent is a Ruby script that uses the global_app for its project and project directory.
+  #
+  def setup_script_independent pwd, script:
+    @root = pwd.to_s
+    @setup_type = :script_independent
+    # NOTE: arg script is not being stored anywhere
+    $APP = "app_global"
     setup
   end
 
@@ -234,11 +277,11 @@ module Lizarb
       puts "determining environment"
       puts "        Lizarb.root       = #{root.inspect}"
       puts "        Lizarb.setup_type = #{setup_type.inspect}"
-      # puts "        Lizarb._sfa       = #{_sfa.inspect}" if setup_type == :sfa
       # puts "        Lizarb._project            = #{_project.inspect}" if setup_type == :project
       # puts "        Lizarb._script_dependent   = #{_script_dependent.inspect}" if setup_type == :script_dependent
+      # puts "        Lizarb._script_independent = #{_script_independent.inspect}" if setup_type == :script_independent
     end
-
+    
     # NOTE: calling an unset instance variable returns nil
     # NOTE: these file calls are pretty fast
     @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
