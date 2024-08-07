@@ -2,4 +2,5 @@
 
 source "https://rubygems.org"
 
-gem "lizarb", "~> 1.0"
+# Specify your gem's dependencies in lizarb.gemspec
+gemspec
