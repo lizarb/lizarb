@@ -7,10 +7,6 @@ class App
   # Choose your Application Directory
 
   folder "app"
-
-  # Choose your Systems Directory
-
-  # sys_folder "app_liza_sys"
   
   # Choose your Log Transparency
   #
