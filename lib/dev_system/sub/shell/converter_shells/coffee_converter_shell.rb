@@ -16,6 +16,9 @@ class DevSystem::CoffeeConverterShell < DevSystem::ConverterShell
     require "coffee-script"
     
     CoffeeScript.compile string
+  rescue ExecJS::RuntimeError => e
+    log :highest, "ExecJS::RuntimeError: #{e.message.inspect}"
+    string
   end
 
 end
