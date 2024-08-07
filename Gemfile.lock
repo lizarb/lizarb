@@ -219,5 +219,8 @@ DEPENDENCIES
   sassc (~> 2.4)
   sqlite3 (~> 1.5)
 
+RUBY VERSION
+   ruby 3.1.6p260
+
 BUNDLED WITH
    2.5.4
