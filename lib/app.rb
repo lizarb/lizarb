@@ -30,12 +30,13 @@ class App
 
   # folder
 
-  def self.folder folder = nil
+  def self.folder folder = nil, systems: nil
     raise "locked" if @locked
     if folder
       @folder = folder
       @relative_path = folder
       @path = "#{Lizarb.app_dir}/#{folder}"
+      self.sys_folder systems if systems
     else
       @folder
     end
