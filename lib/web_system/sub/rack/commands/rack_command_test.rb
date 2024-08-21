@@ -1,4 +1,4 @@
-class WebSystem::RackCommandTest < DevSystem::CommandTest
+class WebSystem::RackCommandTest < DevSystem::SimpleCommandTest
 
   test :subject_class do
     assert subject_class == WebSystem::RackCommand

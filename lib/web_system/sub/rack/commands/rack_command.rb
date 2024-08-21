@@ -1,6 +1,6 @@
-class WebSystem::RackCommand < DevSystem::Command
+class WebSystem::RackCommand < DevSystem::SimpleCommand
 
-  def call args
+  def call_default
     log "args = #{args.inspect}"
 
     server = nil
