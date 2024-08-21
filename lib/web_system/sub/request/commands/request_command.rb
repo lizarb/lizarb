@@ -1,66 +1,55 @@
-class WebSystem::RequestCommand < DevSystem::Command
+class WebSystem::RequestCommand < DevSystem::SimpleCommand
 
-  def self.call(args)
+  def call_default
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
 
-    help(args) # always show help
+    call_help # always show help
 
-    new.instance_exec do
-      @env = {}
+    @request_env = {}
+    @request_env["PATH_INFO"] = path
+    @request_env["QUERY_STRING"] = qs
+    request_panel.find @request_env
+    @request_class = @request_env["LIZA_REQUEST_CLASS"] || raise("No request class found")
 
-      @env["PATH_INFO"] = path
-      @env["QUERY_STRING"] = qs
-
-      request_panel.find @env
-
-      @request_class = @env["LIZA_REQUEST_CLASS"] || raise("No request class found")
-
-      puts render :find, format: :txt
-    end
+    puts render :find, format: :txt
   end
 
-  def self.help(args)
+  def call_help
     log "args = #{args.inspect}"
-    new.instance_exec do
-      puts render :help, format: :txt
-    end
+    puts render :help, format: :txt
   end
 
-  def self.get(args)
+  def call_get
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
-    return help if path.nil?
+    return call_help if path.nil?
     
-    new.instance_exec do
-      @env = {}
-      @env["REQUEST_METHOD"] = "GET"
-      @env["PATH_INFO"]   = path
-      @env["QUERY_STRING"] = qs
+    @request_env = {}
+    @request_env["REQUEST_METHOD"] = "GET"
+    @request_env["PATH_INFO"]   = path
+    @request_env["QUERY_STRING"] = qs
 
-      @status, @headers, @body = request_panel.call! @env
-      log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
-      puts render :response, format: :http
-    end
+    @status, @headers, @body = request_panel.call! @request_env
+    log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
+    puts render :response, format: :http
   end
 
-  def self.post(args)
+  def call_post
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
-    return help if path.nil?
+    return call_help if path.nil?
     
-    new.instance_exec do
-      @env = {}
-      @env["REQUEST_METHOD"] = "POST"
-      @env["PATH_INFO"]   = path
-      @env["QUERY_STRING"] = qs
+    @request_env = {}
+    @request_env["REQUEST_METHOD"] = "POST"
+    @request_env["PATH_INFO"]   = path
+    @request_env["QUERY_STRING"] = qs
 
-      @status, @headers, @body = request_panel.call! @env
-      log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
-      puts render :response, format: :http
-    end
+    @status, @headers, @body = request_panel.call! @request_env
+    log "STATUS #{@status} with #{@headers.count} headers and a #{@body.first.size} byte body"
+    puts render :response, format: :http
   end
 
   # helpers
@@ -70,7 +59,7 @@ class WebSystem::RequestCommand < DevSystem::Command
   end
   
   # TODO: fix this
-  def self.get_command_signatures
+  def self.call_get_command_sign
     super << OpenStruct.new({name: "get", description: "# no description"})
   end
 end
@@ -104,7 +93,7 @@ liza request:help
 # view find.txt.erb
 
 ENV:
-<% @env.each do |k, v| %>
+<% @request_env.each do |k, v| %>
 env["<%= k %>"] = <%= v.inspect -%>
 <% end %>
 
