@@ -3,6 +3,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   #
 
   def self.call(env)
+    before if defined? before
     log :higher, "env.count is #{env.count}"
     
     command = env[:command] = new
@@ -16,6 +17,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   def call(env)
     log :higher, "env.count is #{env.count}"
     @env = env
+    before if defined? before
     
     method_name = env[:command_arg]
     method_name = method_name.split(":")[1] || :default
