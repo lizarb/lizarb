@@ -1,8 +1,6 @@
-class NetSystem::DatabaseCommand < DevSystem::Command
+class NetSystem::DatabaseCommand < DevSystem::SimpleCommand
 
-  def self.call args
-    log "args = #{args.inspect}"
-
+  def call_default
     ruby_time   = Time.now
     redis_time  = RedisDb.current.now
     mongo_time  = MongoDb.current.now
@@ -18,7 +16,7 @@ class NetSystem::DatabaseCommand < DevSystem::Command
     log "Time for Pgsql:   #{_red pgsql_time}"
   end
 
-  def self._red s
+  def _red s
     stick NetSystem.color, s.to_s
   end
 
