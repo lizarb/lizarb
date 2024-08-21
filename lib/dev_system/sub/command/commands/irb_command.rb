@@ -1,11 +1,9 @@
-class DevSystem::IrbCommand < DevSystem::Command
+class DevSystem::IrbCommand < DevSystem::SimpleCommand
+  # https://github.com/ruby/ruby/blob/master/lib/irb.rb
+  require "irb"
 
-  def self.call args
-    log "args = #{args.inspect}"
-
-    # https://github.com/ruby/ruby/blob/master/lib/irb.rb
-    require "irb"
-
+  # liza irb
+  def call_default
     IRB.setup(nil)
     workspace = IRB::WorkSpace.new(binding)
     irb = IRB::Irb.new(workspace)
