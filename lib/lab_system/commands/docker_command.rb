@@ -1,8 +1,8 @@
-class LabSystem::DockerCommand < DevSystem::Command
+class LabSystem::DockerCommand < DevSystem::SimpleCommand
 
   # liza docker
 
-  def self.call args
+  def call_default
     log "args = #{args.inspect}"
 
     log "not implemented"
@@ -10,24 +10,24 @@ class LabSystem::DockerCommand < DevSystem::Command
 
   # liza docker:kroki
 
-  def self.kroki args
+  def call_kroki
     KrokiDockerShell.start_blocking_server
   end
 
   # liza docker:hello
 
-  def self.hello args
+  def call_hello
     t = Time.now
     log "args = #{args.inspect}"
 
-    DockerShell.alpine_hello
+    DockerShell.hello_alpine
   ensure
     log "#{t.diff} | done"
   end
 
   # liza docker:version
 
-  def self.version args
+  def call_version
     log "args = #{args.inspect}"
 
     h = DockerShell.version
