@@ -1,9 +1,9 @@
-class DevSystem::PryCommand < DevSystem::Command
+class DevSystem::PryCommand < DevSystem::SimpleCommand
+  # https://github.com/pry/pry
+  require "pry"
 
-  def self.call args
-    require "pry"
-    log "args = #{args.inspect}"
-
+  # liza pry
+  def call_default
     Pry.start
   end
 
