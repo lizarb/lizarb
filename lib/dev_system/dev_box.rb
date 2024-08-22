@@ -4,6 +4,11 @@ class DevSystem::DevBox < Liza::Box
   
   configure :bench do
     # 
+    rescue_from :not_found
+  end
+
+  def self.bench(...)
+    self[:bench].call(...)
   end
 
   # Preconfigure your command panel

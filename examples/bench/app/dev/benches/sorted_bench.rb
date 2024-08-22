@@ -1,8 +1,9 @@
 class SortedBench < DevSystem::Bench
 
-  def self.call args
+  def self.call env
     t = Time.now
     
+    args = env[:args]
     log "args = #{args.inspect}"
 
     # https://rubyapi.org/3.1/o/benchmark

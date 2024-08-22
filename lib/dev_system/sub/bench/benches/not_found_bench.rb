@@ -1,13 +1,15 @@
 class DevSystem::NotFoundBench < DevSystem::Bench
 
-  def self.call args
+  def self.call env
     # 1. LOG
 
+    args = env[:args]
     log "args = #{args.inspect}"
     puts
 
     # 2. FIND generators
 
+    Lizarb.eager_load!
     benches = Liza::Bench.descendants
     benches -= ignored_benches
 

@@ -1,27 +1,9 @@
-class DevSystem::BenchCommand < DevSystem::Command
+class DevSystem::BenchCommand < DevSystem::SimpleCommand
 
-  def self.call args
-    # 1. LOG
-
-    log "args = #{args.inspect}"
-
-    # 2. FIND bench
-
-    return NotFoundBench.call args if args.none?
-
-    bench = args[0]
-
-    log({bench:})
-
-    begin
-      bench_klass = Liza.const "#{bench}_bench"
-    rescue Liza::ConstNotFound
-      bench_klass = NotFoundBench
-    end
-
-    # 3. CALL
-
-    bench_klass.call args[1..-1]
+  # liza bench NAME
+  def call_default
+    log :higher, "env.count is #{env.count}"
+    DevBox.bench env
   end
 
 end
