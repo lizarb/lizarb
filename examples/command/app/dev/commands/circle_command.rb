@@ -17,11 +17,11 @@ class CircleCommand < NarrativeMethodCommand
 
   def validate
     log "Called #{self}.#{__method__}"
-    raise Invalid, "liza circle <formula> <radius>" if @args.size != 2
-    raise Invalid, "liza circle <formula> <radius>" if @args[0] != "area" && @args[0] != "circumference"
+    raise Invalid, "liza circle <formula> <radius>" if args.size != 2
+    raise Invalid, "liza circle <formula> <radius>" if args[0] != "area" && args[0] != "circumference"
 
-    @formula = @args[0].to_sym
-    @radius = @args[1].to_f
+    @formula = args[0].to_sym
+    @radius = args[1].to_f
 
     log "@formula = #{@formula}"
     log "@radius  = #{@radius}"

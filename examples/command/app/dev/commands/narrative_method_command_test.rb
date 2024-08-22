@@ -1,4 +1,4 @@
-class NarrativeMethodCommandTest < DevSystem::CommandTest
+class NarrativeMethodCommandTest < DevSystem::SimpleCommandTest
 
   test :subject_class do
     assert subject_class == NarrativeMethodCommand

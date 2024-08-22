@@ -17,11 +17,11 @@ class QuadraticCommand < NarrativeMethodCommand
 
   def validate
     log "Called #{self}.#{__method__}"
-    raise Invalid, "liza quadratic 0 0 0" if @args.size != 3
+    raise Invalid, "liza quadratic 0 0 0" if args.size != 3
 
-    @a = @args[0].to_f
-    @b = @args[1].to_f
-    @c = @args[2].to_f
+    @a = args[0].to_f
+    @b = args[1].to_f
+    @c = args[2].to_f
 
     log "@a = #{@a}"
     log "@b = #{@b}"

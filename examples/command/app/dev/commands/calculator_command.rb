@@ -10,11 +10,11 @@ class CalculatorCommand < NarrativeMethodCommand
 
   def validate
     log "Called #{self}.#{__method__}"
-    raise Invalid, "liza calculator 0 + 0" if @args.size != 3
+    raise Invalid, "liza calculator 0 + 0" if args.size != 3
 
-    @a  = @args[0].to_f
-    @op = @args[1].to_sym
-    @b  = @args[2].to_f
+    @a  = args[0].to_f
+    @op = args[1].to_sym
+    @b  = args[2].to_f
 
     log "@a  = #{@a}"
     log "@op = #{@op}"

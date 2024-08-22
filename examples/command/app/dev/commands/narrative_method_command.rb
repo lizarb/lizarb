@@ -1,17 +1,8 @@
-class NarrativeMethodCommand < DevSystem::Command
+class NarrativeMethodCommand < DevSystem::SimpleCommand
   class Error < StandardError; end
   class Invalid < Error; end
 
-  def self.call(args)
-    log "args = #{args.inspect}"
-    new.call(args)
-  end
-
-  # instance methods
-
-  def call(args)
-    @args = args
-    log "@args = #{args.inspect}"
+  def call_default
     return help if args.empty?
 
     validate
