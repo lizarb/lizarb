@@ -17,11 +17,17 @@ class Liza::Box < Liza::Unit
   end
 
   def self.forward panel_key, method_name=nil
-    if method_name.nil?
+    case method_name
+    when NilClass
       method_name = :call
       box_method_name = panel_key
-    else
+    when Symbol
       box_method_name = method_name
+    when Hash
+      box_method_name = method_name.keys.first
+      method_name = method_name.values.first
+    else
+      raise ArgumentError, "Invalid method_name: #{method_name.inspect}. Expecting Symbol or Hash."
     end
     define_singleton_method box_method_name do |*args, **kwargs|
       self[panel_key].send method_name, *args, **kwargs

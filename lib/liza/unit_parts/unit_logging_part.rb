@@ -21,7 +21,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:caller] = kaller
       env[:object] = object
   
-      DevBox[:log].call env
+      DevBox.logg env
     end
   
     def log log_level = App::DEFAULT_LOG_LEVEL, object, kaller: caller
@@ -39,7 +39,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:caller] = kaller
       env[:object] = object
   
-      DevBox[:log].call env
+      DevBox.logg env
     end
   
     def self.stick *args

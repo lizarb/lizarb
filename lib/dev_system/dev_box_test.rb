@@ -9,7 +9,9 @@ class DevSystem::DevBoxTest < Liza::BoxTest
       :bench,
       :command,
       :convert, :convert?, :converters, :converters_to,
+      :generate,
       :format, :format?, :formatters,
+      :logg,
       :input,
       :pick_many, :pick_one
     on_instance

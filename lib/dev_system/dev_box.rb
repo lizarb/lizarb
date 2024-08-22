@@ -28,12 +28,16 @@ class DevSystem::DevBox < Liza::Box
     rescue_from :not_found
   end
 
+  forward :generator, :generate => :call
+
   # Preconfigure your log panel
 
   configure :log do
     # 
     sidebar_size 40
   end
+
+  forward :log, :logg => :call
 
   # Preconfigure your shell panel
 
