@@ -28,9 +28,9 @@ class DevSystem::CommandPanel < Liza::Panel
 
   #
 
-  PARSE_REGEX = /(?<command_given>[A-Za-z0-9_]+)(?::(?<command_class_method>[a-z0-9_]+))?(?:#(?<command_instance_method>[a-z0-9_]+))?(?:\.(?<command_method>[a-z0-9_]+))?/
+  PARSE_REGEX = /(?<command_given>[A-Za-z0-9_]+)(?::(?<command_action>[a-z0-9_]+))?/
 
-  # Hash command_name class_method instance_method method
+  # Hash command_arg command_given command_action
   def parse string
     md = string.to_s.match PARSE_REGEX
     raise_error :parse, string if md.nil?
@@ -44,7 +44,6 @@ class DevSystem::CommandPanel < Liza::Panel
   def build_env args
     env = parse args[0]
     env[:args] = Array(args[1..-1])
-    env[:command_args] = env[:args].dup
     env[:command_name] = short env[:command_given]
     env
   end
@@ -69,37 +68,8 @@ class DevSystem::CommandPanel < Liza::Panel
   #
 
   def forward env
-    command_class = env[:command_class]
-    
-    return forward_base_command env if command_class < BaseCommand
-    return forward_command env if command_class < Command
-  end
-
-  def forward_base_command env
     log :higher,  "forwarding"
     env[:command_class].call env
-  end
-
-  def forward_command env
-    case
-    when env[:command_class_method]
-      log :higher,  "#{env[:command_class]}.#{env[:command_class_method]}(#{env[:args]})"
-      env[:command_class].public_send env[:command_class_method], env[:args]
-    when env[:command_instance_method]
-      log :higher,  "#{env[:command_class]}.new.#{env[:command_instance_method]}(#{env[:args]})"
-      env[:command_class].new.public_send env[:command_instance_method], env[:args]
-    when env[:command_method]
-      if env[:command_class].respond_to?(env[:command_method])
-        log :higher,  "#{env[:command_class]}.#{env[:command_method]}(#{env[:args]})"
-        env[:command_class].public_send env[:command_method], env[:args]
-      else
-        log :higher,  "#{env[:command_class]}.new.#{env[:command_method]}(#{env[:args]})"
-        env[:command_class].new.public_send env[:command_method], env[:args]
-      end
-    else
-      log :higher,  "#{env[:command_class]}.call(#{env[:args]})"
-      env[:command_class].call env[:args]
-    end
   end
 
   #
@@ -112,7 +82,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     puts if log? :lower
 
-    args = [*env[:command_args], *env[:simple]].join(" ")
+    args = [*env[:args], *env[:simple]].join(" ")
 
     log sticks :black, system.color, :b,
       ["LIZA"],

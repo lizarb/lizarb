@@ -10,7 +10,7 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
       :build_env,
       :call, :call_not_found,
       :find,
-      :forward, :forward_base_command, :forward_command,
+      :forward,
       :inform,
       :input,
       :parse,
@@ -18,45 +18,21 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
   end
 
   test :parse do
-    def parse string
-      OpenStruct.new subject.parse(string)
-    end
+    assert_equality \
+      (subject.parse "generate"),
+      {:command_given=>"generate", :command_action=>nil, :command_arg=>"generate"}
 
-    struct = parse "generate"
-    assert_equality struct.command_given, "generate"
-    assert_equality struct.command_class_method, nil
-    assert_equality struct.command_instance_method, nil
-    assert_equality struct.command_method, nil
+    assert_equality \
+      (subject.parse "generate:install"),
+      {:command_given=>"generate", :command_action=>"install", :command_arg=>"generate:install"}
 
-    struct = parse "generate:install"
-    assert_equality struct.command_given, "generate"
-    assert_equality struct.command_class_method, "install"
-    assert_equality struct.command_instance_method, nil
-    assert_equality struct.command_method, nil
+    assert_equality \
+      (subject.parse "two_words"),
+      {:command_given=>"two_words", :command_action=>nil, :command_arg=>"two_words"}
 
-    struct = parse "generate#install"
-    assert_equality struct.command_given, "generate"
-    assert_equality struct.command_class_method, nil
-    assert_equality struct.command_instance_method, "install"
-    assert_equality struct.command_method, nil
-
-    struct = parse "generate.install"
-    assert_equality struct.command_given, "generate"
-    assert_equality struct.command_class_method, nil
-    assert_equality struct.command_instance_method, nil
-    assert_equality struct.command_method, "install"
-
-    struct = parse "two_words"
-    assert_equality struct.command_given, "two_words"
-    assert_equality struct.command_class_method, nil
-    assert_equality struct.command_instance_method, nil
-    assert_equality struct.command_method, nil
-
-    struct = parse "word10"
-    assert_equality struct.command_given, "word10"
-    assert_equality struct.command_class_method, nil
-    assert_equality struct.command_instance_method, nil
-    assert_equality struct.command_method, nil
+    assert_equality \
+      (subject.parse "word10"),
+      {:command_given=>"word10", :command_action=>nil, :command_arg=>"word10"}
   end
 
   test :find do
