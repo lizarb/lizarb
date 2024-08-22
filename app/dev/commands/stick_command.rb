@@ -1,8 +1,8 @@
-class StickCommand < Liza::Command
+class StickCommand < Liza::SimpleCommand
   
   # lizarb stick
 
-  def self.call args
+  def call_default
     log "args = #{args.inspect}"
 
     log stick :white, :ruby, :b, "I just think Ruby is the Best for coding!".center(97)
@@ -43,7 +43,7 @@ class StickCommand < Liza::Command
 
   # lizarb stick:systems
   
-  def self.systems args
+  def call_systems
     log "args = #{args.inspect}"
 
     
