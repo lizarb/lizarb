@@ -1,4 +1,4 @@
-class DevSystem::SimpleGeneratorTest < DevSystem::GeneratorTest
+class DevSystem::SimpleGeneratorTest < DevSystem::BaseGeneratorTest
 
   test :subject_class do
     assert subject_class == DevSystem::SimpleGenerator
