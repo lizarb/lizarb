@@ -1,14 +1,7 @@
-class DevSystem::EnvGenerator < DevSystem::Generator
+class DevSystem::EnvGenerator < DevSystem::BaseGenerator
 
-  def self.call args
-    log "args = #{args.inspect}"
-
-    new.call args
-  end
-
-  def call args
-    log "args = #{args.inspect}"
-
+  # liza g env
+  def call_default
     if app_env_exists?
       log stick :light_red, "env files already exist"
     else
