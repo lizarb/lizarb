@@ -6,7 +6,8 @@ class DevSystem::InputCommand < DevSystem::Command
 
   #
 
-  def self.call args
+  def self.call env
+    args = env[:args]
     log "args = #{args.inspect}"
   end
 
