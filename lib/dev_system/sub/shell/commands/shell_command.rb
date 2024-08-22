@@ -1,6 +1,6 @@
-class DevSystem::ShellCommand < DevSystem::Command
+class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
-  def call args
+  def call_default
     puts
     puts "Liza         #{ Liza.source_location[0] }"
     puts
