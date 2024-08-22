@@ -7,7 +7,11 @@ class Liza::UnitLoggingPart < Liza::Part
     def self.log_levels()=App::LOG_LEVELS
     def log_levels()= App::LOG_LEVELS
   
-    def self.log log_level = App::DEFAULT_LOG_LEVEL, object, kaller: caller
+    def self.log(
+      log_level = App::DEFAULT_LOG_LEVEL,
+      object,
+      kaller: caller
+    )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
       return unless log_level? log_level
@@ -24,12 +28,15 @@ class Liza::UnitLoggingPart < Liza::Part
       DevBox.logg env
     end
   
-    def log log_level = App::DEFAULT_LOG_LEVEL, object, kaller: caller
+    def log(
+      log_level = App::DEFAULT_LOG_LEVEL,
+      object,
+      kaller: caller
+    )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
       return unless log_level? log_level
 
-  
       env = {}
       env[:type] = :log
       env[:unit] = self
