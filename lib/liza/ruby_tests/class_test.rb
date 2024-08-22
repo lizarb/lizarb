@@ -12,9 +12,15 @@ class Liza::ClassTest < Liza::ObjectTest
     assert_equality [Array],   Array.ancestors_until(Object)
     assert_equality [Hash],    Hash.ancestors_until(Object)
 
-    assert_equality [IrbCommand, Command],  IrbCommand.ancestors_until(Command)
-    assert_equality [PryCommand, Command],  PryCommand.ancestors_until(Command)
-    assert_equality [TestCommand, Command], TestCommand.ancestors_until(Command)
+    assert_equality \
+      [IrbCommand, SimpleCommand, BaseCommand, Command],
+      IrbCommand.ancestors_until(Command)
+    assert_equality \
+      [PryCommand, SimpleCommand, BaseCommand, Command],
+      PryCommand.ancestors_until(Command)
+    assert_equality \
+      [TestCommand, Command],
+      TestCommand.ancestors_until(Command)
   end
 
 end

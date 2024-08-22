@@ -8,7 +8,7 @@ class Liza::ModuleTest < Liza::ObjectTest
     assert Object.source_location == []
 
     assert Liza::Command.source_location[1] == 1
-    assert IrbCommand.source_location[1] == 1
+    assert IrbCommand.source_location[1] == 2
   end
 
   test :source_location_radical do
