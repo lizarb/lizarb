@@ -1,9 +1,10 @@
 class DevSystem::TestCommand < DevSystem::Command
 
-  def self.call args
+  def self.call env
     Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
 
+    args = env[:args]
     log "args = #{args.inspect}"
 
     now = Time.now
