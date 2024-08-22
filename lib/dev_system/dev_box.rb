@@ -7,9 +7,7 @@ class DevSystem::DevBox < Liza::Box
     rescue_from :not_found
   end
 
-  def self.bench(...)
-    self[:bench].call(...)
-  end
+  forward :bench
 
   # Preconfigure your command panel
   
@@ -18,22 +16,11 @@ class DevSystem::DevBox < Liza::Box
     rescue_from :not_found
   end
 
-  def self.command(...)
-    self[:command].call(...)
-  end
+  forward :command
+  forward :command, :input
+  forward :command, :pick_one
+  forward :command, :pick_many
 
-  def self.input
-    self[:command].input
-  end
-  
-  def self.pick_one(...)
-    self[:command].pick_one(...)
-  end
-  
-  def self.pick_many(...)
-    self[:command].pick_many(...)
-  end
-  
   # Preconfigure your generator panel
   
   configure :generator do
@@ -54,32 +41,12 @@ class DevSystem::DevBox < Liza::Box
     # 
   end
 
-  def self.formatters
-    self[:shell].formatters
-  end
-
-  def self.converters
-    self[:shell].converters
-  end
-
-  def self.converters_to
-    self[:shell].converters_to
-  end
-
-  def self.format(...)
-    self[:shell].format(...)
-  end
-
-  def self.format?(...)
-    self[:shell].format?(...)
-  end
-
-  def self.convert(...)
-    self[:shell].convert(...)
-  end
-
-  def self.convert?(...)
-    self[:shell].convert?(...)
-  end
+  forward :shell, :formatters
+  forward :shell, :converters
+  forward :shell, :converters_to
+  forward :shell, :format
+  forward :shell, :format?
+  forward :shell, :convert
+  forward :shell, :convert?
 
 end

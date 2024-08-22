@@ -16,7 +16,17 @@ class Liza::Box < Liza::Unit
     panel.push block
   end
 
-  # color
+  def self.forward panel_key, method_name=nil
+    if method_name.nil?
+      method_name = :call
+      box_method_name = panel_key
+    else
+      box_method_name = method_name
+    end
+    define_singleton_method box_method_name do |*args, **kwargs|
+      self[panel_key].send method_name, *args, **kwargs
+    end
+  end
 
   def self.color
     system.color

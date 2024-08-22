@@ -6,6 +6,7 @@ class DevSystem::DevBoxTest < Liza::BoxTest
 
   test_methods_defined do
     on_self \
+      :bench,
       :command,
       :convert, :convert?, :converters, :converters_to,
       :format, :format?, :formatters,
