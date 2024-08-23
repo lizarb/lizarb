@@ -16,7 +16,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     simple_booleans = args.select { |arg| ["+", "-"].any? { arg.start_with? _1 }  }
 
     env[:simple] = [""]
-    env[:simple_args] = args - simple_strings - simple_booleans
+    env[:simple_args] = (Array args[1..-1]) - simple_strings - simple_booleans
     env[:simple_strings] = simple_strings.map { |arg| arg.split "=" }.map { |k,v| [k.to_sym, v] }.to_h
     env[:simple_booleans] = simple_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
   end
@@ -108,9 +108,11 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def simple_arg(index, &block)
     # Find the value associated with the index in simple_args.
     string = simple_args[index]
-    log simple_args.map.with_index { |arg, i| i == index ? "[#{arg}]" : arg }.join " "
+    s = simple_args.map.with_index { |arg, i| i == index ? "[#{arg}]" : arg }.join " "
+    log "index #{index}: #{s}"
 
     # If no block is given or a value is already found, return the value.
+    return string if string
     return string unless block_given?
 
     value = yield
