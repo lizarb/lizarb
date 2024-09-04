@@ -1,9 +1,10 @@
 class NetSystem::PgsqlClient < NetSystem::Client
+  require "pg"
 
   # https://www.postgresql.org/
   # https://github.com/ged/ruby-pg
   def initialize hash={}
-    require "pg"
+    self.class.call({})
     t = Time.now
     hash = NetBox[:client].get(:pgsql_hash) if hash.empty?
     @conn = PG::Connection.new(hash)

@@ -2,6 +2,7 @@ class RootRequest < AppRequest
 
   # NOTE: There's a bug in this file. Can you find it?
   def self.call env
+    super
     action = env["LIZA_ACTION"]
 
     #

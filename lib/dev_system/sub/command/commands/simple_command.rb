@@ -1,16 +1,5 @@
 class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
-  # This gem will be lazily required
-  def self.require(gem_name)= add :requirements, gem_name
-
-  def self.requirements()= get :requirements
-  
-  def self.require_requirements()= requirements&.each { Kernel.require _1 }&.clear
-
-  def self.before
-    require_requirements
-  end
-
   def before
     simple_strings  = args.select { |arg| arg.include? "=" }
     simple_booleans = args.select { |arg| ["+", "-"].any? { arg.start_with? _1 }  }

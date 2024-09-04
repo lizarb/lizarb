@@ -1,6 +1,7 @@
 class WebSystem::NotFoundRequest < WebSystem::Request
 
   def self.call env
+    super
     status = 404
 
     headers = {

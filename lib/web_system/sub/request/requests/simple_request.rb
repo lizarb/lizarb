@@ -3,6 +3,7 @@ class WebSystem::SimpleRequest < WebSystem::Request
   #
   
   def self.call env
+    super
     new.call env
   end
 

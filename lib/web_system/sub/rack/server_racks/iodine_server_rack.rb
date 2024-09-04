@@ -1,6 +1,8 @@
 class WebSystem::IodineServerRack < WebSystem::ServerRack
+  require "rack/handler/iodine"
 
   def self.call rack_app
+    super({})
     rack_panel = WebBox[:rack]
 
     host = rack_panel.get :host
@@ -12,7 +14,6 @@ class WebSystem::IodineServerRack < WebSystem::ServerRack
 
     # https://github.com/boazsegev/iodine/tree/master/examples
 
-    require "rack/handler/iodine"
     handler = ::Iodine::Rack
     handler.run rack_app, Host: host, Port: port
   end

@@ -1,9 +1,10 @@
 class NetSystem::SqliteClient < NetSystem::Client
+  require "sqlite3"
 
   # https://www.sqlite.org/
   # https://github.com/sparklemotion/sqlite3-ruby
   def initialize *args
-    require "sqlite3"
+    self.class.call({})
     t = Time.now
     args = [NetBox[:client].get(:sqlite_path)] if args.empty?
     @conn = SQLite3::Database.new(*args)

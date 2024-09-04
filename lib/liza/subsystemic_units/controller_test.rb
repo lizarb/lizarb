@@ -5,12 +5,14 @@ class Liza::ControllerTest < Liza::UnitTest
 
   test_methods_defined do
     on_self :box, \
+      :call,
       :color,
       :division!, :division?,
       :inherited,
       :on_connected,
       :panel, :plural,
       :puts,
+      :require,
       :singular,
       :subsystem, :subsystem!, :subsystem?,
       :token

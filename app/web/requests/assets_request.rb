@@ -1,6 +1,7 @@
 class AssetsRequest < AppRequest
 
   def self.call env
+    super
     new.call env
   end
 

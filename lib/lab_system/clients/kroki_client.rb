@@ -3,6 +3,7 @@ class LabSystem::KrokiClient < NetSystem::Client
   # 
 
   def self.call(name, action, output_format, &block)
+    super({})
     new(name, action, output_format, &block).call
   end
 

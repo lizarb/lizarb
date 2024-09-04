@@ -1,6 +1,7 @@
 class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
 
   def self.call(env)
+    super
     env[:sidebar] ||= sidebar_for env
 
     string = env[:object]

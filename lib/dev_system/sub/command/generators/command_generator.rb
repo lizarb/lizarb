@@ -73,6 +73,7 @@ __END__
 # view base_command_section_1.rb.erb
 
   def self.call(env)
+    super
     log :higher, "args is #{ args.inspect }"
 
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"

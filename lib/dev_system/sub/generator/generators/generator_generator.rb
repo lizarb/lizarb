@@ -41,6 +41,7 @@ __END__
   # end
 # view generator_view_1.rb.erb
   def self.call(env)
+    super
     # 
   end
 

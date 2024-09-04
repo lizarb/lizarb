@@ -49,6 +49,7 @@ __END__
 
   # TODO: https://rubyapi.org/3.1/o/logger
   def self.call(env)
+    super
     # as of version <%= Lizarb::VERSION %>, OutputLog has been the only controller explored
   end
 

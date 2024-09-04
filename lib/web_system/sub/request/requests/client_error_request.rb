@@ -1,6 +1,7 @@
 class WebSystem::ClientErrorRequest < WebSystem::Request
 
   def self.call env
+    super
     status = 400
 
     headers = {

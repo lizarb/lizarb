@@ -1,6 +1,7 @@
 class DevSystem::TestCommand < DevSystem::Command
 
   def self.call env
+    super
     Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
 

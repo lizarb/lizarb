@@ -1,4 +1,5 @@
 class DevSystem::MdConverterShell < DevSystem::ConverterShell
+  require "commonmarker"
 
   def self.default_options
     DevBox[:shell].converters[:md][:options]
@@ -13,7 +14,7 @@ class DevSystem::MdConverterShell < DevSystem::ConverterShell
     
     log :higher, "#{string.size} chars (options: #{options.inspect})"
 
-    require "commonmarker"
+    call({})
     # CommonMarker.render_html markdown, [:HARDBREAKS, :SOURCEPOS, :UNSAFE]
     CommonMarker.render_html string, :DEFAULT
   end

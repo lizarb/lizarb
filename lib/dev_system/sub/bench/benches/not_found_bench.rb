@@ -1,6 +1,7 @@
 class DevSystem::NotFoundBench < DevSystem::Bench
 
   def self.call env
+    super
     # 1. LOG
 
     args = env[:args]

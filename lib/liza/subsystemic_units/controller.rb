@@ -1,5 +1,6 @@
 class Liza::Controller < Liza::Unit
 
+  part :controller_callable
   part :controller_subsystem
 
   def self.on_connected

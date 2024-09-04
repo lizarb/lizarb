@@ -1,6 +1,8 @@
 class WebSystem::FalconServerRack < WebSystem::ServerRack
+  require "rack/handler/falcon"
 
   def self.call rack_app
+    super({})
     rack_panel = WebBox[:rack]
 
     host = rack_panel.get :host
@@ -14,7 +16,6 @@ class WebSystem::FalconServerRack < WebSystem::ServerRack
 
     # TODO: improve custom configurability for falcon
 
-    require "rack/handler/falcon"
     handler = ::Rack::Handler::Falcon
     handler.run rack_app, Host: host, Port: port
   end

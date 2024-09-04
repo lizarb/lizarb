@@ -1,6 +1,8 @@
 class WebSystem::AgooServerRack < WebSystem::ServerRack
+  require "rack/handler/agoo"
 
   def self.call rack_app
+    super({})
     rack_panel = WebBox[:rack]
 
     host = rack_panel.get :host
@@ -14,7 +16,6 @@ class WebSystem::AgooServerRack < WebSystem::ServerRack
     end
 
     # https://github.com/ohler55/agoo/blob/develop/lib/rack/handler/agoo.rb
-    require "rack/handler/agoo"
     handler = ::Rack::Handler::Agoo
     handler.run rack_app, Host: host, Port: port
 

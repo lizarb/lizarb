@@ -1,6 +1,7 @@
 class ApiRequest < AppRequest
 
   def self.call env
+    super
     path = env["REQUEST_PATH"]
 
     #

@@ -1,9 +1,10 @@
 class NetSystem::MongoClient < NetSystem::Client
+  require "mongo"
 
   # https://www.mongodb.com/
   # https://github.com/mongodb/mongo-ruby-driver
   def initialize hash={}
-    require "mongo"
+    self.class.call({})
     t = Time.now
     hash = NetBox[:client].get(:mongo_hash) if hash.empty?
     uri = "mongodb://#{hash[:host]}:#{hash[:port]}/#{hash[:database]}"

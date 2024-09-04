@@ -1,6 +1,7 @@
 class SortedBench < DevSystem::Bench
 
   def self.call env
+    super
     t = Time.now
     
     args = env[:args]

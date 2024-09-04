@@ -3,6 +3,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   #
 
   def self.call(env)
+    super
     log :higher, "env.count is #{env.count}"
     
     generator = env[:generator] = new

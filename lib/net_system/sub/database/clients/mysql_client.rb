@@ -1,9 +1,10 @@
 class NetSystem::MysqlClient < NetSystem::Client
+  require "mysql2"
 
   # https://www.mysql.com/
   # https://github.com/brianmario/mysql2
   def initialize hash={}
-    require "mysql2"
+    self.class.call({})
     t = Time.now
     hash = NetBox[:client].get(:mysql_hash) if hash.empty?
     @conn = Mysql2::Client.new(hash)

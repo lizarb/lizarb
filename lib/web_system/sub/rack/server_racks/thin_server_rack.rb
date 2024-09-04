@@ -1,20 +1,21 @@
 
 class WebSystem::ThinServerRack < WebSystem::ServerRack
+  require "thin"
+  require "thin/server"
+  require "thin/logging"
+  require "thin/backends/tcp_server"
 
   def self.call rack_app
+    super({})
     rack_panel = WebBox[:rack]
 
     host = rack_panel.get :host
     port = rack_panel.get :port
     files = rack_panel.get :files
 
+    # but fix
     ::Object.const_set :Fixnum, Class.new(Integer) unless defined? Fixnum
     
-    require "thin"
-    require "thin/server"
-    require "thin/logging"
-    require "thin/backends/tcp_server"
-
     ::Rack::Handler.register :thin, ThinHandler
 
     # TODO: improve custom configurability for thin

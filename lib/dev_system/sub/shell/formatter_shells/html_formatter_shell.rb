@@ -1,4 +1,5 @@
 class DevSystem::HtmlFormatterShell < DevSystem::FormatterShell
+  require "htmlbeautifier"
 
   def self.default_options
     DevBox[:shell].formatters[:html][:options]
@@ -12,8 +13,8 @@ class DevSystem::HtmlFormatterShell < DevSystem::FormatterShell
     options = default_options.merge options if options.any? && default_options.any?
     
     log :higher, "#{string.size} chars (options: #{options.inspect})"
+    call({})
 
-    require "htmlbeautifier"
     HtmlBeautifier.beautify string
   end
 

@@ -3,9 +3,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   #
 
   def self.call(env)
-    before if defined? before
-    log :higher, "env.count is #{env.count}"
-    
+    super
     command = env[:command] = new
     command.call env
   end

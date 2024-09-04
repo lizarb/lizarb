@@ -1,13 +1,14 @@
 class WebSystem::PumaServerRack < WebSystem::ServerRack
+  require "rack/handler/puma"
 
   def self.call rack_app
+    super({})
     rack_panel = WebBox[:rack]
 
     host = rack_panel.get :host
     port = rack_panel.get :port
     threads = $coding ? "1:1" : "5:5"
 
-    require "rack/handler/puma"
     handler = ::Rack::Handler::Puma
     handler.run rack_app, Host: host, Port: port, Threads: threads
   end

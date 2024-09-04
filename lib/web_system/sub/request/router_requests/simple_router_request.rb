@@ -2,6 +2,7 @@ class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
   class RequestNotFound < Error; end
 
   def self.call(env)
+    super
     segments = env["LIZA_SEGMENTS"].dup
     request = segments.shift || "root"
     action  = segments.shift || "index"

@@ -77,6 +77,7 @@ __END__
 # view controller_section_base_1.rb.erb
 
   def self.call(env)
+    super
     path = env["REQUEST_PATH"]
 
     status = 200
