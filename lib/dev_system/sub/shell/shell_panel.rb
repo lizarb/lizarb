@@ -1,6 +1,4 @@
 class DevSystem::ShellPanel < Liza::Panel
-  class FormatterError < Error; end
-  class ConverterError < Error; end
 
   #
 
@@ -22,25 +20,15 @@ class DevSystem::ShellPanel < Liza::Panel
     formatters.key? format.to_sym
   end
 
-  def format! format, string
-    format = format.to_sym
+  def format env
+    format = env[:format] = env[:format].to_sym
     if format? format
-      log :higher, "formatter found"
-      formatters[format][:shell].format string
+      formatter = formatters[format][:shell]
+      log :higher, "formatter found: #{formatter}"
+      formatter.call env
     else
       log :higher, "formatter not found"
-      raise FormatterError, "no formatter for #{format.inspect}"
-    end
-  end
-
-  def format format, string, options = {}
-    format = format.to_sym
-    if format? format
-      log :higher, "formatter found"
-      formatters[format][:shell].format string, options
-    else
-      log :higher, "formatter not found"
-      string
+      env[:format_out] = env[:format_in]
     end
   end
 
@@ -73,25 +61,15 @@ class DevSystem::ShellPanel < Liza::Panel
     converters.values.any? { _1[:from] == format }
   end
 
-  def convert! format, string, options = {}
-    format = format.to_sym
+  def convert env
+    format = env[:format] = env[:format].to_sym
     if convert? format
-      log :higher, "converter found"
-      converters[format][:shell].convert string
+      converter = converters[format][:shell]
+      log :higher, "converter found: #{converter}"
+      converter.call env
     else
       log :higher, "converter not found"
-      raise ConverterError, "no converter for #{format.inspect}"
-    end
-  end
-
-  def convert format, string, options = {}
-    format = format.to_sym
-    if convert? format
-      log :higher, "converter found"
-      converters[format][:shell].convert string, options
-    else
-      log :higher, "converter not found"
-      string
+      env[:convert_out] = env[:convert_in]
     end
   end
 

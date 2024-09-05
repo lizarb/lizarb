@@ -19,7 +19,13 @@ class WebSystem::SimpleRequest < WebSystem::Request
     }
 
     _call_action
-    @body ||= render format, action, format: format
+    @body ||=
+      render format,
+        action,
+        format: format,
+        converted: true,
+        formatted: true
+    
     [@status, @headers, [@body]]
   end
 

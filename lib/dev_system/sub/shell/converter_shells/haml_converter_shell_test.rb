@@ -5,7 +5,7 @@ class DevSystem::HamlConverterShellTest < DevSystem::ConverterShellTest
   end
 
   test :convert do
-    haml, html = <<-HAML, <<-HTML
+    test_convert <<-HAML, <<-HTML
 %body
   %header
     %nav
@@ -22,9 +22,6 @@ HAML
 </header>
 </body>
 HTML
-
-    output = subject_class.convert haml
-    assert_equality output, html
   end
 
 end

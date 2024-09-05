@@ -5,20 +5,37 @@ class DevSystem::FormatCommand < DevSystem::SimpleCommand
   def call_default
     log :higher, "args = #{args.inspect}"
 
-    raise ArgumentError, "args[0] must be present" unless args[0]
+    return call_help if simple_args.count < 2
 
-    format = args[0].to_sym
-    raise ArgumentError, "formatter #{format.inspect} not found" unless DevBox.format? format
-
-    fname = args[1]
-    raise ArgumentError, "fname must be present" unless FileShell.file? fname
-
+    format = simple_arg(0).to_sym
+    fname = simple_arg(1)
     content = TextShell.read fname
+    log "IN:"
+    puts content if log? :normal
 
     fname = "#{fname}.#{format}"
-    content = DevBox.format format, content
+    format_env = {format: format, format_in: content}
+    DevBox.format format_env
+    content = format_env[:format_out]
+
+    log "OUT:"
+    puts content if log? :normal
 
     TextShell.write fname, content
+  end
+
+  def call_help
+    puts
+    puts "Usage: liza format FORMAT FILENAME"
+    puts "  FORMAT - format name (#{ valid_formats.join(", ") })"
+    puts "  FILENAME - file name (a.html)"
+    puts
+  end
+
+  private
+
+  def valid_formats
+    DevBox[:shell].formatters.keys
   end
   
 end

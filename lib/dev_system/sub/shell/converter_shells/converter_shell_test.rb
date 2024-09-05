@@ -14,4 +14,13 @@ class DevSystem::ConverterShellTest < DevSystem::ShellTest
     assert_equality subject_class.division, DevSystem::ConverterShell
   end
 
+  def test_convert source, expectation
+    convert_env = {convert_in: source}
+    subject_class.call convert_env
+    actual = convert_env[:convert_out]
+    # expectation.strip!
+
+    assert_equality actual, expectation
+  end
+
 end

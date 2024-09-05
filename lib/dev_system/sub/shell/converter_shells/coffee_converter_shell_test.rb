@@ -5,7 +5,7 @@ class DevSystem::CoffeeConverterShellTest < DevSystem::ConverterShellTest
   end
 
   test :convert do
-    coffeescript, javascript = <<-COFFEESCRIPT, <<-JAVASCRIPT
+    test_convert <<-COFFEESCRIPT, <<-JAVASCRIPT
 listen = (el, event, handler) ->
   if el.addEventListener
     el.addEventListener event, handler
@@ -29,9 +29,6 @@ COFFEESCRIPT
 
 }).call(this);
 JAVASCRIPT
-
-    output = subject_class.convert coffeescript
-    assert_equality output, javascript
   end
 
 end

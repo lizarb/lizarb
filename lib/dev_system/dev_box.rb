@@ -45,12 +45,7 @@ class DevSystem::DevBox < Liza::Box
     # 
   end
 
-  forward :shell, :formatters
-  forward :shell, :converters
-  forward :shell, :converters_to
-  forward :shell, :format
-  forward :shell, :format?
   forward :shell, :convert
-  forward :shell, :convert?
+  forward :shell, :format
 
 end

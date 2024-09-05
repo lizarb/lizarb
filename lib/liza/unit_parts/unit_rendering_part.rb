@@ -21,11 +21,27 @@ Did you accidentally fall into an infinite loop?
       STRING
     end
 
-    def render! *keys, format: nil
-      render *keys, format: format, allow_missing: false
+    def render!(
+      *keys,
+      format: nil,
+      converted: false,
+      formatted: false
+    )
+      render \
+        *keys,
+        format: format,
+        converted: converted,
+        formatted: formatted,
+        allow_missing: false
     end
 
-    def render *keys, format: nil, allow_missing: true
+    def render(
+      *keys,
+      format: nil,
+      converted: false,
+      formatted: false,
+      allow_missing: true
+    )
       format = @render_format ||= @format if format.nil?
       raise "@render_format or @format must be set, or format keyword-argument must be given" if format.nil?
       @render_format = format = format.to_sym
@@ -43,10 +59,20 @@ Did you accidentally fall into an infinite loop?
             log_render_out "#{erb.name}.#{erb.format}", s.length, t.diff, kaller: caller if log_rendering
           end
           
-          if DevBox.convert? erb.format
+          if converted and DevBox[:shell].convert? erb.format
             t = Time.now
-            s = DevBox.convert erb.format, s
+            convert_env = {format: format, convert_in: s}
+            DevBox.convert(convert_env)
+            s = convert_env[:convert_out]
             log_render_convert "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
+          end
+
+          if formatted and DevBox[:shell].format? erb.format
+            t = Time.now
+            format_env = {format: format, format_in: s}
+            DevBox.format(format_env)
+            s = format_env[:format_out]
+            log_render_format "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
           end
   
           render_stack.push s
@@ -84,6 +110,10 @@ Did you accidentally fall into an infinite loop?
 
     def log_render_convert key, length, t, kaller: 
       log "convert  #{"#{key}".ljust_blanks 23} #{length.to_s.rjust_blanks 4} characters in #{t}s", kaller: kaller
+    end
+
+    def log_render_format key, length, t, kaller: 
+      log "format  #{"#{key}".ljust_blanks 23} #{length.to_s.rjust_blanks 4} characters in #{t}s", kaller: kaller
     end
 
     # class level methods
@@ -127,7 +157,7 @@ Did you accidentally fall into an infinite loop?
 
       log_erb = log_level? :higher
 
-      converters = DevBox.converters_to[format] || []
+      converters = DevBox[:shell].converters_to[format] || []
       converters_from = converters.map { _1[:from] }
       format_with_converters_from = [format, *converters_from]
       log "names #{stick :light_green, names.join(" ")} | formats #{stick :light_green, format_with_converters_from.join(" ")}" if log_erb

@@ -5,7 +5,7 @@ class DevSystem::MdConverterShellTest < DevSystem::ConverterShellTest
   end
 
   test :convert do
-    markdown, html = <<-MARKDOWN, <<-HTML
+    test_convert <<-MARKDOWN, <<-HTML
 # Hello World
 
 ## Hello World
@@ -26,9 +26,6 @@ MARKDOWN
 <h5>Hello World</h5>
 <h6>Hello World</h6>
 HTML
-
-    output = subject_class.convert markdown
-    assert_equality output, html
   end
 
 end

@@ -6,7 +6,6 @@ class WebSystem::RequestPanel < Liza::Panel
 
     request_klass = find env
     ret = request_klass.call env
-    _format env, ret
     
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     ret
@@ -60,14 +59,6 @@ class WebSystem::RequestPanel < Liza::Panel
   end
 
   #
-
-  def _format env, ret
-    format = env["LIZA_FORMAT"]
-
-    body = ret[2][0]
-    body = DevBox.format format, body
-    ret[2][0] = body
-  end
 
   def _prepare env
     path = env["PATH_INFO"]

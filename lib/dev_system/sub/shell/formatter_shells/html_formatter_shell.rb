@@ -1,21 +1,13 @@
 class DevSystem::HtmlFormatterShell < DevSystem::FormatterShell
   require "htmlbeautifier"
 
-  def self.default_options
-    DevBox[:shell].formatters[:html][:options]
-  end
-
   # https://github.com/threedaymonk/htmlbeautifier
 
-  def self.format string, options = {}
-    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
-
-    options = default_options.merge options if options.any? && default_options.any?
+  def self.call(env)
+    super
     
-    log :higher, "#{string.size} chars (options: #{options.inspect})"
-    call({})
-
-    HtmlBeautifier.beautify string
+    env[:format_out] = HtmlBeautifier.beautify env[:format_in]
+    nil
   end
 
 end

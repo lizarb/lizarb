@@ -1,24 +1,18 @@
 class DevSystem::CoffeeConverterShell < DevSystem::ConverterShell
-
-  def self.default_options
-    DevBox[:shell].converters[:coffee][:options]
-  end
+  require "coffee-script"
 
   # https://github.com/rails/ruby-coffee-script
 
-  def self.convert string, options = {}
-    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
-
-    options = default_options.merge options if options.any? && default_options.any?
+  def self.call(env)
+    super
     
-    log :higher, "#{string.size} chars (options: #{options.inspect})"
-
-    require "coffee-script"
-    
-    CoffeeScript.compile string
+    string = env[:convert_in]
+    env[:convert_out] = CoffeeScript.compile string
+    nil
   rescue ExecJS::RuntimeError => e
     log :highest, "ExecJS::RuntimeError: #{e.message.inspect}"
-    string
+    env[:convert_out] = string
+    nil
   end
 
 end

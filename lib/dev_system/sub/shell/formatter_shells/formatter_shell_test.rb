@@ -14,4 +14,13 @@ class DevSystem::FormatterShellTest < DevSystem::ShellTest
     assert_equality subject_class.division, DevSystem::FormatterShell
   end
 
+  def test_format source, expectation
+    format_env = {format_in: source}
+    subject_class.call format_env
+    actual = format_env[:format_out]
+    expectation.strip!
+
+    assert_equality actual, expectation
+  end
+
 end

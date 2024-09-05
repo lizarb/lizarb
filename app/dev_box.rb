@@ -53,15 +53,15 @@ class DevBox < DevSystem::DevBox
   # Configure your shell panel
 
   configure :shell do
-    # formatters
-    formatter :html
-    formatter :html, :xml
-
     # converters
     converter :html, :md
     converter :html, :haml
     converter :js,   :coffee
     converter :css,  :scss
+    
+    # formatters
+    formatter :html
+    formatter :html, :xml
   end
 
 end

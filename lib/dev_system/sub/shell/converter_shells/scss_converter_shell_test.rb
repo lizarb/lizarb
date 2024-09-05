@@ -5,7 +5,7 @@ class DevSystem::ScssConverterShellTest < DevSystem::ConverterShellTest
   end
 
   test :convert do
-    scss, css = <<-SCSS, <<-CSS
+    test_convert <<-SCSS, <<-CSS
 body {
   color: white;
   header {
@@ -47,9 +47,6 @@ body header nav a:hover {
   color: yellow;
 }
 CSS
-
-    output = subject_class.convert scss
-    assert_equality output, css
   end
 
 end

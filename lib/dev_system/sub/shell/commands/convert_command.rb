@@ -5,21 +5,40 @@ class DevSystem::ConvertCommand < DevSystem::SimpleCommand
   def call_default
     log :higher, "args = #{args.inspect}"
 
-    raise ArgumentError, "args[0] must be present" unless args[0]
+    return call_help if simple_args.count < 2
 
-    format = args[0].to_sym
-    raise ArgumentError, "converter #{format.inspect} not found" unless DevBox.convert? format
-
-    fname = args[1]
-    raise ArgumentError, "fname must be present" unless FileShell.file? fname
-
+    format = simple_arg(0).to_sym
+    fname = simple_arg(1)
     content = TextShell.read fname
+    log "IN:"
+    puts content if log? :normal
 
-    to_format = DevBox.converters[format][:to]
-    fname = "#{fname}.#{to_format}"
-    content = DevBox.convert format, content
+    format_to = DevBox[:shell].converters[format][:to]
+    fname = "#{fname}.#{format_to}"
+    convert_env = {format: format, convert_in: content}
+    DevBox.convert convert_env
+    DevBox.convert convert_env
+    DevBox.convert convert_env
+    content = convert_env[:convert_out]
+
+    log "OUT:"
+    puts content if log? :normal
 
     TextShell.write fname, content
+  end
+
+  def call_help
+    puts
+    puts "Usage: liza convert FORMAT FILENAME"
+    puts "  FORMAT - format name (#{ valid_formats.join(", ") })"
+    puts "  FILENAME - file name (a.haml)"
+    puts
+  end
+
+  private
+
+  def valid_formats
+    DevBox[:shell].converters.keys
   end
 
   

@@ -1,25 +1,20 @@
 class DevSystem::ScssConverterShell < DevSystem::ConverterShell
-
-  def self.default_options
-    DevBox[:shell].converters[:scss][:options]
-  end
+  require "sassc"
 
   # https://github.com/gjtorikian/commonmarker#usage
 
-  def self.convert string, options = {}
-    log :higher, "default_options = #{default_options.inspect} | options = #{options.inspect}"
-
-    options = default_options.merge options if options.any? && default_options.any?
+  def self.call(env)
+    super
     
-    log :higher, "#{string.size} chars (options: #{options.inspect})"
-
-    require "sassc"
+    string = env[:convert_in]
     # output = SassC::Engine.new(scss, line_comments: true).render
     # output = SassC::Engine.new(scss, style: :sass_style_nested).render
     # output = SassC::Engine.new(scss, style: :sass_style_compact).render
     # output = SassC::Engine.new(scss, style: :compressed).render
     # output = SassC::Engine.new(scss).render
-    SassC::Engine.new(string, line_comments: true, style: :sass_style_expanded).render
+    output = SassC::Engine.new(string, line_comments: true, style: :sass_style_expanded).render
+    env[:convert_out] = output
+    nil
   end
 
   # def self.sass_to_css sass
