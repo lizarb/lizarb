@@ -8,11 +8,11 @@ class DevSystem::DevBoxTest < Liza::BoxTest
     on_self \
       :bench,
       :command,
-      :convert, :convert?, :converters, :converters_to,
+      :convert,
+      :format,
       :generate,
-      :format, :format?, :formatters,
-      :logg,
       :input,
+      :logg,
       :pick_many, :pick_one
     on_instance
   end
