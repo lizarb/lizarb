@@ -20,9 +20,13 @@ jobs:
     name: ${{ matrix.os }} Ruby ${{ matrix.ruby }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
         with:
           submodules: "recursive"
+
+      # - name: Ignore .tool-versions
+      #   run: rm .tool-versions
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -31,5 +35,9 @@ jobs:
           bundler-cache: true
           cache-version: 1
 
+      - name: Install dependencies
+        run: |
+          bundle install --gemfile=gemfiles/gemfile.${{ matrix.ruby }}.rb  # Use specific gemfile
+        
       - name: Run tests
         run: bundle exec liza test
