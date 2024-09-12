@@ -126,8 +126,8 @@ class DevSystem::AppShell < DevSystem::Shell
       array.each do |klass|
         radical = klass.source_location_radical
 
-        if radical.include? "/#{system_name}_system/sub"
-          name = radical.split("_system/sub/").last.split("/").first
+        if radical.include? "/#{system_name}_system/subsystems"
+          name = radical.split("_system/subsystems/").last.split("/").first
           subsystem = system.const name
           klasses = tree["subsystems"][subsystem]["controllers"][klass.division] ||= []
         else

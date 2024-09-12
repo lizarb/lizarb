@@ -21,7 +21,7 @@ class DevSystem::MethodShellTest < DevSystem::ShellTest
     assert_equality subject.method_name, :call
 
     assert_equality subject.line, "def self.call(env)"
-    assert_equality subject.line_location, "lib/dev_system/sub/generator/generators/base_generator.rb:5"
+    assert_equality subject.line_location, "lib/dev_system/subsystems/generator/generators/base_generator.rb:5"
 
     assert subject.signature_has_single_parameter_named? :env
     refute subject.signature_has_single_parameter_named? :wrong

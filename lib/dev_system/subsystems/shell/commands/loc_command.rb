@@ -76,13 +76,13 @@ class DevSystem::LocCommand < DevSystem::SimpleCommand
   def print_system_sub system, system_name, tree_system
     tree_system["subsystems"].each do |subsystem, tree_subsystem|
       h4 subsystem
-      h5 "lib/#{system_name}_system/sub/#{subsystem.singular}/", color: system.color
+      h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/", color: system.color
 
       tree_subsystem["panel"].each { print_class _1 }
       tree_subsystem["controller"].each { print_class _1 }
       tree_subsystem["controllers"].each do |controller_class, klasses|
         start_subtotal
-        h5 "lib/#{system_name}_system/sub/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
+        h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
         klasses.each { print_class _1 }
         print_subtotal
       end

@@ -85,7 +85,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
         klasses = klasses.reject { _1 == NewCommand }
         next if klasses.empty?
 
-        h5 "lib/#{system_name}_system/sub/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
+        h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
         klasses.each { print_class _1 }
       end
     end

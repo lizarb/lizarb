@@ -84,7 +84,7 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
         klasses = klasses.reject { _1 == NewGenerator }
         next if klasses.empty?
 
-        h5 "lib/#{system_name}_system/sub/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
+        h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
         klasses.each { print_class _1 }
       end
     end
