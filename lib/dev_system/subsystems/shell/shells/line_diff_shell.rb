@@ -1,9 +1,10 @@
 class DevSystem::LineDiffShell < DevSystem::Shell
+  require "diff/lcs"
 
   # 
 
   def self.log_diff(a, b)
-    require "diff/lcs"
+    call({})
 
     # Compute the diff
     diffs = Diff::LCS.diff(a, b)
