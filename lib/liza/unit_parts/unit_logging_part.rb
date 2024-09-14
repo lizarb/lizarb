@@ -10,18 +10,23 @@ class Liza::UnitLoggingPart < Liza::Part
     def self.log(
       log_level = App::DEFAULT_LOG_LEVEL,
       object,
+      unit: self,
+      method_name: nil,
       kaller: caller
     )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
       return unless log_level? log_level
+
+      unit_class = unit.is_a?(Class) ? unit : unit.class
   
       env = {}
       env[:type] = :log
-      env[:unit] = self
-      env[:unit_class] = self
+      env[:unit] = unit
+      env[:unit_class] = unit_class
+      env[:method_name] = method_name
       env[:message_log_level] = log_level
-      env[:unit_log_level] = self.log_level
+      env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
       env[:object] = object
   
@@ -31,18 +36,23 @@ class Liza::UnitLoggingPart < Liza::Part
     def log(
       log_level = App::DEFAULT_LOG_LEVEL,
       object,
+      unit: self,
+      method_name: nil,
       kaller: caller
     )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       raise "invalid log_level `#{log_level}`" unless log_levels.values.include? log_level
       return unless log_level? log_level
 
+      unit_class = unit.is_a?(Class) ? unit : unit.class
+
       env = {}
       env[:type] = :log
-      env[:unit] = self
-      env[:unit_class] = self.class
+      env[:unit] = unit
+      env[:unit_class] = unit_class
+      env[:method_name] = method_name
       env[:message_log_level] = log_level
-      env[:unit_log_level] = self.log_level
+      env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
       env[:object] = object
   

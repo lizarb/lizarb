@@ -3,6 +3,7 @@ class DevSystem::LogPanel < Liza::Panel
   def call env
     env[:instance] ||= env[:unit_class] != env[:unit]
     env[:method_name] ||= method_name_for env
+    env[:method_name] = env[:method_name].to_s
 
     # NOTE: this is an intentional redundancy with Unit#log_level?
     # The unit determines the lowest log level it wants to log
