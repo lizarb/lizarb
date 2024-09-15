@@ -29,6 +29,7 @@ class Liza::Box < Liza::Unit
     else
       raise ArgumentError, "Invalid method_name: #{method_name.inspect}. Expecting Symbol or Hash."
     end
+    
     define_singleton_method box_method_name do |*args, **kwargs|
       self[panel_key].send method_name, *args, **kwargs
     end
