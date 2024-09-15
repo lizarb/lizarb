@@ -8,11 +8,11 @@ class Liza::ControllerCallablePart < Liza::Part
     end
 
     def self.call(env)
-      log :higher, "env.count is #{env.count}"
+      log :higher, "env.count is #{env.count}" unless self <= DevSystem::Log
         
       if defined? @requirements
         @requirements.each do
-          log "require '#{_1}'"
+          log "require '#{_1}'" unless self <= DevSystem::Log
           Kernel.require _1
         end
         remove_instance_variable :@requirements
