@@ -195,7 +195,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   #
 
   def name!
-    @name = command.simple_arg_ask_snakecase 0, "Name your new #{@controller_class.last_namespace}:"
+    @name = command.simple_arg_ask_snakecase 1, "Name your new #{@controller_class.last_namespace}:"
     log "@name = #{@name.inspect}"
   end
 
