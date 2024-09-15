@@ -9,7 +9,7 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     on_instance \
       :call,
       :find,
-      :forward, :forward_base_generator, :forward_generator,
+      :forward,
       :inform,
       :parse,
       :save
@@ -22,18 +22,18 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     subject.parse env
     assert_equality env[:generator_name_original], :system
     assert_equality env[:generator_name], :system
-    assert_equality env[:generator_coil_original], nil
-    assert_equality env[:generator_coil], nil
+    assert_equality env[:generator_action_original], nil
+    assert_equality env[:generator_action], nil
   end
   
-  test :parse, true, :coil do
+  test :parse, true, :action do
     env = {args: ["system:install"]}
     subject.parse env
     assert_equality env[:args], ["system:install"]
     assert_equality env[:generator_name_original], :system
     assert_equality env[:generator_name], :system
-    assert_equality env[:generator_coil_original], :install
-    assert_equality env[:generator_coil], :install
+    assert_equality env[:generator_action_original], :install
+    assert_equality env[:generator_action], :install
   end
   
   test :parse, false do
@@ -42,18 +42,18 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:args], ["x"]
     assert_equality env[:generator_name_original], :x
     assert_equality env[:generator_name], :x
-    assert_equality env[:generator_coil_original], nil
-    assert_equality env[:generator_coil], nil
+    assert_equality env[:generator_action_original], nil
+    assert_equality env[:generator_action], nil
   end
   
-  test :parse, false, :coil do
+  test :parse, false, :action do
     env = {args: ["x:y"]}
     subject.parse env
     assert_equality env[:args], ["x:y"]
     assert_equality env[:generator_name_original], :x
     assert_equality env[:generator_name], :x
-    assert_equality env[:generator_coil_original], :y
-    assert_equality env[:generator_coil], :y
+    assert_equality env[:generator_action_original], :y
+    assert_equality env[:generator_action], :y
   end
   
   #

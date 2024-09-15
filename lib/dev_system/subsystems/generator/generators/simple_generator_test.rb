@@ -6,10 +6,10 @@ class DevSystem::SimpleGeneratorTest < DevSystem::BaseGeneratorTest
 
   # helper methods
 
-  def call_with(name, coil, placement, superklass, path)
+  def call_with(name, action, placement, superklass, path)
     env = {}
     env[:name] = name.to_s
-    env[:generator_coil] = coil.to_s
+    env[:generator_action] = action.to_s
     env[:placement] = placement
     env[:superclass] = superklass
     env[:path] = path
