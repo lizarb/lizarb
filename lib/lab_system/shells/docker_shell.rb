@@ -3,7 +3,7 @@ class LabSystem::DockerShell < DevSystem::Shell
   #
 
   def self.hello_world
-    KernelShell.call_backticks "docker run hello-world"
+    KernelShell.call_system "sudo docker run hello-world"
 
     true
   end
@@ -11,7 +11,7 @@ class LabSystem::DockerShell < DevSystem::Shell
   # 
 
   def self.hello_alpine
-    KernelShell.call_backticks "docker run alpine echo 'hello world'"
+    KernelShell.call_system "sudo docker run alpine echo 'hello world'"
 
     true
   end
@@ -19,7 +19,7 @@ class LabSystem::DockerShell < DevSystem::Shell
   # 
 
   def self.version
-    output = KernelShell.call_backticks "docker version"
+    output = KernelShell.call_backticks "sudo docker version"
     parse_version output
   end
 
