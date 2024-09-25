@@ -22,4 +22,20 @@ class Liza::Controller < Liza::Unit
     subsystem.color
   end
 
+  def self.sh(s)
+    KernelShell.call_system s
+  end
+
+  def sh(s)
+    KernelShell.call_system s
+  end
+
+  def self.`(s)
+    KernelShell.call_backticks s
+  end
+
+  def `(s)
+    KernelShell.call_backticks s
+  end
+
 end
