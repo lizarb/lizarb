@@ -1,6 +1,14 @@
 class DevSystem::NewGenerator < DevSystem::SimpleGenerator
   
+  # liza g new name
+  
   def call_default
+    call_project
+  end
+  
+  # liza g new:project name
+  
+  def call_project
     log "args = #{args.inspect}"
     # setup
 
@@ -87,12 +95,12 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
   # helper methods
 
   def name! name
-    @name = command.simple_arg_ask_snakecase 0, "Name your new #{name}:"
+    @name = command.simple_arg_ask_snakecase 1, "Name your new #{name}:"
     log "@name = #{@name.inspect}"
   end
 
   def name_with_period! name
-    @name = command.simple_arg_ask_snakecase 0, "Name your new #{name}:", regexp: /^[a-zA-Z_\.]*$/
+    @name = command.simple_arg_ask_snakecase 1, "Name your new #{name}:", regexp: /^[a-zA-Z_\.]*$/
     log "@name = #{@name.inspect}"
   end
 

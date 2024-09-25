@@ -1,36 +1,33 @@
 class DevSystem::NewCommand < DevSystem::SimpleCommand
 
-  # liza new [app_name]
+  # liza new [name]
 
   def call_default
     call_project
   end
 
-  # liza new:sfa [app_name]
-
-  def call_sfa
-    log :higher, "env.count is #{env.count}"
-    args = env[:args] = ["new:sfa", *env[:args]]
-    log "args = #{args.inspect}"
-    DevBox[:generator].call env
-  end
-
-  # liza new:project [app_name]
+  # liza new:project [name]
 
   def call_project
-    log :higher, "env.count is #{env.count}"
-    args = env[:args] = ["new", *env[:args]]
-    log "args = #{args.inspect}"
-    DevBox[:generator].call env
+    DevBox.command ["generate", "new:project", *args]
   end
 
-  # liza new:script [app_name]
+  # liza new:script [name]
 
   def call_script
-    log :higher, "env.count is #{env.count}"
-    args = env[:args] = ["new:script", *env[:args]]
-    log "args = #{args.inspect}"
-    DevBox[:generator].call env
+    DevBox.command ["generate", "new:script", *args]
+  end
+
+  # liza new:script_dependent [name]
+  
+  def call_script_dependent
+    DevBox.command ["generate", "new:script_dependent", *args]
+  end
+
+  # liza new:script_independent [name]
+  
+  def call_script_independent
+    DevBox.command ["generate", "new:script_independent", *args]
   end
 
 end
