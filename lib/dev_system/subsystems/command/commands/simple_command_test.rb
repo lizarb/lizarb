@@ -4,6 +4,18 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     assert_equality subject_class, DevSystem::SimpleCommand
   end
 
+  test_methods_defined do
+    on_self
+    on_instance \
+      :before,
+      :log_simple_remember,
+      :simple_arg, :simple_arg_ask, :simple_arg_ask_snakecase, :simple_args, :simple_args_from_2,
+      :simple_boolean, :simple_boolean_no, :simple_boolean_yes, :simple_booleans,
+      :simple_color,
+      :simple_controller_placement,
+      :simple_string, :simple_strings
+  end
+
   def subject_with *args
     @subject = subject_class.new
     @subject.instance_exec { @env = DevBox[:command].build_env ["simple", *args] }

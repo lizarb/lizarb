@@ -78,6 +78,11 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [Array<String>] An array of simple arguments.
   def simple_args()= env[:simple_args]
 
+  # Returns all simple arguments from the second index onward.
+  # 
+  # @return [Array<String>] An array of simple arguments.
+  def simple_args_from_2()= Array simple_args[2..-1]
+
   # Retrieves all simple boolean arguments from the environment.
   # 
   # @return [Hash<Symbol, Boolean>] A hash where each key is a symbol representing a boolean argument.

@@ -13,7 +13,7 @@ class DevSystem::CommandGenerator < DevSystem::SimpleGenerator
 
     name!
     place!
-    @args = Array command.simple_args[1..-1]
+    @args = command.simple_args_from_2
 
     ancestor = SimpleCommand
     create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
@@ -38,7 +38,7 @@ class DevSystem::CommandGenerator < DevSystem::SimpleGenerator
 
     name!
     place!
-    @args = Array command.simple_args[1..-1]
+    @args = command.simple_args_from_2
 
     ancestor = BaseCommand
     create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|

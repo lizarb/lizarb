@@ -14,7 +14,7 @@ class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
     name!
     place!
 
-    @args = Array command.simple_args[1..-1]
+    @args = command.simple_args_from_2
 
     @args = ["index"] if @args.empty?
 
@@ -36,7 +36,7 @@ class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
     name!
     place!
 
-    @args = Array command.simple_args[1..-1]
+    @args = command.simple_args_from_2
 
     create_controller @name, @controller_class, @place, @path do |unit, test|
       unit.section :controller_section_base_1, caption: ""
