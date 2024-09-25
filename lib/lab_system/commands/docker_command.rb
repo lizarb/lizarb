@@ -8,6 +8,12 @@ class LabSystem::DockerCommand < DevSystem::SimpleCommand
     log "not implemented"
   end
 
+  # liza docker:install
+
+  def call_install
+    DockerInstallerShell.call(env)
+  end
+
   # liza docker:kroki
 
   def call_kroki
