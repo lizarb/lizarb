@@ -3,7 +3,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   # liza g system name color=coral
 
   def call_default
-    @name = command.simple_arg_ask_snakecase 0, "What is the name of the system you want to generate?"
+    @name = command.simple_arg_ask_snakecase 1, "What is the name of the system you want to generate?"
     log "@name = #{@name}"
 
     @color = command.simple_color :color, string: "#{@name.camelize}System"
