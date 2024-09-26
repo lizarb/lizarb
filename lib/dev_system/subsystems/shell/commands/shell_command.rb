@@ -43,6 +43,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts
   end
 
+  # liza shell:cloc
+  def call_cloc
+    DevBox.command ["loc"]
+  end
+
   # color helpers
 
   def color klass
