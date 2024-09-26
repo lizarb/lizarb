@@ -2,7 +2,9 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   def call_default
     puts
+    puts "Lizarb       #{ Lizarb.source_location[0] }"
     puts "Liza         #{ Liza.source_location[0] }"
+    puts "App          #{ App.source_location[0] }"
     puts
     puts "App.type     #{ App.type.inspect }"
     puts
