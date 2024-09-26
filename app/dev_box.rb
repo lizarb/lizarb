@@ -42,7 +42,8 @@ class DevBox < DevSystem::DevBox
 
   configure :log do
     # handlers
-    handler :output
+    handler :output   if not $coding
+    handler :color_output if $coding
 
     # rescue_from declarations are checked bottom to top
 
