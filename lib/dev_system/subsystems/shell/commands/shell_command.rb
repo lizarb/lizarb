@@ -1,5 +1,6 @@
 class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
+  # liza shell
   def call_default
     puts
     puts "Lizarb       #{ Lizarb.source_location[0] }"
@@ -29,12 +30,16 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     end
 
     puts
+  end
+
+  # liza shell:load_path
+  def call_load_path
+    puts
 
     puts "$LOAD_PATH"
     $LOAD_PATH.each do |path|
       puts path
     end
-
     puts
   end
 

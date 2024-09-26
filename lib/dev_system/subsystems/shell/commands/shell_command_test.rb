@@ -4,4 +4,9 @@ class DevSystem::ShellCommandTest < DevSystem::SimpleCommandTest
     assert subject_class == DevSystem::ShellCommand
   end
 
+  test_methods_defined do
+    on_self
+    on_instance :call_default, :call_load_path, :color
+  end
+
 end
