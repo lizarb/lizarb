@@ -3,7 +3,15 @@ class DevSystem::LogGenerator < DevSystem::SimpleGenerator
   # liza g log name place=app
 
   def call_default
-    call_handler
+    @controller_class = Log
+
+    name!
+    place!
+
+    create_controller @name, @controller_class, @place, @path do |unit, test|
+      unit.section :controller_section_1
+      test.section :controller_test_section_1
+    end
   end
   
   # liza g log:handler name place=app
@@ -16,8 +24,8 @@ class DevSystem::LogGenerator < DevSystem::SimpleGenerator
     append_handler_to_log_panel
 
     create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_1
-      test.section :controller_test_section_1
+      unit.section :handler_section_1
+      test.section :handler_test_section_1
     end
   end
 
@@ -47,13 +55,29 @@ __END__
 
 # view controller_section_1.rb.erb
 
-  # TODO: https://rubyapi.org/3.1/o/logger
   def self.call(env)
     super
-    # as of version <%= Lizarb::VERSION %>, OutputLog has been the only controller explored
+    env[:object_parsed] = env[:object].to_s
+    true
   end
 
 # view controller_test_section_1.rb.erb
+
+  test :subject_class, :subject do
+    assert_equality <%= @class_name %>, subject_class
+    assert_equality <%= @class_name %>, subject.class
+  end
+
+# view handler_section_1.rb.erb
+
+  # TODO: https://rubyapi.org/3.1/o/logger
+  def self.call(env)
+    super
+    Kernel.puts env[:object_parsed]
+    true
+  end
+
+# view handler_test_section_1.rb.erb
 
   test :subject_class, :subject do
     assert_equality <%= @class_name %>, subject_class

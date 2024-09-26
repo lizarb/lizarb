@@ -6,7 +6,13 @@ class DevSystem::LogPanelTest < Liza::PanelTest
 
   test_methods_defined do
     on_self
-    on_instance :call, :handler, :handler_keys, :handlers, :method_name_for, :sidebar_size
+    on_instance \
+      :call,
+      :find,
+      :handler, :handler_keys, :handlers,
+      :method_name_for,
+      :parse,
+      :sidebar_size
   end
 
   test :call, :unit_log_level, :higher do
@@ -16,6 +22,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     subject.handlers[:test] = -> env { handler_env = env }
 
     input_env = {
+      object_class: Object,
       caller: caller,
       unit_log_level: 4,
       message_log_level: 5
@@ -33,6 +40,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     subject.handlers[:test] = -> env { handler_env = env }
 
     input_env = {
+      object_class: Object,
       caller: caller,
       unit_log_level: 4,
       message_log_level: 4
@@ -50,6 +58,7 @@ class DevSystem::LogPanelTest < Liza::PanelTest
     subject.handlers[:test] = -> env { handler_env = env }
 
     input_env = {
+      object_class: Object,
       caller: caller,
       unit_log_level: 4,
       message_log_level: 3

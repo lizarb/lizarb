@@ -19,6 +19,7 @@ class Liza::UnitLoggingPart < Liza::Part
       return unless log_level? log_level
 
       unit_class = unit.is_a?(Class) ? unit : unit.class
+      object_class = object.is_a?(Class) ? object : object.class
   
       env = {}
       env[:type] = :log
@@ -29,6 +30,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
       env[:object] = object
+      env[:object_class] = object_class
   
       DevBox.logg env
     end
@@ -45,6 +47,7 @@ class Liza::UnitLoggingPart < Liza::Part
       return unless log_level? log_level
 
       unit_class = unit.is_a?(Class) ? unit : unit.class
+      object_class = object.is_a?(Class) ? object : object.class
 
       env = {}
       env[:type] = :log
@@ -55,6 +58,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
       env[:object] = object
+      env[:object_class] = object_class
   
       DevBox.logg env
     end

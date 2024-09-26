@@ -9,4 +9,11 @@ class DevSystem::LogTest < Liza::ControllerTest
     on_instance
   end
 
+  def call_subject_with(prefix, object, expected)
+    env = {object: object, prefix: prefix}
+    subject_class.call(env)
+    assert_equality expected, env[:object_parsed]
+    env
+  end
+
 end

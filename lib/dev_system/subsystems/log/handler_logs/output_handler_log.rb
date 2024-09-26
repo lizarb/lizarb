@@ -2,19 +2,24 @@ class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
 
   def self.call(env)
     super
-    env[:sidebar] ||= sidebar_for env
-
-    string = env[:object]
-    string = string.join("") if string.is_a? Array
+    sidebar = env[:sidebar] || (sidebar_for env)
 
     unless $coding
       pid = Process.pid
       tid = Lizarb.thread_id.to_s.rjust_zeroes 3
-      env[:sidebar] = "#{pid} #{tid} #{env[:sidebar]}"
+      sidebar = "#{pid} #{tid} #{sidebar}"
     end
 
-    string = "#{env[:sidebar]} #{string}"
-    Kernel.puts string
+    object_parsed = env[:object_parsed]
+    if object_parsed.is_a? String
+      Kernel.puts "#{sidebar} #{object_parsed}"
+    else
+      object_parsed.each do |s|
+        Kernel.puts "#{sidebar} #{s}"
+      end
+    end
+
+    true
   end
   
   def self.sidebar_for env

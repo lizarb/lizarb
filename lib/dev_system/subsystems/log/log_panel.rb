@@ -10,11 +10,26 @@ class DevSystem::LogPanel < Liza::Panel
     # Therefore, a message of higher log level will not be logged
     return unless env[:message_log_level] <= env[:unit_log_level]
 
+    return if handlers.empty?
+
+    find env
+    parse env
+
     handlers.values.each do |handler|
       handler.call env
     rescue Exception => e
       log stick :light_yellow, "#{e.class} #{e.message.inspect} on #{e.backtrace[0]}"
     end
+  end
+
+  def find env
+    env[:object_log] = Liza.const "#{env[:object_class].last_namespace}_log"
+  rescue Liza::ConstNotFound
+    env[:object_log] = StickLogLog
+  end
+
+  def parse env
+    env[:object_log].call env
   end
 
   def handler *keys
