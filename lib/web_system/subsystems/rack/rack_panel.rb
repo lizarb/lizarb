@@ -45,7 +45,8 @@ class WebSystem::RackPanel < Liza::Panel
 
     require "rack"
 
-    files ||= get :files
+    files = get :files
+    log "files is #{files.inspect}"
     rack_files = Object::Rack::Files.new files
     rack_app = Object::Rack::Cascade.new [rack_files, rack_app]
     
