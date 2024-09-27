@@ -2,7 +2,7 @@ class DevSystem::KernelShell < DevSystem::Shell
   
   # 
 
-  def self.call_backticks(command, log_level: :higher)
+  def self.call_backticks(command, log_level: :normal)
     log log_level, "#{stick command, DevSystem.color} | executing and outputting result"
     result = Kernel.send :`, command
     puts result if log? log_level
