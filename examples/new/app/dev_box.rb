@@ -1,11 +1,5 @@
 class DevBox < DevSystem::DevBox
 
-  # Configure your bench panel
-
-  configure :bench do
-    
-  end
-
   # Configure your command panel
 
   configure :command do
@@ -16,26 +10,6 @@ class DevBox < DevSystem::DevBox
     short :p, :pry
     short :s, :shell
     short :t, :test
-
-    # rescue_from declarations are checked bottom to top
-
-    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
-
-    # uncomment below to override default setting to call NotFoundCommand
-    # rescue_from(CommandPanel::NotFoundError) { |rescuer| binding.irb } if $coding
-  end
-
-  # Configure your generator panel
-
-  configure :generator do
-    # rescue_from declarations are checked bottom to top
-
-    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
-
-    # uncomment below to override default setting to call NotFoundGenerator
-    # rescue_from(GeneratorPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end
 
   # Configure your log panel
@@ -46,11 +20,6 @@ class DevBox < DevSystem::DevBox
     # handlers
     handler :output   if not $coding
     handler :color_output if $coding
-
-    # rescue_from declarations are checked bottom to top
-
-    # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
-    # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 
   # Configure your shell panel
