@@ -42,6 +42,7 @@ Did you accidentally fall into an infinite loop?
       formatted: false,
       allow_missing: true
     )
+      original_render_format = @render_format
       format = @render_format ||= @format if format.nil?
       raise "@render_format or @format must be set, or format keyword-argument must be given" if format.nil?
       @render_format = format = format.to_sym
@@ -80,8 +81,10 @@ Did you accidentally fall into an infinite loop?
           raise_error :render_stack_is_full, kaller: caller if render_stack.size > 10
         end
   
+        @render_format = original_render_format
         render_stack.pop
       elsif render_stack.any?
+        @render_format = original_render_format
         render_stack.pop
       else
         raise_error :render_stack_is_empty, kaller: caller
