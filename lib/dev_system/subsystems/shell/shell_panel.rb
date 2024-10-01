@@ -3,11 +3,8 @@ class DevSystem::ShellPanel < Liza::Panel
   #
 
   def formatter format, shell_key = format, options = {}
-    shell = options[:shell] || Liza.const("#{format}_formatter_shell")
-
     formatters[shell_key] = {
       format: format,
-      shell: shell,
       options: options
     }
   end
@@ -23,7 +20,7 @@ class DevSystem::ShellPanel < Liza::Panel
   def format env
     format = env[:format] = env[:format].to_sym
     if format? format
-      formatter = formatters[format][:shell]
+      formatter = formatters[format][:shell] ||= Liza.const("#{format}_formatter_shell")
       log :higher, "formatter found: #{formatter}"
       formatter.call env
     else
@@ -35,12 +32,9 @@ class DevSystem::ShellPanel < Liza::Panel
   #
 
   def converter to, from, shell_key = from, options = {}
-    shell = options[:shell] || Liza.const("#{shell_key}_converter_shell")
-
     hash = {
       to: to.to_sym,
       from: from.to_sym,
-      shell: shell,
       options: options
     }
     converters[shell_key] = hash
@@ -64,7 +58,7 @@ class DevSystem::ShellPanel < Liza::Panel
   def convert env
     format = env[:format] = env[:format].to_sym
     if convert? format
-      converter = converters[format][:shell]
+      converter = converters[format][:shell] ||= Liza.const("#{format}_converter_shell")
       log :higher, "converter found: #{converter}"
       converter.call env
     else
