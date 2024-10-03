@@ -9,7 +9,10 @@ class DevSystem::IrbCommand < DevSystem::SimpleCommand
     irb = IRB::Irb.new(workspace)
     IRB.conf[:MAIN_CONTEXT] = irb.context
 
-    irb.eval_input
+    catch :IRB_EXIT do
+      irb.eval_input
+    end
+    log "exiting..."
   rescue Interrupt
     log "Control-C"
   end
