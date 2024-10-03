@@ -115,7 +115,7 @@ class DevSystem::TestCommand < DevSystem::Command
         totals[k] += v.size
       end
       size = 60 - test_class.subject_class.to_s.size
-      Liza.log "#{_color_unit test_class.subject_class}#{".totals".ljust size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
+      Liza.log "#{_color_unit test_class.subject_class}#{" " * size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
     end
     puts
     Liza.log "#{"Total".ljust 60} #{totals}"
@@ -134,7 +134,7 @@ class DevSystem::TestCommand < DevSystem::Command
       ret << "::"
     end
 
-    klass = klass.division if klass.is_a? Liza::Controller
+    klass = klass.subsystem if klass < Liza::Controller
     unit_color = nil
     unit_color = klass.system.color
 
