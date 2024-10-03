@@ -5,7 +5,8 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
 
     source = env[:unit_class]
     system_color = source.system.color
-    source_color = source.division.system.color
+    source_color = source.color
+    source_color = source.system.color if source < DevSystem::BoxTest
     size = 0
 
     # TODO: Figure out why RequestPanel is returning false when started from rack command but not from request command
