@@ -15,7 +15,7 @@ class DevSystem::TestCommand < DevSystem::Command
       test_classes = test_classes.select { |tc| args.any? { tc.source_location_radical.snakecase.include? _1.snakecase } }
     end
 
-    _call_silence_base_units
+    _call_silence_other_units
     
     if Lizarb.is_app_dir
       test_classes = test_classes.select { |tc| tc.source_location[0].include? Lizarb.app_dir.to_s }
@@ -32,14 +32,20 @@ class DevSystem::TestCommand < DevSystem::Command
     log "Done Counting (#{now.diff}s)"
   end
 
-  def self._call_silence_base_units
+  def self._call_silence_other_units
     [
+      Liza::Part,
+      Liza::System,
       Liza::Box,
       Liza::Panel,
       Liza::Controller,
     ].each do |x|
-      def x.log(...) super(...) if self == TestCommand end
-      def x.puts(...) super(...) if self == TestCommand end
+      x.class_eval do
+        def self.log(...) super(...) if self == TestCommand end
+        def self.puts(...) super(...) if self == TestCommand end
+        def log(...) super(...) if self.class == TestCommand end
+        def puts(...) super(...) if self.class == TestCommand end
+      end
     end
   end
 
