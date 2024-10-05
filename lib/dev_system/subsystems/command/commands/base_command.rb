@@ -20,7 +20,11 @@ class DevSystem::BaseCommand < DevSystem::Command
     method_name = env[:command_arg]
     method_name = method_name.split(":")[1] || :default
     method_name = "call_#{method_name}"
-    return public_send method_name if respond_to? method_name
+    if respond_to? method_name
+      public_send method_name
+      after if defined? after
+      return true
+    end
 
     log "method not found: #{method_name.inspect}"
     raise NoMethodError, "method not found: #{method_name.inspect}"
