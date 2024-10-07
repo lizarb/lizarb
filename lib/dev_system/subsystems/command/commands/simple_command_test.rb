@@ -7,6 +7,7 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
   test_methods_defined do
     on_self
     on_instance \
+      :after,
       :before,
       :log_simple_remember,
       :simple_arg, :simple_arg_ask, :simple_arg_ask_snakecase, :simple_args, :simple_args_from_2,

@@ -10,6 +10,10 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     env[:simple_booleans] = simple_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
   end
 
+  def after
+    # must be defined here
+  end
+
   # Logs the current state of the :remember key in the environment.
   def log_simple_remember
     log :higher, "env[:remember] is now #{stick system.color, (env[:simple].join " ")}", kaller: caller
