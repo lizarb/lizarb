@@ -17,12 +17,15 @@ class DevSystem::CommandGenerator < DevSystem::SimpleGenerator
 
     ancestor = SimpleCommand
     create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
-      unit.section :controller_section_1,
-        caption: "liza #{ @name }",
+      unit.section :simple_command_section_1,
+        caption: "filters"
+
+      unit.section :simple_command_section_2,
+        caption: "liza #{ @name } k1=v1 k3=v3 sa se si +a +b -c -d",
         method_name: "default"
       
-      @args.each.with_index do |arg, i|
-        unit.section :controller_section_1,
+      @args.each do |arg|
+        unit.section :simple_command_section_3,
           caption: "liza #{ @name }:#{ arg }",
           method_name: arg
       end
@@ -59,22 +62,38 @@ end
 
 __END__
 
-# view controller_section_1.rb.erb
+# view simple_command_section_1.rb.erb
+
+  def before
+    super
+    @t = Time.now
+    log "simple_args     #{ simple_args }"
+    log "simple_strings  #{ simple_strings }"
+    log "simple_booleans #{ simple_booleans }"
+  end
+  
+  def after
+    super
+    log "#{ @t.diff }s | done"
+  end
+# view simple_command_section_2.rb.erb
 
   def call_<%= @current_section[:method_name] %>
-    log :higher, "args is #{ args.inspect }"
-    log "simple_args is #{ simple_args.inspect }"
-
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
-
-    log "done at #{ Time.now }"
+<% @args.each do |arg| -%>
+    call_<%= arg %>
+<% end -%>
   end
+# view simple_command_section_3.rb.erb
 
+  def call_<%= @current_section[:method_name] %>
+    log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
+  end
 # view base_command_section_1.rb.erb
 
   def self.call(env)
     super
-    log :higher, "args is #{ args.inspect }"
+    log "args is #{ args.inspect }"
 
     log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
 
