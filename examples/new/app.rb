@@ -9,7 +9,7 @@ class App
 
   # Choose your Application Directory
 
-  folder "app"
+  directory "app"
 
   # Choose your Log Transparency
   #

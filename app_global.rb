@@ -1,6 +1,6 @@
 class App
   gemfile "app_global.gemfile.rb"
-  folder "app"
+  directory "app"
   mode :code
   system :dev
 end

@@ -30,6 +30,10 @@ class App
 
   # folder
 
+  def self.directory(directory = nil, systems: nil)
+    folder directory, systems: systems
+  end
+
   def self.folder folder = nil, systems: nil
     raise "locked" if @locked
     if folder
