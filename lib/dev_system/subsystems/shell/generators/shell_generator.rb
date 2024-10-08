@@ -8,15 +8,23 @@ class DevSystem::ShellGenerator < DevSystem::SimpleGenerator
     name!
     place!
 
+    actions = command.simple_args_from_2
+    actions = %w(list create read update delete) if actions.empty?
+
     create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_1, caption: "#{@class_name}.call({action: \"list\"})"
-      unit.section :controller_section_2, caption: "#{@class_name}._call_sub_method_a({})"
-      unit.section :controller_section_3, caption: "#{@class_name}._call_sub_method_b({})"
-      unit.section :controller_section_list,   caption: "#{@class_name}.call_list({})"
-      unit.section :controller_section_create, caption: "#{@class_name}.call_create({})"
-      unit.section :controller_section_read,   caption: "#{@class_name}.call_read({})"
-      unit.section :controller_section_update, caption: "#{@class_name}.call_update({})"
-      unit.section :controller_section_delete, caption: "#{@class_name}.call_delete({})"
+      unit.section :controller_section_require, caption: "Required lazily on call"
+
+      actions.each do |action|
+        unit.section :controller_section_action, caption: "#{@class_name}.#{ action }()", action: action
+      end
+
+      unit.section :controller_section_1, caption: "#{@class_name}.call({action: :list})"
+      unit.section :controller_section_2, caption: "#{@class_name}.before_action({})"
+      unit.section :controller_section_3, caption: "#{@class_name}.after_action({})"
+
+      actions.each do |action|
+        unit.section :controller_section_call_action, caption: "#{@class_name}.call_#{ action }({})", action: action
+      end
 
       test.section :controller_test_section_1
     end
@@ -32,69 +40,47 @@ end
 
 __END__
 
+# view controller_section_require.rb.erb
+  # require "<%= @name %>"
+# view controller_section_action.rb.erb
+
+  def self.<%= @current_section[:action] %>()
+    # your code here
+    call action: :<%= @current_section[:action] %>
+    # your code here
+  end
 # view controller_section_1.rb.erb
 
-  def self.call(env)
-    super
+  # def self.call(env)
+  #   super
 
-    method_name = "call_#{env[:action]}"
-    if respond_to? method_name
-      # before
-      _call_sub_method_a env
+  #   method_name = "call_#{env[:action]}"
+  #   if respond_to? method_name
+  #     before_action env
+  #     public_send method_name, env
+  #     after_action env
+  #     return
+  #   end
 
-      # action
-      public_send method_name, env
-
-      # after
-      _call_sub_method_b env
-      return
-    end
-
-    log "action not found: #{method_name.inspect}"
-    raise NoMethodError, "action not found: #{method_name.inspect}"
-  end
-
+  #   msg = "Method not found: #{method_name.inspect}"
+  #   log msg
+  #   raise NoMethodError, msg
+  # end
 # view controller_section_2.rb.erb
   
-  def self._call_sub_method_a(env)
-    # your code here
-  end
+  # def self.before_action(env)
+  #   # your code here
+  # end
 # view controller_section_3.rb.erb
 
-  def self._call_sub_method_b(env)
-    # your code here
-  end
+  # def self.after_action(env)
+  #   # your code here
+  # end
+# view controller_section_call_action.rb.erb
 
-# view controller_section_list.rb.erb
-
-  def self.call_list(env)
-    # your code here
-  end
-
-# view controller_section_create.rb.erb
-
-  def self.call_create(env)
-    # your code here
-  end
-
-# view controller_section_read.rb.erb
-
-  def self.call_read(env)
-    # your code here
-  end
-
-# view controller_section_update.rb.erb
-
-  def self.call_update(env)
-    # your code here
-  end
-
-# view controller_section_delete.rb.erb
-
-  def self.call_delete(env)
-    # your code here
-  end
-
+  # def self.call_<%= @current_section[:action] %>(env)
+  #   # your code here
+  # end
 # view controller_test_section_1.rb.erb
 
   test :subject_class, :subject do
