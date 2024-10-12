@@ -232,7 +232,7 @@ module Lizarb
     load_and_require_bundler
     load_and_require_default_gems
     load_and_define_mode
-    load_and_require_dotenv
+    load_and_require_env_vars
     load_and_zeitwerk
     load_and_zeitwerk_loader_0_liza
     load_and_require_system_classes
@@ -544,23 +544,26 @@ module Lizarb
 
   # This method is called internally by `load` and is not intended for direct use.
   #
-  # Loads environment variables from the following `.env` files, as follows:
+  # Loads environment variables from the listed `.env` files.
   #
-  # If App name and mode are `app_global` and `:code`       loads files `app_global.code.env`, app_global.env`
-  # If App name and mode are `app`        and `:code`       loads files `app.code.env`,        app.env`
-  # If App name and mode are `app`        and `:demo`       loads files `app.demo.env`,        app.env`
-  # If App name and mode are `app`        and `:production` loads files `app.production.env`,  app.env`
-  #
-  def load_and_require_dotenv
+  def load_and_require_env_vars
     log "  Lizarb.#{__method__}" if $log_boot_high
-    require "dotenv"
-    log "    required Dotenv" if $log_boot_higher
 
     files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
-    Dotenv.load(*files)
-    log "    Dotenv.load(*#{files.inspect})" if $log_boot_highest
-  rescue LoadError
-    log "    did not require Dotenv" if $log_boot_higher
+    log "    ENV variables from #{files.count} sources" if $log_boot_higher
+
+    files.each do |file|
+      File.readlines(file).each do |line|
+        line.strip!
+        next if line.empty? or line.start_with? "#"
+
+        key, value = line.split('=', 2)
+        ENV[key] = value
+      end
+      log "    ENV variables #{file}" if $log_boot_higher
+    rescue Errno::ENOENT
+      log "    ENV variables not found #{file}" if $log_boot_higher
+    end
   end
 
   # This method is called internally by `load` and is not intended for direct use.

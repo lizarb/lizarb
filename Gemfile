@@ -5,8 +5,6 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in lizarb.gemspec
 gemspec
 
-gem "dotenv", "~> 2.8"
-
 group :systems do
   # gem "echo_system", "~> 1.0"
 end

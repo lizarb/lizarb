@@ -33,8 +33,6 @@ group :default do
   gem "lizarb", "~> <%= Lizarb::VERSION %>"
   # gem "lizarb", github: "lizarb/lizarb"
   # gem "lizarb", path: "../lizarb"
-  
-  gem "dotenv", "~> 2.8"
 end
 
 group :dev do
