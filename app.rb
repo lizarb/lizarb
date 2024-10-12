@@ -16,11 +16,13 @@ class App
   # log_boot  4
   # log_level 4
 
-  # Your mode is where you get global environment variables from
+  # Choose your Mode and sources of Environment Variables
 
   # mode :code # default
   # mode :demo
   
+  # env_vars ".env", ":directory.env", ":directory.:mode.env", mandatory: false
+
   # Systems help you organize your application's dependencies and RAM memory usage.
 
   system :dev # default

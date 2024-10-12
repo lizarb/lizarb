@@ -544,12 +544,15 @@ module Lizarb
 
   # This method is called internally by `load` and is not intended for direct use.
   #
-  # Loads environment variables from the listed `.env` files.
+  # Loads environment variables from the given `.env` files.
+  # 
+  # If the file is not found, it raises an error if the file is mandatory.
+  # Values will be overwritten if the same key is found in a subsequent file.
   #
   def load_and_require_env_vars
     log "  Lizarb.#{__method__}" if $log_boot_high
 
-    files = ["#{$APP}.#{$mode}.env", "#{$APP}.env"]
+    files = App.env_vars || []
     log "    ENV variables from #{files.count} sources" if $log_boot_higher
 
     files.each do |file|
@@ -563,6 +566,7 @@ module Lizarb
       log "    ENV variables #{file}" if $log_boot_higher
     rescue Errno::ENOENT
       log "    ENV variables not found #{file}" if $log_boot_higher
+      raise if App.env_vars_mandatory?
     end
   end
 
