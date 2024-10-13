@@ -1,6 +1,6 @@
-class DevSystem::ConvertCommand < DevSystem::SimpleCommand
+class DevSystem::ShellConvertCommand < DevSystem::SimpleCommand
   
-  # liza convert FORMAT FILENAME
+  # liza shell_convert FORMAT FILENAME
 
   def call_default
     log :higher, "args = #{args.inspect}"

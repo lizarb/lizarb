@@ -32,6 +32,16 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts
   end
 
+  # liza shell:convert
+  def call_convert
+    DevBox.command ["convert", *args]
+  end
+
+  # liza shell:format
+  def call_format
+    DevBox.command ["format", *args]
+  end
+
   # liza shell:paths
   def call_paths
     puts

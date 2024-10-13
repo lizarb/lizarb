@@ -1,6 +1,6 @@
-class DevSystem::FormatCommand < DevSystem::SimpleCommand
+class DevSystem::ShellFormatCommand < DevSystem::SimpleCommand
   
-  # liza format FORMAT FILENAME
+  # liza shell_format FORMAT FILENAME
 
   def call_default
     log :higher, "args = #{args.inspect}"

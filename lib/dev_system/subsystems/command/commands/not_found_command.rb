@@ -35,6 +35,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
   def print_class klass, description: nil
     loc = klass.to_s
+    return if [ShellClocCommand, ShellConvertCommand, ShellFormatCommand].include? klass
 
     sidebar_length = 30
     klass.get_command_signatures.each do |signature|
@@ -83,7 +84,6 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
         klasses = klasses.reject { _1 == BaseCommand }
         klasses = klasses.reject { _1 == SimpleCommand }
         klasses = klasses.reject { _1 == NewCommand }
-        klasses = klasses.reject { _1 == LocCommand }
         next if klasses.empty?
 
         h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color

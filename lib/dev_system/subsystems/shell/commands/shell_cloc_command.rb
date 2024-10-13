@@ -1,8 +1,8 @@
-# LocCommand is a custom LinesOfCode script using gem coderay
+# ShellClocCommand is a custom LinesOfCode script using gem coderay
 
-class DevSystem::LocCommand < DevSystem::SimpleCommand
+class DevSystem::ShellClocCommand < DevSystem::SimpleCommand
   
-  # liza loc
+  # liza shell_cloc
 
   def call_default
     log "LINES OF CODE"
