@@ -5,7 +5,7 @@ class DevSystem::ConvertCommand < DevSystem::SimpleCommand
   def call_default
     log :higher, "args = #{args.inspect}"
 
-    return call_help if simple_args.count < 2
+    return help if simple_args.count < 2
 
     format = simple_arg(0).to_sym
     fname = simple_arg(1)
@@ -27,7 +27,7 @@ class DevSystem::ConvertCommand < DevSystem::SimpleCommand
     TextShell.write fname, content
   end
 
-  def call_help
+  def help
     puts
     puts "Usage: liza convert FORMAT FILENAME"
     puts "  FORMAT - format name (#{ valid_formats.join(", ") })"
