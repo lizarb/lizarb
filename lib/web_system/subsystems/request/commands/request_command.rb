@@ -4,7 +4,7 @@ class WebSystem::RequestCommand < DevSystem::SimpleCommand
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
 
-    call_help # always show help
+    help # always show help
 
     @request_env = {}
     @request_env["PATH_INFO"] = path
@@ -15,7 +15,7 @@ class WebSystem::RequestCommand < DevSystem::SimpleCommand
     puts render :find, format: :txt
   end
 
-  def call_help
+  def help
     log "args = #{args.inspect}"
     puts render :help, format: :txt
   end
@@ -24,7 +24,7 @@ class WebSystem::RequestCommand < DevSystem::SimpleCommand
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
-    return call_help if path.nil?
+    return help if path.nil?
     
     @request_env = {}
     @request_env["REQUEST_METHOD"] = "GET"
@@ -40,7 +40,7 @@ class WebSystem::RequestCommand < DevSystem::SimpleCommand
     return superclass.method(__method__).call(args) unless args.is_a? Array
     log "args = #{args.inspect}"
     path, qs = args.first.split("?")
-    return call_help if path.nil?
+    return help if path.nil?
     
     @request_env = {}
     @request_env["REQUEST_METHOD"] = "POST"
