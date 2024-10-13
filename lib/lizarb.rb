@@ -519,6 +519,9 @@ module Lizarb
     @config_path = Pathname(@config_path)
 
     App.instance_eval do
+      @directory = root / directory
+      @systems_directory = root / systems_directory
+
       @relative_path = Pathname(@relative_path)
       @path = Pathname(@path)
       @sys_relative_path = Pathname (defined? @sys_relative_path) ? @sys_relative_path : "lib"

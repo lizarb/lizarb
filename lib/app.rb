@@ -28,16 +28,29 @@ class App
     root.join "#{$APP}.rb"
   end
 
+  def self.file
+    filename
+  end
+
   # folder
 
   def self.directory(directory = nil, systems: nil)
-    folder directory, systems: systems
+    if directory
+      folder directory, systems: systems
+    else
+      @directory
+    end
+  end
+
+  def self.systems_directory
+    @systems_directory || "lib"
   end
 
   def self.folder folder = nil, systems: nil
     raise "locked" if @locked
     if folder
       @folder = folder
+      @directory = folder
       @relative_path = folder
       @path = "#{Lizarb.app_dir}/#{folder}"
       self.sys_folder systems if systems
@@ -57,6 +70,7 @@ class App
   def self.sys_folder sys_folder = nil
     raise "locked" if @locked
     if sys_folder
+      @systems_directory = sys_folder
       @sys_folder = sys_folder
       @sys_relative_path = sys_folder
       @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
