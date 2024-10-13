@@ -32,8 +32,8 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts
   end
 
-  # liza shell:load_path
-  def call_load_path
+  # liza shell:paths
+  def call_paths
     puts
 
     puts "$LOAD_PATH"
