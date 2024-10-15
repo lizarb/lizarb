@@ -65,7 +65,6 @@ module Lizarb
     pwd = Dir.pwd
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     setup_project pwd, project: executable
-    App.systems.clear if ENV["SYSTEMS"]
     load
   end
 
@@ -395,8 +394,10 @@ module Lizarb
     end
 
     if env_systems = ENV["SYSTEMS"]
+      App.systems.clear
+      App.system :dev
       env_systems.split(",").each do |system|
-        App.system system
+        App.system system.to_sym
       end
     end
   end
