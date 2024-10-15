@@ -7,16 +7,6 @@ class Liza::TestLogPart < Liza::Part
     LOG_ASSERTION_MESSAGE = true
     LOG_CALL_BLOCK = true
 
-    def self.system
-      subject_class.system
-    rescue
-      Liza::System
-    end
-
-    def system
-      self.class.system
-    end
-
     def self.division
       subject_class.division
     rescue
