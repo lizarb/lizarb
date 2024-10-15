@@ -121,31 +121,11 @@ class DevSystem::TestCommand < DevSystem::Command
         totals[k] += v.size
       end
       size = 60 - test_class.subject_class.to_s.size
-      Liza.log "#{_color_unit test_class.subject_class}#{" " * size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
+      Liza.log "#{ColorShell.color_unit test_class.subject_class}#{" " * size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
     end
     puts
     Liza.log "#{"Total".ljust 60} #{totals}"
     puts
-  end
-
-  def self._color_unit klass
-    return klass.to_s unless klass < Liza::Unit
-    return klass.to_s if klass.superclass == Liza::Unit
-
-    ret = ""
-    namespace, _sep, classname = klass.name.rpartition('::')
-    unless namespace.empty?
-      system_color = klass.system.color
-      ret << stick(namespace, system_color, :b).to_s
-      ret << "::"
-    end
-
-    klass = klass.subsystem if klass < Liza::Controller
-    unit_color = nil
-    unit_color = klass.system.color
-
-    ret << stick(classname, unit_color).to_s
-    ret
   end
 
 end
