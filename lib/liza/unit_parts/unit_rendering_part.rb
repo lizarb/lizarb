@@ -27,12 +27,13 @@ Did you accidentally fall into an infinite loop?
       converted: false,
       formatted: false
     )
-      render \
+      render(
         *keys,
         format: format,
         converted: converted,
         formatted: formatted,
         allow_missing: false
+      )
     end
 
     def render(
