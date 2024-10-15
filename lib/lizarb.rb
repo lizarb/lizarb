@@ -241,12 +241,6 @@ module Lizarb
     log "  Lizarb.#{__method__} done" if $log_boot_high
   end
 
-  # called from exe/lizarb
-  def exit
-    exit_messages if $log_boot_normal
-    super 0
-  end
-
   def exit_messages
     info = {
       ruby: RUBY_VERSION,
