@@ -63,20 +63,20 @@ class Liza::UnitLoggingPart < Liza::Part
       DevBox.logg env
     end
   
-    def self.stick *args
-      StickLog.new *args
+    def self.stick(*args)
+      StickLog.new(*args)
     end
   
-    def stick *args
-      StickLog.new *args
+    def stick(*args)
+      StickLog.new(*args)
     end
   
-    def self.sticks *args
-      StickLog.bundle *args
+    def self.sticks(*args)
+      StickLog.bundle(*args)
     end
   
-    def sticks *args
-      StickLog.bundle *args
+    def sticks(*args)
+      StickLog.bundle(*args)
     end
   
     #
