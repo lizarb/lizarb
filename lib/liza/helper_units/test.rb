@@ -15,5 +15,8 @@ class Liza::Test < Liza::Unit
 
   def self.color
     subject_class.color
+  rescue
+    # a workaround for when subject_class is not a Unit
+    :white
   end
 end
