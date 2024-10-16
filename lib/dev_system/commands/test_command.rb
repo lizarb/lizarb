@@ -1,5 +1,14 @@
 class DevSystem::TestCommand < DevSystem::Command
 
+  def self.get_command_signatures
+    [
+      OpenStruct.new({
+            name: "",
+            description: "# no description",
+          })
+        ]
+  end
+
   def self.call env
     super
     Lizarb.eager_load!
