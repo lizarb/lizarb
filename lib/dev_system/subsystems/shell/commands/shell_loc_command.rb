@@ -1,8 +1,8 @@
 # ShellClocCommand is a custom LinesOfCode script using gem coderay
 
-class DevSystem::ShellClocCommand < DevSystem::SimpleCommand
+class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
   
-  # liza shell_cloc
+  # liza shell_loc
 
   def call_default
     log "LINES OF CODE"

@@ -9,10 +9,9 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts
     puts "App.type              #{ App.type.inspect }"
     puts "App.root              #{ App.root }/"
-    puts "App.file              #{ App.filename }"
-    puts "App.directory         #{ "#{App.directory}/" || "nil" }"
-    # puts "App.path              #{ App.path ? "#{App.path}/" : "nil" }"
-    puts "App.systems_directory #{App.systems_directory}/"
+    puts "App.file              #{ App.file }"
+    puts "App.directory         #{ App.directory }/"
+    puts "App.systems_directory #{ App.systems_directory }/"
     puts
 
     largest_system_name = AppShell.consts[:systems].keys.map(&:to_s).map(&:size).max
@@ -53,8 +52,8 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts
   end
 
-  # liza shell:cloc
-  def call_cloc
+  # liza shell:loc
+  def call_loc
     DevBox.command ["loc"]
   end
 

@@ -34,8 +34,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
   # print helpers
 
   def print_class klass, description: nil
-    loc = klass.to_s
-    return if [ShellClocCommand, ShellConvertCommand, ShellFormatCommand].include? klass
+    return if [NotFoundCommand, ShellLocCommand, ShellConvertCommand, ShellFormatCommand].include? klass
 
     sidebar_length = 30
     klass.get_command_signatures.each do |signature|
