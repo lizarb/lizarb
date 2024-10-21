@@ -43,6 +43,39 @@ class Liza::UnitTest < Liza::Test
   end
 
   #
+  
+  def self.test_sections(hash)
+    test :sections do
+      assert_equality! subject_class.sections.keys, hash.keys
+
+      # each section should match the hash
+      group do
+        hash.each do |section_name, section|
+          assert_equality section, subject_class.sections[section_name]
+        end
+      end
+
+      hash_class_methods = hash.values.map { _1[:class_methods] }.flatten
+      hash_instance_methods = hash.values.map { _1[:instance_methods] }.flatten
+
+      actual_class_methods = subject_class.sections.values.map { _1[:class_methods] }.flatten
+      actual_instance_methods = subject_class.sections.values.map { _1[:instance_methods] }.flatten
+
+      # each section should have unique methods
+      group do
+        assert_equality actual_class_methods, hash_class_methods
+        assert_equality actual_instance_methods, hash_instance_methods
+      end
+
+      # methods in all sections should be unique
+      group do
+        assert_equality actual_class_methods.sort, actual_class_methods.sort.uniq
+        assert_equality actual_instance_methods.sort, actual_instance_methods.sort.uniq
+      end
+    end
+  end
+
+  #
 
   test :subject_class, :methods_defined do
     a = \
@@ -55,10 +88,13 @@ class Liza::UnitTest < Liza::Test
       :descendants_select,
       :division,
       :instance_methods_defined, :instance_methods_for_erroring, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_setting,
+      :method_added,
       :methods_defined, :methods_for_erroring, :methods_for_logging, :methods_for_rendering, :methods_for_setting,
       :namespace,
       :part,
       :reload!,
+      :section, :sections,
+      :singleton_method_added,
       :subclasses_select, :system, :system?,
       :test_class
     ]

@@ -4,18 +4,21 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     assert_equality subject_class, DevSystem::SimpleCommand
   end
 
-  test_methods_defined do
-    on_self
-    on_instance \
-      :after,
-      :before,
-      :log_simple_remember,
-      :simple_arg, :simple_arg_ask, :simple_arg_ask_snakecase, :simple_args, :simple_args_from_2,
-      :simple_boolean, :simple_boolean_no, :simple_boolean_yes, :simple_booleans,
-      :simple_color,
-      :simple_controller_placement,
-      :simple_string, :simple_strings
-  end
+  test_sections(
+    :filters=>{
+      :class_methods=>[],
+      :instance_methods=>[:before, :after]
+    },
+    :default=>{
+      :class_methods=>[],
+      :instance_methods=>[
+        :log_simple_remember,
+        :simple_string, :simple_color, :simple_controller_placement,
+        :simple_args, :simple_args_from_2, :simple_booleans, :simple_strings, :simple_arg, :simple_arg_ask, :simple_arg_ask_snakecase,
+        :simple_boolean_yes, :simple_boolean_no, :simple_boolean
+      ]
+    },
+  )
 
   def subject_with *args
     @subject = subject_class.new

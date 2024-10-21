@@ -47,6 +47,26 @@ class Liza::UnitDefiningPart < Liza::Part
       [:add, :fetch, :get, :set, :settings].sort
     end
   
+    # Define a section
+    def self.section(name)
+      @current_section = name
+    end
+
+    # Retrieve the sections
+    def self.sections
+      @sections ||= Hash.new { |h, k| h[k] = { class_methods: [], instance_methods: [] } }
+    end
+
+    # Hook into method definition to capture instance methods under the current section
+    def self.method_added(method_name)
+      sections[@current_section || :default][:instance_methods] << method_name
+    end
+
+    # Hook into singleton method definition to capture class methods under the current section
+    def self.singleton_method_added(method_name)
+      sections[@current_section || :default][:class_methods] << method_name
+    end
+    
   end
 
 end
