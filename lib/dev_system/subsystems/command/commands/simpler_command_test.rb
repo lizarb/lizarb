@@ -20,7 +20,7 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
     :defaults=>{
       :constants=>[],
       :class_methods=>[],
-      :instance_methods=>[:default_strings, :set_default_string, :default_booleans, :set_default_boolean]
+      :instance_methods=>[:ask?, :default_strings, :set_default_string, :default_booleans, :set_default_boolean]
     },
   )
 
@@ -49,6 +49,21 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
   end
 
   section :defaults
+
+  test :ask?, :given do
+    assert_equality subject.ask?, nil
+
+    subject_with "+ask"
+    assert_equality subject.ask?, true
+  end
+
+  test :ask?, :defaults do
+    assert_equality subject.ask?, nil
+
+    subject_with
+    subject.set_default_boolean :ask, true
+    assert_equality subject.ask?, true
+  end
 
   test :default_strings do
     assert_equality subject.default_strings, {}

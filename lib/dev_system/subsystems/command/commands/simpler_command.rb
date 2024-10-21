@@ -33,6 +33,16 @@ class DevSystem::SimplerCommand < DevSystem::BaseCommand
 
   public
   
+  def ask?
+    return @ask if defined? @ask
+
+    ask = default_booleans[:ask]
+    ask_arg = given_booleans[:ask]
+    ask = ask_arg unless ask_arg.nil?
+
+    @ask = ask
+  end
+
   def default_strings
     h = get :default_strings
     return h if h
