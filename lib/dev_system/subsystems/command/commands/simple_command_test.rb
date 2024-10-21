@@ -1,4 +1,4 @@
-class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
+class DevSystem::SimpleCommandTest < DevSystem::SimplerCommandTest
 
   test :subject_class do
     assert_equality subject_class, DevSystem::SimpleCommand
