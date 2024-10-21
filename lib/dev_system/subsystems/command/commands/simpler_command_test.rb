@@ -4,6 +4,8 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
     assert_equality subject_class, DevSystem::SimplerCommand
   end
 
+  section :filters
+
   test_sections(
     :filters=>{
       :constants=>[],
@@ -13,7 +15,7 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
     :given=>{
       :constants=>[],
       :class_methods=>[],
-      :instance_methods=>[:given_args, :given_strings, :given_booleans]
+      :instance_methods=>[:given_args, :given_strings, :given_booleans, :before_given]
     },
   )
 
@@ -22,6 +24,8 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
     @subject.instance_exec { @env = DevBox[:command].build_env ["simple", *args] }
     @subject.before
   end
+
+  section :given
 
   before do
     subject_with "k1=v1", "k3=v3", "la", "le", "li", "+a", "+b", "-c", "-d"
