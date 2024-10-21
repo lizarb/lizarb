@@ -6,123 +6,78 @@ class Liza::UnitTest < Liza::Test
   #
 
   def self.test_methods_defined(&block)
-    helper = TestMethodsDefinedHelper.new
-    helper.instance_eval(&block)
-
     test :subject_class, :methods_defined do
-      a = subject_class.methods_defined
-      b = helper.methods
-      assert_equality a, b, kaller: helper.methods_caller
-    end
-
-    test :subject_class, :instance_methods_defined do
-      a = subject_class.instance_methods_defined
-      b = helper.instance_methods
-      assert_equality a, b, kaller: helper.instance_methods_caller
-    end
-  end
-
-  class TestMethodsDefinedHelper
-    attr_reader :methods, :methods_caller
-    attr_reader :instance_methods, :instance_methods_caller
-
-    def initialize
-      @methods, @instance_methods = [], []
-      @methods_caller, @instance_methods_caller = caller, caller
-    end
-
-    def on_self(*args)
-      @methods = args
-      @methods_caller = caller
-    end
-
-    def on_instance(*args)
-      @instance_methods = args
-      @instance_methods_caller = caller
+      todo "replace me with test_sections"
     end
   end
 
   #
+  
+  def self.test_sections(hash)
+    test :sections do
+      assert_equality! subject_class.sections.keys, hash.keys
 
-  test :subject_class, :methods_defined do
-    a = \
-      subject_class.methods_defined -
-      subject_class.methods_for_erroring -
-      subject_class.methods_for_setting -
-      subject_class.methods_for_logging -
-      subject_class.methods_for_rendering
-    b = [
-      :descendants_select,
-      :division,
-      :instance_methods_defined, :instance_methods_for_erroring, :instance_methods_for_logging, :instance_methods_for_rendering, :instance_methods_for_setting,
-      :methods_defined, :methods_for_erroring, :methods_for_logging, :methods_for_rendering, :methods_for_setting,
-      :namespace,
-      :part,
-      :reload!,
-      :subclasses_select, :system, :system?,
-      :test_class
-    ]
-    assert_equality a, b
+      # each section should match the hash
+      group do
+        hash.each do |section_name, section|
+          assert_equality section, subject_class.sections[section_name]
+        end
+      end
+
+      hash_class_methods = hash.values.map { _1[:class_methods] }.flatten
+      hash_instance_methods = hash.values.map { _1[:instance_methods] }.flatten
+
+      actual_class_methods = subject_class.sections.values.map { _1[:class_methods] }.flatten
+      actual_instance_methods = subject_class.sections.values.map { _1[:instance_methods] }.flatten
+
+      # each section should have unique methods
+      group do
+        assert_equality actual_class_methods, hash_class_methods
+        assert_equality actual_instance_methods, hash_instance_methods
+      end
+
+      # methods in all sections should be unique
+      group do
+        assert_equality actual_class_methods.sort, actual_class_methods.sort.uniq
+        assert_equality actual_instance_methods.sort, actual_instance_methods.sort.uniq
+      end
+    end
   end
 
-  test :subject_class, :instance_methods_defined do
-    a = \
-      subject_class.instance_methods_defined -
-      subject_class.instance_methods_for_erroring -
-      subject_class.instance_methods_for_setting -
-      subject_class.instance_methods_for_logging -
-      subject_class.instance_methods_for_rendering
-    b = [:reload!, :system]
-    assert_equality a, b
-  end
+  test_sections(
+    :default=>{
+      :constants=>[],
+      :class_methods=>[:singleton_method_added, :section, :sections, :method_added, :const_added, :methods_defined, :class_methods_defined, :instance_methods_defined, :constants_defined, :part, :const_missing],
+      :instance_methods=>[]
+    },
+    unit_associating_part: {
+      :constants=>[],
+      :class_methods=>[:namespace, :subclasses_select, :descendants_select, :system?, :test_class, :division, :system],
+      :instance_methods=>[:system]
+    },
+    unit_erroring_part: {
+      :constants=>[],
+      :class_methods=>[:errors, :define_error, :raise_error],
+      :instance_methods=>[:raise_error]
+    },
+    unit_logging_part: {
+      :constants=>[],
+      :class_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?],
+      :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?]
+    },
+    unit_rendering_part: {
+      :constants=>[],
+      :class_methods=>[:erbs_defined, :erbs_available, :renderable_names, :renderable_formats_for, :erbs_for, :_erbs_for],
+      :instance_methods=>[:render!, :render, :render_stack, :log_render_in, :log_render_out, :log_render_convert, :log_render_format]
+    },
+    unit_setting_part: {
+      :constants=>[],
+      :class_methods=>[:settings, :get, :set, :add, :fetch, :reload!],
+      :instance_methods=>[:settings, :get, :set, :add, :fetch, :reload!]
+    },
+  )
 
-  test :subject_class, :methods_for_erroring do
-    a = subject_class.methods_for_erroring
-    b = [:define_error, :errors, :raise_error]
-    assert_equality a, b
-  end
-
-  test :subject_class, :instance_methods_for_erroring do
-    a = subject_class.instance_methods_for_erroring
-    b = [:raise_error]
-    assert_equality a, b
-  end
-
-  test :subject_class, :methods_for_setting do
-    a = subject_class.methods_for_setting
-    b = [:add, :fetch, :get, :set, :settings]
-    assert_equality a, b
-  end
-
-  test :subject_class, :instance_methods_for_setting do
-    a = subject_class.instance_methods_for_setting
-    b = [:add, :fetch, :get, :set, :settings]
-    assert_equality a, b
-  end
-
-  test :subject_class, :methods_for_rendering do
-    a = subject_class.methods_for_rendering
-    b = [:erbs_available, :erbs_defined, :erbs_for, :renderable_formats_for, :renderable_names]
-    assert_equality a, b
-  end
-
-  test :subject_class, :instance_methods_for_rendering do
-    a = subject_class.instance_methods_for_rendering
-    b = [:render, :render!, :render_stack]
-    assert_equality a, b
-  end
-
-  test :subject_class, :methods_for_logging do
-    a = subject_class.methods_for_logging
-    b = [:log, :log?, :log_array, :log_hash, :log_level, :log_level?, :log_levels, :stick, :sticks]
-    assert_equality a, b
-  end
-
-  test :subject_class, :instance_methods_for_logging do
-    a = subject_class.instance_methods_for_logging
-    b = [:log, :log?, :log_array, :log_hash, :log_level, :log_level?, :log_levels, :log_render_convert, :log_render_format, :log_render_in, :log_render_out, :stick, :sticks]
-    assert_equality a, b
-  end
+  #
 
   test :settings do
     assert_equality subject_class.get(:log_level), 4

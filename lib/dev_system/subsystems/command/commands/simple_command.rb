@@ -1,5 +1,7 @@
 class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
+  section :filters
+
   def before
     simple_strings  = args.select { |arg| arg.include? "=" }
     simple_booleans = args.select { |arg| ["+", "-"].any? { arg.start_with? _1 }  }
@@ -14,6 +16,8 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     # must be defined here
   end
 
+  section :default
+  
   # Logs the current state of the :remember key in the environment.
   def log_simple_remember
     log :higher, "env[:remember] is now #{stick system.color, (env[:simple].join " ")}", kaller: caller
