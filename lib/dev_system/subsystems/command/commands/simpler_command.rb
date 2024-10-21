@@ -67,4 +67,42 @@ class DevSystem::SimplerCommand < DevSystem::BaseCommand
     default_booleans[key] = value
   end
 
+  section :input
+  
+  def input_args
+    h = get :input_args
+    return h if h
+
+    set :input_args, []
+  end
+
+  def input_strings
+    h = get :input_strings
+    return h if h
+
+    set :input_strings, {}
+  end
+
+  def input_booleans
+    h = get :input_booleans
+    return h if h
+
+    set :input_booleans, {}
+  end
+
+  def set_input_arg(index, &block)
+    log :highest, "set_input_arg #{index.inspect} #{block.source_location}"
+    input_args[index] = block
+  end
+
+  def set_input_string(key, &block)
+    log :highest, "set_input_string #{key.inspect}"
+    input_strings[key] = block
+  end
+
+  def set_input_boolean(key, &block)
+    log :highest, "set_input_boolean #{key.inspect}"
+    input_booleans[key] = block
+  end
+
 end
