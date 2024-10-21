@@ -29,4 +29,32 @@ class DevSystem::SimplerCommand < DevSystem::BaseCommand
     env[:given_booleans] = given_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
   end
 
+  section :defaults
+
+  public
+  
+  def default_strings
+    h = get :default_strings
+    return h if h
+
+    set :default_strings, {}
+  end
+
+  def set_default_string(key, value)
+    log :highest, "set_default_string #{key.inspect} #{value.inspect}"
+    default_strings[key] = value
+  end
+
+  def default_booleans
+    h = get :default_booleans
+    return h if h
+
+    set :default_booleans, {}
+  end
+
+  def set_default_boolean(key, value)
+    log :highest, "set_default_boolean #{key.inspect} #{value.inspect}"
+    default_booleans[key] = value
+  end
+
 end
