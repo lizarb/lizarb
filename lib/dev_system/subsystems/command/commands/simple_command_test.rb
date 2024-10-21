@@ -1,4 +1,4 @@
-class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
+class DevSystem::SimpleCommandTest < DevSystem::SimplerCommandTest
 
   test :subject_class do
     assert_equality subject_class, DevSystem::SimpleCommand
@@ -6,10 +6,12 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
 
   test_sections(
     :filters=>{
+      :constants=>[],
       :class_methods=>[],
       :instance_methods=>[:before, :after]
     },
     :default=>{
+      :constants=>[],
       :class_methods=>[],
       :instance_methods=>[
         :log_simple_remember,

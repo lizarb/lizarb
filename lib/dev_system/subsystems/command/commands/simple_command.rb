@@ -1,18 +1,17 @@
-class DevSystem::SimpleCommand < DevSystem::BaseCommand
+class DevSystem::SimpleCommand < DevSystem::SimplerCommand
 
   section :filters
 
   def before
-    simple_strings  = args.select { |arg| arg.include? "=" }
-    simple_booleans = args.select { |arg| ["+", "-"].any? { arg.start_with? _1 }  }
-
+    super
     env[:simple] = [""]
-    env[:simple_args] = args - simple_strings - simple_booleans
-    env[:simple_strings] = simple_strings.map { |arg| arg.split "=" }.map { |k,v| [k.to_sym, v] }.to_h
-    env[:simple_booleans] = simple_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
+    env[:simple_args] = env[:given_args].dup
+    env[:simple_strings] = env[:given_strings].dup
+    env[:simple_booleans] = env[:given_booleans].dup
   end
 
   def after
+    super
     # must be defined here
   end
 
