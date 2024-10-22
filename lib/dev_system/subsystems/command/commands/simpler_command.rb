@@ -43,6 +43,18 @@ class DevSystem::SimplerCommand < DevSystem::BaseCommand
     @ask = ask
   end
 
+  def default_args
+    h = get :default_args
+    return h if h
+
+    set :default_args, []
+  end
+
+  def set_default_arg(index, value)
+    log :highest, "set_default_arg #{index.inspect} #{value.inspect}"
+    default_args[index] = value
+  end
+
   def default_strings
     h = get :default_strings
     return h if h
