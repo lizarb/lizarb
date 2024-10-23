@@ -27,6 +27,11 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
       :class_methods=>[],
       :instance_methods=>[:input_args, :input_strings, :input_booleans, :set_input_arg, :set_input_string, :set_input_boolean]
     },
+    :simple=>{
+      :constants=>[],
+      :class_methods=>[],
+      :instance_methods=>[:simple_arg, :simple_boolean, :simple_string, :simple_args, :simple_args_from_2, :simple_booleans, :simple_strings, :_arg_input_call, :_boolean_input_call, :_string_input_call, :simple_remember, :simple_remember_add, :simple_remember_values, :before_simple, :after_simple]
+    }
   )
 
   def subject_with *args
@@ -115,6 +120,20 @@ class DevSystem::SimplerCommandTest < DevSystem::BaseCommandTest
     assert_equality subject.input_args, []
     subject.set_input_arg 0, &->{ "eof" }
     assert_equality subject.input_args[0].class, Proc
+  end
+
+  section :simple
+
+  test :simple_arg do
+    todo "test behavior with given, default and input"
+  end
+
+  test :simple_boolean do
+    todo "test behavior with given, default and input"
+  end
+
+  test :simple_string do
+    todo "test behavior with given, default and input"
   end
 
 end

@@ -14,10 +14,9 @@ class DevSystem::SimpleCommandTest < DevSystem::SimplerCommandTest
       :constants=>[],
       :class_methods=>[],
       :instance_methods=>[
-        :log_simple_remember,
-        :simple_string, :simple_color, :simple_controller_placement,
-        :simple_args, :simple_args_from_2, :simple_booleans, :simple_strings, :simple_arg, :simple_arg_ask, :simple_arg_ask_snakecase,
-        :simple_boolean_yes, :simple_boolean_no, :simple_boolean
+        :simple_color, :simple_controller_placement,
+        :simple_arg_ask, :simple_arg_ask_snakecase,
+        :simple_boolean_yes, :simple_boolean_no,
       ]
     },
   )
@@ -41,12 +40,6 @@ class DevSystem::SimpleCommandTest < DevSystem::SimplerCommandTest
     assert_equality subject.simple_string(:k1), "v1"
     assert_equality subject.simple_string(:k3), "v3"
 
-    # Test when the key-value pair is not present in the args and a block is given
-    assert_equality subject.simple_string(:k2) { "default" }, "default"
-
-    # Test when the key-value pair is not present in the args and a block is given that returns nil
-    assert_equality subject.simple_string(:k2) { nil }, nil
-
     # Test when the key-value pair is not present in the args and a block is not given
     assert_equality subject.simple_string(:k2), nil
   end
@@ -60,6 +53,7 @@ class DevSystem::SimpleCommandTest < DevSystem::SimplerCommandTest
     assert_equality subject.simple_boolean(:b), true
     assert_equality subject.simple_boolean(:c), false
     assert_equality subject.simple_boolean(:d), false
+    assert_equality subject.simple_boolean(:e), nil
   end
 
   test :simple_args do
