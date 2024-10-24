@@ -1,10 +1,9 @@
 class DevSystem::BaseGenerator < DevSystem::Generator
 
-  #
+  section :panel
 
   def self.call(env)
     super
-    log :higher, "env.count is #{env.count}"
     
     generator = env[:generator] = new
     generator.call env
@@ -15,10 +14,9 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   attr_reader :env
 
   def call(env)
-    log :higher, "env.count is #{env.count}"
     @env = env
     
-    method_name = "call_#{env[:generator_action] || :default}"
+    method_name = "call_#{env[:generator_action]}"
     return public_send method_name if respond_to? method_name
 
     log "method not found: #{method_name.inspect}"
@@ -34,7 +32,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
     log "not implemented"
   end
 
-  #
+  section :command
 
   def args
     env[:args]

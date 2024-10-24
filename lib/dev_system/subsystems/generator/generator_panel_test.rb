@@ -15,20 +15,26 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
       :save
   end
   
-  #
+  section :parse
+  
+  def parse_with(subject, args)
+    command = SimpleCommand.new
+    env = {args: , command: }
+    command.instance_variable_set :@env, env
+    subject.parse env
+    env
+  end
   
   test :parse, true do
-    env = {args: ["system"]}
-    subject.parse env
+    env = parse_with subject, ["system"]
     assert_equality env[:generator_name_original], :system
     assert_equality env[:generator_name], :system
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], nil
+    assert_equality env[:generator_action], :default
   end
   
   test :parse, true, :action do
-    env = {args: ["system:install"]}
-    subject.parse env
+    env = parse_with subject, ["system:install"]
     assert_equality env[:args], ["system:install"]
     assert_equality env[:generator_name_original], :system
     assert_equality env[:generator_name], :system
@@ -37,18 +43,16 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
   end
   
   test :parse, false do
-    env = {args: ["x"]}
-    subject.parse env
+    env = parse_with subject, ["x"]
     assert_equality env[:args], ["x"]
     assert_equality env[:generator_name_original], :x
     assert_equality env[:generator_name], :x
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], nil
+    assert_equality env[:generator_action], :default
   end
   
   test :parse, false, :action do
-    env = {args: ["x:y"]}
-    subject.parse env
+    env = parse_with subject, ["x:y"]
     assert_equality env[:args], ["x:y"]
     assert_equality env[:generator_name_original], :x
     assert_equality env[:generator_name], :x
@@ -56,7 +60,7 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_action], :y
   end
   
-  #
+  section :find
   
   test :find, true do
     env = {generator_name: :command}
