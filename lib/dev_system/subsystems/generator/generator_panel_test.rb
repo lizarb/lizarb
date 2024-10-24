@@ -27,37 +27,37 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
   
   test :parse, true do
     env = parse_with subject, ["system"]
-    assert_equality env[:generator_name_original], :system
-    assert_equality env[:generator_name], :system
+    assert_equality env[:generator_name_original], "system"
+    assert_equality env[:generator_name], "system"
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], :default
+    assert_equality env[:generator_action], "default"
   end
   
   test :parse, true, :action do
     env = parse_with subject, ["system:install"]
     assert_equality env[:args], ["system:install"]
-    assert_equality env[:generator_name_original], :system
-    assert_equality env[:generator_name], :system
-    assert_equality env[:generator_action_original], :install
-    assert_equality env[:generator_action], :install
+    assert_equality env[:generator_name_original], "system"
+    assert_equality env[:generator_name], "system"
+    assert_equality env[:generator_action_original], "install"
+    assert_equality env[:generator_action], "install"
   end
   
   test :parse, false do
     env = parse_with subject, ["x"]
     assert_equality env[:args], ["x"]
-    assert_equality env[:generator_name_original], :x
-    assert_equality env[:generator_name], :x
+    assert_equality env[:generator_name_original], "x"
+    assert_equality env[:generator_name], "x"
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], :default
+    assert_equality env[:generator_action], "default"
   end
   
   test :parse, false, :action do
     env = parse_with subject, ["x:y"]
     assert_equality env[:args], ["x:y"]
-    assert_equality env[:generator_name_original], :x
-    assert_equality env[:generator_name], :x
-    assert_equality env[:generator_action_original], :y
-    assert_equality env[:generator_action], :y
+    assert_equality env[:generator_name_original], "x"
+    assert_equality env[:generator_name], "x"
+    assert_equality env[:generator_action_original], "y"
+    assert_equality env[:generator_action], "y"
   end
   
   section :find

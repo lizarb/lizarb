@@ -28,12 +28,12 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
     raise_error :not_found, "" if command.args.empty?
 
-    generator_name, generator_action = command.args.first.split(":").map(&:to_sym)
+    generator_name, generator_action = command.args.first.split(":")
 
     env[:generator_name_original] = generator_name
-    env[:generator_name] = short(generator_name).to_sym
+    env[:generator_name] = short(generator_name)
     env[:generator_action_original] = generator_action
-    env[:generator_action] = generator_action || :default
+    env[:generator_action] = short generator_action || "default"
     log :lower, "generator:action is #{env[:generator_name]}:#{env[:generator_action]}"
   end
 
