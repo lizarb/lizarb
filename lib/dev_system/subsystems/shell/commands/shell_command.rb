@@ -54,7 +54,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   # liza shell:loc
   def call_loc
-    DevBox.command ["loc"]
+    DevBox.command ["shell_loc"]
   end
 
   # color helpers
