@@ -2,7 +2,7 @@ class Liza::UnitErroringPart < Liza::Part
 
   insertion do
     def self.errors
-      @errors ||= {}
+      fetch(:errors) { {} }
     end
 
     def self.define_error(error_key, &block)

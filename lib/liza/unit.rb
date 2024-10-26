@@ -76,6 +76,8 @@ class Liza::Unit
 
   # PARTS
 
+  part :unit_setting
+
   part :unit_associating
 
   part :unit_erroring
@@ -83,8 +85,6 @@ class Liza::Unit
   part :unit_logging
 
   part :unit_rendering
-
-  part :unit_setting
 
   def self.reload!
     Lizarb.reload
