@@ -72,4 +72,28 @@ class DevSystem::FileShell < DevSystem::Shell
     touch "#{path}/.gitkeep"
   end
 
+  # read
+
+  def self.read_binary(path, log_level: self.log_level)
+    # TODO: move all code from BinShell to this file
+    BinShell.read path
+  end
+
+  def self.read_text(path, log_level: self.log_level)
+    # TODO: move all code from TextShell to this file
+    TextShell.read path, log_level:
+  end
+
+  # write
+
+  def self.write_binary(path, content, create_dir: nil, log_level: self.log_level)
+    # TODO: move all code from BinShell to this file
+    BinShell.write path, content, create_dir:
+  end
+
+  def self.write_text(path, content, create_dir: nil, log_level: self.log_level)
+    # TODO: move all code from TextShell to this file
+    TextShell.write path, content, create_dir:, log_level:
+  end
+
 end
