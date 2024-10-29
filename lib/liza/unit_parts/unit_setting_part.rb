@@ -68,7 +68,7 @@ class Liza::UnitSettingPart < Liza::Part
 
     def fetch key, &block
       x = get key
-      x ||= set key, eval(&block)
+      x ||= set key, instance_eval(&block)
       x
     end
   end
