@@ -1,21 +1,34 @@
 class NetSystem::NetBox < Liza::Box
 
-  # Preconfigure your client panel
-  
-  configure :client do
-    #
+  preconfigure :client do
+    # ClientPanel.instance gives you read-access to this instance
   end
 
-  # Preconfigure your database panel
+  preconfigure :database do
+    # DatabasePanel.instance gives you read-access to this instance
+  end
+
+  preconfigure :record do
+    # RecordPanel.instance gives you read-access
+  end
+  
+end
+
+__END__
+
+# view default.rb.erb
+class NetBox < NetSystem::NetBox
+
+  configure :client do
+    # ClientPanel.instance gives you read-access to this instance
+  end
 
   configure :database do
-    #
+    # DatabasePanel.instance gives you read-access to this instance
   end
-
-  # Preconfigure your record panel
 
   configure :record do
-    #
+    # RecordPanel.instance gives you read-access
   end
-  
+
 end

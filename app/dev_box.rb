@@ -1,14 +1,12 @@
 class DevBox < DevSystem::DevBox
 
-  # Configure your bench panel
-
   configure :bench do
+    # BenchPanel.instance gives you read-access to this instance
     #
   end
 
-  # Configure your command panel
-
   configure :command do
+    # CommandPanel.instance gives you read-access to this instance
     short :b, :bench
     short :g, :generate
     short :i, :irb
@@ -26,9 +24,8 @@ class DevBox < DevSystem::DevBox
     # rescue_from(CommandPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end
 
-  # Configure your generator panel
-
   configure :generator do
+    # GeneratorPanel.instance gives you read-access to this instance
     # rescue_from declarations are checked bottom to top
 
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
@@ -38,9 +35,8 @@ class DevBox < DevSystem::DevBox
     # rescue_from(GeneratorPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end
 
-  # Configure your log panel
-
   configure :log do
+    # LogPanel.instance gives you read-access to this instance
     # handlers
     handler :output   if not $coding
     handler :color_output if $coding
@@ -51,9 +47,8 @@ class DevBox < DevSystem::DevBox
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
   end
 
-  # Configure your shell panel
-
   configure :shell do
+    # ShellPanel.instance gives you read-access to this instance
     # converters
     converter :html, :md
     converter :html, :haml

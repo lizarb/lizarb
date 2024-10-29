@@ -1,15 +1,11 @@
 class WebSystem::WebBox < Liza::Box
 
-  # Preconfigure your rack panel
-
-  configure :rack do
-    #
+  preconfigure :rack do
+    # RackPanel.instance gives you read-access to this instance
   end
 
-  # Preconfigure your request panel
-
-  configure :request do
-    #
+  preconfigure :request do
+    # RequestPanel.instance gives you read-access to this instance
   end
 
 end
@@ -19,9 +15,8 @@ __END__
 # view default.rb.erb
 class WebBox < WebSystem::WebBox
 
-  # Configure your rack panel
-
   configure :rack do
+    # RackPanel.instance gives you read-access to this instance
     # server (pick one, check gemfile)
     # server :agoo
     # server :falcon
@@ -34,9 +29,8 @@ class WebBox < WebSystem::WebBox
     set :port, 3000
   end
 
-  # Configure your request panel
-
   configure :request do
+    # RequestPanel.instance gives you read-access to this instance
     router :simple
   end
 

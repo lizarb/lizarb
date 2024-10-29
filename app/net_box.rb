@@ -1,8 +1,7 @@
 class NetBox < NetSystem::NetBox
 
-  # Configure your client panel
-
   configure :client do
+    # ClientPanel.instance gives you read-access to this instance
     set :redis_url, "redis://localhost:6379/15"
     set :mongo_hash,  host: "localhost",
                       port: 27017,
@@ -23,15 +22,13 @@ class NetBox < NetSystem::NetBox
 
   end
 
-  # Configure your database panel
-
   configure :database do
+    # DatabasePanel.instance gives you read-access to this instance
 
   end
 
-  # Configure your record panel
-
   configure :record do
+    # RecordPanel.instance gives you read-access to this instance
 
   end
   

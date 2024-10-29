@@ -8,6 +8,8 @@ class Liza::Box < Liza::Unit
     panels[symbol].started
   end
 
+  def self.preconfigure(name, &block)= configure(name, &block)
+
   def self.configure name, &block
     raise ArgumentError, "block required" unless block_given?
     raise ArgumentError, "Invalid panel: #{name}. Valid panels are: #{system.subs}" unless system.subs.include? name

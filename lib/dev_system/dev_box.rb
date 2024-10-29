@@ -1,18 +1,14 @@
 class DevSystem::DevBox < Liza::Box
 
-  # Preconfigure your bench panel
-  
-  configure :bench do
-    # 
+  preconfigure :bench do
+    # BenchPanel.instance gives you read-access to this instance
     rescue_from :not_found
   end
 
   forward :bench
 
-  # Preconfigure your command panel
-  
-  configure :command do
-    # 
+  preconfigure :command do
+    # CommandPanel.instance gives you read-access to this instance
     rescue_from :not_found
   end
 
@@ -21,28 +17,22 @@ class DevSystem::DevBox < Liza::Box
   forward :command, :pick_one
   forward :command, :pick_many
 
-  # Preconfigure your generator panel
-  
-  configure :generator do
-    # 
+  preconfigure :generator do
+    # GeneratorPanel.instance gives you read-access to this instance
     rescue_from :not_found
   end
 
   forward :generator, :generate => :call
 
-  # Preconfigure your log panel
-
-  configure :log do
-    # 
+  preconfigure :log do
+    # LogPanel.instance gives you read-access to this instance
     sidebar_size 40
   end
 
   forward :log, :logg => :call
 
-  # Preconfigure your shell panel
-
-  configure :shell do
-    # 
+  preconfigure :shell do
+    # ShellPanel.instance gives you read-access to this instance
   end
 
   forward :shell, :convert

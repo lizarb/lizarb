@@ -1,8 +1,7 @@
 class WebBox < WebSystem::WebBox
 
-  # Configure your rack panel
-
   configure :rack do
+    # RackPanel.instance gives you read-access to this instance
     # server (pick one, check gemfile)
     # server :agoo
     # server :falcon
@@ -15,9 +14,8 @@ class WebBox < WebSystem::WebBox
     set :port, 3000
   end
 
-  # Configure your request panel
-
   configure :request do
+    # RequestPanel.instance gives you read-access to this instance
     router :simple
   end
 

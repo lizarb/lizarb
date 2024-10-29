@@ -1,8 +1,7 @@
 class DevBox < DevSystem::DevBox
 
-  # Configure your command panel
-
   configure :command do
+    # CommandPanel.instance gives you read-access to this instance
     short :b, :bench
     short :g, :generate
     short :i, :irb
@@ -12,9 +11,8 @@ class DevBox < DevSystem::DevBox
     short :t, :test
   end
 
-  # Configure your log panel
-
   configure :log do
+    # LogPanel.instance gives you read-access to this instance
     sidebar_size 40
 
     # handlers
@@ -22,9 +20,8 @@ class DevBox < DevSystem::DevBox
     handler :color_output if $coding
   end
 
-  # Configure your shell panel
-
   configure :shell do
+    # ShellPanel.instance gives you read-access to this instance
     # converters
     converter :html, :md
     converter :html, :haml
