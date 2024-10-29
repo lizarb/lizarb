@@ -164,4 +164,10 @@ class Liza::PanelTest < Liza::UnitTest
     assert_equality subject.short("n"), "nice"
   end
 
+  #
+  
+  test :instance do
+    assert_equality BenchPanel.instance, DevBox.panels[:bench]
+  end
+
 end

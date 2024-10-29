@@ -11,6 +11,13 @@ class Liza::Panel < Liza::Unit
 
   #
 
+  def self.instance
+    x = self
+    x = x.ancestors.take_while { _1.last_namespace == x.last_namespace }.last
+    x = x.last_namespace.to_s.sub('Panel', '').snakecase.to_sym
+    box[x]
+  end
+
   def self.box
     system.box
   end
