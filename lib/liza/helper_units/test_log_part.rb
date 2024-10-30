@@ -55,19 +55,19 @@ class Liza::TestLogPart < Liza::Part
     end
 
     def self.log_test_building node, test_block
-      log "                         the building blocks are".magenta
+      log stick :red, :white, :b, "                         the building blocks are"
 
       node.before_stack.each do |stack|
         stack.each do |bl|
-          log "                               before block #{_log_test_block bl}".magenta
+          log stick :red, :white, :b, "                               before block #{_log_test_block bl}"
         end
       end
       
-      log "                                 test block #{_log_test_block test_block}".magenta
+      log stick :red, :white, :b, "                                 test block #{_log_test_block test_block}"
 
       node.after_stack.each do |stack|
         stack.each do |bl|
-          log "                                after block #{_log_test_block bl}".magenta
+          log stick :red, :white, :b, "                                after block #{_log_test_block bl}"
         end
       end
     end

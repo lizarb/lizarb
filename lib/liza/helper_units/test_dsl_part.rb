@@ -37,7 +37,7 @@ class Liza::TestDslPart < Liza::Part
     def call
       catch :critical do
         @before_stack.each do |stack|
-          log "               calling stacked before blocks #{stack.map { |bl| _log_test_block bl }}".magenta if log_test_building?
+          log "               calling stacked before blocks #{stack.map { |bl| _log_test_block bl }}" if log_test_building?
           stack.each do |bl|
             log_test_call "B&", &bl if log_test_call_block?
             instance_exec(&bl)
@@ -45,12 +45,12 @@ class Liza::TestDslPart < Liza::Part
         end
 
         bl = @test_block
-        log "                         calling test block #{_log_test_block bl}".magenta if log_test_building?
+        log "                         calling test block #{_log_test_block bl}" if log_test_building?
         log_test_call "T&", &bl if log_test_call_block?
         instance_exec(&bl)
 
         @after_stack.each do |stack|
-          log "                calling stacked after blocks #{stack.map { |bl| _log_test_block bl }}".magenta if log_test_building?
+          log "                calling stacked after blocks #{stack.map { |bl| _log_test_block bl }}" if log_test_building?
           stack.each do |bl|
             log_test_call "A&", &bl if log_test_call_block?
             instance_exec(&bl)

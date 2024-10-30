@@ -65,17 +65,17 @@ class Liza::TestTreePart < Liza::Part
   end
 
   def add_before &block
-    log "add_before to ##{object_id} #{block}" if log_test_building?
+    puts "#{self.class} add_before to ##{object_id} #{block}" if log_test_building?
     @before_top.push block
   end
 
   def add_test words, &block
-    log "add_test to ##{object_id} #{words} #{block}" if log_test_building?
+    puts "#{self.class} add_test to ##{object_id} #{words} #{block}" if log_test_building?
     tests << [words, block]
   end
 
   def add_after &block
-    log "add_after to ##{object_id} #{block}" if log_test_building?
+    puts "#{self.class} add_after to ##{object_id} #{block}" if log_test_building?
     @after_top.push block
   end
 
