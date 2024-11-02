@@ -1,6 +1,5 @@
 class Liza::Controller < Liza::Unit
 
-  part :controller_callable
   part :controller_subsystem
 
   def self.on_connected
@@ -36,6 +35,26 @@ class Liza::Controller < Liza::Unit
 
   def `(s)
     KernelShell.call_backticks s
+  end
+
+  section :callable
+
+  # This gem will be lazily required
+  def self.require(gem_name)
+    @requirements ||= []
+    @requirements << gem_name
+  end
+
+  def self.call(env)
+    log :higher, "env.count is #{env.count}" unless self <= DevSystem::Log
+
+    if defined? @requirements
+      @requirements.each do
+        log "require '#{_1}'" unless self <= DevSystem::Log
+        Kernel.require _1
+      end
+      remove_instance_variable :@requirements
+    end
   end
 
 end
