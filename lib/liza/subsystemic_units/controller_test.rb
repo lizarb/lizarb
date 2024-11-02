@@ -3,24 +3,18 @@ class Liza::ControllerTest < Liza::UnitTest
     assert subject_class == Liza::Controller
   end
 
-  test_methods_defined do
-    on_self \
-      :`,
-      :box,
-      :call,
-      :color,
-      :division!, :division?,
-      :inherited,
-      :on_connected,
-      :panel, :plural,
-      :puts,
-      :require,
-      :sh,
-      :singular,
-      :subsystem, :subsystem!, :subsystem?,
-      :token
-    on_instance :`, :box, :panel, :sh
-  end
+  test_sections(
+    :subsystem=>{
+      :constants=>[],
+      :class_methods=>[:on_connected, :inherited, :color, :sh, :`, :subsystem, :subsystem?, :subsystem!, :box, :panel, :division, :division?, :division!, :singular, :plural, :token],
+      :instance_methods=>[:sh, :`, :box, :panel]
+    },
+    :callable=>{
+      :constants=>[],
+      :class_methods=>[:require, :call, :log, :puts],
+      :instance_methods=>[:log, :puts]
+    },
+  )
 
   test :erbs_defined do
     erbs_defined = subject_class.erbs_defined.map(&:key)
