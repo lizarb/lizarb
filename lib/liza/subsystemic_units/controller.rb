@@ -132,20 +132,21 @@ class Liza::Controller < Liza::Unit
 
   # This gem will be lazily required
   def self.require(gem_name)
-    @requirements ||= []
-    @requirements << gem_name
+    log :higher, "lazy require '#{gem_name}'" unless self <= DevSystem::Log
+    requirements << gem_name
   end
 
   def self.call(env)
     log :higher, "env.count is #{env.count}" unless self <= DevSystem::Log
 
-    if defined? @requirements
-      @requirements.each do
-        log "require '#{_1}'" unless self <= DevSystem::Log
-        Kernel.require _1
-      end
-      remove_instance_variable :@requirements
-    end
+    requirements.each do
+      log :normal, "require '#{_1}'" unless self <= DevSystem::Log
+      Kernel.require _1
+    end.clear
+
+    true
   end
+
+  def self.requirements()= @requirements ||= fetch(:requirements) { [] }
 
 end

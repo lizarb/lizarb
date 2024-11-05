@@ -11,7 +11,7 @@ class Liza::ControllerTest < Liza::UnitTest
     },
     :callable=>{
       :constants=>[],
-      :class_methods=>[:require, :call, :log, :puts],
+      :class_methods=>[:require, :call, :requirements, :log, :puts],
       :instance_methods=>[:log, :puts]
     },
   )
