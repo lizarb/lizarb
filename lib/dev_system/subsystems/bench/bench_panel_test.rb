@@ -10,47 +10,52 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
       :call,
       :find,
       :forward,
-      :parse
+      :forge
   end
 
-  test :parse, true do
-    env = {args: ["objects"]}
-    subject.parse env
-    assert_equality env[:bench_name_original], :objects
-    assert_equality env[:bench_name], :objects
+  section :forge
+  
+  def forge_with(args)
+    command = SimpleCommand.new
+    command_env = {command: , args: }
+    command.instance_variable_set :@env, command_env
+    env = subject.forge command_env
+    env
+  end
+  
+  test :forge, true do
+    env = forge_with ["objects"]
+    assert_equality env[:bench_name_original], "objects"
+    assert_equality env[:bench_name], "objects"
     assert_equality env[:bench_action_original], nil
-    assert_equality env[:bench_action], nil
+    assert_equality env[:bench_action], "default"
   end
   
-  test :parse, true, :action do
-    env = {args: ["objects:quadratic"]}
-    subject.parse env
-    assert_equality env[:args], ["objects:quadratic"]
-    assert_equality env[:bench_name_original], :objects
-    assert_equality env[:bench_name], :objects
-    assert_equality env[:bench_action_original], :quadratic
-    assert_equality env[:bench_action], :quadratic
+  test :forge, true, :action do
+    env = forge_with ["objects:quadratic"]
+    assert_equality env[:bench_name_original], "objects"
+    assert_equality env[:bench_name], "objects"
+    assert_equality env[:bench_action_original], "quadratic"
+    assert_equality env[:bench_action], "quadratic"
   end
   
-  test :parse, false do
-    env = {args: ["x"]}
-    subject.parse env
-    assert_equality env[:args], ["x"]
-    assert_equality env[:bench_name_original], :x
-    assert_equality env[:bench_name], :x
+  test :forge, false do
+    env = forge_with ["x"]
+    assert_equality env[:bench_name_original], "x"
+    assert_equality env[:bench_name], "x"
     assert_equality env[:bench_action_original], nil
-    assert_equality env[:bench_action], nil
+    assert_equality env[:bench_action], "default"
   end
   
-  test :parse, false, :action do
-    env = {args: ["x:y"]}
-    subject.parse env
-    assert_equality env[:args], ["x:y"]
-    assert_equality env[:bench_name_original], :x
-    assert_equality env[:bench_name], :x
-    assert_equality env[:bench_action_original], :y
-    assert_equality env[:bench_action], :y
+  test :forge, false, :action do
+    env = forge_with ["x:y"]
+    assert_equality env[:bench_name_original], "x"
+    assert_equality env[:bench_name], "x"
+    assert_equality env[:bench_action_original], "y"
+    assert_equality env[:bench_action], "y"
   end
+  
+  section :find
 
   #
 

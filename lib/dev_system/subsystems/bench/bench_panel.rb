@@ -6,9 +6,8 @@ class DevSystem::BenchPanel < Liza::Panel
 
   #
 
-  def call env
-    log :high, "env.count is #{env.count}"
-    parse env
+  def call(command_env)
+    env = forge command_env
     find env
     forward env
   rescue Exception => exception
@@ -16,21 +15,21 @@ class DevSystem::BenchPanel < Liza::Panel
   end
 
   #
+  
+  def forge command_env
+    env = {command: command_env[:command]}
+    command = env[:command]
 
-  def parse env
-    if log_level? :high
-      puts
-      log "env.count is #{env.count}"
-    end
-    raise_error :not_found, "" if env[:args].none?
+    raise_error :not_found, "" if command.args.empty?
 
-    bench_name, bench_action = env[:args].first.split(":").map(&:to_sym)
+    bench_name, bench_action = command.args.first.to_s.split(":")
 
     env[:bench_name_original] = bench_name
-    env[:bench_name] = short(bench_name).to_sym
+    env[:bench_name] = short(bench_name)
     env[:bench_action_original] = bench_action
-    env[:bench_action] = bench_action
+    env[:bench_action] = short bench_action || "default"
     log :lower, "bench:action is #{env[:bench_name]}:#{env[:bench_action]}"
+    env
   end
 
   #
@@ -40,6 +39,7 @@ class DevSystem::BenchPanel < Liza::Panel
       puts
       log "env.count is #{env.count}"
     end
+    raise_error :not_found, "" if env[:bench_name].empty?
     begin
       k = Liza.const "#{env[:bench_name]}_bench"
       log :higher, k
