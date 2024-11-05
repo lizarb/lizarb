@@ -12,7 +12,7 @@ class DevSystem::DirShell < DevSystem::FileShell
     log log_level, "Getting size of directory at '#{path}'"
     _raise_if_not_exists path
 
-    Pathname.new(path).children.inject(0) { |sum, f| sum + f.size }
+    Pathname(path).children.inject(0) { |sum, f| sum + f.size }
   end
 
   # CUSTOM
@@ -21,7 +21,7 @@ class DevSystem::DirShell < DevSystem::FileShell
     log log_level, "Creating directory at '#{path}'"
     _raise_if_blank path
 
-    Pathname.new(path).mkpath
+    Pathname(path).mkpath
   end
 
 end
