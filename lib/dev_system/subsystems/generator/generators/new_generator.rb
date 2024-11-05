@@ -24,7 +24,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
 
     # app
 
-    FileUtils.cp_r from, to, verbose: true
+    FileShell.copy from, to
 
     # extra
 
@@ -37,13 +37,9 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     # TextShell.write "#{to}/Procfile", render(:Procfile, format: :yml)
     TextShell.write "#{to}/.tool-versions", render(:toolversions, format: :txt)
 
-    FileUtils.cp_r "#{Lizarb.liz_dir}/README.md",
-                   "#{to}/README.md",
-                   verbose: true
-    # FileUtils.cp_r "#{Lizarb.app_dir}/web_files",
-    #                "#{to}/web_files",
-    #                verbose: true
-
+    FileShell.copy "#{Lizarb.liz_dir}/README.md", "#{to}/README.md"
+    # FileShell.copy "#{Lizarb.app_dir}/web_files", "#{to}/web_files"
+    
     puts
 
     KernelShell.call_backticks \
