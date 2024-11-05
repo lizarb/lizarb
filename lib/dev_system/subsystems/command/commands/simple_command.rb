@@ -283,6 +283,8 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   end
 
   section :simple_derived
+
+  public
   
   # Retrieves the value of an arg key=value.
   # If a block is given and the key is not present,
