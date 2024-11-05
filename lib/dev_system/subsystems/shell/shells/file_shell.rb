@@ -96,4 +96,27 @@ class DevSystem::FileShell < DevSystem::Shell
     TextShell.write path, content, create_dir:, log_level:
   end
 
+  def self.copy(source, destination, log_level: self.log_level)
+    log log_level, "Copying '#{source}' to '#{destination}'"
+    source = Pathname(source)
+    destination = Pathname(destination)
+    _raise_if_blank source
+    _raise_if_blank destination
+  
+    if source.directory?
+      destination.mkpath
+      source.each_child do |child|
+        copy(child, destination.join(child.basename))
+      end
+    else
+      destination.dirname.mkpath # Ensure the destination directory exists
+      File.open(destination, "wb") do |dest_file|
+        File.open(source, "rb") do |src_file|
+          dest_file.write(src_file.read)
+        end
+      end
+    end
+  end
+
+
 end
