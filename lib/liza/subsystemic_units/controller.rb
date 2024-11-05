@@ -17,6 +17,7 @@ class Liza::Controller < Liza::Unit
   # color
 
   def self.color
+    return :white if self == Liza::Controller
     return system.color if subsystem?
     subsystem.color
   end
