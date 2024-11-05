@@ -10,7 +10,7 @@ class DevSystem::FileShellTest < DevSystem::ShellTest
       time = Time.now.strftime "%Y%m%d_%H%M%S"
       random = SecureRandom.hex 4
       ret = Pathname.new(Dir.pwd).join "tmp/test_#{App.mode}_#{name}_#{time}_#{random}"
-      FileUtils.mkdir_p ret
+      Pathname(ret).mkpath
       log "Created tmp_dir: #{ret}"
       ret
     end
@@ -19,7 +19,8 @@ class DevSystem::FileShellTest < DevSystem::ShellTest
   after do
     # NOTE: @tmp_dir does not create a new directory for each test
     if @tmp_dir
-      FileUtils.rm_rf @tmp_dir
+      Pathname(@tmp_dir).rmtree
+
       log "Removed tmp_dir: #{@tmp_dir}"
     end
   end
