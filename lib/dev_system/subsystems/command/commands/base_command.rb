@@ -45,7 +45,7 @@ class DevSystem::BaseCommand < DevSystem::Command
           })
         end
     end
-    signatures
+    signatures.uniq(&:name)
   end
 
   #
