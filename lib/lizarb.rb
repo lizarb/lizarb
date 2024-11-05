@@ -494,10 +494,6 @@ module Lizarb
     log "    require 'pathname'" if $log_boot_higher
     require "pathname"
     
-    # This gem is in the process of being replaced by Pathname (above)
-    log "    require 'fileutils'" if $log_boot_higher
-    require "fileutils"
-    
     log "    require 'json'" if $log_boot_higher
     require "json"
     
