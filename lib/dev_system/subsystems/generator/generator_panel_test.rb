@@ -11,49 +11,46 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
       :find,
       :forward,
       :inform,
-      :parse,
+      :forge,
       :save
   end
   
-  section :parse
+  section :forge
   
-  def parse_with(subject, args)
+  def forge_with(args)
     command = SimpleCommand.new
-    env = {args: , command: }
-    command.instance_variable_set :@env, env
-    subject.parse env
+    command_env = {command: , args: }
+    command.instance_variable_set :@env, command_env
+    env = subject.forge command_env
     env
   end
   
-  test :parse, true do
-    env = parse_with subject, ["system"]
+  test :forge, true do
+    env = forge_with ["system"]
     assert_equality env[:generator_name_original], "system"
     assert_equality env[:generator_name], "system"
     assert_equality env[:generator_action_original], nil
     assert_equality env[:generator_action], "default"
   end
   
-  test :parse, true, :action do
-    env = parse_with subject, ["system:install"]
-    assert_equality env[:args], ["system:install"]
+  test :forge, true, :action do
+    env = forge_with ["system:install"]
     assert_equality env[:generator_name_original], "system"
     assert_equality env[:generator_name], "system"
     assert_equality env[:generator_action_original], "install"
     assert_equality env[:generator_action], "install"
   end
   
-  test :parse, false do
-    env = parse_with subject, ["x"]
-    assert_equality env[:args], ["x"]
+  test :forge, false do
+    env = forge_with ["x"]
     assert_equality env[:generator_name_original], "x"
     assert_equality env[:generator_name], "x"
     assert_equality env[:generator_action_original], nil
     assert_equality env[:generator_action], "default"
   end
   
-  test :parse, false, :action do
-    env = parse_with subject, ["x:y"]
-    assert_equality env[:args], ["x:y"]
+  test :forge, false, :action do
+    env = forge_with ["x:y"]
     assert_equality env[:generator_name_original], "x"
     assert_equality env[:generator_name], "x"
     assert_equality env[:generator_action_original], "y"

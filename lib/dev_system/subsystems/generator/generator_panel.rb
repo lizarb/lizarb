@@ -7,8 +7,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
   #
   
   def call(command_env)
-    env = {command: command_env[:command]}
-    parse env
+    env = forge command_env
     find env
     forward env
     inform env
@@ -18,25 +17,23 @@ class DevSystem::GeneratorPanel < Liza::Panel
   end
 
   #
-
-  def parse env
-    if log_level? :high
-      puts
-      log "env.count is #{env.count}"
-    end
+  
+  def forge command_env
+    env = {command: command_env[:command]}
     command = env[:command]
 
     raise_error :not_found, "" if command.args.empty?
 
-    generator_name, generator_action = command.args.first.split(":")
+    generator_name, generator_action = command.args.first.to_s.split(":")
 
     env[:generator_name_original] = generator_name
     env[:generator_name] = short(generator_name)
     env[:generator_action_original] = generator_action
     env[:generator_action] = short generator_action || "default"
     log :lower, "generator:action is #{env[:generator_name]}:#{env[:generator_action]}"
+    env
   end
-
+  
   #
 
   def find env
@@ -44,6 +41,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
       puts
       log "env.count is #{env.count}"
     end
+    raise_error :not_found, "" if env[:generator_name].empty?
     begin
       k = Liza.const "#{env[:generator_name]}_generator"
       log :higher, k
