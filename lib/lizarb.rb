@@ -487,10 +487,6 @@ module Lizarb
   def load_and_require_default_gems
     log "  Lizarb.#{__method__}" if $log_boot_high
     
-    # This local class is in the process of being moved to DevSystem::ErbShell
-    log "    require 'lerb'" if $log_boot_higher
-    require "lerb"
-    
     log "    require 'pathname'" if $log_boot_higher
     require "pathname"
     

@@ -123,7 +123,7 @@ Did you accidentally fall into an infinite loop?
     # class level methods
 
     def self.erbs_defined
-      @erbs_defined ||= LERB.load(self.source_location_radical)
+      @erbs_defined ||= ErbShell.load(self.source_location_radical)
     end
 
     def self.erbs_available ref = Liza::Unit
