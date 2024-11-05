@@ -1,14 +1,10 @@
 class SortedBench < DevSystem::Bench
-
+  # https://rubyapi.org/3.1/o/benchmark
+  require "benchmark"
+  
   def self.call env
     super
     t = Time.now
-    
-    args = env[:args]
-    log "args = #{args.inspect}"
-
-    # https://rubyapi.org/3.1/o/benchmark
-    require "benchmark"
 
     log stick system.color, :b, (" MEASURE, DO NOT GUESS ".center 80, "-")
     log "repetitions #{repetitions}"
