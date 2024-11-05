@@ -19,8 +19,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
     @env = env
     
     before
-    method_name = "call_#{env[:generator_action]}"
-    # return public_send method_name if respond_to? method_name
+    method_name = "call_#{action_name}"
     if respond_to? method_name
       public_send method_name
       after
@@ -50,6 +49,10 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   def after
     #
   end
+
+  section :helper_methods
+
+  def action_name()= env[:generator_action]
 
   section :command
 
