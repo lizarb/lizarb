@@ -12,26 +12,54 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
       :find,
       :forward,
       :input,
-      :parse,
+      :forge,
       :pick_many, :pick_one
   end
 
-  test :parse do
+  test :forge do
     assert_equality \
-      (subject.parse "generate"),
-      {:command_given=>"generate", :command_action=>nil, :command_arg=>"generate"}
+      (subject.forge ["generate"]),
+      {
+        :command_arg=>"generate",
+        :args=>[],
+        :command_name_original=>"generate",
+        :command_name=>"generate",
+        :command_action_original=>nil,
+        :command_action=>"default"
+      }
 
     assert_equality \
-      (subject.parse "generate:install"),
-      {:command_given=>"generate", :command_action=>"install", :command_arg=>"generate:install"}
+      (subject.forge ["generate:install"]),
+      {
+        :command_arg=>"generate:install",
+        :args=>[],
+        :command_name_original=>"generate",
+        :command_name=>"generate",
+        :command_action_original=>"install",
+        :command_action=>"install"
+      }
 
     assert_equality \
-      (subject.parse "two_words"),
-      {:command_given=>"two_words", :command_action=>nil, :command_arg=>"two_words"}
+      (subject.forge ["two_words"]),
+      {
+        :command_arg=>"two_words",
+        :args=>[],
+        :command_name_original=>"two_words",
+        :command_name=>"two_words",
+        :command_action_original=>nil,
+        :command_action=>"default"
+      }
 
     assert_equality \
-      (subject.parse "word10"),
-      {:command_given=>"word10", :command_action=>nil, :command_arg=>"word10"}
+      (subject.forge ["word10"]),
+      {
+        :command_arg=>"word10",
+        :args=>[],
+        :command_name_original=>"word10",
+        :command_name=>"word10",
+        :command_action_original=>nil,
+        :command_action=>"default"
+      }
   end
 
   test :find do

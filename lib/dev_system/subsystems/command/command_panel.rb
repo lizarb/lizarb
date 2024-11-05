@@ -17,7 +17,7 @@ class DevSystem::CommandPanel < Liza::Panel
 
     return call_not_found args if args.none?
 
-    env = build_env args
+    env = forge args
     find env
     forward env
   # rescue Exception => e
@@ -27,23 +27,15 @@ class DevSystem::CommandPanel < Liza::Panel
 
   #
 
-  PARSE_REGEX = /(?<command_given>[A-Za-z0-9_]+)(?::(?<command_action>[a-z0-9_]+))?/
-
-  # Hash command_arg command_given command_action
-  def parse string
-    md = string.to_s.match PARSE_REGEX
-    raise_error :parse, string if md.nil?
-
-    env = md.named_captures.map { [_1.to_sym, _2] }.to_h
-    env[:command_arg] = string
-    log :higher, "{#{env.map { ":#{_1}=>#{_2.to_s.inspect}" }.join(", ") }}"
-    env
-  end
-
-  def build_env args
-    env = parse args[0]
-    env[:args] = Array(args[1..-1])
-    env[:command_name] = short env[:command_given]
+  def forge args
+    command_arg, *args = args
+    command_name, command_action = command_arg.split(":")
+    env = {command_arg: , args:}
+    env[:command_name_original] = command_name
+    env[:command_name] = short(command_name)
+    env[:command_action_original] = command_action
+    env[:command_action] = short command_action || "default"
+    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
     env
   end
 
