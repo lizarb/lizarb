@@ -766,7 +766,14 @@ module Lizarb
   end
 
   def eager_load!
+    log "Lizarb.#{__method__} begin"
+    @eager_loaded = true
     loaders[1].eager_load
+    log "Lizarb.#{__method__} end"
+  end
+
+  def eager_loaded?
+    !!defined? @eager_loaded
   end
 
   # naive thread management
