@@ -86,6 +86,8 @@ class Liza::Unit
 
   part :unit_rendering
 
+  section :default
+  
   def self.reload!
     Lizarb.reload
   end
