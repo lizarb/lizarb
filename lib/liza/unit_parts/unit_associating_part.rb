@@ -18,6 +18,11 @@ class Liza::UnitAssociatingPart < Liza::Part
       descendants.select { _1.system? system }
     end
 
+    def self.subunits
+      Lizarb.eager_load! unless Lizarb.eager_loaded?
+      subclasses.select { _1.name&.start_with?(/[A-Z]/) }
+    end
+
     def self.system? system
       system = Liza.const "#{system}_system" if system.is_a? Symbol
       system == get(:system)
