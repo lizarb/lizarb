@@ -79,7 +79,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
           })
         end
     end
-    signatures
+    signatures.uniq(&:name)
   end
 
   def before_default
