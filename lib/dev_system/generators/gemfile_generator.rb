@@ -5,12 +5,15 @@ class DevSystem::GemfileGenerator < DevSystem::SimpleGenerator
   def call_default
     @gemspec_name = get_gemspec_name
 
-    create_file "Gemfile", :gemfile, :rb
+    fname = command.given_args[1] || "Gemfile"
+
+    create_file fname, :gemfile, :rb
   end
 
   def get_gemspec_name
-    ls = Dir["*.gemspec"]
-    ls.first.split(".").first if ls.any?
+    # ls = Dir["*.gemspec"]
+    # ls.first.split(".").first if ls.any?
+    false
   end
 
 end

@@ -42,8 +42,8 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     
     puts
 
-    KernelShell.call_backticks \
-      "cd #{to}; liza generate gemfile +confirm",
+    KernelShell.call_system \
+      "liza generate gemfile #{@name}/Gemfile +confirm",
       log_level: :normal
 
     KernelShell.call_backticks \
