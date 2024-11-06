@@ -1,5 +1,12 @@
 class DevSystem::GenerateCommand < DevSystem::SimpleCommand
 
+  def before
+    super
+    log "simple_args     #{ simple_args }"
+    log "simple_booleans #{ simple_booleans }"
+    log "simple_strings  #{ simple_strings }"
+  end
+
   # liza generate
   def call_default
     DevBox.generate env
