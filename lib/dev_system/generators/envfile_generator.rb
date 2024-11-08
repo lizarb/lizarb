@@ -1,6 +1,6 @@
-class DevSystem::EnvGenerator < DevSystem::BaseGenerator
+class DevSystem::EnvfileGenerator < DevSystem::BaseGenerator
 
-  # liza g env
+  # liza g envfile
   def call_default
     if app_env_exists?
       log stick :light_red, "env files already exist"
