@@ -1,6 +1,6 @@
-class DevSystem::BoxGenerator < DevSystem::SimpleGenerator
+class DevSystem::BoxesGenerator < DevSystem::SimpleGenerator
   
-  # liza g box
+  # liza g boxes
 
   def call_default
     app_dir = App.path
