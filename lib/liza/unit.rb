@@ -51,15 +51,15 @@ class Liza::Unit
 
   # PART
 
-  def self.part key, klass = nil, system: nil
+  # Inserts a part into the unit.
+  # @param key [Symbol] the key of the part
+  # @param insertion [Symbol] the insertion method
+  def self.part(key, insertion = :default)
+    part_class = Liza.const "#{key}_part"
+    insertion = part_class.insertion(insertion)
+
     section "#{key}_part"
-    part_class ||= if system.nil?
-                Liza.const "#{key}_part"
-              else
-                Liza.const("#{system}_system")
-                    .const "#{key}_part"
-              end
-    self.class_exec(&part_class.insertion) if part_class.insertion
+    class_exec(&insertion)
   end
 
   # CONST MISSING

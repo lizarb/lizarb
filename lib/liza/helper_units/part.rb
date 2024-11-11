@@ -1,10 +1,18 @@
 class Liza::Part < Liza::Unit
   
-  def self.insertion &block
+  # A hash of insertions.
+  # @return [Hash]
+  def self.insertions() = @insertions ||= {}
+
+  # Define or retrieve an insertion.
+  # @param name [Symbol] The name of the insertion.
+  # @param block [Proc] The block to insert.
+  # @return [Proc]
+  def self.insertion(name=:default, &block)
     if block_given?
-      @insertion = block
+      insertions[name] = block
     else
-      @insertion
+      insertions[name]
     end
   end
 
