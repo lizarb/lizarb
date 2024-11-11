@@ -13,4 +13,11 @@ class Liza::BoxTest < Liza::UnitTest
     assert_equality panel_class.controller, controller_class, kaller: kaller
   end
 
+  test :preconfiguration, :configuration do
+    assert_equality ::DevBox.preconfiguration, ::DevSystem::DevBox
+    assert_equality ::DevBox.configuration, ::DevBox
+    assert_equality ::DevSystem::DevBox.preconfiguration, ::DevSystem::DevBox
+    assert_equality ::DevSystem::DevBox.configuration, ::DevBox
+  end
+
 end

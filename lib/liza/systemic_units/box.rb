@@ -5,11 +5,39 @@ class Liza::Box < Liza::Unit
   end
 
   def self.[] symbol
-    panels[symbol].started
+    configuration.panels[symbol].started
   end
 
+  section :two_boxes
+
+  # Returns the Preconfiguration Box.
+  # (The Box in the systems directory)
+  # DevSystem::DevBox, HappySystem::HappyBox, etc.
+  # @return [Liza::Box]
+  def self.preconfiguration
+    @preconfiguration ||= last_namespace == name ? self.superclass : self
+  end
+
+  # Returns the Configuration Box.
+  # (The Box in the app directory)
+  # DevBox, HappyBox, etc.
+  # @return [Liza::Box]
+  def self.configuration
+    @configuration ||= begin
+      last_namespace == name ? self : const_get(last_namespace)
+    rescue NameError
+      self
+    end
+  end
+
+  # Preconfigure from the Preconfiguration Box at lib/my_system/my_box.rb
+  # @param name [Symbol]
+  # @param block [Proc] This block will only be loaded when configuration is requested.
   def self.preconfigure(name, &block)= configure(name, &block)
 
+  # Configure from the Configuration Box at app/my_box.rb
+  # @param name [Symbol]
+  # @param block [Proc] This block will only be loaded when configuration is requested.
   def self.configure name, &block
     raise ArgumentError, "block required" unless block_given?
     raise ArgumentError, "Invalid panel: #{name}. Valid panels are: #{system.subs}" unless system.subs.include? name
@@ -17,6 +45,8 @@ class Liza::Box < Liza::Unit
     panel = panels[name] ||= Liza.const("#{name}_panel").new name
     panel.push block
   end
+
+  section :forwarding
 
   def self.forward panel_key, method_name=nil
     case method_name
@@ -40,6 +70,7 @@ class Liza::Box < Liza::Unit
   def self.color
     system.color
   end
+
 end
 
 __END__
