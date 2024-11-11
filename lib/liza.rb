@@ -18,7 +18,7 @@ module Liza
     const name
   end
 
-  # Checks Object, each system, then Liza for Liza::Unit classes
+  # Checks Object, each system, then Liza, only returns if they are Liza::Unit descendants
   def const name
     name = name.to_s.camelize.to_sym
 
@@ -28,20 +28,13 @@ module Liza
     k = const_check_systems name
     return k if k
 
-    k = const_get name
+    k = const_get_liza name
     return k if k
 
     nil
-  rescue NameError
-    log "Liza const #{name} not found!" if $VERBOSE
-    if Lizarb.ruby_supports_raise_cause?
-      raise ConstNotFound, name, cause: nil
-    else
-      raise ConstNotFound, name, []
-    end
   end
 
-  # Checks each system, then Liza for Liza::Unit classes
+  # Checks each system, then Liza, only returns if they are Liza::Unit descendants
   def const_missing name
     k = const_check_systems name
     return k if k
@@ -67,6 +60,17 @@ module Liza
     end
 
     nil
+  end
+
+  def const_get_liza name
+    const_get name
+  rescue NameError => _e
+    log "Liza const #{name} not found!" if $VERBOSE
+    if Lizarb.ruby_supports_raise_cause?
+      raise ConstNotFound, name, cause: nil
+    else
+      raise ConstNotFound, name, []
+    end
   end
 
   def is_unit? kk
