@@ -13,7 +13,7 @@ class Liza::UnitTest < Liza::Test
 
   #
   
-  def self.test_sections(hash)
+  def self.test_sections(hash={})
     test :sections do
       assert_equality! subject_class.sections.keys, hash.keys
 
