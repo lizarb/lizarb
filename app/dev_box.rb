@@ -7,13 +7,13 @@ class DevBox < DevSystem::DevBox
 
   configure :command do
     # CommandPanel.instance gives you read-access to this instance
-    short :b, :bench
-    short :g, :generate
-    short :i, :irb
-    short :l, :log
-    short :p, :pry
-    short :s, :shell
-    short :t, :test
+    shortcut :b, :bench
+    shortcut :g, :generate
+    shortcut :i, :irb
+    shortcut :l, :log
+    shortcut :p, :pry
+    shortcut :s, :shell
+    shortcut :t, :test
 
     # rescue_from declarations are checked bottom to top
 

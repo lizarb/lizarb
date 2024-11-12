@@ -32,9 +32,9 @@ class DevSystem::CommandPanel < Liza::Panel
     command_name, command_action = command_arg.split(":")
     env = {command_arg: , args:}
     env[:command_name_original] = command_name
-    env[:command_name] = short(command_name)
+    env[:command_name] = shortcut(command_name)
     env[:command_action_original] = command_action
-    env[:command_action] = short command_action || "default"
+    env[:command_action] = shortcut command_action || "default"
     log "command:action is #{env[:command_name]}:#{env[:command_action]}"
     env
   end

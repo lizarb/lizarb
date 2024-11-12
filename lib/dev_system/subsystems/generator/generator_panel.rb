@@ -27,9 +27,9 @@ class DevSystem::GeneratorPanel < Liza::Panel
     generator_name, generator_action = command.args.first.to_s.split(":")
 
     env[:generator_name_original] = generator_name
-    env[:generator_name] = short(generator_name)
+    env[:generator_name] = shortcut(generator_name)
     env[:generator_action_original] = generator_action
-    env[:generator_action] = short generator_action || "default"
+    env[:generator_action] = shortcut generator_action || "default"
     log :lower, "generator:action is #{env[:generator_name]}:#{env[:generator_action]}"
     env
   end

@@ -25,9 +25,9 @@ class DevSystem::BenchPanel < Liza::Panel
     bench_name, bench_action = command.args.first.to_s.split(":")
 
     env[:bench_name_original] = bench_name
-    env[:bench_name] = short(bench_name)
+    env[:bench_name] = shortcut(bench_name)
     env[:bench_action_original] = bench_action
-    env[:bench_action] = short bench_action || "default"
+    env[:bench_action] = shortcut bench_action || "default"
     log :lower, "bench:action is #{env[:bench_name]}:#{env[:bench_action]}"
     env
   end

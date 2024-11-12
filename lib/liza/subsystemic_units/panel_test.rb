@@ -139,29 +139,29 @@ class Liza::PanelTest < Liza::UnitTest
 
   #
 
-  test :short do
-    assert_equality subject.short("m"), "m"
-    assert_equality subject.short("i"), "i"
-    assert_equality subject.short("n"), "n"
-    assert_equality subject.short("s"), "s"
-    assert_equality subject.short("w"), "w"
-    assert_equality subject.short("a"), "a"
-    assert_equality subject.short("n"), "n"
+  test :shortcut do
+    assert_equality subject.shortcut("m"), "m"
+    assert_equality subject.shortcut("i"), "i"
+    assert_equality subject.shortcut("n"), "n"
+    assert_equality subject.shortcut("s"), "s"
+    assert_equality subject.shortcut("w"), "w"
+    assert_equality subject.shortcut("a"), "a"
+    assert_equality subject.shortcut("n"), "n"
 
-    subject.short :m, :matz
-    subject.short :i, :is
-    subject.short :n, :nice
-    subject.short :s, :so
-    subject.short :w, :we
-    subject.short :a, :are
+    subject.shortcut :m, :matz
+    subject.shortcut :i, :is
+    subject.shortcut :n, :nice
+    subject.shortcut :s, :so
+    subject.shortcut :w, :we
+    subject.shortcut :a, :are
 
-    assert_equality subject.short("m"), "matz"
-    assert_equality subject.short("i"), "is"
-    assert_equality subject.short("n"), "nice"
-    assert_equality subject.short("s"), "so"
-    assert_equality subject.short("w"), "we"
-    assert_equality subject.short("a"), "are"
-    assert_equality subject.short("n"), "nice"
+    assert_equality subject.shortcut("m"), "matz"
+    assert_equality subject.shortcut("i"), "is"
+    assert_equality subject.shortcut("n"), "nice"
+    assert_equality subject.shortcut("s"), "so"
+    assert_equality subject.shortcut("w"), "we"
+    assert_equality subject.shortcut("a"), "are"
+    assert_equality subject.shortcut("n"), "nice"
   end
 
   #

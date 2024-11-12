@@ -17,7 +17,7 @@ class DevSystem::BaseCommand < DevSystem::Command
     @env = env
     before if defined? before
     
-    method_name = env[:command_arg]
+    method_name = env[:command_name]
     method_name = method_name.split(":")[1] || :default
     method_name = "call_#{method_name}"
     if respond_to? method_name

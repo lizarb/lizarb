@@ -11,7 +11,7 @@ class Liza::Panel < Liza::Unit
     x = self
     x = x.ancestors.take_while { _1.last_namespace == x.last_namespace }.last
     x = x.last_namespace.to_s.sub('Panel', '').snakecase.to_sym
-    box[x]
+    box.configuration[x]
   end
 
   def self.box
@@ -64,17 +64,6 @@ class Liza::Panel < Liza::Unit
     @key = key
     @blocks = []
     @unstarted = true
-    @short = {}
-  end
-
-  #
-
-  def short a, b = nil
-    if b
-      @short[a.to_s] = b.to_s
-    else
-      @short[a.to_s] || a.to_s
-    end
   end
 
   #
@@ -92,6 +81,18 @@ class Liza::Panel < Liza::Unit
     @blocks.clear
 
     self
+  end
+
+  section :shortcuts
+
+  def shortcuts () = @shortcuts ||= {}
+  
+  def shortcut(a, b = nil)
+    if b
+      shortcuts[a.to_s] = b.to_s
+    else
+      shortcuts[a.to_s] || a.to_s
+    end
   end
 
   section :errors

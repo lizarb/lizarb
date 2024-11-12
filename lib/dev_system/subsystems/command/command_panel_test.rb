@@ -25,7 +25,7 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
         :command_name_original=>"generate",
         :command_name=>"generate",
         :command_action_original=>nil,
-        :command_action=>"default"
+        :command_action=> "default"
       }
 
     assert_equality \
@@ -36,7 +36,7 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
         :command_name_original=>"generate",
         :command_name=>"generate",
         :command_action_original=>"install",
-        :command_action=>"install"
+        :command_action=> "install"
       }
 
     assert_equality \
@@ -47,7 +47,7 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
         :command_name_original=>"two_words",
         :command_name=>"two_words",
         :command_action_original=>nil,
-        :command_action=>"default"
+        :command_action=> "default"
       }
 
     assert_equality \
@@ -58,11 +58,25 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
         :command_name_original=>"word10",
         :command_name=>"word10",
         :command_action_original=>nil,
-        :command_action=>"default"
+        :command_action=> "default"
       }
   end
 
   test :find do
+    env = {command_name: "generate"}
+    klass = subject.find env
+    assert_equality klass, DevSystem::GenerateCommand
+
+    env = {command_name: "x"}
+    begin
+      klass = subject.find env
+      assert false
+    rescue CommandPanel::NotFoundError
+      assert true
+    end
+  end
+
+  test :_find do
     klass = subject._find "generate"
     assert_equality DevSystem::GenerateCommand, klass
 
@@ -72,6 +86,10 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     rescue CommandPanel::NotFoundError
       assert true
     end
+  end
+
+  test :forward do
+    todo "test this"
   end
 
 end
