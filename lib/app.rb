@@ -16,7 +16,7 @@ class App
     log "#{self}.#{__method__}(#{argv.inspect})" if should_log
     args = argv.dup
     argv.clear
-    Liza[:DevBox].command args
+    Liza::DevBox.configuration.command args
     puts if should_log
   end
 
@@ -43,7 +43,7 @@ class App
   end
 
   def self.systems_directory
-    @systems_directory || "lib"
+    @systems_directory ||= root / "lib"
   end
 
   def self.folder folder = nil, systems: nil
@@ -70,7 +70,7 @@ class App
   def self.sys_folder sys_folder = nil
     raise "locked" if @locked
     if sys_folder
-      @systems_directory = sys_folder
+      @systems_directory = root / sys_folder
       @sys_folder = sys_folder
       @sys_relative_path = sys_folder
       @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
