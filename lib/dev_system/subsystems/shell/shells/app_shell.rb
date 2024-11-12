@@ -103,11 +103,13 @@ class DevSystem::AppShell < DevSystem::Shell
       array = system_classes.select { _1.system == system }
 
       tree["system"]      = [system]
+      tree["system"]      = [system, system.test_class]
       tree["box"]         = [system.box, system.box.test_class]
       tree["controllers"] = {}
       tree["subsystems"]  = {}
 
       array.delete system
+      array.delete system.test_class
       array.delete system.box
       array.delete system.box.test_class
       
