@@ -28,15 +28,15 @@ class DevSystem::ErbShell < DevSystem::Shell
       erbs = []
   
       "#{path_radical}.rb".tap do |filename|
-        _load erbs, filename
+        _load erbs, filename, :eof
       end
   
-      Dir.glob("#{path_radical}.*.erb").each do |filename|
-        _load erbs, filename
+      Dir.glob("#{path_radical}.rb.*.erb").each do |filename|
+        _load erbs, filename, :adjacent
       end
   
       Dir.glob("#{path_radical}/*.*.erb").each do |filename|
-        _load erbs, filename
+        _load erbs, filename, :nested
       end
   
       #
@@ -49,24 +49,33 @@ class DevSystem::ErbShell < DevSystem::Shell
       erbs
     end
   
-    def self._load erbs, filename
+    def self._load erbs, filename, views_type
+      is_eof = views_type == :eof
+      is_adjacent = views_type == :adjacent
+      is_nested = views_type == :nested
+
       is_erb = filename.end_with? ".erb"
-      is_ignoring_ruby = !is_erb
-      is_accepting_views = false
+      is_ignoring_ruby = is_eof
+      is_accepting_views = is_eof || is_adjacent
       
       puts
       puts "LERB filename: #{filename}"
+      puts Liza::Unit.stick :red, "LERB views_type: :#{views_type}"
       
+      puts "LERB is_eof: #{is_eof}"
+      puts "LERB is_adjacent: #{is_adjacent}"
+      puts "LERB is_nested: #{is_nested}"
       puts "LERB is_erb: #{is_erb}"
       puts "LERB is_ignoring_ruby: #{is_ignoring_ruby}"
       puts "LERB is_accepting_views: #{is_accepting_views}"
   
       current_lineno = 0
       current_content = ""
-      current_key = is_erb ? filename.split("/").last : DEFAULT_KEY
+      current_key = DEFAULT_KEY
   
-      if current_key
-        puts "LERB declare: #{current_key} | because not erb"
+      if is_nested
+        current_key = filename.split("/").last.split(".")[-3..-1].join(".")
+        puts "LERB declare: #{current_key} | because nested"
       end
   
       File.readlines(filename).each.with_index do |line, lineno|
