@@ -43,16 +43,16 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     },
   )
 
-  def subject_with *args
+  def forge_subject_with *args
     @subject = subject_class.new
-    @subject.instance_exec { @env = DevBox[:command].build_env ["simple", *args] }
+    @subject.instance_exec { @env = DevBox[:command].forge ["simple", *args] }
     @subject.before
   end
 
   section :given
 
   before do
-    subject_with "k1=v1", "k3=v3", "la", "le", "li", "+a", "+b", "-c", "-d"
+    forge_subject_with "k1=v1", "k3=v3", "la", "le", "li", "+a", "+b", "-c", "-d"
   end
 
   test :given_strings do
@@ -72,14 +72,14 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
   test :ask?, :given do
     assert_equality subject.ask?, nil
 
-    subject_with "+ask"
+    forge_subject_with "+ask"
     assert_equality subject.ask?, true
   end
 
   test :ask?, :defaults do
     assert_equality subject.ask?, nil
 
-    subject_with
+    forge_subject_with
     subject.set_default_boolean :ask, true
     assert_equality subject.ask?, true
   end
