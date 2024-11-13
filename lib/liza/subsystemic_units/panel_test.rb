@@ -87,7 +87,7 @@ class Liza::PanelTest < Liza::UnitTest
     subject.rescue_from(:parse) {  }
     actual = subject.rescuers.last
     
-    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
+    assert_equality actual.class, Liza::Panel::Rescuer
     assert_equality actual[:exception_class], CommandPanel::ParseError
     assert_equality actual[:callable].class, Proc
 
@@ -96,7 +96,7 @@ class Liza::PanelTest < Liza::UnitTest
     subject.rescue_from(:parse, :not_found)
     actual = subject.rescuers.last
     
-    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
+    assert_equality actual.class, Liza::Panel::Rescuer
     assert_equality actual[:exception_class], CommandPanel::ParseError
     assert_equality actual[:callable], :not_found_command
 
@@ -105,7 +105,7 @@ class Liza::PanelTest < Liza::UnitTest
     subject.rescue_from(:not_found)
     actual = subject.rescuers.last
     
-    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
+    assert_equality actual.class, Liza::Panel::Rescuer
     assert_equality actual[:exception_class], CommandPanel::NotFoundError
     assert_equality actual[:callable], :not_found_command
   end
@@ -120,7 +120,7 @@ class Liza::PanelTest < Liza::UnitTest
 
     actual = subject._rescue_from_panel_find CommandPanel::ParseError.new
 
-    assert_equality actual.class, Liza::PanelErrorsPart::Rescuer
+    assert_equality actual.class, Liza::Panel::Rescuer
     refute_equality actual, original_rescuer
 
     assert_equality original_rescuer[:exception], nil
