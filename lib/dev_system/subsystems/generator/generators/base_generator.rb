@@ -106,7 +106,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   def default_strings() = fetch(:default_strings) { {} }
 
-  def set_default_args(index, value) = command.set_default_args index, value
+  def set_default_arg(index, value) = command.set_default_arg index, value
 
   def set_default_boolean(name, value) = command.set_default_boolean name, value
 
