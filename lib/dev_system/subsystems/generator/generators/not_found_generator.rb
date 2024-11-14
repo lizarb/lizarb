@@ -46,6 +46,8 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
           : "#{klass.token}:#{signature.name}"
       #
     end.sort_by(&:name).map do |signature|
+      next if signature.name.end_with? ":simple"
+      next if signature.name.end_with? "!"
       puts [
         "liza generate #{signature.name}".ljust(sidebar_length),
         (description or signature.description)
@@ -82,6 +84,13 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
       tree_subsystem["controllers"].each do |controller_class, klasses|
         klasses = klasses.select { _1 < Generator }
         klasses = klasses.reject { _1 == NewGenerator }
+        klasses = klasses.reject { _1 == NotFoundGenerator }
+        klasses = klasses.reject { _1 == InstallGenerator }
+        klasses = klasses.reject { _1 == MoveGenerator }
+        klasses = klasses.reject { _1 == MultiGenerator }
+        klasses = klasses.reject { _1 == OverwriteGenerator }
+        klasses = klasses.reject { _1 == RemoveGenerator }
+        klasses = klasses.reject { _1 == UninstallGenerator }
         next if klasses.empty?
 
         h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
