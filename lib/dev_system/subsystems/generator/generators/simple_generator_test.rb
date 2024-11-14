@@ -4,6 +4,11 @@ class DevSystem::SimpleGeneratorTest < DevSystem::BaseGeneratorTest
     assert subject_class == DevSystem::SimpleGenerator
   end
 
+  test_erbs_defined(
+    "subject.rb.erb",
+    "unit.rb.erb"
+  )
+
   # helper methods
 
   def call_with(name, action, placement, superklass, path)

@@ -1,0 +1,9 @@
+# view subject.rb.erb
+<%
+string = @class_name.end_with?("Test") ? @class_name[0..-5] : @class_name
+-%>
+
+  test :subject_class, :subject do
+    assert_equality subject_class, <%= string %>
+    assert_equality subject.class, <%= string %>
+  end

@@ -1,154 +1,192 @@
 class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
-  #
+  section :filters
+
+  def self.before_instance_calls()= fetch(:before_instance_calls) { [] }
+
+  def self.before_instance_call(method, *args, &block)
+    log :higher, "before_instance_call save #{method}, #{args}, #{block}"
+    before_instance_calls << [method, args, block]
+  end
+
+  def before
+    super
+
+    before_instance_calls
+  end
+
+  def before_instance_calls
+    self.class.before_instance_calls.each do |method, args, block|
+      log :higher, "before_instance_call send #{method}, #{args}, #{block}"
+      send method, *args, &block
+    end
+  end
+  
+  section :panel
 
   def inform
-    log :lowest, "informing #{changes.count} changes"
+    log :lowest, "informing #{mapper.changes.count} changes"
 
-    changes.each do |change|
+    mapper.changes.each do |fname, data|
+      mapper.changes.delete fname if data[:before] == data[:after]
+    end
+    
+    mapper.changes.each do |fname, data|
       puts_line
-
+      
       action = "updating"
-      action = "creating" if change.old_lines.empty?
-      # action = "deleting" if change.new_lines.empty? # not implemented
+      action = "creating" if data[:before] == ""
+      action = "deleting" if data[:after] == ""
 
       diff = {
-        "+": (change.new_lines - change.old_lines).count,
-        "-": (change.old_lines - change.new_lines).count,
+        "+": (data[:after].split("\n") - data[:before].split("\n")).count,
+        "-": (data[:before].split("\n") - data[:after].split("\n")).count,
       }
 
       bit = diff.map { "#{_1}#{_2}" }.join(" ")
-      relative = Pathname(change.path).relative_path_from(App.root)
+      relative = Pathname(fname).relative_path_from(App.root)
       string = "#{action.ljust 8} | #{"#{bit}".rjust 8} lines | #{relative}"
       log :lowest, string
 
       if log_level? :low
         puts relative
-        LineDiffShell.log_diff(change.old_lines, change.new_lines) if diff.values.sum.positive?
+        LineDiffShell.log_diff(data[:before].split("\n"), data[:after].split("\n")) if diff.values.sum.positive?
       end
-    end 
+    end
   end
-
-  #
 
   def save
     puts_line
     diff = {
-      "+": changes.map { _1.new_lines.count }.sum,
-      "-": changes.map { _1.old_lines.count }.sum,
+      "+": mapper.changes.map { _2[:after].split("\n").count }.sum,
+      "-": mapper.changes.map { _2[:before].split("\n").count }.sum,
     }
-    log "saving #{changes.count} files changed: #{diff[:"+"]} insertions(+), #{diff[:"-"]} deletions(-)"
+    log "saving #{mapper.changes.count} files changed: #{diff[:"+"]} insertions(+), #{diff[:"-"]} deletions(-)"
 
-    if env[:args].include? "+confirm"
-      answers = changes
+    choices = mapper.changes.keys.map { [_1, _1] }.to_h
+    if command.simple_boolean :confirm
+      answers = choices.keys
     else
-      choices = changes.map { |i| [i.relative_path.to_s, i] }.to_h
       answers = box.pick_many "Approve all changes?", choices
     end
 
     #
-
+    
     puts_line
     diff = {
-      "+": answers.map { _1.new_lines.count }.sum,
-      "-": answers.map { _1.old_lines.count }.sum,
+      "+": mapper.changes.map { _2[:after].split("\n").count }.sum,
+      "-": mapper.changes.map { _2[:before].split("\n").count }.sum,
     }
     log "saving #{answers.count} files changed: #{diff[:"+"]} insertions(+), #{diff[:"-"]} deletions(-)"
 
-    answers.each do |change|
-      if change.old_lines == change.new_lines
-        log "skipping #{change.path}"
+    answers.each do |fname|
+      answer = mapper.changes[fname]
+      if answer[:after] == ""
+        FileShell.delete fname, log_level: :higher
       else
-        log "writing #{change.path}"
-        TextShell.write change.path, change.new_lines.join(""), log_level: :higher
+        FileShell.write_text fname, answer[:after], log_level: :higher
       end
     end
   end
 
-  # changes
+  section :mapping
 
-  def changes
-    @changes ||= []
+  def generate(*args, &block)
+    args = args.flatten
+    cmd_env = Command.panel.forge ["generate", *args]
+    cmd_env[:command] = SimpleCommand.new.tap do |cmd|
+      cmd.instance_variable_set :@env, cmd_env
+      cmd.before
+    end
+
+    gen_env = panel.forge cmd_env
+    gen_env[:simple_mapper] = mapper
+    panel.find gen_env
+    panel.forward gen_env
   end
 
-  def last_change
-    @last_change
+  def mapper() = env[:simple_mapper] ||= Mapper.new(self)
+
+  class Mapper
+    attr_reader :changes
+
+    def log(*args, **kwargs)
+      kwargs[:method_name] = 'map'
+      @gen.log(*args, **kwargs)
+    end
+
+    def initialize(generator)
+      @gen = generator
+      log "#{self.class.last_namespace}.#{__method__}"
+      @changes = {}
+    end
+
+    def get(fname)
+      changes[fname]
+    end
+
+    def read_before(fname)
+      cache fname
+      changes[fname][:before]
+    end
+
+    def read_after(fname)
+      cache fname
+      changes[fname][:after]
+    end
+
+    def write_after(fname, text)
+      log "#{self.class.last_namespace}.#{__method__} #{fname.to_s.sub App.root.to_s, "."}, #{text.size} bytes"
+      cache fname
+      changes[fname][:after] = text
+    end
+
+    def delete_after(fname)
+      log "#{self.class.last_namespace}.#{__method__} #{fname.to_s.sub App.root.to_s, "."}"
+      cache fname
+      changes[fname][:after] = ""
+    end
+
+    private
+
+    def cache(fname)
+      raise "fname must be a Pathname" unless fname.is_a? Pathname
+      return true if changes.key? fname
+      
+      s = ""
+      s = DevSystem::FileShell.read_text(fname) if DevSystem::FileShell.exist? fname
+      changes[fname] = {before: s, after: s}
+
+      true
+    end
+    
   end
 
-  def add_change change
-    log :higher, "#{change.class}"
-    @last_change = change
-    changes << change
-    self
-  end
-
-  # create_file
+  section :files
 
   def create_file name, template, format
-    path = App.root.join name
-    file = TextFileShell.new path
-
-    new_lines = render! template, format: format
-    file.new_lines = new_lines.strip.split("\n").map { "#{_1}\n" }
-
-    add_change file
+    contents = render! template, format: format
+    create_file_contents name, contents
   end
 
   def create_file_contents name, contents
+    update_file name, contents
+  end
+
+  def read_file name
     path = App.root.join name
-    file = TextFileShell.new path
-
-    file.new_lines = contents.split("\n").map { "#{_1}\n" }
-
-    add_change file
+    mapper.read_after path
   end
 
-  # create_unit
-  
-  def create_unit unit, class_names, path, template = :unit
-    unit.sections.each do |section|
-      @current_section = section
-      section[:content] = render! section[:name], format: :rb
-    end
-    unit.views.each do |view|
-      @current_view = view
-      view[:content] = render! view[:name], format: view[:format]
-    end
-    @sections = unit.sections
-    @views = unit.views
-    @class_names = class_names
-
-    file = TextFileShell.new path
-    file.new_lines = render! template, format: :rb
-    file.new_lines = file.new_lines.split("\n").map { "#{_1}\n" }
-    add_change file
+  def update_file name, contents
+    path = App.root.join name
+    mapper.write_after path, contents
   end
 
-  # helper classes
-
-  class UnitHelper
-    def section name, section = {}
-      sections << section
-      section[:name] = name
-    end
-
-    def view name, view = {}
-      views << view
-      view[:name] = name
-      view[:key] ||= name
-      view[:format] ||= :rb
-    end
-
-    def sections
-      @sections ||= []
-    end
-
-    def views
-      @views ||= []
-    end
+  def delete_file name
+    path = App.root.join name
+    mapper.delete_after path
   end
-
-  #
 
   def copy_examples controller
     puts
@@ -162,7 +200,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       Lizarb.app_dir,
     ].uniq.each do |dir|
       FileShell.directory? "#{dir}/examples/#{singular}" or next
-      copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{App.folder}/#{sys}/#{plural}"
+      copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{App.directory}/#{sys}/#{plural}"
     end
   end
 
@@ -187,80 +225,94 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   def copy_file source, target
     path = App.root.join target
-    file = TextFileShell.new path
-    file.new_lines = TextShell.read_lines source
-    add_change file
+    text = FileShell.read_text source
+    mapper.write_after path, text
   end
 
-  #
+  section :arg_views
 
-  def name!
-    @name = command.simple_arg_ask_snakecase 1, "Name your new #{@controller_class.last_namespace}:"
-    log "@name = #{@name.inspect}"
+  def arg_views_none?() = arg_views == 'none'
+
+  def arg_views_eof?() = arg_views == 'eof'
+
+  def arg_views_adjacent?() = arg_views == 'adjacent'
+
+  def arg_views_nested?() = arg_views == 'nested'
+
+  def self.set_default_views(views) = before_instance_call(:set_default_views, views)
+
+  def set_default_views(views) = command.set_default_string(:views, views)
+    
+  def valid_views() = @valid_views ||=  %w[none eof adjacent nested]
+
+  def arg_views() = @arg_views ||= command.simple_string(:views)
+
+  set_input_string :views do |default|
+    title = "Choose views"
+    valid_views = env[:generator].valid_views
+    index_base_1 = valid_views.index(default) + 1 rescue 1
+    TtyInputCommand.prompt.select title, valid_views, default: index_base_1
+  end
+  
+  set_default_views "none"
+  
+  section :unit
+
+  def add_unit(unit, class_names, unit_path)
+    raise "unit_path cannot be empty" if unit_path.nil?
+    @current_unit = unit
+    @class_names = class_names
+    @class_name = class_names[0]
+    unit.sections.each do |section|
+      @current_section = section
+      section[:content] = render! section[:render_key], format: :rb
+    end
+    unit.views.each do |view|
+      view[:content] = render! view[:render_key], format: view[:render_format]
+    end
+
+    new_lines = render! :unit, format: :rb
+    if arg_views_eof? && unit.views.any?
+      new_lines << "\n__END__\n\n"
+      unit.views.each do |view|
+        new_lines << "# view #{view[:name]}.#{view[:format]}.erb\n#{view[:content]}"
+      end
+    end
+    mapper.write_after unit_path, new_lines
   end
 
-  #
+  def add_view(unit, view, view_path)
+    raise "view_path cannot be empty" if view_path.nil?
+    view[:content] = render! view[:render_key], format: view[:render_format]
 
-  def place!
-    places = ControllerShell.places_for(@controller_class)
-    @place = places.keys[0] if places.count == 1
-    @place ||= command.simple_controller_placement :place, places
-    @path = places[@place]
-    log "@place, @path = #{@place.inspect}, #{@path.inspect}"
+    new_content = view[:content].dup
+    new_content.prepend "# view #{view[:name]}.#{view[:format]}.erb\n" if arg_views_adjacent?
+    mapper.write_after view_path, new_content
   end
 
-  # create_controller
+  class UnitHelper
+    def section section = {}
+      sections << section
+      section[:name] or raise "name is required"
+      section[:render_key] ||= section[:name]
+    end
 
-  def create_controller(name, controller, place, path, ancestor: controller, &block)
-    unit, test = UnitHelper.new, UnitHelper.new
+    def view view = {}
+      views << view
+      view[:render_key] or raise "render_key is required"
+      view[:render_format] ||= view[:format]
+      view[:render_format] or raise "render_format is required"
+    end
 
-    @class_name = "#{name.camelize}#{controller.last_namespace}"
-    @class_name = "#{place.split("/").first.camelize}System::#{@class_name}" unless place == "app"
+    def sections
+      @sections ||= []
+    end
 
-    unit_classes = [@class_name, ancestor.to_s]
-    test_classes = unit_classes.map { "#{_1}Test" }
-
-    unit_path = App.root.join(path).join("#{name}_#{controller.division.singular}.rb")
-    test_path = App.root.join(path).join("#{name}_#{controller.division.singular}_test.rb")
-
-    # decorate
-
-    yield unit, test
-
-    # create
-
-    create_unit unit, unit_classes, unit_path
-    create_unit test, test_classes, test_path
-
-    log "done"
+    def views
+      @views ||= []
+    end
   end
 
-  # helper methods
-
-  def puts_line
-    puts "-" * 120
-  end
+  def puts_line() =  puts "-" * 120
 
 end
-
-__END__
-
-# view unit.rb.erb
-class <%= @class_names[0] %> < <%= @class_names[1] %>
-  <% @sections.each do |section| %>
-  # <%= section[:caption] %>
-<%= section[:content] -%>
-  <% end -%>
-
-end
-<% if @views.any? -%>
-
-<%= "__END__" %>
-
-<% @views.each do |view| -%>
-<%= "#" -%> view <%= view[:key] %>.<%= view[:format] %>.erb
-
-<%= view[:content] -%>
-
-<% end -%>
-<% end -%>
