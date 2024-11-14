@@ -4,4 +4,8 @@ class DevSystem::GemfileGeneratorTest < DevSystem::SimpleGeneratorTest
     assert subject_class == DevSystem::GemfileGenerator
   end
 
+  test_erbs_defined(
+    "gemfile.rb.erb"
+  )
+
 end

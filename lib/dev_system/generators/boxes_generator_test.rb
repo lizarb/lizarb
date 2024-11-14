@@ -7,4 +7,6 @@ class DevSystem::BoxesGeneratorTest < DevSystem::SimpleGeneratorTest
     assert_equality DevSystem::BoxesGenerator, subject.class
   end
   
+  test_erbs_defined
+  
 end

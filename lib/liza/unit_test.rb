@@ -77,21 +77,26 @@ class Liza::UnitTest < Liza::Test
     }
   )
 
-  # rendering
+  section :rendering
 
-  test :erbs_defined do
-    erbs_defined = Unit.erbs_defined.map(&:key)
-    expected = ["render.txt.erb"]
-    assert_equality erbs_defined, expected
+  def self.test_erbs_defined(*keys)
+    test :erbs_defined do
+      actual = subject_class.erbs_defined.map &:key
+      assert_equality actual, keys
+    end
   end
 
-  test :erbs_available do
-    erbs_available = Unit.erbs_available.map(&:key)
-    expected = []
-    assert_equality erbs_available, expected
+  def self.test_erbs_available(*keys)
+    test :erbs_available do
+      actual = subject_class.erbs_available.map &:key
+      assert_equality actual, keys
+    end
   end
 
-  #
+  test_erbs_defined "render.txt.erb"
+  test_erbs_available
+
+  section :setting
 
   test :settings do
     assert_equality subject_class.get(:log_level), 4
