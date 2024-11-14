@@ -1,0 +1,5 @@
+# view section_system_test.rb.erb
+
+  test :subject_class do
+    assert_equality subject_class, <%= @class_name[0..-5] %>
+  end

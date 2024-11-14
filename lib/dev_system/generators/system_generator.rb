@@ -3,68 +3,83 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   # liza g system name color=coral
 
   def call_default
-    @name = command.simple_arg_ask_snakecase 1, "What is the name of the system you want to generate?"
-    log "@name = #{@name}"
-
-    @color = command.simple_color :color, string: "#{@name.camelize}System"
-    log "@color = #{@color}"
-
-    append_system_to_app
+    
     create_system
-    create_box
+    create_system_box
+    append_system_to_app
+    create_app_box
   end
 
   private
 
-  def append_system_to_app
-    file = TextFileShell.new App.filename
-    
-    lines = LineShell.extract_wall_of file.old_lines, "  system :"
-    lines << "  system :#{@name}\n"
-    file.new_lines = LineShell.replace_wall_of file.old_lines, "  system :", lines
+  section :name
 
-    add_change file
+  set_input_arg 1 do |default|
+    title = "Name your new System:"
+    x = TtyInputCommand.prompt.ask title, default: default
+    redo if x.to_s.chars.tally["_"].to_i.zero?
+    x
+  end
+  
+  def system_name () = @system_name ||= arg_name
+
+  def arg_name() = @arg_name ||= (name = command.simple_arg(1) until name.to_s.strip.length.positive?; name)
+  
+  def color() = @color ||= command.simple_color(:color, string: "#{system_name.camelize}System")
+
+  section :sub_methods
+
+  def append_system_to_app
+    contents = read_file App.filename
+
+    old_lines = contents.split("\n")
+    lines = LineShell.extract_wall_of old_lines, "  system :"
+    lines << "  system :#{system_name}"
+    new_lines = LineShell.replace_wall_of old_lines, "  system :", lines
+
+    contents = new_lines.join("\n")
+    update_file App.filename, contents
   end
 
   def create_system
-    unit    = UnitHelper.new
-    classes = ["#{@name.camelize}System", "Liza::System"]
-    path    = App.sys_path.join "#{@name.snakecase}_system.rb"
-    
-    create_unit unit, classes, path, :system
-  end
-
-  def create_box
     unit, test = UnitHelper.new, UnitHelper.new
-    unit_classes = ["#{@name.camelize}System::#{@name.camelize}Box", "Liza::Box"]
-    test_classes = ["#{@name.camelize}System::#{@name.camelize}BoxTest", "Liza::BoxTest"]
-    unit_path = App.sys_path.join "#{@name.snakecase}_system/#{@name.snakecase}_box.rb"
-    test_path = App.sys_path.join "#{@name.snakecase}_system/#{@name.snakecase}_box_test.rb"
+    unit_classes = ["#{system_name.camelize}System", "Liza::System"]
+    test_classes = ["#{system_name.camelize}System::#{system_name.camelize}SystemTest", "Liza::SystemTest"]
+    unit_path = App.systems_directory / "#{system_name.snakecase}_system.rb"
+    test_path = App.systems_directory / "#{system_name.snakecase}_system" / "#{system_name.snakecase}_system_test.rb"
 
-    @class_name = unit_classes[0]
-    test.section :box_test_section_1, caption: ""
+    log stick system.color, "Creating system: #{system_name}"
+
+    unit.section name: :default, render_key: :section_system_default
+    unit.section name: :info, render_key: :section_system_info
+    test.section name: :systemic, render_key: :section_system_test
+
+    add_unit unit, unit_classes, unit_path
+    add_unit test, test_classes, test_path
+  end
+
+  def create_system_box
+    unit, test = UnitHelper.new, UnitHelper.new
+    unit_classes = ["#{system_name.camelize}System::#{system_name.camelize}Box", "Liza::Box"]
+    test_classes = ["#{system_name.camelize}System::#{system_name.camelize}BoxTest", "Liza::BoxTest"]
+    unit_path = App.systems_directory / "#{system_name.snakecase}_system" / "#{system_name.snakecase}_box.rb"
+    test_path = App.systems_directory / "#{system_name.snakecase}_system" / "#{system_name.snakecase}_box_test.rb"
+
+    unit.section name: :preconfiguration, render_key: :section_system_box_settings
+    test.section name: :systemic, render_key: :section_system_box_test
+
+    add_unit unit, unit_classes, unit_path
+    add_unit test, test_classes, test_path
+  end
+
+  def create_app_box
+    unit = UnitHelper.new
+    classes = ["#{system_name.camelize}Box", "#{system_name.camelize}System::#{system_name.camelize}Box"]
+    path = App.directory / "#{system_name.snakecase}_box.rb"
     
-    create_unit unit, unit_classes, unit_path, :unit
-    create_unit test, test_classes, test_path, :unit
+    unit.section name: :configuration, render_key: :section_app_box_settings
+
+    add_unit unit, classes, path
   end
 
 end
-
-__END__
-
-# view system.rb.erb
-class <%= @class_names[0] %> < <%= @class_names[1] %>
-  class Error < Liza::Error; end
-  
-  #
-
-  color :<%= @color %>
-
-end
-
-# view box_test_section_1.rb.erb
-
-  test :subject_class, :subject do
-    assert_equality <%= @class_name %>, subject_class
-    assert_equality <%= @class_name %>, subject.class
-  end

@@ -1,0 +1,12 @@
+# view section_system_box_test.rb.erb
+
+  test :subject_class do
+    assert_equality subject_class, <%= @class_name[0..-5] %>
+  end
+
+  test_sections(
+  )
+
+  test :settings do
+    assert_equality subject_class.log_level, 4
+  end

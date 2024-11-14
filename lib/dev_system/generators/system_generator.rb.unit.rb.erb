@@ -1,0 +1,7 @@
+# view unit.rb.erb
+class <%= @class_names[0] %> < <%= @class_names[1] %>
+<% @current_unit.sections.each do |section| %>
+<%= "  section #{section[:name].inspect}" %>
+<%= section[:content] -%>
+<% end %>
+end
