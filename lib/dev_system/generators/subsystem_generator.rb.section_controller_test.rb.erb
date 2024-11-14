@@ -1,0 +1,18 @@
+# view section_controller_test.rb.erb
+
+  test :subject_class, :subject do
+    assert_equality subject_class, <%= @class_name[0..-5] %>
+    assert_equality subject.class, <%= @class_name[0..-5] %>
+  end
+
+  test_sections(
+    :default=>{
+      :constants=>[],
+      :class_methods=>[:call],
+      :instance_methods=>[]
+    }
+  )
+
+  test :settings do
+    assert_equality subject_class.log_level, 4
+  end

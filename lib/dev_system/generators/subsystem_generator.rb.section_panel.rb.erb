@@ -1,0 +1,18 @@
+# view section_panel.rb.erb
+
+  define_error(:not_found) do |args|
+    "<%= subsystem_name %> not found: #{args[0].inspect}"
+  end
+
+  def call(other_env)
+    log "forging"
+    env = { other_env: }
+
+    log "finding"
+    k = Liza.const "#{other_env[:<%= subsystem_name %>]}_<%= subsystem_name %>"
+    
+    log "forwarding"
+    k.call env
+  rescue Liza::ConstNotFound
+    raise_error :not_found, string
+  end
