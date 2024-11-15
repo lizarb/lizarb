@@ -1,0 +1,13 @@
+# view unit.rb.erb
+class <%= @class_names[0] %> < <%= @class_names[1] %>
+<% if requirements_to_add.any? and not @class_name.end_with?("Test") -%>
+  # Liza lazily requires gems required in Controllers
+<% requirements_to_add.each do |requirement| -%>
+  require "<%= requirement %>"
+<% end -%>
+<% end -%>
+<% @current_unit.sections.each do |section| %>
+<%= "  section #{section[:name].inspect}" %>
+<%= section[:content] -%>
+<% end %>
+end
