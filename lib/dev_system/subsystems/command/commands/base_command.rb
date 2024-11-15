@@ -16,10 +16,7 @@ class DevSystem::BaseCommand < DevSystem::Command
     log :higher, "env.count is #{env.count}"
     @env = env
     before if defined? before
-    
-    method_name = env[:command_name]
-    method_name = method_name.split(":")[1] || :default
-    method_name = "call_#{method_name}"
+    method_name = "call_#{action_name}"
     if respond_to? method_name
       public_send method_name
       after if defined? after
@@ -53,5 +50,7 @@ class DevSystem::BaseCommand < DevSystem::Command
   def args
     env[:args]
   end
+
+  def action_name() = env[:command_action]
 
 end
