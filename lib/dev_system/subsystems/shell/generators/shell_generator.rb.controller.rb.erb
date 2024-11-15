@@ -1,0 +1,40 @@
+# view controller.rb.erb
+
+  # Optionally, you can add behavior to controllers by overwriting the call method
+
+  # def self.call(env)
+  #   # Liza lazily requires gems required in Controllers
+  #   super
+  
+  #   log "your code here 2"
+
+  #   method_name = "call_#{env[:action]}"
+  #   if respond_to? method_name
+  #     log "your code here 3"
+  #     before_action env
+  #     public_send method_name, env
+  #     after_action env
+  #     return
+  #   end
+
+  #   msg = "Method not found: #{method_name.inspect}"
+  #   log msg
+  # end
+  
+  # def self.before_action(env)
+  #   log "your code here 4"
+  #   # your code here
+  # end
+
+  # def self.after_action(env)
+  #   log "your code here 6"
+  #   # your code here
+  # end
+
+<% arg_action_names.each do |action_name| -%>
+  # def self.call_<%= action_name %>(env)
+  #   log "your code here 5"
+  #   # your code here
+  # end
+  
+<% end -%>
