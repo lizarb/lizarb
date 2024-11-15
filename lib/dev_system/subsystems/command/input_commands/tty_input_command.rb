@@ -39,7 +39,7 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
     
     options = {
       enum: ")",
-      per_page: 20,
+      per_page: 30,
       help: "(space to select, enter to finish)",
       show_help: :always,
       default: 1..choices.count
