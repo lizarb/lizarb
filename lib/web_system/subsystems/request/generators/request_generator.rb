@@ -1,97 +1,39 @@
-class WebSystem::RequestGenerator < DevSystem::SimpleGenerator
+class WebSystem::RequestGenerator < DevSystem::ControllerGenerator
 
-  # liza g request name place=app
+  section :actions
+  
+  # liza g request name action_1 action_2 action_3 place=app views=adjacent
 
   def call_default
     call_simple
   end
 
-  # liza g request:simple name place=app
+  # liza g request:simple name
   
   def call_simple
-    @controller_class = Request
+    set_default_super "simple"
+    set_default_require ""
+    set_default_views "adjacent"
 
-    name!
-    place!
-
-    @args = command.simple_args_from_2
-
-    @args = ["index"] if @args.empty?
-
-    ancestor = SimpleRequest
-    create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
-      unit.section :controller_section_1
-      @args.each do |arg|
-        unit.view  :controller_view_1, key: arg, format: :html
+    create_controller do |unit, test|
+      unit.section name: :actions, render_key: :simple_actions
+      arg_action_names.each do |action_name|
+        unit.view name: action_name, render_key: :simple_view, format: :html
       end
-      test.section :controller_test_section_1, caption: ""
+      test.section name: :test
     end
   end
 
-  # liza g request:base name place=app
+  # liza g request:base name
 
   def call_base
-    @controller_class = Request
+    set_default_super "base"
+    set_default_require ""
 
-    name!
-    place!
-
-    @args = command.simple_args_from_2
-
-    create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_base_1, caption: ""
-      test.section :controller_test_section_1, caption: ""
+    create_controller do |unit, test|
+      unit.section name: :base
+      test.section name: :test
     end
   end
 
 end
-
-__END__
-
-# view controller_section_1.rb.erb
-<% @args.each do |arg|
-  route = arg == "index" ? "/#{@name}" : "/#{@name}/#{arg}"
-%>
-  # GET <%= route %>
-
-  def call_<%= arg %>
-    log "."
-  end
-
-  # POST <%= route %>
-
-  # def call_<%= arg %>!
-  #   log "."
-  # end
-<% end -%>
-# view controller_view_1.html.erb
-<h1><%%= self.class %></h1>
-<h2><%%= action %></h2>
-<p>request: <%%= request %></p>
-<p>action: <%%= action %></p>
-<p>format: <%%= format %></p>
-<p>http_method: <%%= http_method %></p>
-<p>qs: <%%= qs %></p>
-<p>segments: <%%= segments %></p>
-
-# view controller_section_base_1.rb.erb
-
-  def self.call(env)
-    super
-    path = env["REQUEST_PATH"]
-
-    status = 200
-    headers = {
-      "Framework" => "Liza \#{Lizarb::VERSION}"
-    }
-    body = "It works! <%= @name.camelize %>Request"
-
-    [status, headers, [body]]
-  end
-
-# view controller_test_section_1.rb.erb
-
-  test :subject_class, :subject do
-    assert_equality <%= @class_name %>, subject_class
-    assert_equality <%= @class_name %>, subject.class
-  end

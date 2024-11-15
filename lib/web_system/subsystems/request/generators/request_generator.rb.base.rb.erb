@@ -1,0 +1,14 @@
+# view base.rb.erb
+
+def self.call(env)
+  super
+  path = env["REQUEST_PATH"]
+
+  status = 200
+  headers = {
+    "Framework" => "Liza \#{Lizarb::VERSION}"
+  }
+  body = "It works! <%= controller_name.camelize %>Request"
+
+  [status, headers, [body]]
+end

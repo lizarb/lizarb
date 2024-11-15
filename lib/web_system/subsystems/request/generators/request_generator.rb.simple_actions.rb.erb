@@ -1,0 +1,16 @@
+# view simple_actions.rb.erb
+<% arg_action_names.each do |action_name|
+  route = action_name == "index" ? "/#{controller_name}" : "/#{controller_name}/#{action_name}"
+%>
+  # GET <%= route %>
+
+  def call_<%= action_name %>
+    log "."
+  end
+
+  # POST <%= route %>
+
+  # def call_<%= action_name %>!
+  #   log "."
+  # end
+<% end -%>
