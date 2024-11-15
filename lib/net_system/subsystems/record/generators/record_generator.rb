@@ -1,33 +1,35 @@
-class NetSystem::RecordGenerator < DevSystem::SimpleGenerator
+class NetSystem::RecordGenerator < DevSystem::ControllerGenerator
 
+  section :actions
+  
   # liza g record name place=app
 
   def call_default
-    @controller_class = Record
+    set_default_super ""
+    set_default_require ""
 
-    name!
-    place!
+    @database = command.simple_string :database
 
-    @args = command.simple_args[1..-1]
-
-    create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_1, caption: ""
-      test.section :controller_test_section_1, caption: ""
+    create_controller do |unit, test|
+      unit.section name: :controller
+      test.section name: :test
     end
+  end
+
+  section :helpers
+
+  # set_default_string :database, "sqlite"
+
+  set_input_string :database do |default|
+    options = Database.subunits.map do |database|
+      s = database.last_namespace.snakecase.sub("_db", "")
+      [
+        s,
+        s
+      ]
+    end.to_h
+
+    TtyInputCommand.pick_one "Which database?", options
   end
   
 end
-
-__END__
-
-# view controller_section_1.rb.erb
-
-  db :sqlite
-  set :table, :<%= @name %>s
-
-# view controller_test_section_1.rb.erb
-
-  test :subject_class, :subject do
-    assert_equality <%= @class_name %>, subject_class
-    assert_equality <%= @class_name %>, subject.class
-  end
