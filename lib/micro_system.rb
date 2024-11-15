@@ -3,6 +3,6 @@ class MicroSystem < Liza::System
 
   #
 
-  color :red
+  color :dark_coral
 
 end
