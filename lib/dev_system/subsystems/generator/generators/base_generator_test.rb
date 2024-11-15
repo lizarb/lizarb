@@ -4,4 +4,7 @@ class DevSystem::BaseGeneratorTest < DevSystem::GeneratorTest
     assert subject_class == DevSystem::BaseGenerator
   end
 
+  test_erbs_defined(
+  )
+  
 end
