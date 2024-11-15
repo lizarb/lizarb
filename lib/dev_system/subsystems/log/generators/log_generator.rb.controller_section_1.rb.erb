@@ -1,0 +1,7 @@
+# view controller_section_1.rb.erb
+
+  def self.call(env)
+    super
+    env[:object_parsed] = env[:object].to_s
+    true
+  end

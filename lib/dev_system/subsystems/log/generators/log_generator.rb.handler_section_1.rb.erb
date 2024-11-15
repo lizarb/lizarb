@@ -1,0 +1,8 @@
+
+# view handler_section_1.rb.erb
+
+  def self.call(env)
+    super
+    Kernel.puts env[:object_parsed]
+    true
+  end
