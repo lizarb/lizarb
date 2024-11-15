@@ -1,72 +1,58 @@
-class DevSystem::GeneratorGenerator < DevSystem::SimpleGenerator
+class DevSystem::GeneratorGenerator < DevSystem::ControllerGenerator
 
+  section :default
+  
+  def arg_action_names()= @arg_action_names ||= ["default", *super]
+
+  set_default_views "adjacent"
+
+  set_default_string :format, "txt"
+  set_input_string :format do |default|
+    TtyInputCommand.prompt.ask "What format?", default: default
+  end
+
+  section :actions
+  
   # liza g generator name place=app 
 
   def call_default
-    @controller_class = Generator
-    
-    name!
-    place!
+    call_simple
+  end
 
-    ancestor = SimpleGenerator
-    create_controller @name, @controller_class, @place, @path, ancestor: ancestor do |unit, test|
-      unit.section :controller_section_1, caption: "liza g #{@name} name place=app"
-      unit.section :controller_section_2, caption: "liza g #{@name}:examples"
-      unit.view    :generator_view_1, key: :controller_section_1
-      test.section :controller_test_section_1
+  # liza g generator:controller
+
+  def call_controller
+    set_default_super "controller"
+    set_default_require ""
+
+    create_controller do |unit, test|
+      format = command.simple_string :format
+      unit.section name: :actions, render_key: :section_controller_actions, format: format
+
+      arg_action_names.each do |action_name|
+        unit.view name: "section_#{action_name}_actions", render_key: :view_controller_actions, format: :rb
+        unit.view name: "view_#{action_name}", render_key: :view_controller_views, render_format: :txt, format: format
+      end
+
+      test.section name: :subject
+    end
+  end
+
+  # liza g generator:simple format=txt
+
+  def call_simple
+    set_default_super "simple"
+    set_default_require ""
+
+    create_controller do |unit, test|
+      format = command.simple_string :format
+      unit.section name: :actions, render_key: :section_simple_actions, format: format
+      test.section name: :subject
+
+      arg_action_names.each do |action_name|
+        unit.view name: action_name, render_key: :view_simple, render_format: "txt", format: format
+      end
     end
   end
 
 end
-
-__END__
-
-# view controller_section_1.rb.erb
-
-  def call_default
-    @controller_class = <%= @name.camelize %>
-
-    name!
-    place!
-
-    create_controller @name, @controller_class, @place, @path do |unit, test|
-      unit.section :controller_section_1
-      test.section :controller_test_section_1
-    end
-  end
-# view controller_section_2.rb.erb
-
-  # def call_examples
-  #   copy_examples <%= @name.camelize %>
-  # end
-# view generator_view_1.rb.erb
-  def self.call(env)
-    super
-    # 
-  end
-
-<%= "#" %> view controller_test_section_1.rb.erb
-
-  test :subject_class, :subject do
-    assert_equality <%%= @class_name %>, subject_class
-    assert_equality <%%= @class_name %>, subject.class
-  end
-
-  # test :subject_class, :call do
-  #   a = 1
-  #   b = 2
-  #   assert_equality a, b
-  # end
-  #
-  # test :subject, :call do
-  #   a = 1
-  #   b = 2
-  #   assert_equality a, b
-  # end
-
-# view controller_test_section_1.rb.erb
-
-  test :subject_class, :subject do
-    assert_equality <%= @class_name %>, subject_class
-    assert_equality <%= @class_name %>, subject.class
-  end

@@ -1,0 +1,19 @@
+# view section_simple_actions.rb.erb
+<% arg_action_names.each do |action_name| -%>
+
+  # liza g <%= controller_name %><%= ":#{action_name}" if action_name != "default" %> name
+  def call_<%= action_name %>
+    fname = arg_name
+
+    create_file "<%= @controller_name %><%= "_#{action_name}" if action_name != "default" %>_#{fname}.<%= @current_section[:format] %>", :<%= action_name %>, :<%= @current_section[:format] %>
+  end
+
+<% end -%>
+
+  def arg_name
+    # @arg_name ||= (name = command.simple_arg(1) until name.to_s.strip.length.positive?; name)
+    @arg_name ||= begin
+      name = command.simple_arg(1) until name.to_s.strip.length.positive?
+      name
+    end
+  end

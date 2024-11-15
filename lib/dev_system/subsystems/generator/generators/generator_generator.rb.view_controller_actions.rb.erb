@@ -1,0 +1,11 @@
+# view view_controller_actions.rb.erb
+
+<% arg_action_names.each do |action_name| %>
+  # <%= controller_name.camelcase %>.call action: :<%= action_name %>
+  # liza <%= controller_name %><%= ":#{action_name}" if action_name != "default" %> name action_1 action_2 action_3
+  def self.call_<%= action_name %>
+    # your code here
+    call(action: :<%= action_name %>)
+    # your code here
+  end
+<% end %>
