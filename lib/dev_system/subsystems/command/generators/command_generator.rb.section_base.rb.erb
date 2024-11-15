@@ -1,0 +1,10 @@
+# view section_base.rb.erb
+
+  def self.call(env)
+    t = Time.now
+    super
+
+    log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
+
+    log "#{ t.diff }s | done"
+  end

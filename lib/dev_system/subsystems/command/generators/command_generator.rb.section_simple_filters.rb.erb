@@ -1,0 +1,14 @@
+# view section_simple_filters.rb.erb
+
+  def before
+    super
+    @t = Time.now
+    log "simple_args     #{ simple_args }"
+    log "simple_booleans #{ simple_booleans }"
+    log "simple_strings  #{ simple_strings }"
+  end
+  
+  def after
+    super
+    log "#{ @t.diff }s | done"
+  end
