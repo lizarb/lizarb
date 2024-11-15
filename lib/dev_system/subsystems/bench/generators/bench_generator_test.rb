@@ -3,8 +3,13 @@ class DevSystem::BenchGeneratorTest < DevSystem::SimpleGeneratorTest
   #
   
   test :subject do
-    assert_equality DevSystem::BenchGenerator, subject_class
-    assert_equality DevSystem::BenchGenerator, subject.class
+    assert_equality subject_class, DevSystem::BenchGenerator
+    assert_equality subject.class, DevSystem::BenchGenerator
   end
-  
+
+  test_erbs_defined(
+    "marks.rb.erb",
+    "setup.rb.erb"
+  )
+
 end

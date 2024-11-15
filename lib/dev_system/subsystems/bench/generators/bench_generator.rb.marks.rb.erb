@@ -1,0 +1,18 @@
+# view marks.rb.erb
+
+<% if arg_action_names.any? -%>
+<% arg_action_names.each do |arg| -%>
+  mark "<%= arg %>" do
+    a = 1.to_s.to_sym
+  end
+
+<% end -%>
+<% else -%>
+  mark "alternative 1" do
+    a = "1".to_sym
+  end
+
+  mark "alternative 2" do
+    a = :"1"
+  end
+<% end -%>
