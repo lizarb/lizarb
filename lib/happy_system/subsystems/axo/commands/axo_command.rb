@@ -27,6 +27,7 @@ class HappySystem::AxoCommand < DevSystem::SimpleCommand
   end
 
   def pick_axo
+    Lizarb.eager_load!
     axos = Axo.descendants
     options = axos.sort_by(&:last_namespace).map do |axo|
       [
