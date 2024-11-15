@@ -66,6 +66,8 @@ class DevSystem::FileShell < DevSystem::Shell
     DevSystem::DirShell.create dir
 
     File.open(path, "w").close
+
+    true
   end
 
   def self.gitkeep path
