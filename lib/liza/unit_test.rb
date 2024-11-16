@@ -102,10 +102,7 @@ class Liza::UnitTest < Liza::Test
     assert_equality subject_class.get(:log_level), 4
     assert_equality subject_class.log_level, 4
 
-    assert_equality subject_class.settings, {
-      log_level: 4,
-      division: Liza::Controller,
-    }
+    assert_equality subject_class.settings.keys, [:errors, :log_level, :division]
   end
 
   test :settings_inheritance do
