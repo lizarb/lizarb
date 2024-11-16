@@ -70,7 +70,7 @@ class DevSystem::ColorShell < DevSystem::Shell
     unit_color = nil
     unit_color = klass.system.color
 
-    ret << stick(classname, unit_color).to_s
+    ret << stick(classname, unit_color, :b).to_s
     ret
   end
 
