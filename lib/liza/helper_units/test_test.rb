@@ -122,11 +122,11 @@ class Liza::TestTest < Liza::UnitTest
       assert_equality self.class.test_tree.class, Liza::TestTreePart
       assert_equality self.class.test_tree, self.class.test_tree.parent
       
-      assert_equality 4, self.class.test_tree.tests.count
+      assert_equality 3, self.class.test_tree.tests.count
       assert_equality 5, self.class.test_tree.children.count
 
       a = self.class.test_tree.tests.map(&:first).flatten
-      b = [:settings, :subject_class, :methods_defined, :subject_class, :instance_methods_defined, :instance_groups]
+      b = [:settings, :subject_class, :methods_defined, :instance_groups]
       assert_equality a, b
     end
   end
