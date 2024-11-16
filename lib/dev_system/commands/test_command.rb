@@ -123,7 +123,12 @@ class DevSystem::TestCommand < DevSystem::Command
     last_namespace = nil
     test_classes.each do |test_class|
       namespace = test_class.first_namespace
-      puts if last_namespace != namespace
+      if last_namespace != namespace
+        puts
+        s = namespace.length.positive? ? namespace : "App"
+        Liza.log stick :b, " #{s} ".center(140, "-")
+        puts
+      end
       last_namespace = namespace
 
       test_class.totals.each do |k, v|
