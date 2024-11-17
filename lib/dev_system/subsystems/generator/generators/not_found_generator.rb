@@ -87,7 +87,6 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
         klasses = klasses.reject { _1 == NotFoundGenerator }
         klasses = klasses.reject { _1 == InstallGenerator }
         klasses = klasses.reject { _1 == MoveGenerator }
-        klasses = klasses.reject { _1 == MultiGenerator }
         klasses = klasses.reject { _1 == OverwriteGenerator }
         klasses = klasses.reject { _1 == RemoveGenerator }
         klasses = klasses.reject { _1 == UninstallGenerator }
