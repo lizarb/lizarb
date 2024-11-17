@@ -38,7 +38,7 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
         sidebar << "::"
         size += namespace.size + 2
       end
-      sidebar << stick(classname, source_color).to_s
+      sidebar << stick(classname, source_color, :b).to_s
 
       sidebar << method_sep
       size += classname.size + 1
