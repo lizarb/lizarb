@@ -766,6 +766,7 @@ module Lizarb
   end
 
   def eager_load!
+    return if eager_loaded?
     log "Lizarb.#{__method__} begin"
     @eager_loaded = true
     loaders[1].eager_load

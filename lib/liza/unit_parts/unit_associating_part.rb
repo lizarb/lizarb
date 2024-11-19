@@ -19,7 +19,7 @@ class Liza::UnitAssociatingPart < Liza::Part
     end
 
     def self.subunits
-      Lizarb.eager_load! unless Lizarb.eager_loaded?
+      Lizarb.eager_load!
       subclasses.select { _1.name&.start_with?(/[A-Z]/) }
     end
 
