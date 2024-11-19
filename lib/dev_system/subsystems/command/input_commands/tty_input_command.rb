@@ -33,16 +33,19 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
 
   #
 
-  def self.multi_select title, choices
+  def self.multi_select title, choices, selected: :all
     raise "choices must be a hash" unless choices.is_a? Hash
     return choices if choices.empty?
     
+    default = 1..choices.count if selected == :all
+    default = [] if selected == :none
+
     options = {
       enum: ")",
       per_page: 30,
       help: "(space to select, enter to finish)",
       show_help: :always,
-      default: 1..choices.count
+      default: default
     }
     prompt.multi_select title, choices, options
   rescue TTY::Reader::InputInterrupt
