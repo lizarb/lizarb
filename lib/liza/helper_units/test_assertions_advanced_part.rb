@@ -207,5 +207,113 @@ class Liza::TestAssertionsAdvancedPart < Liza::Part
       critical refute_raises e, msg, kaller: caller
     end
 
+    section :no_raise
+
+    ##
+    # Asserts that no exception is raised when executing the given block.
+    #
+    # Passes if the block executes without raising any exception.
+    #
+    # @param msg [String, nil] An optional message to display on failure.
+    # @param kaller [Array, nil] Optional caller information.
+    # @yield The block to execute.
+    # @return [Boolean] True if the assertion passes.
+    #
+    def assert_no_raise(msg = nil, kaller: nil, &block)
+      raise ArgumentError, "No block given" unless block_given?
+
+      ret = true
+      begin
+        yield
+      rescue Exception => e
+        ret = false
+        error = e
+      end
+
+      if ret
+        self.class._assertion_passed
+        @last_result = :passed
+      else
+        self.class._assertion_failed msg
+        @last_result = :failed
+      end
+
+      kaller ||= caller
+      log_test_assertion __method__, kaller if _groups.empty?
+
+      if log_test_assertion_message?
+        msg ||= "#{__method__} - Expected no exception, got #{error.inspect}" unless ret
+        log_test_assertion_message ret, msg
+      end
+
+      ret
+    end
+
+    ##
+    # Asserts that no exception is raised when executing the given block, stopping execution on failure.
+    #
+    # Calls {#assert_no_raise} and halts if an exception is raised.
+    #
+    # @param msg [String, nil] An optional message to display on failure.
+    # @yield The block to execute.
+    # @return [void]
+    #
+    def assert_no_raise!(msg = nil, &block)
+      critical assert_no_raise(msg, kaller: caller, &block)
+    end
+
+    ##
+    # Refutes that no exception is raised when executing the given block.
+    #
+    # Fails if the block executes without raising an exception.
+    #
+    # @param msg [String, nil] An optional message to display on failure.
+    # @param kaller [Array, nil] Optional caller information.
+    # @yield The block to execute.
+    # @return [Boolean] True if the assertion fails (i.e., an exception *is* raised).
+    #
+    def refute_no_raise(msg = nil, kaller: nil, &block)
+      raise ArgumentError, "No block given" unless block_given?
+
+      ret = false
+      begin
+        yield
+        ret = true
+      rescue Exception
+        ret = false
+      end
+
+      if ret
+        self.class._assertion_failed msg
+        @last_result = :failed
+      else
+        self.class._assertion_passed
+        @last_result = :passed
+      end
+
+      kaller ||= caller
+      log_test_assertion __method__, kaller if _groups.empty?
+
+      if log_test_assertion_message?
+        msg ||= "#{__method__} - Expected an exception to be raised, but none occurred" if ret
+        log_test_assertion_message !ret, msg
+      end
+
+      ret
+    end
+
+    ##
+    # Refutes that no exception is raised when executing the given block, stopping execution on success.
+    #
+    # Calls {#refute_no_raise} and halts if no exception is raised.
+    #
+    # @param msg [String, nil] An optional message to display on failure.
+    # @yield The block to execute.
+    # @return [void]
+    #
+    def refute_no_raise!(msg = nil, &block)
+      critical refute_no_raise(msg, kaller: caller, &block)
+    end
+
   end
 end
