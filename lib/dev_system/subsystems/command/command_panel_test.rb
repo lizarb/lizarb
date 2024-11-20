@@ -92,4 +92,31 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     todo "test this"
   end
 
+  #
+
+  test :shortcut do
+    assert_equality subject.shortcut("m"), "m"
+    assert_equality subject.shortcut("i"), "i"
+    assert_equality subject.shortcut("n"), "n"
+    assert_equality subject.shortcut("s"), "s"
+    assert_equality subject.shortcut("w"), "w"
+    assert_equality subject.shortcut("a"), "a"
+    assert_equality subject.shortcut("n"), "n"
+
+    subject.shortcut :m, :matz
+    subject.shortcut :i, :is
+    subject.shortcut :n, :nice
+    subject.shortcut :s, :so
+    subject.shortcut :w, :we
+    subject.shortcut :a, :are
+
+    assert_equality subject.shortcut("m"), "matz"
+    assert_equality subject.shortcut("i"), "is"
+    assert_equality subject.shortcut("n"), "nice"
+    assert_equality subject.shortcut("s"), "so"
+    assert_equality subject.shortcut("w"), "we"
+    assert_equality subject.shortcut("a"), "are"
+    assert_equality subject.shortcut("n"), "nice"
+  end
+
 end

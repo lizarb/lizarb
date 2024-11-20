@@ -83,18 +83,6 @@ class Liza::Panel < Liza::Unit
     self
   end
 
-  section :shortcuts
-
-  def shortcuts () = @shortcuts ||= {}
-  
-  def shortcut(a, b = nil)
-    if b
-      shortcuts[a.to_s] = b.to_s
-    else
-      shortcuts[a.to_s] || a.to_s
-    end
-  end
-
   section :errors
 
   def rescue_from(*args, &block)
