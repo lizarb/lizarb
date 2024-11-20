@@ -34,8 +34,7 @@ class DevSystem::CommandPanel < Liza::Panel
     env[:command_name_original] = command_name
     env[:command_name] = shortcut(command_name)
     env[:command_action_original] = command_action
-    env[:command_action] = shortcut command_action || "default"
-    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
+    log "command:action is #{env[:command_name]}:#{env[:command_action_original]}"
     env
   end
 
@@ -44,7 +43,11 @@ class DevSystem::CommandPanel < Liza::Panel
   def find env
     raise "env[:command_name] is empty #{env}" if env[:command_name].empty?
     env[:command_class] = Liza.const "#{env[:command_name]}_command"
+    env[:command_action] = env[:command_class].shortcut env[:command_action_original] || "default"
+    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
   rescue Liza::ConstNotFound
+    env[:command_action] = "default"
+    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
     raise_error :not_found, env[:command_name]
   end
 
