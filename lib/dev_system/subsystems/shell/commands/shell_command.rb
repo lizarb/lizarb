@@ -36,6 +36,13 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     DevBox.command ["convert", *args]
   end
 
+  # liza shell:eval
+  def call_eval
+    s = args.join(' ')
+    log "evaluating: #{s.inspect}"
+    eval s
+  end
+
   # liza shell:format
   def call_format
     DevBox.command ["format", *args]
