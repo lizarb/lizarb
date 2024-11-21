@@ -1,5 +1,11 @@
 class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
+  shortcut :c, :convert
+  shortcut :e, :eval
+  shortcut :f, :format
+  shortcut :p, :paths
+  shortcut :l, :loc
+
   # liza shell
   def call_default
     puts
