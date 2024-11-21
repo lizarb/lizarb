@@ -145,8 +145,10 @@ class Liza::Panel < Liza::Unit
   #
 
   def rescue_from_panel(exception, env)
+    log :higher, "exception is #{stick :red, :b, exception.inspect}"
+    log :higher, "exception.backtrace[0] is #{stick :red, :b, exception.backtrace[0]}"
     rescuer = _rescue_from_panel_find exception
-    raise exception.class, exception.message, caller[1..-1] unless rescuer
+    raise exception unless rescuer
 
     ret = nil
 
