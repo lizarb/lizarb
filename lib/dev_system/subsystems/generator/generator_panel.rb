@@ -4,11 +4,15 @@ class DevSystem::GeneratorPanel < Liza::Panel
     "generator not found: #{args[0].inspect}"
   end
 
-  #
+  part :command_shortcut, :panel
+
+  section :default
   
   def call(command_env)
     env = forge command_env
+    forge_shortcut env
     find env
+    find_shortcut env
     forward env
     inform env
     save env
@@ -19,8 +23,8 @@ class DevSystem::GeneratorPanel < Liza::Panel
   #
   
   def forge command_env
-    env = {command: command_env[:command]}
-    command = env[:command]
+    command = command_env[:command]
+    env = {controller: :generator, command: command}
 
     raise_error :not_found, "" if command.args.empty?
 
@@ -29,8 +33,7 @@ class DevSystem::GeneratorPanel < Liza::Panel
     env[:generator_name_original] = generator_name
     env[:generator_name] = shortcut(generator_name)
     env[:generator_action_original] = generator_action
-    env[:generator_action] = shortcut generator_action || "default"
-    log :lower, "generator:action is #{env[:generator_name]}:#{env[:generator_action]}"
+    log "generator:action is #{env[:generator_name]}:#{env[:generator_action_original]}"
     env
   end
   

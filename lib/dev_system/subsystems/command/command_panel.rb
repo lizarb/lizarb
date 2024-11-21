@@ -12,13 +12,19 @@ class DevSystem::CommandPanel < Liza::Panel
     "input already set to #{@input.inspect}, but trying to set to #{args[0].inspect}"
   end
 
+  part :command_shortcut, :panel
+
+  section :default
+
   def call args
     log :higher, "args = #{args.inspect}"
 
     return call_not_found args if args.none?
 
     env = forge args
+    forge_shortcut env
     find env
+    find_shortcut env
     forward env
   # rescue Exception => e
   rescue Error => e
@@ -30,7 +36,7 @@ class DevSystem::CommandPanel < Liza::Panel
   def forge args
     command_arg, *args = args
     command_name, command_action = command_arg.split(":")
-    env = {command_arg: , args:}
+    env = {controller: :command, command_arg: , args:}
     env[:command_name_original] = command_name
     env[:command_name] = shortcut(command_name)
     env[:command_action_original] = command_action
@@ -43,11 +49,7 @@ class DevSystem::CommandPanel < Liza::Panel
   def find env
     raise "env[:command_name] is empty #{env}" if env[:command_name].empty?
     env[:command_class] = Liza.const "#{env[:command_name]}_command"
-    env[:command_action] = env[:command_class].shortcut env[:command_action_original] || "default"
-    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
   rescue Liza::ConstNotFound
-    env[:command_action] = "default"
-    log "command:action is #{env[:command_name]}:#{env[:command_action]}"
     raise_error :not_found, env[:command_name]
   end
 
@@ -70,18 +72,6 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def call_not_found args
     Liza[:NotFoundCommand].call args
-  end
-
-  section :shortcuts
-
-  def shortcuts () = @shortcuts ||= {}
-  
-  def shortcut(a, b = nil)
-    if b
-      shortcuts[a.to_s] = b.to_s
-    else
-      shortcuts[a.to_s] || a.to_s
-    end
   end
 
   section :input

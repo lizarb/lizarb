@@ -11,6 +11,12 @@ class DevBox < DevSystem::DevBox
     shortcut :t, :test
   end
 
+  configure :generator do
+    # GeneratorPanel.instance gives you read-access to this instance
+    shortcut :c, :command
+    shortcut :s, :shell
+  end
+
   configure :log do
     # LogPanel.instance gives you read-access to this instance
     sidebar_size 40

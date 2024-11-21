@@ -16,50 +16,42 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
       :pick_many, :pick_one
   end
 
-  test :forge do
-    assert_equality \
-      (subject.forge ["generate"]),
-      {
-        :command_arg=>"generate",
-        :args=>[],
-        :command_name_original=>"generate",
-        :command_name=>"generate",
-        :command_action_original=>nil,
-        :command_action=> "default"
-      }
+  def forge_with args
+    env = subject.forge args
+    subject.forge_shortcut env
+    env
+  end
 
-    assert_equality \
-      (subject.forge ["generate:install"]),
-      {
-        :command_arg=>"generate:install",
-        :args=>[],
-        :command_name_original=>"generate",
-        :command_name=>"generate",
-        :command_action_original=>"install",
-        :command_action=> "install"
-      }
+  test :forge, true do
+    env = forge_with ["generate"]
+    assert_equality env[:command_name_original], "generate"
+    assert_equality env[:command_name], "generate"
+    assert_equality env[:command_action_original], nil
+    assert_equality env[:command_action], "default"
+  end
 
-    assert_equality \
-      (subject.forge ["two_words"]),
-      {
-        :command_arg=>"two_words",
-        :args=>[],
-        :command_name_original=>"two_words",
-        :command_name=>"two_words",
-        :command_action_original=>nil,
-        :command_action=> "default"
-      }
+  test :forge, true, :action do
+    env = forge_with ["generate:install"]
+    assert_equality env[:command_name_original], "generate"
+    assert_equality env[:command_name], "generate"
+    assert_equality env[:command_action_original], "install"
+    assert_equality env[:command_action], "install"
+  end
 
-    assert_equality \
-      (subject.forge ["word10"]),
-      {
-        :command_arg=>"word10",
-        :args=>[],
-        :command_name_original=>"word10",
-        :command_name=>"word10",
-        :command_action_original=>nil,
-        :command_action=> "default"
-      }
+  test :forge, false do
+    env = forge_with ["x"]
+    assert_equality env[:command_name_original], "x"
+    assert_equality env[:command_name], "x"
+    assert_equality env[:command_action_original], nil
+    assert_equality env[:command_action], "default"
+  end
+
+  test :forge, false, :action do
+    env = forge_with ["x:y"]
+    assert_equality env[:command_name_original], "x"
+    assert_equality env[:command_name], "x"
+    assert_equality env[:command_action_original], "y"
+    assert_equality env[:command_action], "y"
   end
 
   test :find do

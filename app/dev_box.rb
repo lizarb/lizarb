@@ -31,6 +31,9 @@ class DevBox < DevSystem::DevBox
     # rescue_from(Exception)      { |rescuer| binding.irb } if $coding
     # rescue_from(StandardError)  { |rescuer| binding.irb } if $coding
 
+    shortcut :c, :command
+    shortcut :s, :shell
+
     # uncomment below to override default setting to call NotFoundGenerator
     # rescue_from(GeneratorPanel::NotFoundError) { |rescuer| binding.irb } if $coding
   end

@@ -4,11 +4,15 @@ class DevSystem::BenchPanel < Liza::Panel
     "bench not found: #{args[0].inspect}"
   end
 
-  #
+  part :command_shortcut, :panel
+
+  section :default
 
   def call(command_env)
     env = forge command_env
+    forge_shortcut env
     find env
+    find_shortcut env
     forward env
   rescue Exception => exception
     rescue_from_panel(exception, env)
@@ -17,8 +21,8 @@ class DevSystem::BenchPanel < Liza::Panel
   #
   
   def forge command_env
-    env = {command: command_env[:command]}
-    command = env[:command]
+    command = command_env[:command]
+    env = {controller: :bench, command: command}
 
     raise_error :not_found, "" if command.args.empty?
 
@@ -27,8 +31,7 @@ class DevSystem::BenchPanel < Liza::Panel
     env[:bench_name_original] = bench_name
     env[:bench_name] = shortcut(bench_name)
     env[:bench_action_original] = bench_action
-    env[:bench_action] = shortcut bench_action || "default"
-    log :lower, "bench:action is #{env[:bench_name]}:#{env[:bench_action]}"
+    log "bench:action is #{env[:bench_name]}:#{env[:bench_action_original]}"
     env
   end
 

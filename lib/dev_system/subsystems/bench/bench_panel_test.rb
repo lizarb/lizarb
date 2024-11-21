@@ -20,6 +20,7 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
     command_env = {command: , args: }
     command.instance_variable_set :@env, command_env
     env = subject.forge command_env
+    subject.forge_shortcut env
     env
   end
   
