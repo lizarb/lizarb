@@ -1,5 +1,11 @@
 class DevSystem::GenerateCommand < DevSystem::SimpleCommand
 
+  shortcut :r, :remove
+  shortcut :u, :uninstall
+  shortcut :i, :install
+  shortcut :m, :move
+  shortcut :o, :overwrite
+
   def before
     super
     log "simple_args     #{ simple_args }"
