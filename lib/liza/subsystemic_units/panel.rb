@@ -151,19 +151,10 @@ class Liza::Panel < Liza::Unit
     ret = nil
 
     log :higher, "rescuer = #{rescuer.inspect}"
-    case env
-    when Array
-      env.push(rescuer)
-      rescuer[:args] = env
-      ret = rescuer.call
-    when Hash
-      env[:rescuer] = rescuer
-      rescuer[:env] = env
-      ret = rescuer.call
-    else
-      raise ArgumentError, "wrong argument type #{with.class} (expected Array or Hash)"
-    end
-
+    env[:rescuer] = rescuer
+    rescuer[:env] = env
+    ret = rescuer.call
+    log :higher, "ret = #{ret.inspect}"
     ret
   end
 
@@ -180,14 +171,10 @@ class Liza::Panel < Liza::Unit
 
   class Rescuer < Hash
     def call
-      if self[:block]
-        self[:block].call self
-      elsif self[:env]
+      if self[:env]
         callable.call self[:env]
-      elsif self[:args]
-        callable.call self[:args]
       else
-        raise "not expected"
+        self[:block].call self
       end
     end
 
