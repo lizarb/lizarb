@@ -120,5 +120,11 @@ class DevSystem::FileShell < DevSystem::Shell
     end
   end
 
+  def self.remove(path, log_level: self.log_level)
+    log log_level, "Removing '#{path}'"
+    _raise_if_blank path
+
+    File.delete path
+  end
 
 end
