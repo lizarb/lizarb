@@ -4,6 +4,7 @@ class DevSystem::NotFoundBench < DevSystem::Bench
     super
     # 1. LOG
 
+    env[:bench_action] = "default"
     args = env[:args]
     log "args = #{args.inspect}"
     puts

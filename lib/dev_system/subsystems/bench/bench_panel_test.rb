@@ -29,7 +29,6 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
     assert_equality env[:bench_name_original], "objects"
     assert_equality env[:bench_name], "objects"
     assert_equality env[:bench_action_original], nil
-    assert_equality env[:bench_action], "default"
   end
   
   test :forge, true, :action do
@@ -37,7 +36,6 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
     assert_equality env[:bench_name_original], "objects"
     assert_equality env[:bench_name], "objects"
     assert_equality env[:bench_action_original], "quadratic"
-    assert_equality env[:bench_action], "quadratic"
   end
   
   test :forge, false do
@@ -45,7 +43,6 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
     assert_equality env[:bench_name_original], "x"
     assert_equality env[:bench_name], "x"
     assert_equality env[:bench_action_original], nil
-    assert_equality env[:bench_action], "default"
   end
   
   test :forge, false, :action do
@@ -53,25 +50,6 @@ class DevSystem::BenchPanelTest < Liza::PanelTest
     assert_equality env[:bench_name_original], "x"
     assert_equality env[:bench_name], "x"
     assert_equality env[:bench_action_original], "y"
-    assert_equality env[:bench_action], "y"
-  end
-  
-  section :find
-
-  #
-
-  test :find, true do
-    env = {bench_name: :sorted}
-    subject.find env
-    assert_equality env[:bench_class], SortedBench
-  end if defined? SortedBench
-  
-  test :find, false do
-    env = {bench_name: :x}
-    subject.find env
-    assert false
-  rescue DevSystem::BenchPanel::NotFoundError
-    assert true  
   end
 
 end

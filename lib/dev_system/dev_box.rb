@@ -2,14 +2,12 @@ class DevSystem::DevBox < Liza::Box
 
   preconfigure :bench do
     # BenchPanel.instance gives you read-access to this instance
-    rescue_from :not_found
   end
 
   forward :bench
 
   preconfigure :command do
     # CommandPanel.instance gives you read-access to this instance
-    rescue_from :not_found
   end
 
   forward :command
@@ -19,7 +17,6 @@ class DevSystem::DevBox < Liza::Box
 
   preconfigure :generator do
     # GeneratorPanel.instance gives you read-access to this instance
-    rescue_from :not_found
   end
 
   forward :generator, :generate => :call

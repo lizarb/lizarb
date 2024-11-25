@@ -1,13 +1,5 @@
 class DevSystem::CommandPanel < Liza::Panel
   
-  define_error(:parse) do |args|
-    "could not parse #{args[0].inspect}"
-  end
-
-  define_error(:not_found) do |args|
-    "command not found: #{args[0].inspect}"
-  end
-
   define_error(:already_set) do |args|
     "input already set to #{@input.inspect}, but trying to set to #{args[0].inspect}"
   end
@@ -18,8 +10,6 @@ class DevSystem::CommandPanel < Liza::Panel
 
   def call args
     log :higher, "args = #{args.inspect}"
-
-    return call_not_found args if args.none?
 
     env = forge args
     forge_shortcut env
@@ -33,23 +23,14 @@ class DevSystem::CommandPanel < Liza::Panel
   #
 
   def forge args
+    args = [""] if args.empty?
     command_arg, *args = args
-    command_name, command_action = command_arg.split(":")
-    env = {controller: :command, command_arg: , args:}
-    env[:command_name_original] = command_name
-    env[:command_name] = shortcut(command_name)
-    env[:command_action_original] = command_action
-    log "command:action is #{env[:command_name]}:#{env[:command_action_original]}"
+    command_name_original, command_action_original = command_arg.split(":")
+    
+    env = { controller: :command, command_arg:, args:, command_name_original:, command_action_original: }
+    
+    log :high, "command_name_original:command_action_original is     #{command_name_original}:#{command_action_original}"
     env
-  end
-
-  #
-
-  def find env
-    raise "env[:command_name] is empty #{env}" if env[:command_name].empty?
-    env[:command_class] = Liza.const "#{env[:command_name]}_command"
-  rescue Liza::ConstNotFound
-    raise_error :not_found, env[:command_name]
   end
 
   def _find string
@@ -61,17 +42,6 @@ class DevSystem::CommandPanel < Liza::Panel
   end
 
   #
-
-  def forward env
-    log :higher,  "forwarding"
-    env[:command_class].call env
-  end
-
-  #
-
-  def call_not_found args
-    Liza[:NotFoundCommand].call args
-  end
 
   section :input
 

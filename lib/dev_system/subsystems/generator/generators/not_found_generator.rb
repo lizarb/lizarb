@@ -2,6 +2,11 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
 
   #
 
+  def before
+    super
+    env[:generator_action] = "default"
+  end
+
   def call_default
     h3 "Liza is a light application framework written in Ruby 3.3 ❤", color: DevSystem.color
     h5 "We're optimizing for happiness. Come join us!", color: ColorShell.colors.keys.sample

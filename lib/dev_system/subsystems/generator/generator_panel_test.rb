@@ -31,7 +31,6 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_name_original], "system"
     assert_equality env[:generator_name], "system"
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], "default"
   end
   
   test :forge, true, :action do
@@ -39,7 +38,6 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_name_original], "system"
     assert_equality env[:generator_name], "system"
     assert_equality env[:generator_action_original], "install"
-    assert_equality env[:generator_action], "install"
   end
   
   test :forge, false do
@@ -47,7 +45,6 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_name_original], "x"
     assert_equality env[:generator_name], "x"
     assert_equality env[:generator_action_original], nil
-    assert_equality env[:generator_action], "default"
   end
   
   test :forge, false, :action do
@@ -55,23 +52,35 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
     assert_equality env[:generator_name_original], "x"
     assert_equality env[:generator_name], "x"
     assert_equality env[:generator_action_original], "y"
-    assert_equality env[:generator_action], "y"
+  end
+
+  test :forge_shortcut do
+    subject.shortcut :s, :system
+    env = {controller: :generator, generator_name_original: "s"}
+    subject.forge_shortcut env
+    assert_equality env[:generator_name], "system"
+
+    env = {controller: :generator, generator_name_original: "zz"}
+    subject.forge_shortcut env
+    assert_equality env[:generator_name], "zz"
   end
   
   section :find
-  
-  test :find, true do
-    env = {generator_name: :command}
+
+  test :find do
+    env = {controller: :generator, generator_name: :command}
     subject.find env
     assert_equality env[:generator_class], CommandGenerator
-  end
-  
-  test :find, false do
-    env = {generator_name: :x}
+
+    env = {controller: :generator, generator_name: :z}
     subject.find env
-    assert false
-  rescue DevSystem::GeneratorPanel::NotFoundError
-    assert true  
+    assert_equality env[:generator_class], NotFoundGenerator
+  end
+
+  test :find_shortcut do
+    env = {controller: :generator, generator_class: CommandGenerator, generator_action_original: "x"}
+    subject.find_shortcut env
+    assert_equality env[:generator_action], "x"
   end
 
 end

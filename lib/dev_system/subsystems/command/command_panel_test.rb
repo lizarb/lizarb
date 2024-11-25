@@ -22,12 +22,18 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     env
   end
 
+  test :forge, "empty" do
+    env = forge_with []
+    assert_equality env[:command_name_original], nil
+    assert_equality env[:command_name], ""
+    assert_equality env[:command_action_original], nil
+  end
+
   test :forge, true do
     env = forge_with ["generate"]
     assert_equality env[:command_name_original], "generate"
     assert_equality env[:command_name], "generate"
     assert_equality env[:command_action_original], nil
-    assert_equality env[:command_action], "default"
   end
 
   test :forge, true, :action do
@@ -35,7 +41,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality env[:command_name_original], "generate"
     assert_equality env[:command_name], "generate"
     assert_equality env[:command_action_original], "install"
-    assert_equality env[:command_action], "install"
   end
 
   test :forge, false do
@@ -43,7 +48,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality env[:command_name_original], "x"
     assert_equality env[:command_name], "x"
     assert_equality env[:command_action_original], nil
-    assert_equality env[:command_action], "default"
   end
 
   test :forge, false, :action do
@@ -51,21 +55,37 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality env[:command_name_original], "x"
     assert_equality env[:command_name], "x"
     assert_equality env[:command_action_original], "y"
-    assert_equality env[:command_action], "y"
+  end
+
+  test :forge_shortcut do
+    subject.shortcut :g, :generate
+    env = {controller: :command, command_name_original: "g"}
+    subject.forge_shortcut env
+    assert_equality env[:command_name], "generate"
+
+    env = {controller: :command, command_name_original: "x"}
+    subject.forge_shortcut env
+    assert_equality env[:command_name], "x"
   end
 
   test :find do
-    env = {command_name: "generate"}
-    klass = subject.find env
-    assert_equality klass, DevSystem::GenerateCommand
+    env = {controller: :command, command_name: "generate", command_action_original: ""}
+    subject.find env
+    assert_equality env[:command_class], DevSystem::GenerateCommand
 
-    env = {command_name: "x"}
-    begin
-      klass = subject.find env
-      assert false
-    rescue CommandPanel::NotFoundError
-      assert true
-    end
+    env = {controller: :command, ommand_name: "x", command_action_original: ""}
+    subject.find env
+    assert_equality env[:command_class], DevSystem::NotFoundCommand
+  end
+
+  test :find_shortcut do
+    env = {controller: :command, command_class: GenerateCommand, command_action_original: "i"}
+    subject.find_shortcut env
+    assert_equality env[:command_action], "install"
+
+    env = {controller: :command, command_class: GenerateCommand, command_action_original: "x"}
+    subject.find_shortcut env
+    assert_equality env[:command_action], "x"
   end
 
   test :_find do

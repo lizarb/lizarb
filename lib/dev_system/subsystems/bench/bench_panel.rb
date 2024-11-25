@@ -20,43 +20,14 @@ class DevSystem::BenchPanel < Liza::Panel
 
   #
   
-  def forge command_env
+  def forge(command_env)
     command = command_env[:command]
-    env = {controller: :bench, command: command}
+    bench_name_original, bench_action_original = command.args.first.to_s.split(":")
 
-    raise_error :not_found, "" if command.args.empty?
+    env = { controller: :bench, command:, bench_name_original:, bench_action_original: }
 
-    bench_name, bench_action = command.args.first.to_s.split(":")
-
-    env[:bench_name_original] = bench_name
-    env[:bench_name] = shortcut(bench_name)
-    env[:bench_action_original] = bench_action
-    log "bench:action is #{env[:bench_name]}:#{env[:bench_action_original]}"
+    log :high, "bench_name:bench_action_original is                  #{bench_name_original}:#{bench_action_original}"
     env
-  end
-
-  #
-
-  def find env
-    if log_level? :high
-      puts
-      log "env.count is #{env.count}"
-    end
-    raise_error :not_found, "" if env[:bench_name].empty?
-    begin
-      k = Liza.const "#{env[:bench_name]}_bench"
-      log :higher, k
-      env[:bench_class] = k
-    rescue Liza::ConstNotFound
-      raise_error :not_found, env[:bench_name]
-    end
-  end
-
-  #
-
-  def forward env
-    bench_class = env[:bench_class]
-    bench_class.call env
   end
 
 end
