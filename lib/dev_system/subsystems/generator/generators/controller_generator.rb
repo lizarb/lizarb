@@ -14,7 +14,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
     log "super_controller: #{super_controller}"
     
     log "Determining class name..."
-    @class_name = "#{controller_name.camelize}#{super_controller.subsystem.last_namespace}"
+    @class_name = "#{controller_name.camelize}#{super_controller.division.last_namespace}"
     @class_name = "#{arg_place.split("/").first.camelize}System::#{@class_name}" unless arg_place == "app"
     log "class_name: #{@class_name}"
 
@@ -105,12 +105,12 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
           msg = "infering the path"
           system_name, subsystem_name = arg_place.split("/")
           if subsystem_name.nil?
-            App.systems_directory.join "#{system_name}_system}"
+            App.systems_directory.join "#{system_name}_system"
           else
             App.systems_directory.join "#{system_name}_system/subsystems/#{subsystem_name}/#{subsystem_name}s"
           end
         end
-      log stick :red, "#{msg}. #{path}"
+      log "#{msg}. #{path}"
       path
     end
   end
@@ -194,5 +194,6 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   set_default_division false
+  set_default_views "none"
 
 end
