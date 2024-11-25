@@ -102,9 +102,11 @@ class DevSystem::AppShell < DevSystem::Shell
 
       array = system_classes.select { _1.system == system }
 
-      tree["system"]      = [system]
+      part_classes = array.select { _1.source_location_radical.include? "/#{system_name}_system/parts/" }
+
       tree["system"]      = [system, system.test_class]
       tree["box"]         = [system.box, system.box.test_class]
+      tree["parts"]       = part_classes
       tree["controllers"] = {}
       tree["subsystems"]  = {}
 
@@ -112,9 +114,14 @@ class DevSystem::AppShell < DevSystem::Shell
       array.delete system.test_class
       array.delete system.box
       array.delete system.box.test_class
-      
+      part_classes.each do |klass|
+        array.delete klass
+      end
+
       system.subsystems.each do |subsystem|
+        part_classes = array.select { _1.source_location_radical.include?("/subsystems/#{subsystem.last_namespace.downcase}/parts/") }
         tree["subsystems"][subsystem] = {}
+        tree["subsystems"][subsystem]["parts"] = part_classes
         tree["subsystems"][subsystem]["panel"] = [subsystem.panel.class, subsystem.panel.class.test_class]
         tree["subsystems"][subsystem]["controller"] = [subsystem, subsystem.test_class]
         tree["subsystems"][subsystem]["controllers"] = {}
@@ -123,6 +130,10 @@ class DevSystem::AppShell < DevSystem::Shell
         array.delete subsystem.panel.class.test_class
         array.delete subsystem
         array.delete subsystem.test_class
+        part_classes.each do |klass|
+          array.delete klass
+        end
+
       end
 
       array.each do |klass|
