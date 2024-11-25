@@ -1,9 +1,11 @@
 # view actions.rb.erb
 
-  def self.<%= @current_section[:action] %>()
+  def self.<%= @current_section[:action] %>
+    ret = true
+
     log "your code here 1"
     call action: :<%= @current_section[:action] %>
-    log "your code here 7"
+    log "your code here 2"
 
-    true
+    ret
   end

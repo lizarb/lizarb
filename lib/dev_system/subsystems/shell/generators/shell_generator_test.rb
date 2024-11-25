@@ -9,8 +9,10 @@ class DevSystem::ShellGeneratorTest < DevSystem::SimpleGeneratorTest
   
   test_erbs_defined(
     "actions.rb.erb",
-    "controller.rb.erb",
-    "test.rb.erb"
+    "helpers.rb.erb",
+    "instance.rb.erb",
+    "test.rb.erb",
+    "view_simple.txt.erb"
   )
   
 end

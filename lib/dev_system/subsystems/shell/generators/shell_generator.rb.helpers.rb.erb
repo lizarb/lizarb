@@ -1,0 +1,39 @@
+# view helpers.rb.erb
+<% the_methods.each do |name| -%>
+  def self.<%= name %>(env)
+    log :normal, "Log. Don't comment."
+    # your code here
+    true
+  end
+
+<% end -%>
+  def self.new_<%= helper_name %>
+    <%= helper_name.camelcase %>.new(self)
+  end
+
+  def <%= helper_name %>
+    @<%= helper_name %> ||= <%= helper_name.camelcase %>.new(self)
+  end
+
+  class <%= helper_name.camelcase %>
+    def initialize(shell)
+      @shell = shell
+    end
+
+    def log(message)
+      @shell.log :normal, message
+    end
+
+<% if the_accessors.any? -%>
+    attr_accessor :<%= the_accessors.join ", :"  %>
+
+<% end -%>
+<% the_methods.each do |name| -%>
+    def <%= name %>
+      log :normal, "Log. Don't comment."
+      # your code here
+      true
+    end
+
+<% end -%>
+  end

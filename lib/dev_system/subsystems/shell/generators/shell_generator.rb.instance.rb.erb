@@ -1,0 +1,71 @@
+# view instance.rb.erb
+
+  def self.call(env)
+    super
+    log "call: #{env}"
+    shell = env[:shell] = new
+    ret = shell.call env
+    if ret
+      log :normal, "shell.call succeeded"
+    else
+      log :normal, "shell.call failed"
+    end
+    ret
+  end
+
+  def initialize
+    @status = nil
+  end
+
+  attr_reader :status
+  attr_reader :env
+
+  def call(env)
+    log "call: #{env}"
+    @env = env
+    before
+    method_name = "call_#{action_name}"
+    if respond_to? method_name
+      public_send method_name
+      after
+      true
+    else
+      log :normal, "method not found: #{method_name.inspect}"
+      false
+    end
+  end
+
+  def before
+    env[:before] = Time.now
+    log :normal, "before: #{env}"
+  end
+
+  def after
+    env[:after] = Time.now
+    log :normal, "after: #{env}"
+  end
+
+  def action_name() = env[:action]
+
+  def shell() = env[:shell]
+
+<% if the_accessors.any? -%>
+  attr_accessor :<%= the_accessors.join ", :"  %>
+
+<% end -%>
+<%= "  section :actions" if arg_action_names.any? %>
+<% arg_action_names.each do |action_name| %>
+  def call_<%= action_name %>
+    log :normal, "Log. Don't comment."
+    env[:call_<%= action_name %>] = Time.now
+    log "call_<%= action_name %>: #{env}"
+    # your code here
+<% unless arg_views_none? %>
+    text = render :<%= action_name %>, format: :txt
+    fg = :<%= ColorShell.colors.keys.sample %>
+    bg = :<%= %w[black onux gray silver white].sample %>
+    log stick fg, bg, :b, "text:"
+    puts stick fg, bg, :b, text
+<% end -%>
+  end
+<% end -%>
