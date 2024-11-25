@@ -1,13 +1,16 @@
 # view section_simple_actions.rb.erb
-
-<% arg_action_names.each do |action_name| %>
+<% arg_action_names.each do |action_name|
+  color = ColorShell.colors.keys.sample
+%>
   # liza <%= controller_name %><%= ":#{action_name}" if action_name != "default" %> s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_<%= action_name %>
-    log stick :b, :<%= ColorShell.colors.keys.sample %>, "I just think Ruby is the Best for coding!"
+    log stick :b, :<%= color %>, "I just think Ruby is the Best for coding!"
+<% arg_action_names.each do |arg| -%>
+<%= "    call_#{arg}" if arg != "default" %>
+<% end if action_name == "default" -%>
 <% unless arg_views_none? %>
     text = render :<%= action_name %>, format: :txt
-    log "text:"
-    puts text
+    puts stick :b, :<%= color %>, text.strip
 <% end -%>
   end
 <% end -%>
