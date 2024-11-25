@@ -53,6 +53,14 @@ class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
 
       tree_system["system"].each { print_class _1 }
       tree_system["box"].each { print_class _1 }
+
+      if tree_system["parts"].any?
+        puts
+        h5 "lib/#{system_name}_system/parts/", color: system.color
+        tree_system["parts"].each { print_class _1 }
+        puts
+      end
+
       print_subtotal
 
       if tree_system["controllers"].any?
@@ -80,6 +88,14 @@ class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
 
       tree_subsystem["panel"].each { print_class _1 }
       tree_subsystem["controller"].each { print_class _1 }
+
+      if tree_subsystem["parts"].any?
+        puts
+        h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/parts/", color: system.color
+        tree_subsystem["parts"].each { print_class _1 }
+        puts
+      end
+
       tree_subsystem["controllers"].each do |controller_class, klasses|
         start_subtotal
         h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
@@ -178,6 +194,7 @@ class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
   def print_subtotal
     puts stick :b, :silver, "#{@subtotal_loc.to_s.rjust 5} TOTAL-ISH"
     puts
+    start_subtotal
   end
 
   def print_total
