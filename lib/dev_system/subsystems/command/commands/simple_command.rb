@@ -375,4 +375,49 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     simple_boolean key
   end
 
+  section :simple_composed
+
+  # Sets a default and input method for an argument.
+  #
+  # @param index [Integer] The index of the argument.
+  # @param name [Symbol] The name of the argument.
+  # @param default [String] The default value for the argument.
+  # @param title [String] The prompt title for the argument.
+  # @example
+  #   set_arg(0, :file_name, "default.txt", "Enter the file name:")
+  def set_arg(index, name, default, title)
+    set_default_arg index, name, title
+    set_input_arg index, name do |default|
+      TtyInputCommand.prompt.ask title, default: default
+    end
+  end
+
+  # Sets a default and input method for a boolean.
+  #
+  # @param name [Symbol] The name of the boolean parameter.
+  # @param default [Boolean] The default value for the boolean parameter.
+  # @param title [String] The prompt title for the boolean parameter.
+  # @example
+  #   set_boolean(:overwrite, false, "Do you want to overwrite the file?")
+  def set_boolean(name, default, title)
+    set_default_boolean name, default
+    set_input_boolean name do |default|
+      TtyInputCommand.prompt.yes? title, default: default
+    end
+  end
+
+  # Sets a default and input method for a string parameter.
+  #
+  # @param name [Symbol] The name of the string parameter.
+  # @param default [String] The default value for the string parameter.
+  # @param title [String] The prompt title for the string parameter.
+  # @example
+  #   set_string(:role, "guest", "Enter your role:")
+  def set_string(name, default, title)
+    set_default_string name, default
+    set_input_string name do |default|
+      TtyInputCommand.prompt.ask title, default: default
+    end
+  end
+
 end

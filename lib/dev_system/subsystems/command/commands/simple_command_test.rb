@@ -41,6 +41,11 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
         :simple_boolean_yes, :simple_boolean_no,
       ]
     },
+    :simple_composed=>{
+      :constants=>[],
+      :class_methods=>[],
+      :instance_methods=>[:set_arg, :set_boolean, :set_string]
+    },
   )
 
   def forge_subject_with *args
