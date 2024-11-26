@@ -1,5 +1,11 @@
 class Liza::Part < Liza::Unit
   
+  section :unit
+
+  def self.color() = system.color
+
+  section :default
+
   # A hash of insertions.
   # @return [Hash]
   def self.insertions() = @insertions ||= {}
