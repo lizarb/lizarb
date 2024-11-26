@@ -46,7 +46,7 @@ class Liza::UnitTest < Liza::Test
 
   test_sections(
     :default=>{
-      :constants=>[:Error],
+      :constants=>[],
       :class_methods=>[:singleton_method_added, :section, :sections, :method_added, :const_added, :methods_defined, :class_methods_defined, :instance_methods_defined, :constants_defined, :part, :const_missing, :reload!],
       :instance_methods=>[:reload!]
     },
@@ -71,7 +71,7 @@ class Liza::UnitTest < Liza::Test
       :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?]
     },
     unit_rendering_part: {
-      :constants=>[:RendererNotFoundError, :RenderStackIsEmptyError, :RenderStackIsFullError],
+      :constants=>[],
       :class_methods=>[:erbs_defined, :erbs_available, :renderable_names, :renderable_formats_for, :erbs_for, :_erbs_for],
       :instance_methods=>[:render!, :render, :render_stack, :log_render_in, :log_render_out, :log_render_convert, :log_render_format]
     }
