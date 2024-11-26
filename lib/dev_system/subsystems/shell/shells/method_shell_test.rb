@@ -7,7 +7,7 @@ class DevSystem::MethodShellTest < DevSystem::ShellTest
   #
 
   test :subject, false do
-    subject = subject_class.new FileShell, :abc
+    subject_class.new FileShell, :abc
     assert false
   rescue DevSystem::MethodShell::NotFoundError
     assert true
