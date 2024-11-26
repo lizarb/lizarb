@@ -26,9 +26,6 @@ class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
     sidebar = ""
 
     source = env[:unit_class]
-    system_color = source.system.color
-    source_color = source.division.system.color
-    size = 0
 
     # TODO: Figure out why RequestPanel is returning false when started from rack command but not from request command
     # source_is_a_panel = source < Panel
