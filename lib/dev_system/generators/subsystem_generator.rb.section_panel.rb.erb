@@ -5,14 +5,15 @@
   end
 
   def call(other_env)
-    log "forging"
-    env = { other_env: }
+    log "not implemented"
+  #   log "forging"
+  #   env = { other_env: }
 
-    log "finding"
-    k = Liza.const "#{other_env[:<%= subsystem_name %>]}_<%= subsystem_name %>"
+  #   log "finding"
+  #   k = Liza.const "#{other_env[:<%= subsystem_name %>]}_<%= subsystem_name %>"
     
-    log "forwarding"
-    k.call env
-  rescue Liza::ConstNotFound
-    raise_error :not_found, string
+  #   log "forwarding"
+  #   k.call env
+  # rescue Liza::ConstNotFound
+  #   raise_error :not_found, string
   end
