@@ -200,4 +200,66 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
+  def sorted_writable_units_in_systems
+    @sorted_writable_units_in_systems ||= sorted_units.select { _1.source_location_radical.start_with? App.systems_directory.to_s }
+  end
+
+  def sorted_writable_units
+    @sorted_writable_units ||= sorted_units.select { _1.source_location_radical.start_with? App.root.to_s }
+  end
+
+  def sorted_units
+    @sorted_units ||= begin
+      ret = []
+      self.class.consts[:liza].each do |category, classes|
+        classes.each do |klass|
+          ret << klass
+        end
+      end
+      self.class.consts[:systems].each do |system_name, tree|
+        tree["box"].each do |klass|
+          ret << klass
+        end
+        tree["parts"].each do |klass|
+          ret << klass
+        end
+        tree["controllers"].each do |division, controllers|
+          controllers.each do |klass|
+            ret << klass
+          end
+        end
+
+        tree["subsystems"].each do |subsystem_name, subsystem_tree|
+          subsystem_tree["panel"].each do |klass|
+            ret << klass
+          end
+          subsystem_tree["parts"].each do |klass|
+            ret << klass
+          end
+          subsystem_tree["controller"].each do |klass|
+            ret << klass
+          end
+          subsystem_tree["controllers"].each do |division, controllers|
+            controllers.each do |klass|
+              ret << klass
+            end
+          end
+        end
+      end
+      self.class.consts[:app].each do |system_name, tree|
+        tree["box"].each do |klass|
+          ret << klass
+        end
+        tree["controllers"].each do |subsystem, divisions|
+          divisions.each do |division, controllers|
+            controllers.each do |klass|
+              ret << klass
+            end
+          end
+        end
+      end
+      ret.freeze
+    end
+  end
+
 end
