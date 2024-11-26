@@ -194,6 +194,5 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   set_default_division false
-  set_default_views "none"
 
 end
