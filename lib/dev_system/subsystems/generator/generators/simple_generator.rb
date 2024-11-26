@@ -313,6 +313,32 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     end
   end
 
+  def remove_units(units)
+    units.each do |unit|
+      unit_path_radical = unit.source_location_radical
+      unit_path = "#{unit_path_radical}.rb"
+
+      mapper.delete_after Pathname unit_path
+      views = Dir["#{unit_path_radical}*/**/*"]
+      views.each do |fname|
+        mapper.delete_after Pathname fname
+      end
+    end
+  end
+
+  def pick_many_units(units)
+    options = units.map do |unit|
+      [
+        "#{ColorShell.color_unit unit}",
+        unit
+      ]
+    end.to_h
+    selected = units.count == 1 ? :all : :none
+    InputShell.multi_select "Pick Multiple Controllers", options, selected: selected
+  end
+
+  def app_shell() = @app_shell ||= AppShell.new
+
   def puts_line() =  puts "-" * 120
 
 end
