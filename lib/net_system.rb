@@ -5,6 +5,7 @@ class NetSystem < Liza::System
   
   panel :client
   panel :database
+  panel :filebase
   panel :record
 
 end

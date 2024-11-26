@@ -12,6 +12,10 @@ class NetSystem::NetBox < Liza::Box
     # RecordPanel.instance gives you read-access
   end
   
+  preconfigure :filebase do
+    # FilebasePanel.instance gives you read-access to this instance
+  end
+
 end
 
 __END__

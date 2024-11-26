@@ -32,4 +32,8 @@ class NetBox < NetSystem::NetBox
 
   end
   
+  configure :filebase do
+    # FilebasePanel.instance gives you read-access to this instance
+  end
+
 end
