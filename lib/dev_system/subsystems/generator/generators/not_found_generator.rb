@@ -41,8 +41,6 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
   # print helpers
 
   def print_class klass, description: nil
-    loc = klass.to_s
-
     sidebar_length = 50
     klass.get_generator_signatures.each do |signature|
       signature[:name] =
