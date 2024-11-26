@@ -84,8 +84,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
       tree_subsystem["controllers"].each do |controller_class, klasses|
         klasses = klasses.select { _1 < Command }
-        klasses = klasses.reject { _1 <= InputCommand } # TODO: setting to hide command classes
-        klasses = klasses.reject { _1 == BaseCommand }
+        klasses = klasses.reject { _1 == BaseCommand } # TODO: setting to hide command classes
         klasses = klasses.reject { _1 == SimpleCommand }
         klasses = klasses.reject { _1 == NewCommand }
         next if klasses.empty?
