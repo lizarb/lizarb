@@ -27,7 +27,7 @@ class WebSystem::RequestGenerator < DevSystem::ControllerGenerator
   # liza g request:base name
 
   def call_base
-    set_default_super "base"
+    set_default_super ""
     set_default_require ""
 
     create_controller do |unit, test|
