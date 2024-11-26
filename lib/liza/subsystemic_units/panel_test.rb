@@ -31,9 +31,9 @@ class Liza::PanelTest < Liza::UnitTest
     begin
       block.call
       assert false, kaller: kaller
-    rescue e_class => e
+    rescue e_class
       assert true, kaller: kaller
-    rescue Exception => e
+    rescue Exception
       assert false, kaller: kaller
     end
   end
@@ -43,9 +43,9 @@ class Liza::PanelTest < Liza::UnitTest
     begin
       block.call
       assert true, kaller: kaller
-    rescue e_class => e
+    rescue e_class
       assert false, kaller: kaller
-    rescue Exception => e
+    rescue Exception
       assert false, kaller: kaller
     end
   end
