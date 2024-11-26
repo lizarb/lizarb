@@ -82,7 +82,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     answers.each do |fname|
       answer = mapper.changes[fname]
       if answer[:after] == ""
-        FileShell.delete fname, log_level: :higher
+        FileShell.remove fname, log_level: :higher
       else
         FileShell.write_text fname, answer[:after], log_level: :higher
       end
