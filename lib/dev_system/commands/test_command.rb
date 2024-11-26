@@ -135,7 +135,17 @@ class DevSystem::TestCommand < DevSystem::Command
         totals[k] += v.size
       end
       size = 60 - test_class.subject_class.to_s.size
-      Liza.log "#{ColorShell.color_unit test_class.subject_class}#{" " * size} #{test_class.totals.map { |k, v| [k, v.size] }.to_h}"
+      total_line = test_class.totals.map do |k, v|
+        s = "#{k}: #{v.size}"
+        s = ":#{k} => #{v.size.to_s.rjust 2}"
+        s = stick :b, :white, :light_red, s if k==:errors && v.size.positive?
+        s = stick :b, :black, :light_yellow, s if k==:fails && v.size.positive?
+        s = stick :b, :white, :light_blue, s if k==:todos && v.size.positive?
+        s = stick :b, :light_green, s if k==:passes && v.size.positive?
+        s
+      end
+      total_line = "{ #{ total_line.join(", ") } }"
+      Liza.log "#{ColorShell.color_unit test_class.subject_class}#{" " * size} #{total_line}"
     end
     puts
     Liza.log "#{"Total".ljust 60} #{totals}"
