@@ -73,13 +73,13 @@ class DevSystem::BaseGenerator < DevSystem::Generator
         c.instance_methods_defined.select do |name|
           name.start_with? "call_"
         end.map do |name|
-          OpenStruct.new({
+          {
             name: ( name.to_s.sub("call_", "").sub("default", "") ),
             description: "# no description",
-          })
+          }
         end
     end
-    signatures.uniq(&:name)
+    signatures.uniq { _1[:name] }
   end
 
   def before_default

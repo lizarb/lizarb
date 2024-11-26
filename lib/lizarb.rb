@@ -492,9 +492,6 @@ module Lizarb
     # this adds method Time.parse
     log "    require 'time'" if defined? $log_boot_higher
     require "time"
-    
-    log "    require 'ostruct'" if defined? $log_boot_higher
-    require "ostruct"
 
     log "      fixing instance variables" if defined? $log_boot_highest
     @root = Pathname(@root)

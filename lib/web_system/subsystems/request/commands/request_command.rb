@@ -60,7 +60,7 @@ class WebSystem::RequestCommand < DevSystem::SimpleCommand
   
   # TODO: fix this
   def self.call_get_command_sign
-    super << OpenStruct.new({name: "get", description: "# no description"})
+    super << {name: "get", description: "# no description"}
   end
 end
 

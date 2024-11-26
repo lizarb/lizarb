@@ -43,15 +43,15 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
     sidebar_length = 30
     klass.get_command_signatures.each do |signature|
-      signature.name =
-        signature.name.empty? \
+      signature[:name] =
+        signature[:name].empty? \
           ? klass.token.to_s
-          : "#{klass.token}:#{signature.name}"
+          : "#{klass.token}:#{signature[:name]}"
       #
-    end.sort_by(&:name).map do |signature|
+    end.sort_by { _1[:name] }.map do |signature|
       puts [
-        "liza #{signature.name}".ljust(sidebar_length),
-        (description or signature.description)
+        "liza #{signature[:name]}".ljust(sidebar_length),
+        (description or signature[:description])
       ].join ""
     end
   end

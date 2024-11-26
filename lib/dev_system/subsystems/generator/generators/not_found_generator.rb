@@ -45,17 +45,17 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
 
     sidebar_length = 50
     klass.get_generator_signatures.each do |signature|
-      signature.name =
-        signature.name.empty? \
+      signature[:name] =
+        signature[:name].empty? \
           ? klass.token.to_s
-          : "#{klass.token}:#{signature.name}"
+          : "#{klass.token}:#{signature[:name]}"
       #
-    end.sort_by(&:name).map do |signature|
-      next if signature.name.end_with? ":simple"
-      next if signature.name.end_with? "!"
+    end.sort_by { _1[:name] }.map do |signature|
+      next if signature[:name].end_with? ":simple"
+      next if signature[:name].end_with? "!"
       puts [
-        "liza generate #{signature.name}".ljust(sidebar_length),
-        (description or signature.description)
+        "liza generate #{signature[:name]}".ljust(sidebar_length),
+        (description or signature[:description])
       ].join ""
     end
   end
