@@ -57,7 +57,7 @@ class DevSystem::CommandPanel < Liza::Panel
       log "Pick One"
     end
     # input.pick_one title, options
-    TtyInputCommand.pick_one title, options
+    InputShell.pick_one title, options
   end
 
   def pick_many title, options
@@ -66,7 +66,7 @@ class DevSystem::CommandPanel < Liza::Panel
       log "Pick Many"
     end
     # input.pick_many title, options
-    TtyInputCommand.multi_select title, options
+    InputShell.multi_select title, options
   end
 
 end

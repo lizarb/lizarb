@@ -1,5 +1,9 @@
-class DevSystem::TtyInputCommand < DevSystem::InputCommand
+class DevSystem::InputShell < DevSystem::Shell
+
+  # Liza lazily requires gems required in Controllers
   require "tty-prompt"
+
+  section :action_ask
 
   def self.prompt
     call({})
@@ -15,8 +19,6 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
     exit
   end
 
-  #
-
   def self.pick_color title = "Pick a color", string: nil
     options = ColorShell.colors.map { [(stick _2, "#{string} # #{_1}", :b), _1] }.to_h
 
@@ -30,8 +32,6 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
     log "Control-C"
     exit
   end
-
-  #
 
   def self.multi_select title, choices, selected: :all
     raise "choices must be a hash" unless choices.is_a? Hash
@@ -54,6 +54,5 @@ class DevSystem::TtyInputCommand < DevSystem::InputCommand
     log "Control-C"
     exit
   end
-    
 
 end

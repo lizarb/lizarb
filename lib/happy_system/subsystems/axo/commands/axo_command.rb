@@ -35,7 +35,7 @@ class HappySystem::AxoCommand < DevSystem::SimpleCommand
         axo
       ]
     end.to_h
-    TtyInputCommand.pick_one "Pick an Axolotl ASCII Animation to run", options
+    InputShell.pick_one "Pick an Axolotl ASCII Animation to run", options
   end
 
 end

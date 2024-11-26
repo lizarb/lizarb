@@ -16,7 +16,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
 
   set_input_arg 1 do |default|
     title = "Name your new System:"
-    x = TtyInputCommand.prompt.ask title, default: default
+    x = InputShell.prompt.ask title, default: default
     redo if x.to_s.chars.tally["_"].to_i.zero?
     x
   end

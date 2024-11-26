@@ -157,19 +157,19 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   set_input_arg 1 do |default|
     title = "Name your new #{env[:generator].super_controller.last_namespace}:"
-    x = TtyInputCommand.prompt.ask title, default: default
+    x = InputShell.prompt.ask title, default: default
     redo if x.to_s.strip.empty?
     x
   end
   
   set_input_boolean :division do |default|
     title = "Create a new division?"
-    TtyInputCommand.prompt.yes? title, default: !!default
+    InputShell.prompt.yes? title, default: !!default
   end
 
   set_input_boolean :prefix do |default|
     title = "Do you want to prefix your controllers with their system names?"
-    TtyInputCommand.prompt.yes? title, default: !!default
+    InputShell.prompt.yes? title, default: !!default
   end
 
   set_input_string :place do |default|
@@ -183,14 +183,14 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
           place
         ]
       end.to_h
-      TtyInputCommand.pick_one "Where should the controller be placed?", options
+      InputShell.pick_one "Where should the controller be placed?", options
     end
     place
   end
 
   set_input_string :require do |default|
     title = "Want to require any gems? (comma separated)"
-    TtyInputCommand.prompt.ask title, default: default
+    InputShell.prompt.ask title, default: default
   end
 
   set_default_division false

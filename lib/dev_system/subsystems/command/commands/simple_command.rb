@@ -295,7 +295,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [Symbol] The selected color as a symbol.
   def simple_color(key, string: "I LOVE RUBY")
     set_input_string key do |_default|
-      TtyInputCommand.pick_color string: string
+      InputShell.pick_color string: string
     end
     
     value = simple_string key
@@ -313,7 +313,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
           place
         ]
       end.to_h
-      TtyInputCommand.pick_one "Where should the controller be placed?", options
+      InputShell.pick_one "Where should the controller be placed?", options
     end
     value = simple_string key
     value.tap do |place|
@@ -328,7 +328,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [String] The user-provided value.
   def simple_arg_ask(index, title)
     set_input_arg index do |default|
-      TtyInputCommand.prompt.ask(title, default: default)
+      InputShell.prompt.ask(title, default: default)
     end
     simple_arg index
   end
@@ -341,7 +341,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [String] The user-provided value in snake_case format.
   def simple_arg_ask_snakecase(index, title, regexp: /^[a-zA-Z_]*$/)
     set_input_arg index do |default|
-      TtyInputCommand.prompt.ask(title, default: default) do |q|
+      InputShell.prompt.ask(title, default: default) do |q|
         q.required true
         q.validate regexp
       end.snakecase
@@ -357,7 +357,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [Boolean] The boolean value determined by user input.
   def simple_boolean_yes(key, title)
     set_input_boolean key do |default|
-      TtyInputCommand.prompt.yes? title, default: !!default
+      InputShell.prompt.yes? title, default: !!default
     end
 
     simple_boolean key
@@ -370,7 +370,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [Boolean] The boolean value determined by user input.
   def simple_boolean_no(key, title)
     set_input_boolean key do |default|
-      TtyInputCommand.prompt.no? title
+      InputShell.prompt.no? title
     end
     simple_boolean key
   end
@@ -388,7 +388,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_arg(index, name, default, title)
     set_default_arg index, name, title
     set_input_arg index, name do |default|
-      TtyInputCommand.prompt.ask title, default: default
+      InputShell.prompt.ask title, default: default
     end
   end
 
@@ -402,7 +402,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_boolean(name, default, title)
     set_default_boolean name, default
     set_input_boolean name do |default|
-      TtyInputCommand.prompt.yes? title, default: default
+      InputShell.prompt.yes? title, default: default
     end
   end
 
@@ -416,7 +416,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_string(name, default, title)
     set_default_string name, default
     set_input_string name do |default|
-      TtyInputCommand.prompt.ask title, default: default
+      InputShell.prompt.ask title, default: default
     end
   end
 

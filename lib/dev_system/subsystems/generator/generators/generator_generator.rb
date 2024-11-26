@@ -8,7 +8,7 @@ class DevSystem::GeneratorGenerator < DevSystem::ControllerGenerator
 
   set_default_string :format, "txt"
   set_input_string :format do |default|
-    TtyInputCommand.prompt.ask "What format?", default: default
+    InputShell.prompt.ask "What format?", default: default
   end
 
   section :actions

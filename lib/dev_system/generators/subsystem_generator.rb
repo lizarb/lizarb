@@ -169,7 +169,7 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
           place
         ]
       end.to_h
-      TtyInputCommand.pick_one "Where should the controller be placed?", options
+      InputShell.pick_one "Where should the controller be placed?", options
     end
     place
   end

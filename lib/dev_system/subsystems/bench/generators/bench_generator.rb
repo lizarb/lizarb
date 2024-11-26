@@ -10,7 +10,7 @@ class DevSystem::BenchGenerator < DevSystem::ControllerGenerator
 
       set_default_boolean :sorted, true
       set_input_boolean :sorted do |default|
-        TtyInputCommand.prompt.yes? "Use SortedBench?", default: !!default
+        InputShell.prompt.yes? "Use SortedBench?", default: !!default
       end
       
       sorted = command.simple_boolean :sorted
