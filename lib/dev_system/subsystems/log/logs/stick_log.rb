@@ -18,7 +18,7 @@ class DevSystem::StickLog < DevSystem::Log
     space = new(" ", *common_args).to_s
     
     arrays.map { |array|
-      new *[*common_args, *array]
+      new(*[*common_args, *array])
     }.join space
   end
 
