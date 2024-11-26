@@ -8,4 +8,6 @@ class PrimeSystem < Liza::System
 
   #
 
+  panel :epic
+  
 end
