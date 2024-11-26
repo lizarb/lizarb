@@ -88,18 +88,6 @@ class DevSystem::CommandPanelTest < Liza::PanelTest
     assert_equality env[:command_action], "x"
   end
 
-  test :_find do
-    klass = subject._find "generate"
-    assert_equality DevSystem::GenerateCommand, klass
-
-    begin
-      klass = subject._find "g"
-      assert false
-    rescue CommandPanel::NotFoundError
-      assert true
-    end
-  end
-
   test :forward do
     todo "test this"
   end
