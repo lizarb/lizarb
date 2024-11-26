@@ -21,7 +21,7 @@ module Lizarb
   module_function
 
   def log s
-    print "#{$boot_time.diff}s " if $log_boot_high
+    print "#{$boot_time.diff}s " if defined? $log_boot_high
     puts s
   end
 
@@ -226,7 +226,7 @@ module Lizarb
   # 8. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
   #
   def load
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     load_and_require_bundler
     load_and_require_default_gems
@@ -238,7 +238,7 @@ module Lizarb
     load_and_zeitwerk_loader_1_app
     App.after if defined? App.after
 
-    log "  Lizarb.#{__method__} done" if $log_boot_high
+    log "  Lizarb.#{__method__} done" if defined? $log_boot_high
   end
 
   def exit_messages
@@ -421,9 +421,9 @@ module Lizarb
       eval "$log_boot_#{k} = true" if v <= level
     end
 
-    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if $log_boot_lower
-    log "  log_boot is set to #{App.log_boot}" if $log_boot_higher
-    log "  log_level is set to #{App.log_level}" if $log_boot_higher
+    log "LizaRB v#{Lizarb.version}                                                                                                      https://lizarb.org" if defined? $log_boot_lower
+    log "  log_boot is set to #{App.log_boot}" if defined? $log_boot_higher
+    log "  log_level is set to #{App.log_level}" if defined? $log_boot_higher
   end
 
   # This method is called internally by `load` and is not intended for direct use.
@@ -438,22 +438,22 @@ module Lizarb
   # - Raises an error if App.gemfile is neither a String nor a Proc.
   #
   def load_and_require_bundler
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     gf = App.gemfile
     case gf
     when String
       string = "#{ @config_folder }/#{ gf }"
-      log "    requiring 'bundler/setup'" if $log_boot_higher
-      log "      ENV['BUNDLE_GEMFILE'] = #{ string.inspect }" if $log_boot_highest
+      log "    requiring 'bundler/setup'" if defined? $log_boot_higher
+      log "      ENV['BUNDLE_GEMFILE'] = #{ string.inspect }" if defined? $log_boot_highest
       ENV["BUNDLE_GEMFILE"] = string
-      log "      require 'bundler/setup'" if $log_boot_highest
+      log "      require 'bundler/setup'" if defined? $log_boot_highest
       require 'bundler/setup'
     when Proc
       string = gf.source_location
-      log "    requiring 'bundler/inline' with #{ string }" if $log_boot_higher
+      log "    requiring 'bundler/inline' with #{ string }" if defined? $log_boot_higher
       require 'bundler/inline'
-      log "      required 'bundler/inline'" if $log_boot_highest
+      log "      required 'bundler/inline'" if defined? $log_boot_highest
       gemfile(false, &gf)
     else
       raise "App.gemfile is not a String or a Proc"
@@ -485,22 +485,22 @@ module Lizarb
   # - `App`: `@relative_path`, `@path`
   #
   def load_and_require_default_gems
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
     
-    log "    require 'pathname'" if $log_boot_higher
+    log "    require 'pathname'" if defined? $log_boot_higher
     require "pathname"
     
-    log "    require 'json'" if $log_boot_higher
+    log "    require 'json'" if defined? $log_boot_higher
     require "json"
     
     # this adds method Time.parse
-    log "    require 'time'" if $log_boot_higher
+    log "    require 'time'" if defined? $log_boot_higher
     require "time"
     
-    log "    require 'ostruct'" if $log_boot_higher
+    log "    require 'ostruct'" if defined? $log_boot_higher
     require "ostruct"
 
-    log "      fixing instance variables" if $log_boot_highest
+    log "      fixing instance variables" if defined? $log_boot_highest
     @root = Pathname(@root)
     @gem_dir = Pathname(@gem_dir)
     @config_path = Pathname(@config_path)
@@ -524,12 +524,12 @@ module Lizarb
   # - Sets the global `$coding` variable to `true` if the application mode is `:code`.
   #
   def load_and_define_mode
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     $mode = App.mode
-    log "    $mode = #{$mode.inspect}" if $log_boot_higher
+    log "    $mode = #{$mode.inspect}" if defined? $log_boot_higher
     $coding = App.coding?
-    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && $log_boot_higher
+    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_higher
   end
 
   # This method is called internally by `load` and is not intended for direct use.
@@ -540,10 +540,10 @@ module Lizarb
   # Values will be overwritten if the same key is found in a subsequent file.
   #
   def load_and_require_env_vars
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     files = App.env_vars || []
-    log "    ENV variables from #{files.count} sources" if $log_boot_higher
+    log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
 
     files.each do |file|
       File.readlines(file).each do |line|
@@ -553,9 +553,9 @@ module Lizarb
         key, value = line.split('=', 2)
         ENV[key] = value
       end
-      log "    ENV variables #{file}" if $log_boot_higher
+      log "    ENV variables #{file}" if defined? $log_boot_higher
     rescue Errno::ENOENT
-      log "    ENV variables not found #{file}" if $log_boot_higher
+      log "    ENV variables not found #{file}" if defined? $log_boot_higher
       raise if App.env_vars_mandatory?
     end
   end
@@ -565,14 +565,14 @@ module Lizarb
   # Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
   #
   def load_and_zeitwerk
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
     require "zeitwerk"
-    log "    required Zeitwerk" if $log_boot_higher
+    log "    required Zeitwerk" if defined? $log_boot_higher
 
     if App.sys_folder
       path = "#{App.root}/#{App.sys_folder}"
       $LOAD_PATH << path
-      log "    $LOAD_PATH << #{path}" if $log_boot_higher
+      log "    $LOAD_PATH << #{path}" if defined? $log_boot_higher
     end
   end
 
@@ -588,13 +588,13 @@ module Lizarb
   # lib/liza/**/*.rb
   #
   def load_and_zeitwerk_loader_0_liza
-    log "  Lizarb.#{__method__}" if $log_boot_high
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
     require "liza"
-    log "    required Liza" if $log_boot_higher
+    log "    required Liza" if defined? $log_boot_higher
 
     # loaders[0] first loads Liza, then each System class
 
-    log "    Zeitwerk loaders [0] first loads Liza, then each System class" if $log_boot_higher
+    log "    Zeitwerk loaders [0] first loads Liza, then each System class" if defined? $log_boot_higher
 
     loaders << loader = Zeitwerk::Loader.new
     loader.tag = Liza.to_s
@@ -607,13 +607,13 @@ module Lizarb
 
     # loader setup
 
-    log "      Setting up" if $log_boot_higher
+    log "      Setting up" if defined? $log_boot_higher
     loader.enable_reloading
-    log "        loader.enable_reloading" if $log_boot_highest
+    log "        loader.enable_reloading" if defined? $log_boot_highest
     loader.setup
-    log "        loader.setup" if $log_boot_highest
+    log "        loader.setup" if defined? $log_boot_highest
     loader.eager_load
-    log "        loader.eager_load" if $log_boot_highest
+    log "        loader.eager_load" if defined? $log_boot_highest
   end
 
   # This method is called internally by `load` and is not intended for direct use.
@@ -625,16 +625,16 @@ module Lizarb
   # - Freezes the App.systems hash.
   #
   def load_and_require_system_classes
-    log "  Lizarb.#{__method__} (#{App.systems.count})" if $log_boot_high
+    log "  Lizarb.#{__method__} (#{App.systems.count})" if defined? $log_boot_high
 
     # bundle each System gem
 
-    log "    Bundler.require :systems" if $log_boot_higherß
+    log "    Bundler.require :systems" if defined? $log_boot_higherß
     Bundler.require :systems
 
     # load each System class
 
-    log "      App.systems is Hash containing all system classes" if $log_boot_highest
+    log "      App.systems is Hash containing all system classes" if defined? $log_boot_highest
     App.systems.keys.each do |key|
       klass = _require_system key
       App.systems[key] = klass
@@ -645,7 +645,7 @@ module Lizarb
 
   def _require_system key
     key = "#{key}_system"
-    log "        require '#{key}'" if $log_boot_highest
+    log "        require '#{key}'" if defined? $log_boot_highest
     require key
     Object.const_get key.camelize
   rescue LoadError => e
@@ -666,10 +666,10 @@ module Lizarb
   #   app/dev/**/*.rb
   #
   def load_and_zeitwerk_loader_1_app
-    log "  Lizarb.#{__method__}  (#{App.systems.count})" if $log_boot_high
+    log "  Lizarb.#{__method__}  (#{App.systems.count})" if defined? $log_boot_high
 
     # loaders[1] first loads each System, then the App
-    log "    Zeitwerk loaders [1] first loads each System, then the App" if $log_boot_higher
+    log "    Zeitwerk loaders [1] first loads each System, then the App" if defined? $log_boot_higher
     loaders << loader = Zeitwerk::Loader.new
 
     # collapse each System paths
@@ -684,14 +684,14 @@ module Lizarb
 
     app_dir = App.path
     if app_dir
-      log "      Application Directory: #{app_dir}" if $log_boot_highest
+      log "      Application Directory: #{app_dir}" if defined? $log_boot_highest
       list = Dir["#{app_dir}/*"].to_set
     end
 
     if app_dir.nil? || list.empty?
-      log "      Application Directory is empty" if $log_boot_highest
+      log "      Application Directory is empty" if defined? $log_boot_highest
     else
-      log "      Application Directory found #{list.count} items to collapse" if $log_boot_highest
+      log "      Application Directory found #{list.count} items to collapse" if defined? $log_boot_highest
 
       to_collapse = []
 
@@ -702,11 +702,11 @@ module Lizarb
         box_file = "#{box_dir}_box.rb"
         next if !list.include? box_file
 
-        log "        Found box file    #{box_file}" if $log_boot_highest
+        log "        Found box file    #{box_file}" if defined? $log_boot_highest
         to_collapse << box_file
 
         if list.include? box_dir
-          log "        Found controllers #{box_dir}" if $log_boot_highest
+          log "        Found controllers #{box_dir}" if defined? $log_boot_highest
           to_collapse << box_dir
         end
       end
@@ -714,12 +714,12 @@ module Lizarb
       # ORDER MATTERS: IGNORE, COLLAPSE, PUSH
       to_ignore = list - to_collapse
       to_ignore.each do |file|
-        log "      Ignoring   #{file}" if $log_boot_highest
+        log "      Ignoring   #{file}" if defined? $log_boot_highest
         loader.ignore file
       end
 
       to_collapse.each do |path|
-        log "      Collapsing #{path}" if $log_boot_highest
+        log "      Collapsing #{path}" if defined? $log_boot_highest
         if path.end_with? ".rb"
           loader.collapse path
         else
@@ -733,11 +733,11 @@ module Lizarb
 
     # loader setup
 
-    log "      Setting up" if $log_boot_higher
+    log "      Setting up" if defined? $log_boot_higher
     loader.enable_reloading
-    log "        loader.enable_reloading" if $log_boot_highest
+    log "        loader.enable_reloading" if defined? $log_boot_highest
     loader.setup
-    log "        loader.setup" if $log_boot_highest
+    log "        loader.setup" if defined? $log_boot_highest
 
     # App connects to systems
 
