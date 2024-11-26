@@ -18,14 +18,14 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
   test :call! do
     env = {}
     env["PATH_INFO"] = "/foo/bar/baz"
-    status, headers, body = subject.call! env
+    status, _headers, _body = subject.call! env
     assert_equality status, 404
   end
 
   test :call do
     env = {}
     env["PATH_INFO"] = "/foo/bar/baz"
-    status, headers, body = subject.call env
+    status, _headers, body = subject.call env
     assert_equality status, 404
     assert_equality body, ["Client Error 404 - /foo/bar/baz"]
   end
