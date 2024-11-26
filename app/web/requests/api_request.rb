@@ -1,4 +1,5 @@
 class ApiRequest < AppRequest
+  require "json"
 
   def self.call env
     super

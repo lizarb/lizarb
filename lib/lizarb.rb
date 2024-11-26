@@ -477,7 +477,6 @@ module Lizarb
   #
   # Requires the following default gems:
   # - `pathname` for handling file paths.
-  # - `json` for JSON parsing.
   # - `time` for Time parsing.
   #
   # Converts the following instance variables to Pathname objects:
@@ -489,9 +488,6 @@ module Lizarb
     
     log "    require 'pathname'" if defined? $log_boot_higher
     require "pathname"
-    
-    log "    require 'json'" if defined? $log_boot_higher
-    require "json"
     
     # this adds method Time.parse
     log "    require 'time'" if defined? $log_boot_higher
