@@ -16,6 +16,10 @@ class NetSystem::NetBox < Liza::Box
     # FilebasePanel.instance gives you read-access to this instance
   end
 
+  preconfigure :socket do
+    # SocketPanel.instance gives you read-access to this instance
+  end
+
 end
 
 __END__

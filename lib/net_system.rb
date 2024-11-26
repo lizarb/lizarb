@@ -7,5 +7,6 @@ class NetSystem < Liza::System
   panel :database
   panel :filebase
   panel :record
+  panel :socket
 
 end
