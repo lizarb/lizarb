@@ -21,7 +21,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     x
   end
   
-  def system_name () = @system_name ||= arg_name
+  def system_name() = @system_name ||= arg_name
 
   def arg_name() = @arg_name ||= (name = command.simple_arg(1) until name.to_s.strip.length.positive?; name)
   
