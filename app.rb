@@ -38,5 +38,6 @@ class App
   system :deep
   system :prime
   system :lab
+  system :eco
 
 end
