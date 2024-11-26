@@ -204,7 +204,7 @@ class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
   # class helpers
 
   def print_class klass
-    text, loc = read_loc klass
+    _text, loc = read_loc klass
     
     @total_loc += loc
     @subtotal_loc += loc if defined? @subtotal_loc
