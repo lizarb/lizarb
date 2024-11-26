@@ -60,7 +60,6 @@ class DevSystem::TestCommand < DevSystem::Command
 
   def self._get_test_classes
     ret = []
-    app = AppShell.new
 
     only_tests = proc { |klasses| klasses.select { _1 < Liza::Test } }
 
@@ -76,8 +75,6 @@ class DevSystem::TestCommand < DevSystem::Command
     end
 
     AppShell.consts[:systems].each do |system_name, tree_system|
-      system = tree_system["system"][0]
-
       ret += only_tests.call tree_system["system"]
       ret += only_tests.call tree_system["box"]
       tree_system["controllers"].each do |family, klasses|
@@ -94,7 +91,6 @@ class DevSystem::TestCommand < DevSystem::Command
     end
 
     AppShell.consts[:app].each do |system_name, tree_system|
-      system = Liza.const "#{system_name}_system"
       tree_system["controllers"].each do |family, structure|
         structure.each do |division, klasses|
           ret += only_tests.call klasses
