@@ -67,7 +67,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     if command.simple_boolean :confirm
       answers = choices.keys
     else
-      answers = box.pick_many "Approve all changes?", choices
+      answers = InputShell.multi_select "Approve all changes?", choices
     end
 
     #
