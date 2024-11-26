@@ -36,6 +36,7 @@ class App
   system :media
   system :art
   system :deep
+  system :prime
   system :lab
 
 end
