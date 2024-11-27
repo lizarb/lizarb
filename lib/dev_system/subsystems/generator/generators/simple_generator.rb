@@ -101,7 +101,9 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
     gen_env = panel.forge cmd_env
     gen_env[:simple_mapper] = mapper
+    panel.forge_shortcut gen_env
     panel.find gen_env
+    panel.find_shortcut gen_env
     panel.forward gen_env
   end
 
