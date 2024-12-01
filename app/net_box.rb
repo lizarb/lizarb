@@ -24,16 +24,14 @@ class NetBox < NetSystem::NetBox
 
   configure :database do
     # DatabasePanel.instance gives you read-access to this instance
-
-  end
-
-  configure :record do
-    # RecordPanel.instance gives you read-access to this instance
-
   end
   
   configure :filebase do
     # FilebasePanel.instance gives you read-access to this instance
+  end
+
+  configure :record do
+    # RecordPanel.instance gives you read-access to this instance
   end
 
   configure :socket do

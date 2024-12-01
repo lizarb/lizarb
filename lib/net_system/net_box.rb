@@ -7,13 +7,13 @@ class NetSystem::NetBox < Liza::Box
   preconfigure :database do
     # DatabasePanel.instance gives you read-access to this instance
   end
-
-  preconfigure :record do
-    # RecordPanel.instance gives you read-access
-  end
   
   preconfigure :filebase do
     # FilebasePanel.instance gives you read-access to this instance
+  end
+
+  preconfigure :record do
+    # RecordPanel.instance gives you read-access
   end
 
   preconfigure :socket do
@@ -35,8 +35,16 @@ class NetBox < NetSystem::NetBox
     # DatabasePanel.instance gives you read-access to this instance
   end
 
+  configure :filebase do
+    # FilebasePanel.instance gives you read-access to this instance
+  end
+
   configure :record do
-    # RecordPanel.instance gives you read-access
+    # RecordPanel.instance gives you read-access to this instance
+  end
+
+  configure :socket do
+    # SocketPanel.instance gives you read-access to this instance
   end
 
 end
