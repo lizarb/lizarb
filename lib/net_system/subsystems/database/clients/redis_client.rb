@@ -6,7 +6,23 @@ class NetSystem::RedisClient < NetSystem::Client
   def initialize *args
     self.class.call({})
     t = Time.now
-    args = [url: NetBox[:client].get(:redis_url)] if args.empty?
+    if args.empty?
+      h = NetBox[:client].get(:redis_hash)
+      host = h[:host]
+      port = h[:port]
+      password = h[:password]
+      protocol = h[:protocol] || "redis"
+      database = h[:database]
+
+      redis_url =
+        if password.to_s.size.positive?
+          "#{protocol}://:#{password}@#{host}:#{port}/#{database}"
+        else
+          "#{protocol}://#{host}:#{port}/#{database}"
+        end
+
+      args = [url: redis_url]
+    end
     @conn = Redis.new(*args)
   ensure
     log "#{t.diff}s | Connecting to #{args}"
