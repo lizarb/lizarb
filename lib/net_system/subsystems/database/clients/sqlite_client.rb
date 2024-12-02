@@ -6,7 +6,10 @@ class NetSystem::SqliteClient < NetSystem::Client
   def initialize *args
     self.class.call({})
     t = Time.now
-    args = [NetBox[:client].get(:sqlite_path)] if args.empty?
+    if args.empty?
+      h = NetBox[:client].get(:sqlite_hash)
+      args = [h[:path]]
+    end
     @conn = SQLite3::Database.new(*args)
   ensure
     log "#{t.diff}s | Connecting to #{args}"
