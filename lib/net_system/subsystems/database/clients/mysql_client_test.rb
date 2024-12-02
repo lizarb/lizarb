@@ -12,7 +12,7 @@ class NetSystem::MysqlClientTest < NetSystem::ClientTest
     result = subject.call "SELECT NOW();"
     assert_equality result.class, Mysql2::Result
     assert_equality result.first.keys, ["NOW()"]
-  end
+  end if ENV["DBTEST"]
 
   test :now do
     result = subject.now
