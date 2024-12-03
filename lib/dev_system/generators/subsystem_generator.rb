@@ -14,6 +14,8 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
     add_sub_to_system
     add_panel_to_box
     create_controller_panel
+    create_command
+    create_generator
   end
 
   section :submethods
@@ -136,6 +138,14 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
     log "path: #{path.inspect}"
 
     add_unit unit, class_names, path
+  end
+
+  def create_command
+    generate "command", subsystem_name, "place=#{system_name}/#{subsystem_name}"
+  end
+
+  def create_generator
+    generate "generator:controller", subsystem_name, "place=#{system_name}/#{subsystem_name}"
   end
 
   section :helpers
