@@ -8,6 +8,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     create_system_box
     append_system_to_app
     create_app_box
+    create_command
   end
 
   private
@@ -80,6 +81,10 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     unit.section name: :configuration, render_key: :section_app_box_settings
 
     add_unit unit, classes, path
+  end
+
+  def create_command
+    generate %w[command], system_name, "place=#{system_name}"
   end
 
 end
