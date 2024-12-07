@@ -1,6 +1,7 @@
 class WebSystem::RackCommand < DevSystem::SimpleCommand
 
   def call_default
+    t = Time.now
     log "args = #{args.inspect}"
 
     server = nil
@@ -21,6 +22,8 @@ class WebSystem::RackCommand < DevSystem::SimpleCommand
     log env
 
     rack_panel.call env
+  ensure
+    log "#{ t.diff }s | server closed on port #{ port }"
   end
 
   def rack_panel
