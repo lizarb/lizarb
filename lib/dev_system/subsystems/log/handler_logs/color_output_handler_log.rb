@@ -20,7 +20,7 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
       source = source.box
 
       _namespace, _sep, classname = source.name.rpartition('::')
-      sidebar << stick(classname, source_color).to_s
+      sidebar << stick(classname, source_color, :b).to_s
       sidebar << "[:#{key}]."
 
       size += classname.size + key.size + 4
