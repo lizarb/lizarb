@@ -37,8 +37,7 @@ class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
       key = env[:unit].key
       source = source.box
 
-      namespace, _sep, classname = source.name.rpartition('::')
-      sidebar << "#{namespace}::" unless namespace.empty?
+      _namespace, _sep, classname = source.name.rpartition('::')
       sidebar << "#{classname}[:#{key}]."
     else
       method_sep = env[:instance] ? "#" : ":"

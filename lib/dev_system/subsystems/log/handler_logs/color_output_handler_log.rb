@@ -19,12 +19,7 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
       key = env[:unit].key
       source = source.box
 
-      namespace, _sep, classname = source.name.rpartition('::')
-      unless namespace.empty?
-        sidebar << stick(namespace, system_color, :b).to_s
-        sidebar << "::"
-        size += namespace.size + 2
-      end
+      _namespace, _sep, classname = source.name.rpartition('::')
       sidebar << stick(classname, source_color).to_s
       sidebar << "[:#{key}]."
 
