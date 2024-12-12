@@ -29,7 +29,7 @@ class NetSystem::RecordGenerator < DevSystem::ControllerGenerator
       ]
     end.to_h
 
-    TtyInputCommand.pick_one "Which database?", options
+    InputShell.pick_one "Which database?", options
   end
   
 end
