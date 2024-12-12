@@ -17,6 +17,12 @@ class DevSystem::HamlConverterShell < DevSystem::ConverterShell
     scope = Object.new
     locals = {}
     env[:convert_out] = Haml::Template.new(template_options) { haml }.render(scope, locals)
+  rescue => e
+    raise if env[:raise_errors]
+    log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+    env[:error] = e
+    env[:convert_out] = env[:convert_in]
+  ensure
     nil
   end
 
