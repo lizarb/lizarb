@@ -14,6 +14,12 @@ class DevSystem::ScssConverterShell < DevSystem::ConverterShell
     # output = SassC::Engine.new(scss).render
     output = SassC::Engine.new(string, line_comments: true, style: :sass_style_expanded).render
     env[:convert_out] = output
+  rescue => e
+    raise if env[:raise_errors]
+    log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+    env[:error] = e
+    env[:convert_out] = env[:convert_in]
+  ensure
     nil
   end
 
