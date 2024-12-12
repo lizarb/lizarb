@@ -8,10 +8,12 @@ class DevSystem::CoffeeConverterShell < DevSystem::ConverterShell
     
     string = env[:convert_in]
     env[:convert_out] = CoffeeScript.compile string
-    nil
-  rescue ExecJS::RuntimeError => e
-    log :highest, "ExecJS::RuntimeError: #{e.message.inspect}"
-    env[:convert_out] = string
+  rescue => e
+    raise if env[:raise_errors]
+    log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+    env[:error] = e
+    env[:convert_out] = env[:convert_in]
+  ensure
     nil
   end
 
