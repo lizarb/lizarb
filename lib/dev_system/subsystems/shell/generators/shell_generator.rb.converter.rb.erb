@@ -1,0 +1,17 @@
+# view converter.rb.erb
+
+  def self.call(env)
+    ret = true
+      super
+      
+      env[:convert_out] = <%= arg_name.camelize %>.convert env[:convert_in]
+    rescue => e
+      raise if env[:raise_errors]
+      log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+      env[:error] = e
+      env[:convert_out] = env[:convert_in]
+    ensure
+      nil
+    end
+
+  end

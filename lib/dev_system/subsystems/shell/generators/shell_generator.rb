@@ -45,6 +45,30 @@ class DevSystem::ShellGenerator < DevSystem::ControllerGenerator
     set_default_views "eof"
   end
 
+  # liza g shell:converter
+
+  def call_converter
+    set_default_require arg_name
+    set_default_super "converter"
+
+    create_controller do |unit, test|
+      unit.section name: :converter
+      test.section name: :subject
+    end
+  end
+
+  # liza g shell:formatter
+
+  def call_formatter
+    set_default_require arg_name
+    set_default_super "formatter"
+
+    create_controller do |unit, test|
+      unit.section name: :formatter
+      test.section name: :subject
+    end
+  end
+
   # liza g shell:examples
 
   def call_examples
