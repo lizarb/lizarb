@@ -84,7 +84,11 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   def requirements_to_add
-    @requirements_to_add ||= arg_require.to_s.split(",").map(&:strip).reject(&:empty?)
+    @requirements_to_add ||= begin
+      array = arg_require.to_s.split(",").map(&:strip).reject(&:empty?)
+      array = [] if array == ["none"]
+      array
+    end
   end
 
   section :arguments
@@ -194,5 +198,6 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   set_default_division false
+  set_default_require "none"
 
 end

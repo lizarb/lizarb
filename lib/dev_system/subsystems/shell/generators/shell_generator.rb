@@ -18,6 +18,7 @@ class DevSystem::ShellGenerator < DevSystem::ControllerGenerator
   # liza g shell name place=app
 
   def call_default
+    set_default_require nil
     create_controller do |unit, test|
       arg_action_names.each do |action_name|
         unit.section name: :"action_#{action_name}", render_key: :actions, action: action_name
