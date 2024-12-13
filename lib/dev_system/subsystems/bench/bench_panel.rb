@@ -14,8 +14,6 @@ class DevSystem::BenchPanel < Liza::Panel
     find env
     find_shortcut env
     forward env
-  rescue Exception => exception
-    rescue_from_panel(exception, env)
   end
 
   #

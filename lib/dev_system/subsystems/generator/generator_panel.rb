@@ -12,8 +12,6 @@ class DevSystem::GeneratorPanel < Liza::Panel
     forward env
     inform env
     save env
-  rescue Exception => exception
-    rescue_from_panel(exception, env)
   end
 
   #
