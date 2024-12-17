@@ -543,7 +543,7 @@ module Lizarb
         line.strip!
         next if line.empty? or line.start_with? "#"
 
-        key, value = line.split('=', 2)
+        key, value = line.split('=', 2).map(&:strip)
         ENV[key] = value
       end
       log "    ENV variables #{file}" if defined? $log_boot_higher
