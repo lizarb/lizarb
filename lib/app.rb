@@ -70,7 +70,7 @@ class App
   def self.sys_folder sys_folder = nil
     raise "locked" if @locked
     if sys_folder
-      @systems_directory = root / sys_folder
+      @systems_directory = "#{root}/#{sys_folder}"
       @sys_folder = sys_folder
       @sys_relative_path = sys_folder
       @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
