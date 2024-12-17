@@ -467,8 +467,9 @@ module Lizarb
     puts "        gem uninstall #{e.name} -aI"
     puts "        BUNDLE_GEMFILE=#{ENV["BUNDLE_GEMFILE"]} bundle install"
     3.times { puts }
-    puts "           Error Details:"
-    raise
+    # puts "           Error Details:"
+    # raise
+    raise "gem uninstall #{e.name} -aI", cause: nil
   end
 
   # This method is called internally by `load` and is not intended for direct use.
