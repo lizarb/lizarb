@@ -16,15 +16,34 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   section :name
 
   set_input_arg 1 do |default|
-    title = "Name your new System:"
-    x = InputShell.prompt.ask title, default: default
-    redo if x.to_s.chars.tally["_"].to_i.zero?
-    x
+    title = "New systems must have two names:"
+    InputShell.prompt.ask title, default: default
   end
   
   def system_name() = @system_name ||= arg_name
 
-  def arg_name() = @arg_name ||= (name = command.simple_arg(1) until name.to_s.strip.length.positive?; name)
+  def arg_name
+    @arg_name ||= begin
+      name = nil
+      index = 1
+      until name.to_s.strip.size.positive?
+        name = command.given_args[index]
+        if name.to_s.strip.split("_").count < 2
+          # establish a default name
+          username = ENV['USER'] || ENV['USERNAME']
+          name = username if name.to_s.strip.size.zero?
+          default = "#{username}_#{name}"
+          # hacks the input block
+          value = instance_exec(default, &input_args[index])
+          # hacks the command's args
+          command.env[:simple_args][index] = value
+          # sets name, used by the above `until` loop
+          name = value
+        end
+      end
+      name
+    end
+  end
   
   def color() = @color ||= command.simple_color(:color, string: "#{system_name.camelize}System")
 
