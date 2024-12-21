@@ -761,10 +761,10 @@ module Lizarb
 
   def eager_load!
     return if eager_loaded?
-    log "Lizarb.#{__method__} begin"
+    log "Lizarb.#{__method__} begin" if defined? $log_boot_high
     @eager_loaded = true
     loaders[1].eager_load
-    log "Lizarb.#{__method__} end"
+    log "Lizarb.#{__method__} end" if defined? $log_boot_high
   end
 
   def eager_loaded?
