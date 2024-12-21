@@ -110,6 +110,33 @@ class Liza::Unit
   # Returns the class of the current instance.
   def cl() = self.class
 
+  ##
+  # :call-seq:
+  #   Unit.time_diff(t[, digits]) -> String
+  #
+  # Returns a time difference string with a fixed decimal precision. 
+  #
+  # - +t+: A time-like object to compare to the current time.
+  # - +digits+: Integer specifying the decimal precision (defaults to 4).
+  #
+  # Raises ArgumentError if +digits+ is not a positive Integer.
+  #
+  def self.time_diff(t, digits = 4)
+    raise ArgumentError, "digits must be a positive integer" unless digits.is_a?(Integer) && digits.positive?
+    f = (Time.now.to_f - t.to_f).floor(digits)
+    u, d = f.to_s.split "."
+    "#{u}.#{d.ljust digits, "0"}"
+  end
+
+  ##
+  # :call-seq:
+  #   unit_instance.time_diff(t[, digits]) -> String
+  #
+  # Convenience instance method delegating to +Unit.time_diff+.
+  # Returns the time difference string with the specified decimal precision.
+  #
+  def time_diff(t, digits = 4)= self.class.time_diff t, digits
+
   set :log_level, App.log_level
   set :division, Liza::Controller
   
