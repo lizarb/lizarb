@@ -155,6 +155,18 @@ class Liza::UnitLoggingPart < Liza::Part
       log_level = log_levels[log_level] if log_level.is_a? Symbol
       log_level <= self.log_level
     end
+
+    section :sleep
+
+    def self.sleep(seconds)
+      log :lower, "Sleeping for #{seconds}s... #{ "| #{caller[0]}" if log? :low }"
+      Kernel.sleep seconds
+    end
+
+    def sleep(seconds)
+      log :lower, "Sleeping for #{seconds}s... #{ caller[0] if log? :low }"
+      Kernel.sleep seconds
+    end
   
   end
 

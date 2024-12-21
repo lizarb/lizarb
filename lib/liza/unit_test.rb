@@ -70,6 +70,11 @@ class Liza::UnitTest < Liza::Test
       :class_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?],
       :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?]
     },
+    :sleep=>{
+      :constants=>[],
+      :class_methods=>[:sleep],
+      :instance_methods=>[:sleep]
+    },
     unit_rendering_part: {
       :constants=>[],
       :class_methods=>[:erbs_defined, :erbs_available, :renderable_names, :renderable_formats_for, :erbs_for, :_erbs_for],
