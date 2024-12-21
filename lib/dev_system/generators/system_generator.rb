@@ -11,6 +11,12 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     create_command
   end
 
+  # liza g system:gemspec name
+  def call_gemspec
+    @rake_version = Gem::Specification.find_by_name("rake").version.to_s
+    create_file "#{gem_name}.gemspec", :gemspec, :rb
+  end
+
   private
 
   section :name
@@ -21,6 +27,8 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   end
   
   def system_name() = @system_name ||= arg_name
+
+  def gem_name() = "#{system_name}_system"
 
   def arg_name
     @arg_name ||= begin

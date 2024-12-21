@@ -1,0 +1,36 @@
+# view gemspec.rb.erb
+# frozen_string_literal: true
+
+Gem::Specification.new do |spec|
+  spec.name = <%= gem_name.inspect %>
+  spec.version = "1.0.0"
+  spec.authors = "Your Name"
+  spec.email = "your@email.com"
+
+  spec.summary = "Write a short summary, because RubyGems requires one."
+  spec.description = "Write a longer description or delete this line."
+  spec.homepage = "https://<%= gem_name %>.github.io"
+  spec.license = "MIT"
+  spec.required_ruby_version = ">= 3.1.0"
+
+  spec.metadata = {
+    "homepage_uri"    => "https://github.com/<%= gem_name %>/<%= gem_name %>",
+    "changelog_uri"   => "https://github.com/<%= gem_name %>/<%= gem_name %>/blob/main/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/<%= gem_name %>/<%= gem_name %>",
+    "bug_tracker_uri" => "https://github.com/<%= gem_name %>/<%= gem_name %>/issues"
+  }
+
+  # Specify which files should be added to the gem when it is released.
+  spec.files = Dir.glob("lib/<%= gem_name %>*/**/*")
+  # spec.bindir = "bin"
+  # spec.executables = [""]
+  spec.require_paths = ["lib"]
+
+  # runtime dependencies
+
+  spec.add_dependency "lizarb", ">= <%= Lizarb::VERSION %>"
+
+  # development dependencies
+
+  spec.add_development_dependency "rake", "~> <%= @rake_version %>"
+end
