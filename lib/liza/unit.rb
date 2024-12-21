@@ -96,7 +96,19 @@ class Liza::Unit
     Lizarb.reload
   end
 
+  ##
+  # :call-seq:
+  #   Unit.cl -> Class
   #
+  # Returns the class itself.
+  def self.cl() = self
+  
+  ##
+  # :call-seq:
+  #   unit_instance.cl -> Class
+  #
+  # Returns the class of the current instance.
+  def cl() = self.class
 
   set :log_level, App.log_level
   set :division, Liza::Controller

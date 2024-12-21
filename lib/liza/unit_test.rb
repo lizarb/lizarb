@@ -47,8 +47,8 @@ class Liza::UnitTest < Liza::Test
   test_sections(
     :default=>{
       :constants=>[],
-      :class_methods=>[:singleton_method_added, :section, :sections, :method_added, :const_added, :methods_defined, :class_methods_defined, :instance_methods_defined, :constants_defined, :part, :const_missing, :reload!],
-      :instance_methods=>[:reload!]
+      :class_methods=>[:singleton_method_added, :section, :sections, :method_added, :const_added, :methods_defined, :class_methods_defined, :instance_methods_defined, :constants_defined, :part, :const_missing, :reload!, :cl],
+      :instance_methods=>[:reload!, :cl]
     },
     unit_setting_part: {
       :constants=>[],
