@@ -143,8 +143,8 @@ class Liza::UnitLoggingPart < Liza::Part
   
     #
   
-    def self.log?(log_level = App::DEFAULT_LOG_LEVEL)= log_level? log_level
-    def log?(...)= log_level? log_level
+    def self.log?(...)= log_level?(...)
+    def log?(...)= log_level?(...)
   
     def self.log_level? log_level = App::DEFAULT_LOG_LEVEL
       log_level = log_levels[log_level] if log_level.is_a? Symbol
