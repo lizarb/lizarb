@@ -56,7 +56,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   # liza shell:convert
   def call_convert
-    DevBox.command ["convert", *args]
+    DevBox.command ["shell_convert", *args]
   end
 
   # liza shell:eval
@@ -68,7 +68,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   # liza shell:format
   def call_format
-    DevBox.command ["format", *args]
+    DevBox.command ["shell_format", *args]
   end
 
   # liza shell:paths
