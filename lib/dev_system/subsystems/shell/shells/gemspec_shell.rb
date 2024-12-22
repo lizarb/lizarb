@@ -1,4 +1,4 @@
-class DevSystem::GemShell < DevSystem::Shell
+class DevSystem::GemspecShell < DevSystem::Shell
   
   # 
 

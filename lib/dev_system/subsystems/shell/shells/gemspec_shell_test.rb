@@ -1,10 +1,10 @@
-class DevSystem::GemShellTest < DevSystem::ShellTest
+class DevSystem::GemspecShellTest < DevSystem::ShellTest
   
   # 
   
   test :subject_class, :subject do
-    assert_equality DevSystem::GemShell, subject_class
-    assert_equality DevSystem::GemShell, subject.class
+    assert_equality DevSystem::GemspecShell, subject_class
+    assert_equality DevSystem::GemspecShell, subject.class
   end
 
   test :subject_class, :gemspec do
