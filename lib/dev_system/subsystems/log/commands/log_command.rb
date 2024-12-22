@@ -27,6 +27,26 @@ class DevSystem::LogCommand < DevSystem::SimpleCommand
     log :lower,   ":lower   #{ log_levels[ :lower   ] } >= #{ log_level }"
     log :lowest,  ":lowest  #{ log_levels[ :lowest  ] } >= #{ log_level }"
     puts
+    puts "-".center(80, "-")
+    puts
+    puts ":highest " if log_level? :highest
+    puts ":higher  " if log_level? :higher
+    puts ":high    " if log_level? :high
+    puts ":normal  " if log_level? :normal
+    puts ":low     " if log_level? :low
+    puts ":lower   " if log_level? :lower
+    puts ":lowest  " if log_level? :lowest
+    puts
+    puts "-".center(80, "-")
+    puts
+    puts ":highest " if log? :highest
+    puts ":higher  " if log? :higher
+    puts ":high    " if log? :high
+    puts ":normal  " if log? :normal
+    puts ":low     " if log? :low
+    puts ":lower   " if log? :lower
+    puts ":lowest  " if log? :lowest
+    puts
   end
 
 end
