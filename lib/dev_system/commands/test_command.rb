@@ -1,16 +1,6 @@
-class DevSystem::TestCommand < DevSystem::Command
+class DevSystem::TestCommand < DevSystem::SimpleCommand
 
-  def self.get_command_signatures
-    [
-      {
-        name: "",
-        description: "# no description",
-      }
-    ]
-  end
-
-  def self.call env
-    super
+  def call_default
     Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
 
@@ -41,7 +31,7 @@ class DevSystem::TestCommand < DevSystem::Command
     log "Done Counting (#{now.diff}s)"
   end
 
-  def self._call_silence_other_units
+  def _call_silence_other_units
     [
       Liza::Part,
       Liza::System,
@@ -58,7 +48,7 @@ class DevSystem::TestCommand < DevSystem::Command
     end
   end
 
-  def self._get_test_classes
+  def _get_test_classes
     ret = []
 
     only_tests = proc { |klasses| klasses.select { _1 < Liza::Test } }
@@ -101,7 +91,7 @@ class DevSystem::TestCommand < DevSystem::Command
     ret
   end
 
-  def self._call_testing test_classes
+  def _call_testing test_classes
     i, count = 0, test_classes.count
     for test_class in test_classes
       test_class.call i+=1, count
@@ -109,7 +99,7 @@ class DevSystem::TestCommand < DevSystem::Command
   end
 
 
-  def self._call_counting test_classes
+  def _call_counting test_classes
     puts
     Liza.log ""
     Liza.log stick :b, " TEST TOTALS ".center(140, "-")
