@@ -48,5 +48,16 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
   def call_examples
     copy_examples Command
   end
-  
+
+  def random_sleep_float
+    @sleepers ||= [
+      *[0.1] * 9,
+      *[0.2] * 7,
+      *[0.3] * 5,
+      *[0.4] * 3,
+      *[0.5] * 1,
+    ].shuffle
+    @sleepers.shift
+  end
+
 end
