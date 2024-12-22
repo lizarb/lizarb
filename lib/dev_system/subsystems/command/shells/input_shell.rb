@@ -39,6 +39,7 @@ class DevSystem::InputShell < DevSystem::Shell
     
     default = 1..choices.count if selected == :all
     default = [] if selected == :none
+    default = selected.map { choices.keys.index(_1) + 1 } if selected.is_a? Array
 
     options = {
       enum: ")",
