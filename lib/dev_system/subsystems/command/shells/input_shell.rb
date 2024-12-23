@@ -20,6 +20,12 @@ class DevSystem::InputShell < DevSystem::Shell
     rescue_input_interrupt e
   end
 
+  def self.yes?(...)
+    prompt.yes?(...)
+  rescue Exception => e
+    rescue_input_interrupt e
+  end
+
   def self.pick_one title, options = ["Yes", "No"]
     prompt.select title, options, filter: true, show_help: :always, per_page: 20
   rescue Exception => e

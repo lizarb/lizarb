@@ -13,4 +13,9 @@ class DevSystem::BenchCommand < DevSystem::SimpleCommand
     DevBox.bench env
   end
 
+  # liza bench:controllers
+  def call_controllers
+    log "not implemented yet"
+  end
+
 end

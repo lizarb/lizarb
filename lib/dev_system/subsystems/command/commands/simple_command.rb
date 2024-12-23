@@ -372,7 +372,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [Boolean] The boolean value determined by user input.
   def simple_boolean_yes(key, title)
     set_input_boolean key do |default|
-      InputShell.prompt.yes? title, default: !!default
+      InputShell.yes? title, default: !!default
     end
 
     simple_boolean key
@@ -405,7 +405,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_boolean(name, default, title)
     set_default_boolean name, default
     set_input_boolean name do |default|
-      InputShell.prompt.yes? title, default: default
+      InputShell.yes? title, default: default
     end
   end
 

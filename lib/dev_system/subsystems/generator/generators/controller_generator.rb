@@ -168,12 +168,12 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   
   set_input_boolean :division do |default|
     title = "Create a new division?"
-    InputShell.prompt.yes? title, default: !!default
+    InputShell.yes? title, default: !!default
   end
 
   set_input_boolean :prefix do |default|
     title = "Do you want to prefix your controllers with their system names?"
-    InputShell.prompt.yes? title, default: !!default
+    InputShell.yes? title, default: !!default
   end
 
   set_input_string :place do |default|
