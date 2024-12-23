@@ -253,7 +253,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     title = "Choose views"
     valid_views = env[:generator].valid_views
     index_base_1 = valid_views.index(default) + 1 rescue 1
-    InputShell.prompt.select title, valid_views, default: index_base_1
+    InputShell.select title, valid_views, default: index_base_1
   end
   
   set_default_views "none"
