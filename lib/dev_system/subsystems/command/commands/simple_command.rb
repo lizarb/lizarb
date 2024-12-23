@@ -343,7 +343,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [String] The user-provided value.
   def simple_arg_ask(index, title)
     set_input_arg index do |default|
-      InputShell.prompt.ask(title, default: default)
+      InputShell.ask(title, default: default)
     end
     simple_arg index
   end
@@ -356,7 +356,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @return [String] The user-provided value in snake_case format.
   def simple_arg_ask_snakecase(index, title, regexp: /^[a-zA-Z_]*$/)
     set_input_arg index do |default|
-      InputShell.prompt.ask(title, default: default) do |q|
+      InputShell.ask(title, default: default) do |q|
         q.required true
         q.validate regexp
       end.snakecase
@@ -403,7 +403,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_arg(index, name, default, title)
     set_default_arg index, name, title
     set_input_arg index, name do |default|
-      InputShell.prompt.ask title, default: default
+      InputShell.ask title, default: default
     end
   end
 
@@ -431,7 +431,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_string(name, default, title)
     set_default_string name, default
     set_input_string name do |default|
-      InputShell.prompt.ask title, default: default
+      InputShell.ask title, default: default
     end
   end
 

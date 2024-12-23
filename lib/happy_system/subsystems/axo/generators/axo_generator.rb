@@ -6,7 +6,7 @@ class HappySystem::AxoGenerator < DevSystem::ControllerGenerator
     set_default_super ""
     set_default_require ""
 
-    @description = InputShell.prompt.ask("Do you want to add a description?", default: "No description")
+    @description = InputShell.ask("Do you want to add a description?", default: "No description")
 
     create_controller do |unit, test|
       unit.section name: :controller

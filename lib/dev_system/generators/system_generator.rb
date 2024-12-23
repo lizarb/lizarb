@@ -23,7 +23,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
 
   set_input_arg 1 do |default|
     title = "New systems must have two names:"
-    InputShell.prompt.ask title, default: default
+    InputShell.ask title, default: default
   end
   
   def system_name() = @system_name ||= arg_name

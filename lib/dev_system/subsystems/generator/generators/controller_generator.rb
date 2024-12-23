@@ -161,7 +161,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   set_input_arg 1 do |default|
     title = "Name your new #{env[:generator].super_controller.last_namespace}:"
-    x = InputShell.prompt.ask title, default: default
+    x = InputShell.ask title, default: default
     redo if x.to_s.strip.empty?
     x
   end
@@ -194,7 +194,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   set_input_string :require do |default|
     title = "Want to require any gems? (comma separated)"
-    InputShell.prompt.ask title, default: default
+    InputShell.ask title, default: default
   end
 
   set_default_division false
