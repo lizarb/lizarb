@@ -378,18 +378,6 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     simple_boolean key
   end
 
-  # May prompt the user (default false) unless arg +key or -key is found.
-  # 
-  # @param key [Symbol] The key to retrieve the argument.
-  # @param title [String] The prompt title for user input.
-  # @return [Boolean] The boolean value determined by user input.
-  def simple_boolean_no(key, title)
-    set_input_boolean key do |default|
-      InputShell.prompt.no? title
-    end
-    simple_boolean key
-  end
-
   section :simple_composed
 
   # Sets a default and input method for an argument.

@@ -38,7 +38,7 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
       :instance_methods=>[
         :simple_color, :simple_controller_placement,
         :simple_arg_ask, :simple_arg_ask_snakecase,
-        :simple_boolean_yes, :simple_boolean_no,
+        :simple_boolean_yes,
       ]
     },
     :simple_composed=>{
