@@ -62,8 +62,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   # liza shell:eval
   def call_eval
     s = args.join(' ')
-    log "evaluating: #{s.inspect}"
-    eval s
+    log :low, (stick system.color, "evaluating:")
+    log :lower, s.inspect
+    ret = eval s
+    log :low, (stick system.color, "returned:")
+    log :lower, ret.inspect
   end
 
   # liza shell:format
