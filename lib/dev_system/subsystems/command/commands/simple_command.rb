@@ -117,6 +117,13 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     input_strings[key] = block
   end
 
+  def set_input_array(key, &block)
+    log :highest, "set_input_array #{key.inspect}"
+    set_input_string key do |default|
+      block.call(default).join ","
+    end
+  end
+
   def set_input_boolean(key, &block)
     log :highest, "set_input_boolean #{key.inspect}"
     input_booleans[key] = block
@@ -173,6 +180,14 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     env[:simple_strings][key] = string
 
     string
+  end
+
+  # Retrieves an array of strings if given, then default, then input.
+  #
+  # @param key [Symbol] The key to retrieve the argument.
+  # @return [Array<String>] The array of string values determined.
+  def simple_array(key)
+    simple_string(key).to_s.split ","
   end
 
   # Retrieves all simple arguments.
