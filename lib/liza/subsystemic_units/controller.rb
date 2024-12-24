@@ -80,7 +80,7 @@ class Liza::Controller < Liza::Unit
     self.class.panel
   end
 
-  # division
+  section :divisionable
 
   def self.division
     get :division
@@ -100,7 +100,7 @@ class Liza::Controller < Liza::Unit
     fetch(:plural) { plural }
   end
 
-  # grammar
+  section :grammarable
 
   def self.singular
     case
@@ -130,12 +130,6 @@ class Liza::Controller < Liza::Unit
 
   section :callable
 
-  # This gem will be lazily required
-  def self.require(gem_name)
-    log :higher, "lazy require '#{gem_name}'" unless self <= DevSystem::Log
-    requirements << gem_name
-  end
-
   def self.call(env)
     log :higher, "env.count is #{env.count}" unless self <= DevSystem::Log
 
@@ -147,6 +141,16 @@ class Liza::Controller < Liza::Unit
     true
   end
 
+  section :requirable
+
+  # This gem will be lazily required
+  def self.require(gem_name)
+    log :higher, "lazy require '#{gem_name}'" unless self <= DevSystem::Log
+    requirements << gem_name
+  end
+
   def self.requirements()= @requirements ||= fetch(:requirements) { [] }
+
+  section :default
 
 end
