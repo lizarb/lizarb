@@ -182,6 +182,35 @@ class Liza::Controller < Liza::Unit
     end.to_h
   end
 
+  section :environmentable
+
+  def self.menv_reader(*names)
+    names.each do |name|
+      define_method name do
+        log :highest, "env[:#{name}] reads #{env[name].inspect}", method_name: 'menv_reader'
+        raise "env is nil!" unless env
+        env[name]
+      end
+    end
+  end
+  
+  def self.menv_writer(*names)
+    names.each do |name|
+      define_method "#{name}=" do |value|
+        log :higher, "env[:#{name}] writes #{value.inspect}", method_name: 'menv_writer'
+        raise "env is nil!" unless env
+        env[name] = value
+      end
+    end
+  end
+  
+  def self.menv_accessor(*names)
+    menv_reader *names
+    menv_writer *names
+  end
+  
+  attr_accessor :menv
+  
   section :default
 
 end

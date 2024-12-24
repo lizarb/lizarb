@@ -34,6 +34,11 @@ class Liza::ControllerTest < Liza::UnitTest
       :class_methods=>[:attr_reader, :attr_writer, :attr_accessor],
       :instance_methods=>[:attrs]
     },
+    :environmentable=>{
+      :constants=>[],
+      :class_methods=>[:menv_reader, :menv_writer, :menv_accessor],
+      :instance_methods=>[:menv, :menv=]
+    },
     :default=>{
       # this is because tests mock this class
       :constants=>[],
