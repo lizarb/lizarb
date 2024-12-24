@@ -151,6 +151,37 @@ class Liza::Controller < Liza::Unit
 
   def self.requirements()= @requirements ||= fetch(:requirements) { [] }
 
+  section :attributable
+
+  def self.attr_reader(*names)
+    names.each do |name|
+      define_method name do
+        log :highest, "@#{name} reads #{instance_variable_get("@#{name}").inspect}" unless name == :menv
+        instance_variable_get "@#{name}"
+      end
+    end
+  end
+
+  def self.attr_writer(*names)
+    names.each do |name|
+      define_method "#{name}=" do |value|
+        log :higher, "@#{name} writes #{value.inspect}" unless name == :menv
+        instance_variable_set "@#{name}", value
+      end
+    end
+  end
+
+  def self.attr_accessor(*names)
+    attr_reader *names
+    attr_writer *names
+  end
+
+  def attrs
+    instance_variables.map do |ivar|
+      [ivar, instance_variable_get(ivar)]
+    end.to_h
+  end
+
   section :default
 
 end

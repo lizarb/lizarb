@@ -29,6 +29,11 @@ class Liza::ControllerTest < Liza::UnitTest
       :class_methods=>[:require, :requirements],
       :instance_methods=>[]
     },
+    :attributable=>{
+      :constants=>[],
+      :class_methods=>[:attr_reader, :attr_writer, :attr_accessor],
+      :instance_methods=>[:attrs]
+    },
     :default=>{
       # this is because tests mock this class
       :constants=>[],
