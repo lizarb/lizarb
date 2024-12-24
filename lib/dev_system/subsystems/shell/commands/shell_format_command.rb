@@ -3,39 +3,47 @@ class DevSystem::ShellFormatCommand < DevSystem::SimpleCommand
   # liza shell_format FORMAT FILENAME
 
   def call_default
-    log :higher, "args = #{args.inspect}"
+    valid_formats = Shell.panel.formatters.keys
+    color = system.color
 
-    return help if simple_args.count < 2
+    log :normal, (stick color, "valid formatters are #{valid_formats.map { stick :black, color, :b, _1.to_s }.map(&:to_s).join ', '}")
 
+    set_input_arg 0 do |default|
+      title = "Which formatter are we going to use?"
+      choices = valid_formats
+      InputShell.pick_one title, choices
+    end
+    
     format = simple_arg(0).to_sym
-    fname = simple_arg(1)
-    content = TextShell.read fname
-    log "IN:"
-    puts content if log? :normal
+    log :normal, (stick color, "formatter is #{format}")
 
-    fname = "#{fname}.#{format}"
-    format_env = {format: format, format_in: content}
-    DevBox.format format_env
-    content = format_env[:format_out]
+    set_input_arg 1 do |default|
+      title = "Which files are we going to format?"
+      local_files = Dir["*.#{format}"]
+      choices = local_files.map { [_1, _1] }.to_h
+      selected = [choices.keys.first]
+      answers = InputShell.multi_select title, choices, selected: selected
+      answers.join(",")
+    end
 
-    log "OUT:"
-    puts content if log? :normal
+    fnames = simple_arg(1).to_s.split(",")
+    log :normal, (stick color, "selected files are #{fnames.join ', '}")
+    fnames.each do |fname|
+      content = TextShell.read fname
+      log :higher, (stick color, "IN:")
+      puts content if log? :higher
 
-    TextShell.write fname, content
+      format_to = DevBox[:shell].formatters[format][:to]
+      fname = "#{fname}.#{format_to}"
+      format_env = {format: format, format_in: content}
+      DevBox.format format_env
+
+      content = format_env[:format_out]
+      log :higher, (stick color, "OUT:")
+      puts content if log? :higher
+
+      TextShell.write fname, content
+    end
   end
 
-  def help
-    puts
-    puts "Usage: liza format FORMAT FILENAME"
-    puts "  FORMAT - format name (#{ valid_formats.join(", ") })"
-    puts "  FILENAME - file name (a.html)"
-    puts
-  end
-
-  private
-
-  def valid_formats
-    DevBox[:shell].formatters.keys
-  end
-  
 end
