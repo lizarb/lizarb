@@ -78,11 +78,29 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   def call_paths
     puts
 
-    puts "$LOAD_PATH"
-    $LOAD_PATH.each do |path|
-      puts path
+    set_input_array :paths do
+      title = "Which paths are we going to show?"
+      choices = %w[load_paths loaded_features].map { ["$#{_1.upcase}", _1] }.to_h
+      answers = InputShell.multi_select title, choices, selected: :all
     end
-    puts
+
+    paths = simple_array(:paths)
+
+    if paths.include? "load_paths"
+      puts "$LOAD_PATH"
+      $LOAD_PATH.each do |path|
+        puts path
+      end
+      puts
+    end
+
+    if paths.include? "loaded_features"
+      puts "$LOADED_FEATURES"
+      $LOADED_FEATURES.each do |path|
+        puts path
+      end
+      puts
+    end
   end
 
   # liza shell:loc
