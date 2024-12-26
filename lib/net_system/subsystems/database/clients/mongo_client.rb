@@ -7,7 +7,20 @@ class NetSystem::MongoClient < NetSystem::Client
     self.class.call({})
     t = Time.now
     hash = NetBox[:client].get(:mongo_hash) if hash.empty?
-    uri = "mongodb://#{hash[:host]}:#{hash[:port]}/#{hash[:database]}"
+    host = hash[:host]
+    port = hash[:port]
+    username = hash[:username]
+    password = hash[:password]
+    protocol = hash[:protocol] || "mongodb"
+    database = hash[:database]
+
+    uri =
+      if password.to_s.size.positive?
+        "#{protocol}://#{username}:#{password}@#{host}:#{port}/#{database}"
+      else
+        "#{protocol}://#{host}:#{port}/#{database}"
+      end
+
     @conn = Mongo::Client.new(uri)
   ensure
     log "#{t.diff}s | Connecting to #{hash}"

@@ -9,7 +9,8 @@ class NetBox < NetSystem::NetBox
                       database: ($coding ? 0 : 1)
     set :mongo_hash,  host: "localhost",
                       port: 27017,
-                      connect: :direct,
+                      # password: "",
+                      # protocol: "mongodb",
                       database: "app_1_#{App.mode}"
     set :sqlite_hash, path:     "app.#{App.mode}.sqlite"
     set :sqlite_hash, path:     "tmp/app.#{Time.now.to_i}.sqlite" if $coding
