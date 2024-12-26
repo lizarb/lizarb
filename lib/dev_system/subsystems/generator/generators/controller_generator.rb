@@ -73,14 +73,14 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   def available_places
-    @available_places ||=
-      if arg_division
-        log "division: #{super_controller.division.inspect}, arg_name: #{arg_name.inspect}"
-        ControllerShell.places_for_division(super_controller.division, arg_name)
-      else
-        log "division: #{super_controller.division.inspect}"
-        ControllerShell.places_for(super_controller.division)
-      end
+    @available_places ||= begin
+      d = super_controller.division
+      directory_name = arg_division \
+        ? "#{division_name}_#{d.plural}"
+        : d.plural
+      log "directory_name: #{directory_name}"
+      ControllerShell.places_for(d, directory_name: directory_name)
+    end
   end
 
   def requirements_to_add

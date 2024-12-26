@@ -2,32 +2,16 @@ class DevSystem::ControllerShell < DevSystem::Shell
 
   #
   
-  def self.places_for(controller)
+  def self.places_for(controller, directory_name: controller.plural)
     ret = {
-      "app" => "#{App.relative_path}/#{controller.system.token}/#{controller.plural}",
+      "app" => "#{App.relative_path}/#{controller.system.token}/#{directory_name}",
     }
 
     AppShell.writable_systems.each do |system_key, system|
-      path = system.source_location_radical.gsub "#{App.root}/", ""
-      ret[system_key.to_s] = "#{path}/#{controller.plural}"
+      path = system.source_location_radical.sub "#{App.root}/", ""
+      ret[system_key.to_s] = "#{path}/#{directory_name}"
       system.subs.each do |sub|
-        ret["#{system_key}/#{sub}"] = "#{path}/subsystems/#{sub}/#{controller.plural}"
-      end
-    end
-
-    ret
-  end
-  
-  def self.places_for_division(controller, division_name)
-    ret = {
-      "app" => "#{App.relative_path}/#{controller.system.token}/#{division_name}_#{controller.plural}",
-    }
-
-    AppShell.writable_systems.each do |system_key, system|
-      path = system.source_location_radical.gsub "#{App.root}/", ""
-      ret[system_key.to_s] = "#{path}/#{division_name}_#{controller.plural}"
-      system.subs.each do |sub|
-        ret["#{system_key}/#{sub}"] = "#{path}/subsystems/#{sub}/#{division_name}_#{controller.plural}"
+        ret["#{system_key}/#{sub}"] = "#{path}/subsystems/#{sub}/#{directory_name}"
       end
     end
 
