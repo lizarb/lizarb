@@ -111,7 +111,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
           if subsystem_name.nil?
             App.systems_directory.join "#{system_name}_system"
           else
-            App.systems_directory.join "#{system_name}_system/subsystems/#{subsystem_name}/#{subsystem_name}s"
+            App.systems_directory.join "#{system_name}_system/subsystems/#{subsystem_name}/#{super_controller.division.plural}"
           end
         end
       log "#{msg}. #{path}"
