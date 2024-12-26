@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 # Specify your gem's dependencies in lizarb.gemspec
-gemspec
+gemspec name: "lizarb"
 
 group :systems do
   # gem "echo_system", "~> 1.0"
