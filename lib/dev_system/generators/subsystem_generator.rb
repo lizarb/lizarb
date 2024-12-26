@@ -141,11 +141,11 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
   end
 
   def create_command
-    generate "command", subsystem_name, "place=#{system_name}/#{subsystem_name}"
+    generate "command", subsystem_name, "place=#{system_name}/#{subsystem_name}", "-prefix"
   end
 
   def create_generator
-    generate "generator:controller", subsystem_name, "place=#{system_name}/#{subsystem_name}"
+    generate "generator:controller", subsystem_name, "place=#{system_name}/#{subsystem_name}", "-prefix"
   end
 
   section :helpers
