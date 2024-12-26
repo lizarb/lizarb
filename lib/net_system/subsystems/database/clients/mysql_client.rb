@@ -7,6 +7,10 @@ class NetSystem::MysqlClient < NetSystem::Client
     self.class.call({})
     t = Time.now
     hash = NetBox[:client].get(:mysql_hash) if hash.empty?
+
+    # "localhost" would force a socket connection
+    hash[:host] = "127.0.0.1" if hash[:host] == "localhost"
+
     @conn = Mysql2::Client.new(hash)
   ensure
     log "#{t.diff}s | Connecting to #{hash}"

@@ -16,7 +16,7 @@ class NetBox < NetSystem::NetBox
     set :sqlite_hash, path:     "tmp/app.#{Time.now.to_i}.sqlite" if $coding
     set :mysql_hash,  host:     "localhost",
                       port:     3306,
-                      username: "root",
+                      username: "user",
                       password: "123123123",
                       database: "app_1_#{App.mode}"
     set :pgsql_hash,  host:     "localhost",
