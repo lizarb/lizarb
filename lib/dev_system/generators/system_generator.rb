@@ -111,7 +111,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   end
 
   def create_command
-    generate %w[command], system_name, "place=#{system_name}"
+    generate %w[command -prefix], system_name, "place=#{system_name}"
   end
 
 end
