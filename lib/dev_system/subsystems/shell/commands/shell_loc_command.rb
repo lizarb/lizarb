@@ -215,12 +215,10 @@ class DevSystem::ShellLocCommand < DevSystem::SimpleCommand
   # loc helpers
   
   def read_loc(klass)
-    require "coderay"
-
     fname = klass.source_location[0]
     fname = fname.sub "/version", "" if klass == Lizarb # this is a hack :)
     text  = TextShell.read(fname, log_level: :higher)
-    loc   = CodeRay.scan(text, :ruby).loc
+    loc   = CoderayGemShell.loc(text, :ruby)
 
     [text, loc]
   end
