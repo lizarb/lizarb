@@ -18,50 +18,24 @@ class DevSystem::AppShell < DevSystem::Shell
 
   def initialize
     Lizarb.eager_load!
-    liza_classes = self.class.liza_classes
-    liza_categories = self.class.liza_categories
     h = @consts = {}
     h[:top_level]  = [Lizarb, App, Liza]
-    h[:liza]       = self.class.liza_classes_structured
-    h[:systems]    = self.class.system_classes_structured
-    h[:app]        = self.class.object_classes_structured
+    h[:liza]       = get_liza_classes_structured
+    h[:systems]    = get_system_classes_structured
+    h[:app]        = get_object_classes_structured
   end
 
   #
 
-  def self.classes
-    liza_classes + implementation_classes
-  end
-
-  def self.liza_classes
-    Lizarb.loaders[0].__to_unload.keys.map { Object.const_get _1 }
-  end
-
-  def self.implementation_classes
-    Lizarb.loaders[1].__to_unload.keys.map { Object.const_get _1 }
-  end
-
-  #
-
-  def self.system_classes
-    implementation_classes.reject { _1.namespace == Object }
-  end
-
-  def self.object_classes
-    implementation_classes.select { _1.namespace == Object }
-  end
-
-  #
-
-  def self.liza_categories
+  def get_liza_categories
     ["unit", "helper_units", "systemic_units", "subsystemic_units", "ruby_tests"]
   end
 
   #
 
-  def self.liza_classes_structured
+  def get_liza_classes_structured
     ret = {}
-    liza_classes = self.liza_classes
+    liza_classes = BootShell.liza_classes
 
     ret["unit"] =
       liza_classes
@@ -88,14 +62,14 @@ class DevSystem::AppShell < DevSystem::Shell
         .select { _1.source_location_radical.include? "/liza/ruby_tests" }
         .sort_by { _1.to_s }
 
-    raise "not all categories are filled" if liza_categories != ret.select { _2.any? }.keys
+    raise "not all categories are filled" if get_liza_categories != ret.select { _2.any? }.keys
 
     ret
   end
 
-  def self.system_classes_structured
+  def get_system_classes_structured
     ret = {}
-    system_classes = self.system_classes
+    system_classes = BootShell.system_classes
 
     App.systems.each do |system_name, system|
       tree = ret[system_name.to_s] = {}
@@ -166,9 +140,9 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
-  def self.object_classes_structured
+  def get_object_classes_structured
     ret = {}
-    object_classes = self.object_classes.sort_by { _1.source_location_radical }
+    object_classes = BootShell.object_classes.sort_by { _1.source_location_radical }
 
     App.systems.each do |system_name, system|
       tree = ret[system_name.to_s] = {}
@@ -211,12 +185,12 @@ class DevSystem::AppShell < DevSystem::Shell
   def sorted_units
     @sorted_units ||= begin
       ret = []
-      self.class.consts[:liza].each do |category, classes|
+      consts[:liza].each do |category, classes|
         classes.each do |klass|
           ret << klass
         end
       end
-      self.class.consts[:systems].each do |system_name, tree|
+      consts[:systems].each do |system_name, tree|
         tree["box"].each do |klass|
           ret << klass
         end
@@ -246,7 +220,7 @@ class DevSystem::AppShell < DevSystem::Shell
           end
         end
       end
-      self.class.consts[:app].each do |system_name, tree|
+      consts[:app].each do |system_name, tree|
         tree["box"].each do |klass|
           ret << klass
         end

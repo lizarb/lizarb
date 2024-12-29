@@ -19,4 +19,16 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
     assert_equality subject.consts[:app].keys,     system_keys
   end
 
+  test :get_liza_categories do
+    assert_equality subject.get_liza_categories.count, 5
+  end
+
+  test :others do
+    assert_no_raise do
+      subject.sorted_units
+      subject.sorted_writable_units
+      subject.sorted_writable_units_in_systems
+    end
+  end
+
 end
