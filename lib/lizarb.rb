@@ -204,6 +204,7 @@ module Lizarb
   # 5. Defines log levels for the application based on the boot log level setting.
   #
   def setup
+    ENV["LOG_BOOT"] = ENV["LOG"] = "1" if ARGV[0] && ARGV[0][0] == "-"
     setup_and_determine_environment
     setup_and_load_ruby_extensions
     puts "Lizarb  #{__FILE__}" if $VERBOSE

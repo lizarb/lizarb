@@ -16,8 +16,28 @@ class App
     log "#{self}.#{__method__}(#{argv.inspect})" if should_log
     args = argv.dup
     argv.clear
+
+    if args[0]
+      return _call_class_command(args) if args[0][0..1] == "--"
+      return _call_instance_command(args) if args[0][0] == "-"
+    end
+
     Liza::DevBox.configuration.command args
     puts if should_log
+  end
+
+  def self._call_class_command(args)
+    method_name = "call_#{args.shift[2..]}"
+    send(method_name, *args)
+  rescue NoMethodError
+    raise Error, "Invalid App Command `#{args[0]}`. Define a class-method named `#{method_name}` on App", caller[1..], cause: nil
+  end
+
+  def self._call_instance_command(args)
+    method_name = "call_#{args.shift[1..]}"
+    new.send(method_name, *args)
+  rescue NoMethodError
+    raise Error, "Invalid App Command `#{args[0]}`. Define an instance-method named `#{method_name}` on App", caller[1..], cause: nil
   end
 
   def self.root
@@ -30,6 +50,14 @@ class App
 
   def self.file
     filename
+  end
+
+  def self.call_version
+    puts "LizaRB v#{Lizarb::VERSION}"
+  end
+
+  def call_version
+    puts "LizaRB v#{Lizarb::VERSION}"
   end
 
   # folder
