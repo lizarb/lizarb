@@ -2,6 +2,7 @@ class Liza::Test < Liza::Unit
 
   part :test_assertions
   part :test_assertions_advanced
+  part :test_assertions_arythmetic
   part :test_dsl
   part :test_log
   part :test_subject
