@@ -380,4 +380,207 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter "filter_history size: #{filter_history.size}, results size: #{lists.map(&:size).sum}"
   end
 
+  section :structures
+
+  # Returns an array of structures representing the core, systems, and app.
+  #
+  # Each Structure contains the name, color, and layers of the core, systems, and app.
+  #
+  # @return [Array<Structure>] An array of structures.
+  #
+  # @example
+  #   structures = app_shell.get_structures
+  #   structures.each do |structure|
+  #     log structure.name
+  #     log structure.color
+  #     structure.layers.each do |layer|
+  #       log layer.name
+  #       log layer.path
+  #       layer.objects.each do |object|
+  #         log object
+  #       end
+  #     end
+  #   end
+  #
+  def get_structures
+    ret = []
+
+    log_filter "reading the structure of the core"
+
+    ret << Structure.new(
+      name: "core",
+      color: :white,
+      layers: get_layers_for_core
+    )
+
+    log_filter "reading the structure of the systems"
+
+    App.systems.values.each do |system|
+      ret << Structure.new(
+        name: system.to_s,
+        color: system.color,
+        layers: get_layers_for_system(system)
+      )
+    end
+
+    log_filter "reading the structure of the app"
+
+    ret << Structure.new(
+      name: "app",
+      color: :white,
+      layers: get_layers_for_app
+    )
+
+    ret
+  end
+
+  def get_layers_for_core
+    ret = []
+
+    ret << Layer.new(
+      level: 1,
+      name: "top level",
+      color: :white,
+      path: "lib/",
+      objects: consts[:top_level]
+    )
+
+    consts[:liza].each do |category, classes|
+      path = "lib/liza/#{category}/"
+      ret << Layer.new(
+        level: 2,
+        name: category,
+        color: :white,
+        path: ,
+        objects: classes
+      )
+    end
+
+    ret
+  end
+
+  def get_layers_for_system(system)
+    ret = []
+
+    tree_system = consts[:systems][system.token.to_s]
+    path = system.source_location_radical.sub("#{App.root}/", "")
+    ret << Layer.new(
+      level: 1,
+      name: system.to_s,
+      color: system.color,
+      path: ,
+      objects: tree_system["system"] + tree_system["box"]
+    )
+    
+    tree_system["controllers"].each do |division, klasses|
+      path = system.source_location_radical.sub("#{App.root}/", "")
+      path << "/#{division.plural}/"
+
+      name = division.plural
+      color = division.subsystem.system.color
+
+      ret << Layer.new(
+        level: 3,
+        name: ,
+        color: ,
+        path: ,
+        objects: klasses
+      )
+    end
+
+    tree_system["subsystems"].each do |subsystem, tree_subsystem|
+      path = system.source_location_radical.sub("#{App.root}/", "")
+      path << "/subsystems/#{subsystem.singular}/"
+      ret << Layer.new(
+        level: 2,
+        name: subsystem.to_s,
+        color: system.color,
+        path: ,
+        objects: tree_subsystem["controller"] + tree_subsystem["panel"]
+      )
+
+      tree_subsystem["controllers"].each do |controller_class, klasses|
+        path = system.source_location_radical.sub("#{App.root}/", "")
+        path << "/subsystems/#{subsystem.singular}/#{controller_class.division.plural}/"
+
+        name = controller_class.plural
+        color = controller_class.subsystem.system.color
+
+        ret << Layer.new(
+          level: 3,
+          name: ,
+          color: ,
+          path: ,
+          objects: klasses
+        )
+      end
+    end
+
+    ret
+  end
+
+  def get_layers_for_app
+    ret = []
+
+    ret << Layer.new(
+      level: 1,
+      name: "App",
+      color: system.color,
+      path: "#{App.directory_name}/",
+      objects: consts[:top_level].select { _1.name == "App" }
+    )
+
+    consts[:app].each do |system_name, tree_system|
+      system = App.systems[system_name.to_sym]
+      ret << Layer.new(
+        level: 2,
+        name: system_name,
+        color: system.color,
+        path: "app/#{system_name}_box.rb",
+        objects: tree_system["box"]
+      )
+      tree_system["controllers"].each do |family, structure|
+        structure.each do |division, klasses|
+          ret << Layer.new(
+            level: 3,
+            name: division.plural,
+            color: system.color,
+            path: "app/#{system_name}/#{division.plural}/",
+            objects: klasses
+          )
+        end
+      end
+    end
+
+    ret
+  end
+
+  # A PORO representing a top-level namespace of LizaRB.
+  class Structure
+    def initialize(name: , color: , layers: )
+      @name = name
+      @color = color
+      @layers = layers
+    end
+
+    attr_reader :name, :color, :layers
+
+    def empty?
+      layers.map(&:objects).flatten.empty?
+    end
+  end
+
+  # A PORO representing a layer in a namespace of LizaRB.
+  class Layer
+    def initialize(level: , name: , color: , path: , objects: )
+      @level = level
+      @name = name
+      @color = color
+      @path = path
+      @objects = objects
+    end
+
+    attr_reader :level, :name, :color, :path, :objects
+  end
+
 end
