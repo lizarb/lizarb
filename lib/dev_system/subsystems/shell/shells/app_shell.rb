@@ -14,6 +14,8 @@ class DevSystem::AppShell < DevSystem::Shell
     @instance.consts
   end
 
+  section :instance
+
   attr_reader :consts
 
   def initialize
@@ -174,6 +176,8 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
+  section :sorted
+
   def sorted_writable_units_in_systems
     @sorted_writable_units_in_systems ||= sorted_units.select { _1.source_location_radical.start_with? App.systems_directory.to_s }
   end
@@ -234,6 +238,146 @@ class DevSystem::AppShell < DevSystem::Shell
       end
       ret.freeze
     end
+  end
+
+  section :lists
+
+  def lists
+    @lists ||= get_lists
+  end
+
+  def get_units
+    lists.flatten.select { _1 <= Liza::Unit }
+  end
+
+  def get_test_units
+    units.select { _1 <= Liza::UnitTest }
+  end
+
+  def get_lists
+    ret = []
+
+    ret << consts[:top_level]
+
+    consts[:liza].each do |category, classes|
+      ret << classes
+    end
+
+    consts[:systems].each do |system_name, tree_system|
+      ret << tree_system["system"]
+      ret << tree_system["box"]
+      ret << tree_system["parts"]
+      tree_system["controllers"].each do |family, klasses|
+        ret << klasses
+      end
+      tree_system["subsystems"].each do |subsystem, tree_subsystem|
+        ret << tree_subsystem["panel"]
+        ret << tree_subsystem["controller"]
+        tree_subsystem["controllers"].each do |controller_class, klasses|
+          ret << klasses
+        end
+      end
+    end
+
+    consts[:app].each do |system_name, tree_system|
+      ret << tree_system["box"]
+      tree_system["controllers"].each do |family, structure|
+        structure.each do |division, klasses|
+          ret << klasses
+        end
+      end
+    end
+
+    ret
+  end
+
+  section :filters
+
+  def filter_out_units(*units)
+    log_filter units.inspect
+    check
+
+    lists.each do |list|
+      list.reject! { units.include? _1 }
+    end
+
+    self
+  end
+
+  def filter_by_unit(unit_class)
+    log_filter unit_class.inspect
+    check
+
+    lists.each do |list|
+      list.reject! { _1.class == Module }
+      list.select! { _1 <= unit_class }
+    end
+
+    self
+  end
+
+  def filter_by_systems(*systems)
+    log_filter systems.inspect
+    systems = systems.map { (_1.is_a? Symbol) ? App.systems[_1] : _1 }
+    check
+
+    lists.each do |list|
+      list.reject! { _1 <= Module }
+      list.select! { _1 <= Liza::Unit }
+      list.select! { systems.include? _1.system }
+    end
+
+    self
+  end
+
+  def filter_by_name_including(name)
+    name = name.downcase
+    log_filter name.inspect
+    check
+
+    lists.each do |list|
+      list.select! { _1.to_s.snakecase.include? name }
+    end
+
+    self
+  end
+
+  def filter_by_starting_with(name)
+    name = name.downcase
+    log_filter name.inspect
+    check
+
+    lists.each do |list|
+      list.select! { _1.to_s.snakecase.start_with? name }
+    end
+
+    self
+  end
+
+  def log_filter(string)
+    log (stick :black, :light_green, string), kaller: caller if log? :higher
+  end
+
+  def filter_history
+    @filter_history ||= []
+  end
+
+  def check
+    filter_history << lists.map(&:dup)
+    _log_history
+  end
+
+  def undo_filter!
+    old_lists = filter_history.pop
+    lists.each.with_index do |list, i|
+      list.clear
+      list.concat old_lists[i]
+    end
+    _log_history
+  end
+
+  def _log_history
+    log_filter "filter_history size: #{filter_history.size}, results size: #{lists.map(&:size).sum}"
   end
 
 end

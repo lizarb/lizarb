@@ -31,4 +31,25 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
     end
   end
 
+  test :filters do
+    assert_equality subject.filter_history.count, 0
+    c0 = subject.get_units.count
+    subject.filter_by_systems :dev
+    assert_lt subject.get_units.count, c0
+    assert_equality subject.filter_history.count, 1
+
+    c1 = subject.get_units.count
+    subject.filter_by_starting_with "gene"
+    assert_lt subject.get_units.count, c1
+    assert_equality subject.filter_history.count, 2
+
+    subject.undo_filter!
+    assert_equality subject.get_units.count, c1
+    assert_equality subject.filter_history.count, 1
+
+    subject.undo_filter!
+    assert_equality subject.get_units.count, c0
+    assert_equality subject.filter_history.count, 0
+  end
+
 end
