@@ -53,4 +53,8 @@ class DevSystem::BaseCommand < DevSystem::Command
 
   def action_name() = env[:command_action]
 
+  def self.typo() = TypographyShell
+
+  def typo() = TypographyShell
+
 end
