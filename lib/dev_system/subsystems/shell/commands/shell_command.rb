@@ -187,22 +187,4 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     DevBox.command ["shell_loc"]
   end
 
-  # color helpers
-
-  def color klass
-    return klass unless klass < Liza::Unit
-
-    namespace, _sep, classname = klass.to_s.rpartition('::')
-
-    if namespace.empty?
-      return stick classname, Liza.const(classname).system.color
-    end
-
-    "#{
-      stick namespace, Liza.const(namespace).system.color
-    }::#{
-      stick classname, Liza.const(classname).color
-    }"
-  end
-
 end
