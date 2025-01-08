@@ -184,7 +184,143 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   # liza shell:loc
   def call_loc
-    DevBox.command ["shell_loc"]
+    app_shell = AppShell.new
+    app_shell.filter_by_starting_with args[0] if args[0]
+    app_shell.filter_by_systems *AppShell.writable_systems.values
+
+    total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
+
+    app_shell.get_structures.each do |structure|
+      next if structure.empty?
+      puts
+      puts typo.h1 structure.name.to_s.upcase, structure.color
+      puts
+
+      structure_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
+
+      structure.layers.each do |layer|
+        next if layer.objects.empty?
+
+        m = "h#{layer.level}"
+        puts typo.send m, layer.name.to_s, layer.color unless layer.level == 1
+
+        puts stick layer.color, layer.path
+        puts
+      
+        layer_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
+        layer.objects.each do |object|
+          object_type = object.class == Module ? "module" : "class"
+
+          loc = CoderayGemShell.loc_for(object)
+
+          sections = object.sections.to_h
+          # sections_count = sections.count
+          consts = sections.map { _2[:constants].count }.sum
+          cm = sections.map { _2[:class_methods].count }.sum
+          im = sections.map { _2[:instance_methods].count }.sum
+
+          views = object.erbs_defined.count rescue 0
+
+          layer_total[:loc] += loc
+          layer_total[:c] += consts
+          layer_total[:cm] += cm
+          layer_total[:im] += im
+          layer_total[:views] += views
+
+          structure_total[:loc] += loc
+          structure_total[:c] += consts
+          structure_total[:cm] += cm
+          structure_total[:im] += im
+          structure_total[:views] += views
+
+          total[:loc] += loc
+          total[:c] += consts
+          total[:cm] += cm
+          total[:im] += im
+          total[:views] += views
+
+          content = String.new
+          content << "{ "
+          content << ":loc => #{loc.to_s.rjust_blanks 4}, "
+
+
+          # content << ":sections => #{sections_count}, "
+          content << ":c => #{consts.to_s.rjust_blanks 2}, "
+          content << ":cm => #{cm.to_s.rjust_blanks 2}, "
+          content << ":im => #{im.to_s.rjust_blanks 2}, "
+          content << ":views => #{views.to_s.rjust_blanks 2} "
+
+          content << "}"
+
+          content = stick layer.color, content
+
+          sidebar = "#{object_type} #{(typo.color_class object)}"
+          count = object.to_s.length + object_type.length + 2
+          size = Log.panel.sidebar_size - count
+          sidebar << " " * size if size > 0
+
+          log content, sidebar: sidebar
+        end
+        puts
+
+        sidebar = "small subtotal"
+        size = Log.panel.sidebar_size - sidebar.length - 1
+        sidebar << " " * size if size > 0
+
+        content = "{ "
+        content << ":loc => #{layer_total[:loc].to_s.rjust_blanks 4}, "
+        content << ":c => #{layer_total[:c].to_s.rjust_blanks 2}, "
+        content << ":cm => #{layer_total[:cm].to_s.rjust_blanks 2}, "
+        content << ":im => #{layer_total[:im].to_s.rjust_blanks 2}, "
+        content << ":views => #{layer_total[:views].to_s.rjust_blanks 2} "
+        content << "}"
+        
+        log content, sidebar: sidebar
+
+        puts
+      end
+
+      sidebar = "SUBTOTAL"
+      size = Log.panel.sidebar_size - sidebar.length - 1
+      sidebar << " " * size if size > 0
+
+      content = "{ "
+      content << ":loc => #{structure_total[:loc].to_s.rjust_blanks 4}, "
+      content << ":c => #{structure_total[:c].to_s.rjust_blanks 2}, "
+      content << ":cm => #{structure_total[:cm].to_s.rjust_blanks 2}, "
+      content << ":im => #{structure_total[:im].to_s.rjust_blanks 2}, "
+      content << ":views => #{structure_total[:views].to_s.rjust_blanks 2} "
+      content << "}"
+      content = stick :b, :lightest_white, :darkest_black, content
+
+      log content, sidebar: sidebar
+    end
+    puts
+
+
+    sidebar = "TOTAL"
+    size = Log.panel.sidebar_size - sidebar.length - 1
+    sidebar << " " * size if size > 0
+
+    content = "{ "
+    content << ":loc => #{total[:loc].to_s.rjust_blanks 4}, "
+    content << ":cm => #{total[:cm].to_s.rjust_blanks 2}, "
+    content << ":im => #{total[:im].to_s.rjust_blanks 2}, "
+    content << ":views => #{total[:views].to_s.rjust_blanks 2} "
+    content << "}"
+    content = stick :b, :black, :white, content
+
+    puts
+    log content, sidebar: sidebar
+    puts
+    puts
+    puts
+    puts stick :b, :black, :white, "loc:   lines of code"
+    puts stick :b, :black, :white, "c:     constants"
+    puts stick :b, :black, :white, "cm:    class methods"
+    puts stick :b, :black, :white, "im:    instance methods"
+    puts stick :b, :black, :white, "views: views"
+    puts
   end
 
 end

@@ -60,7 +60,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
   # print helpers
 
   def print_class klass, description: nil
-    return if [NotFoundCommand, ShellLocCommand].include? klass
+    return if [NotFoundCommand].include? klass
 
     sidebar_length = 30
     klass.get_command_signatures.each do |signature|
