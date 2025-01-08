@@ -12,6 +12,7 @@ class Liza::UnitLoggingPart < Liza::Part
       object,
       unit: self,
       method_name: nil,
+      sidebar: nil,
       kaller: caller
     )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
@@ -26,6 +27,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:unit] = unit
       env[:unit_class] = unit_class
       env[:method_name] = method_name
+      env[:sidebar] = sidebar
       env[:message_log_level] = log_level
       env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
@@ -40,6 +42,7 @@ class Liza::UnitLoggingPart < Liza::Part
       object,
       unit: self,
       method_name: nil,
+      sidebar: nil,
       kaller: caller
     )
       log_level = log_levels[log_level] if log_level.is_a? Symbol
@@ -54,6 +57,7 @@ class Liza::UnitLoggingPart < Liza::Part
       env[:unit] = unit
       env[:unit_class] = unit_class
       env[:method_name] = method_name
+      env[:sidebar] = sidebar
       env[:message_log_level] = log_level
       env[:unit_log_level] = unit.log_level
       env[:caller] = kaller
