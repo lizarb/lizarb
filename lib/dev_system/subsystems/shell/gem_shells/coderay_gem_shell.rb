@@ -23,4 +23,11 @@ class DevSystem::CoderayGemShell < DevSystem::GemShell
     scan(text, lang).loc
   end
 
+  def self.loc_for(klass, lang = :ruby)
+    fname = klass.source_location[0]
+    fname = fname.sub "/version", "" if klass == Lizarb # this is a hack :)
+    text  = TextShell.read(fname, log_level: :higher)
+    loc(text, lang)
+  end
+
 end
