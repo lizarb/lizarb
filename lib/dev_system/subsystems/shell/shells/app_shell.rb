@@ -304,6 +304,17 @@ class DevSystem::AppShell < DevSystem::Shell
     self
   end
 
+  def filter_in_units(*units)
+    log_filter units.inspect
+    check
+
+    lists.each do |list|
+      list.select! { units.include? _1 }
+    end
+
+    self
+  end
+
   def filter_by_unit(unit_class)
     log_filter unit_class.inspect
     check
