@@ -333,9 +333,7 @@ class DevSystem::AppShell < DevSystem::Shell
     check
 
     lists.each do |list|
-      list.reject! { _1 <= Module }
-      list.select! { _1 <= Liza::Unit }
-      list.select! { systems.include? _1.system }
+      list.select! { (_1 <= Liza::Unit) ? (systems.include? _1.system) : true }
     end
 
     self
