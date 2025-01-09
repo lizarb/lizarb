@@ -64,6 +64,7 @@ class App
 
   def self.directory(directory = nil, systems: nil)
     if directory
+      @directory_name = directory
       folder directory, systems: systems
     else
       @directory
@@ -71,7 +72,7 @@ class App
   end
 
   def self.systems_directory
-    @systems_directory ||= root / "lib"
+    @systems_directory ||= root / systems_directory_name
   end
 
   def self.folder folder = nil, systems: nil
@@ -87,6 +88,10 @@ class App
     end
   end
 
+  def self.directory_name () = @directory_name
+
+  def self.systems_directory_name () = @systems_directory_name ||= "lib"
+
   def self.path
     @path
   end
@@ -99,6 +104,7 @@ class App
     raise "locked" if @locked
     if sys_folder
       @systems_directory = "#{root}/#{sys_folder}"
+      @systems_directory_name = sys_folder
       @sys_folder = sys_folder
       @sys_relative_path = sys_folder
       @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
