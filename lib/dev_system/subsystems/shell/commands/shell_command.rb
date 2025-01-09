@@ -213,7 +213,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
           loc = CoderayGemShell.loc_for(object)
 
-          sections = object.sections.to_h
+          sections = object.sections.to_h rescue {}
           # sections_count = sections.count
           consts = sections.map { _2[:constants].count }.sum
           cm = sections.map { _2[:class_methods].count }.sum
