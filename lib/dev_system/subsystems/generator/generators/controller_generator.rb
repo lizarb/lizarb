@@ -55,7 +55,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   def super_controller
-    @super_controller ||= Liza.const "#{command.simple_string :super}_#{env[:generator_name]}"
+    @super_controller ||= Liza.const "#{arg_super}_#{env[:generator_name]}"
   end
 
   def controller_name
@@ -125,6 +125,8 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   def arg_prefix() = @arg_prefix ||= command.simple_boolean(:prefix)
 
+  def arg_super() = @arg_super ||= command.simple_string(:super)
+
   section :defaults_and_inputs
 
   def self.set_default_ask(ask)= before_instance_call :set_default_ask, ask
@@ -147,7 +149,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   def set_default_super(zuper)
     command.set_default_string :super, zuper
-    # check if class exists
+    log stick :white, :red, "Checking if class exists... #{arg_super}_#{env[:generator_name]}"
     Liza.const "#{zuper}_#{env[:generator_name]}"
   end
 
