@@ -1,6 +1,6 @@
 class DevSystem::ShellGenerator < DevSystem::ControllerGenerator
 
-  def before
+  def before_create_controller
     super
     default_methods = %w[load,dump read,write import,export serialize,deserialize].sample
     family_name = super_controller.last_namespace
