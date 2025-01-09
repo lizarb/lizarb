@@ -2,16 +2,14 @@
 
   def self.call(env)
     ret = true
-      super
-      
-      env[:format_out] = <%= arg_name.camelize %>.format env[:format_in]
-    rescue => e
-      raise if env[:raise_errors]
-      log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-      env[:error] = e
-      env[:format_out] = env[:format_in]
-    ensure
-      nil
-    end
-
+    super
+    
+    env[:format_out] = <%= arg_name.camelize %>.format env[:format_in]
+  rescue => e
+    raise if env[:raise_errors]
+    log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+    env[:error] = e
+    env[:format_out] = env[:format_in]
+  ensure
+    nil
   end
