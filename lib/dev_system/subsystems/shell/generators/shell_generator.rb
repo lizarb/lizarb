@@ -45,6 +45,18 @@ class DevSystem::ShellGenerator < DevSystem::ControllerGenerator
     set_default_views "eof"
   end
 
+  # liza g shell:gem
+
+  def call_gem
+    set_default_require arg_name
+    set_default_super "gem"
+
+    create_controller do |unit, test|
+      unit.section name: :"use_case_1", render_key: :actions, action: :use_case_1
+      test.section name: :subject
+    end
+  end
+
   # liza g shell:converter
 
   def call_converter
