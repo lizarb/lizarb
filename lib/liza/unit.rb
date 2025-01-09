@@ -26,7 +26,10 @@ class Liza::Unit
   # Hook into constant definition to capture constants under the current section
   def self.const_added(name)
     super
+    # ensures dynamic constants are not captured
     return unless const_defined? name
+    # ensures constants defined in the System class are not captured
+    return if self < Liza::System
     sections[@current_section || :default][:constants] << name
   end
 
