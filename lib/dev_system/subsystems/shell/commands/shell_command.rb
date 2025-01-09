@@ -304,6 +304,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
     content = "{ "
     content << ":loc => #{total[:loc].to_s.rjust_blanks 4}, "
+    content << ":c => #{total[:c].to_s.rjust_blanks 2}, "
     content << ":cm => #{total[:cm].to_s.rjust_blanks 2}, "
     content << ":im => #{total[:im].to_s.rjust_blanks 2}, "
     content << ":views => #{total[:views].to_s.rjust_blanks 2} "
