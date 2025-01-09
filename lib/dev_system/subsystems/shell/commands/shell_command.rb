@@ -193,7 +193,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     app_shell.get_structures.each do |structure|
       next if structure.empty?
       puts
-      puts typo.h1 structure.name.to_s.upcase, structure.color
+      puts typo.h1 structure.name.to_s, structure.color
       puts
 
       structure_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
