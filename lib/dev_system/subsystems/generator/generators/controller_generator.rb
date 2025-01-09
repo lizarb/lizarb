@@ -76,7 +76,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
     @available_places ||= begin
       d = super_controller.division
       directory_name = arg_division \
-        ? "#{division_name}_#{d.plural}"
+        ? "#{arg_name}_#{d.plural}"
         : d.plural
       log "directory_name: #{directory_name}"
       ControllerShell.places_for(d, directory_name: directory_name)
