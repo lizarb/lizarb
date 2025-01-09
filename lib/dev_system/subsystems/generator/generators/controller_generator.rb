@@ -9,8 +9,9 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   section :creating
-
+  
   def create_controller(&block)
+    before_create_controller
     log "super_controller: #{super_controller}"
     
     log "Determining class name..."
@@ -52,6 +53,10 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
         end
       end
     end
+  end
+ 
+  def before_create_controller
+    # placeholder
   end
 
   def super_controller
