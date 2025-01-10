@@ -43,6 +43,20 @@ class DevSystem::InputShell < DevSystem::Shell
     rescue_input_interrupt e
   end
 
+  def self.pick_log_level(title = "Which log level?", default: )
+    choices = {
+      "lowest"  => 1,
+      "lower"   => 2,
+      "low"     => 3,
+      "normal"  => 4,
+      "high"    => 5,
+      "higher"  => 6,
+      "highest" => 7,
+    }
+    answer = pick_one title, choices.keys, default: default
+    choices[answer]
+  end
+
   def self.multi_select title, choices, selected: :all
     raise ArgumentError, "choices must be a hash", caller unless choices.is_a? Hash
     return choices if choices.empty?
