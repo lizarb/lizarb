@@ -1,15 +1,15 @@
 class DevSystem::TypographyShell < DevSystem::Shell
 
-  def self.h1(text, color)
-    stick color, " #{ text } ".center(100, "=")
+  def self.h1(text, color, length: 100)
+    stick color, " #{ text } ".center(length, "=")
   end
 
-  def self.h2(text, color)
-    stick color, " #{ text } ".center(100, "-")
+  def self.h2(text, color, length: 100)
+    stick color, " #{ text } ".center(length, "-")
   end
 
-  def self.h3(text, color)
-    stick color, " #{ text } ".center(100, " ")
+  def self.h3(text, color, length: 100)
+    stick color, " #{ text } ".center(length, " ")
   end
 
   def self.color_class klass
