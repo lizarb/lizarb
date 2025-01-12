@@ -574,7 +574,7 @@ class DevSystem::AppShell < DevSystem::Shell
       name: "App",
       color: system.color,
       path: "#{App.directory_name}/",
-      objects: consts[:top_level].select { _1.name == "App" }
+      objects: []
     )
 
     consts[:app].each do |system_name, tree_system|
