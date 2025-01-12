@@ -14,12 +14,4 @@ class Class
     ancestors.take_while { _1 <= klass }
   end
 
-  def first_namespace
-    name.rpartition('::')[0]
-  end
-
-  def last_namespace
-    name.rpartition('::')[-1]
-  end
-
 end
