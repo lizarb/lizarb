@@ -327,6 +327,44 @@ class DevSystem::AppShell < DevSystem::Shell
     self
   end
 
+  def filter_by_domains(domains)
+    log_filter domains.inspect
+    check
+
+    system_names = domains - ["core", "app"]
+    is_core_included = domains.include? "core"
+    is_app_included = domains.include? "app"
+
+    unless is_core_included
+      log "core is not included in the domains"
+
+      consts[:top_level].clear
+      consts[:liza].values.map &:clear
+    end
+
+    consts[:systems].each do |system_name, tree_system|
+      next if system_names.include? system_name.to_s
+      log "#{system_name} is not included in the domains"
+      tree_system["system"].clear
+      tree_system["box"].clear
+      tree_system["parts"].clear
+      tree_system["controllers"].values.map &:clear
+      tree_system["subsystems"].values.map { _1.values.map &:clear }
+    end
+
+    unless is_app_included
+      log "app is not included in the domains"
+
+      consts[:app].each do |system_name, tree_system|
+        next if system_names.include? system_name
+        tree_system["box"].clear
+        tree_system["controllers"].values.each { _1.values.map &:clear }
+      end
+    end
+
+    self
+  end
+
   def filter_by_systems(*systems)
     log_filter systems.inspect
     systems = systems.map { (_1.is_a? Symbol) ? App.systems[_1] : _1 }
