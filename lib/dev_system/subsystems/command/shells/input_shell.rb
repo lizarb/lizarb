@@ -57,6 +57,19 @@ class DevSystem::InputShell < DevSystem::Shell
     choices[answer]
   end
 
+  def self.pick_writeable_domains(title)
+    domains = AppShell.get_writable_domains
+    pick_domains title, domains: domains
+  end
+
+  def self.pick_domains(domains, default, title)
+    choices = domains.map do
+      color = _2.color rescue :white
+      [(stick color, _2.to_s).to_s, _1]
+    end.to_h
+    multi_select title, choices, selected: default
+  end
+
   def self.multi_select title, choices, selected: :all
     raise ArgumentError, "choices must be a hash", caller unless choices.is_a? Hash
     return choices if choices.empty?
