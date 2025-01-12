@@ -7,6 +7,18 @@ class DevSystem::AppShell < DevSystem::Shell
     App.systems.select { _2.source_location_radical.start_with? root }
   end
 
+  def self.get_writable_domains
+    ret = {}
+    is_core_writeable = Lizarb.is_gem_dir
+
+    ret[:core] = "Core" if is_core_writeable
+    ret.merge! writable_systems
+    ret[:app] = "App"
+    ret.transform_keys! { _1.to_s }
+
+    ret
+  end
+
   #
 
   def self.consts

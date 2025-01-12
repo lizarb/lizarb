@@ -10,6 +10,29 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
     assert_equality a, b
   end
 
+  test :get_writable_domains do
+    expected = {
+      :core=>"Core",
+      :dev=>DevSystem,
+      :happy=>HappySystem,
+      :net=>NetSystem,
+      :web=>WebSystem,
+      :work=>WorkSystem,
+      :micro=>MicroSystem,
+      :desk=>DeskSystem,
+      :crypto=>CryptoSystem,
+      :media=>MediaSystem,
+      :art=>ArtSystem,
+      :deep=>DeepSystem,
+      :prime=>PrimeSystem,
+      :lab=>LabSystem,
+      :eco=>EcoSystem,
+      :app=>"App"
+    }
+
+    assert_equality subject_class.get_writable_domains, expected
+  end
+
   test :subject do
     system_keys = ["dev", "happy", "net", "web", "work", "micro", "desk", "crypto", "media", "art", "deep", "prime", "lab", "eco"]
     assert_equality subject.consts.keys,           [:top_level, :liza, :systems, :app]
