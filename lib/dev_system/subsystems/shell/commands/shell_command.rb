@@ -184,9 +184,22 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
   # liza shell:loc
   def call_loc
+    set_default_array :domains, AppShell.get_writable_domains.keys
+    
+    set_input_array :domains do |default|
+      domains = InputShell.get_writable_domains
+      title = "Which domains are we going to inspect?"
+      InputShell.pick_domains domains, default, title
+    end
+
     app_shell = AppShell.new
-    app_shell.filter_by_starting_with args[0] if args[0]
-    app_shell.filter_by_systems *AppShell.writable_systems.values
+
+    domains = simple_array(:domains)
+    log "domains = #{domains}"
+    app_shell.filter_by_domains domains
+
+    name = simple_args[0]
+    app_shell.filter_by_starting_with name if name
 
     total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
