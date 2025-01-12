@@ -357,7 +357,7 @@ class DevSystem::AppShell < DevSystem::Shell
     check
 
     lists.each do |list|
-      list.select! { _1.to_s.snakecase.start_with? name }
+      list.select! { _1.last_namespace.snakecase.start_with? name }
     end
 
     self

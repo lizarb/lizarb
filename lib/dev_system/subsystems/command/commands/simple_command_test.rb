@@ -20,7 +20,7 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     :defaults=>{
       :constants=>[],
       :class_methods=>[],
-      :instance_methods=>[:ask?, :default_args, :set_default_arg, :default_strings, :set_default_string, :default_booleans, :set_default_boolean]
+      :instance_methods=>[:ask?, :default_args, :set_default_arg, :default_strings, :set_default_string, :set_default_array, :default_booleans, :set_default_boolean]
     },
     :input=>{
       :constants=>[],

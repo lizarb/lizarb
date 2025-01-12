@@ -72,6 +72,11 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     default_strings[key] = value
   end
 
+  def set_default_array(key, value)
+    log :highest, "set_default_array #{key.inspect} #{value.inspect}"
+    set_default_string key, value.join(",")
+  end
+
   def default_booleans
     h = get :default_booleans
     return h if h
@@ -120,7 +125,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   def set_input_array(key, &block)
     log :highest, "set_input_array #{key.inspect}"
     set_input_string key do |default|
-      block.call(default).join ","
+      block.call(default.to_s.split ",").join ","
     end
   end
 
