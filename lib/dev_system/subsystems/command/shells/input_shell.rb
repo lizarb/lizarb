@@ -79,6 +79,7 @@ class DevSystem::InputShell < DevSystem::Shell
 
   def self.rescue_input_interrupt(e)
     log :higher, "#{e.class}: #{e.message}"
+    raise e unless defined? TTY
     raise e unless e.is_a? TTY::Reader::InputInterrupt
     puts
     puts
