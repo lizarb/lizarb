@@ -20,30 +20,30 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
       app_shell.filter_by_name_including failed_name if failed_name
     end
 
-    structures = app_shell.get_structures.reject(&:empty?)
-    log "structures: #{structures.count}"
+    domains = app_shell.get_domains.reject(&:empty?)
+    log "domains: #{domains.count}"
     puts
 
-    if structures.empty?
+    if domains.empty?
       log stick :black, :green, "No results found for '#{failed_name}'"
       app_shell.undo_filter!
-      structures = app_shell.get_structures
+      domains = app_shell.get_domains
     end
-    structures = app_shell.get_structures.reject(&:empty?)
+    domains = app_shell.get_domains.reject(&:empty?)
 
-    structures.each do |structure|
+    domains.each do |domain|
       if log? :normal
-        puts typo.h1 structure.name.to_s.upcase, structure.color
+        puts typo.h1 domain.name.to_s.upcase, domain.color
       end
       
-      next if structure.empty?
+      next if domain.empty?
       puts
-      structure.layers.each do |layer|
+      domain.layers.each do |layer|
         next if layer.objects.empty?
 
         if log? :normal
           m = "h#{layer.level}"
-          name = layer.level==1 ? structure.name.to_s.upcase : layer.name.to_s
+          name = layer.level==1 ? domain.name.to_s.upcase : layer.name.to_s
           puts typo.send m, name, layer.color unless layer.level==3
 
           puts stick layer.color, layer.path

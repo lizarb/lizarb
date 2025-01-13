@@ -203,15 +203,15 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
     total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
-    app_shell.get_structures.each do |structure|
-      next if structure.empty?
+    app_shell.get_domains.each do |domain|
+      next if domain.empty?
       puts
-      puts typo.h1 structure.name.to_s, structure.color
+      puts typo.h1 domain.name.to_s, domain.color
       puts
 
-      structure_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
+      domain_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
-      structure.layers.each do |layer|
+      domain.layers.each do |layer|
         next if layer.objects.empty?
 
         m = "h#{layer.level}"
@@ -240,11 +240,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
           layer_total[:im] += im
           layer_total[:views] += views
 
-          structure_total[:loc] += loc
-          structure_total[:c] += consts
-          structure_total[:cm] += cm
-          structure_total[:im] += im
-          structure_total[:views] += views
+          domain_total[:loc] += loc
+          domain_total[:c] += consts
+          domain_total[:cm] += cm
+          domain_total[:im] += im
+          domain_total[:views] += views
 
           total[:loc] += loc
           total[:c] += consts
@@ -298,11 +298,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       sidebar << " " * size if size > 0
 
       content = "{ "
-      content << ":loc => #{structure_total[:loc].to_s.rjust_blanks 4}, "
-      content << ":c => #{structure_total[:c].to_s.rjust_blanks 2}, "
-      content << ":cm => #{structure_total[:cm].to_s.rjust_blanks 2}, "
-      content << ":im => #{structure_total[:im].to_s.rjust_blanks 2}, "
-      content << ":views => #{structure_total[:views].to_s.rjust_blanks 2} "
+      content << ":loc => #{domain_total[:loc].to_s.rjust_blanks 4}, "
+      content << ":c => #{domain_total[:c].to_s.rjust_blanks 2}, "
+      content << ":cm => #{domain_total[:cm].to_s.rjust_blanks 2}, "
+      content << ":im => #{domain_total[:im].to_s.rjust_blanks 2}, "
+      content << ":views => #{domain_total[:views].to_s.rjust_blanks 2} "
       content << "}"
       content = stick :b, :lightest_white, :darkest_black, content
 

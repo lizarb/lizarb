@@ -451,20 +451,20 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter "filter_history size: #{filter_history.size}, results size: #{lists.map(&:size).sum}"
   end
 
-  section :structures
+  section :domains
 
-  # Returns an array of structures representing the core, systems, and app.
+  # Returns an array of domains representing the core, systems, and app.
   #
-  # Each Structure contains the name, color, and layers of the core, systems, and app.
+  # Each Domain contains the name, color, and layers of the core, systems, and app.
   #
-  # @return [Array<Structure>] An array of structures.
+  # @return [Array<Domain>] An array of domains.
   #
   # @example
-  #   structures = app_shell.get_structures
-  #   structures.each do |structure|
-  #     log structure.name
-  #     log structure.color
-  #     structure.layers.each do |layer|
+  #   domains = app_shell.get_domains
+  #   domains.each do |domain|
+  #     log domain.name
+  #     log domain.color
+  #     domain.layers.each do |layer|
   #       log layer.name
   #       log layer.path
   #       layer.objects.each do |object|
@@ -473,30 +473,30 @@ class DevSystem::AppShell < DevSystem::Shell
   #     end
   #   end
   #
-  def get_structures
+  def get_domains
     ret = []
 
-    log_filter "reading the structure of the core"
+    log_filter "reading the domain of the core"
 
-    ret << Structure.new(
+    ret << Domain.new(
       name: "core",
       color: :white,
       layers: get_layers_for_core
     )
 
-    log_filter "reading the structure of the systems"
+    log_filter "reading the domains of the systems"
 
     App.systems.values.each do |system|
-      ret << Structure.new(
+      ret << Domain.new(
         name: system.to_s,
         color: system.color,
         layers: get_layers_for_system(system)
       )
     end
 
-    log_filter "reading the structure of the app"
+    log_filter "reading the domain of the app"
 
-    ret << Structure.new(
+    ret << Domain.new(
       name: "app",
       color: :white,
       layers: get_layers_for_app
@@ -627,7 +627,7 @@ class DevSystem::AppShell < DevSystem::Shell
   end
 
   # A PORO representing a top-level namespace of LizaRB.
-  class Structure
+  class Domain
     def initialize(name: , color: , layers: )
       @name = name
       @color = color
