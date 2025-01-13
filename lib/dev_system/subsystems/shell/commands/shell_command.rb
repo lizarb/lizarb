@@ -187,7 +187,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     set_default_array :domains, AppShell.get_writable_domains.keys
     
     set_input_array :domains do |default|
-      domains = InputShell.get_writable_domains
+      domains = AppShell.get_writable_domains
       title = "Which domains are we going to inspect?"
       InputShell.pick_domains domains, default, title
     end
@@ -198,8 +198,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     log "domains = #{domains}"
     app_shell.filter_by_domains domains
 
-    name = simple_args[0]
-    app_shell.filter_by_starting_with name if name
+    app_shell.filter_by_any_name_including simple_args if simple_args.any?
 
     total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
