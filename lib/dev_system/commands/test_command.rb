@@ -7,7 +7,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     set_default_boolean :run, true
     
     set_input_array :domains do |default|
-      domains = AppShell.get_writable_domains
+      domains = InputShell.get_writable_domains
       title = "Which domains are we going to test?"
       InputShell.pick_domains domains, default, title
     end
@@ -20,7 +20,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     now = Time.now
 
     app_shell = AppShell.new
-    app_shell.filter_by_unit Liza::UnitTest
+    app_shell.filter_by_unit Liza::Test
 
     domains = simple_array(:domains)
     log "domains = #{domains}"
@@ -108,7 +108,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
             s
           end
           total_line = "{ #{ total_line.join(", ") } }"
-          Liza.log "#{ColorShell.color_unit object}#{" " * size} #{total_line}"
+          Liza.log "#{typo.color_class object}#{" " * size} #{total_line}"
         end
         puts
       end
