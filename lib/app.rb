@@ -56,7 +56,7 @@ class App
     puts "LizaRB v#{Lizarb::VERSION}"
   end
 
-  def call_version
+  def call_v
     puts "LizaRB v#{Lizarb::VERSION}"
   end
 
