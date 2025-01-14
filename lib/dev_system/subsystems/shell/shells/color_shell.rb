@@ -54,26 +54,6 @@ class DevSystem::ColorShell < DevSystem::Shell
     "##{"%02x" % r}#{"%02x" % g}#{"%02x" % b}"
   end
 
-  def self.color_unit klass
-    return klass.to_s unless klass < Liza::Unit
-    return klass.to_s if klass.superclass == Liza::Unit
-
-    ret = ""
-    namespace, _sep, classname = klass.name.rpartition('::')
-    unless namespace.empty?
-      system_color = klass.system.color
-      ret << stick(namespace, system_color, :b).to_s
-      ret << "::"
-    end
-
-    klass = klass.subsystem if klass < Liza::Controller
-    unit_color = nil
-    unit_color = klass.system.color
-
-    ret << stick(classname, unit_color, :b).to_s
-    ret
-  end
-
   # Standard ANSI Colors:
 
   # red
