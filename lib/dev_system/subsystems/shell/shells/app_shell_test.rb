@@ -75,7 +75,7 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
     assert_equality subject.filter_history.count, 0
   end
 
-  test :structure, :layer do
+  test :domain, :layer do
     layers = subject.get_layers_for_core
     assert_gt layers.count, 0
     
