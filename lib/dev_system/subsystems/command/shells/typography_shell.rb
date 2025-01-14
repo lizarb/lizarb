@@ -13,22 +13,20 @@ class DevSystem::TypographyShell < DevSystem::Shell
   end
 
   def self.color_class klass
-    return klass unless klass < Liza::Unit
+    return klass.to_s unless klass < Liza::Unit
+    return klass.to_s if klass.superclass == Liza::Unit
 
     namespace, _sep, classname = klass.to_s.rpartition('::')
 
-    if namespace.empty?
-      return stick classname, Liza.const(classname).system.color
-    end
-
-    if namespace == "Liza"
-      return stick klass.to_s, :white
-    end
+    return stick classname, klass.system.color if namespace.empty?
+    return stick klass.to_s, :white if namespace == "Liza"
+    
+    ns = Liza.const(namespace)
 
     "#{
-      stick namespace, Liza.const(namespace).system.color
+      stick namespace, ns.system.color
     }::#{
-      stick classname, Liza.const(classname).color
+      stick classname, klass.color
     }"
   end
 
