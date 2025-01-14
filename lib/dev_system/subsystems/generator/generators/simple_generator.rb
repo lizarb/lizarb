@@ -331,7 +331,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   def pick_many_units(units)
     options = units.map do |unit|
       [
-        "#{ColorShell.color_unit unit}",
+        "#{TypographyShell.color_class unit}",
         unit
       ]
     end.to_h
