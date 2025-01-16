@@ -75,4 +75,34 @@ class DevSystem::LogPanel < Liza::Panel
     raise "there's something wrong with kaller"
   end
 
+  def method_name_for env
+    env[:caller].each do |s|
+      m = s.match(/'(.*)'/)
+      t = m[1]
+
+        # next if t.include? " in <class:"
+        # return t.split(" ").last if t.include? " in "
+      t = t.split(".").last.split("#").last
+
+      next if t == "log"
+      next if t == "each"
+      next if t == "map"
+      next if t == "with_index"
+      next if t == "instance_exec"
+      next if t.start_with? "_"
+
+      return t
+    rescue => e
+      puts e
+      puts
+      puts "  caller:"
+      puts env[:caller]
+      puts
+      puts "  s:"
+      puts s
+    end
+
+    raise "there's something wrong with kaller"
+  end if Lizarb.ruby_version >= "3.4"
+
 end
