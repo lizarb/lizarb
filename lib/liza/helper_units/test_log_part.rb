@@ -127,6 +127,12 @@ class Liza::TestLogPart < Liza::Part
       x
     end
 
+    def _caller_line_split s
+      x = s.split ":in '"
+      x[1] = x[1][0..-2]
+      x
+    end if Lizarb.ruby_version >= "3.4"
+
   end
 
 end
