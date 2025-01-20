@@ -106,7 +106,7 @@ class DevSystem::AppShell < DevSystem::Shell
         array.delete klass
       end
 
-      system.subsystems.each do |subsystem|
+      system.subsystems.values.each do |subsystem|
         part_classes = array.select { _1.source_location_radical.include?("/subsystems/#{subsystem.last_namespace.downcase}/parts/") }
         tree["subsystems"][subsystem] = {}
         tree["subsystems"][subsystem]["parts"] = part_classes
@@ -178,7 +178,7 @@ class DevSystem::AppShell < DevSystem::Shell
         tree["controllers"][klass.subsystem][klass.division] << klass
       end
 
-      system.subsystems.each do |subsystem|
+      system.subsystems.values.each do |subsystem|
         tree["controllers"][subsystem]&.each do |division, klasses|
           klasses.sort_by! &:to_s
         end

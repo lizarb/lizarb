@@ -11,7 +11,7 @@ class Liza::System < Liza::Unit
   end
 
   def self.subsystems
-    @subsystems ||= subs.map { const _1 }
+    @subsystems ||= subs.map { [_1, const(_1)] }.to_h
   end
 
   # Adds a subsystem to the system
