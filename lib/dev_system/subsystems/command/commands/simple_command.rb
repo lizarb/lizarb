@@ -3,11 +3,13 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   section :filters
 
   def before
+    super
     before_given
     before_simple
   end
 
   def after
+    super
     after_simple
   end
 

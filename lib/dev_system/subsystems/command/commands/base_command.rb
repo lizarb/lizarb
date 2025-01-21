@@ -15,16 +15,24 @@ class DevSystem::BaseCommand < DevSystem::Command
   def call(env)
     log :higher, "env.count is #{env.count}"
     @env = env
-    before if defined? before
+    before
     method_name = "call_#{action_name}"
     if respond_to? method_name
       public_send method_name
-      after if defined? after
+      after
       return true
     end
 
     log "method not found: #{method_name.inspect}"
     raise NoMethodError, "method not found: #{method_name.inspect}"
+  end
+
+  def before
+    # placebolder
+  end
+
+  def after
+    # placebolder
   end
 
   #
