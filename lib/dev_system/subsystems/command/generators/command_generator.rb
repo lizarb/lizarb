@@ -1,5 +1,11 @@
 class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
 
+  def before_create_controller
+    super
+
+    command.set_boolean :rescue_from, false, "Do you want to add a rescue_from method? (centralized rescue for Exception subclasses)"
+  end
+
   section :default
   
   def arg_action_names
@@ -20,6 +26,8 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
     set_default_super "simple"
     
     create_controller do |unit, test|
+      @should_add_rescue_from = command.simple_boolean(:rescue_from)
+
       unit.section name: :filters, render_key: :section_simple_filters
       unit.section name: :actions, render_key: :section_simple_actions
       

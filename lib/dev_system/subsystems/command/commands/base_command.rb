@@ -2,29 +2,36 @@ class DevSystem::BaseCommand < DevSystem::Command
 
   #
 
-  def self.call(env)
+  def self.call(menv)
     super
-    command = env[:command] = new
-    command.call env
+    command = menv[:command] = new
+    command.call menv
   end
 
   #
 
-  attr_reader :env
+  def env() = menv
 
-  def call(env)
-    log :higher, "env.count is #{env.count}"
-    @env = env
-    before
-    method_name = "call_#{action_name}"
-    if respond_to? method_name
-      public_send method_name
-      after
-      return true
+  def call(menv)
+    log :higher, "menv.count is #{menv.count}"
+    self.menv = menv
+
+    if respond_to? action_method_name
+      around
+    else
+      not_found
     end
+  end
 
-    log "method not found: #{method_name.inspect}"
-    raise NoMethodError, "method not found: #{method_name.inspect}"
+  def around
+    log :high, "."
+    before
+    public_send action_method_name
+    after
+    log :high, "."
+  rescue Exception => e
+    raise unless defined? rescue_from
+    rescue_from e
   end
 
   def before
@@ -33,6 +40,10 @@ class DevSystem::BaseCommand < DevSystem::Command
 
   def after
     # placebolder
+  end
+
+  def not_found
+    log stick :red, "Not found: #{action_name}, please define method '#{action_method_name}'"
   end
 
   #
@@ -55,11 +66,11 @@ class DevSystem::BaseCommand < DevSystem::Command
 
   #
 
-  def args
-    env[:args]
-  end
+  menv_reader :args
 
-  def action_name() = env[:command_action]
+  def action_name() = menv[:command_action]
+
+  def action_method_name() = "call_#{action_name}"
 
   def self.typo() = TypographyShell
 

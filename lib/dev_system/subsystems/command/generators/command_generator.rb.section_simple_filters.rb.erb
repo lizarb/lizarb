@@ -12,3 +12,14 @@
     super
     log "#{ time_diff @t }s | done"
   end
+<% if @should_add_rescue_from -%>
+
+  def rescue_from(e)
+    log stick :red, "Exception raised during action #{action_name}: (#{e.class}) #{e.message}"
+    puts "--- e.backtrace ---"
+    puts e.backtrace
+    puts "---"
+    menv[:exception] = e
+    # binding.irb
+  end
+<% end -%>

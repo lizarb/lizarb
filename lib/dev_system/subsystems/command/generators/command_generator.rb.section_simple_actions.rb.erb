@@ -14,5 +14,8 @@
     text = render :<%= action_name %>, format: :txt
     puts stick :b, color, text.strip
 <% end -%>
+  rescue => e
+    log "rescued from (#{e.class}) #{e.message}"
+    binding.irb
   end
 <% end -%>
