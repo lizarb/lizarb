@@ -63,7 +63,7 @@
 <% unless arg_views_none? %>
     text = render :<%= action_name %>, format: :txt
     fg = :<%= ColorShell.colors.keys.sample %>
-    bg = :<%= %w[black onux gray silver white].sample %>
+    bg = :<%= %w[black onyx gray silver white].sample %>
     log stick fg, bg, :b, "text:"
     puts stick fg, bg, :b, text
 <% end -%>
