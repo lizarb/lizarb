@@ -42,7 +42,7 @@ class DevSystem::AppShell < DevSystem::Shell
   #
 
   def get_liza_categories
-    ["unit", "helper_units", "systemic_units", "subsystemic_units", "ruby_tests"]
+    ["unit", "helper_units", "systemic_units", "subsystemic_units", "extra_tests"]
   end
 
   #
@@ -71,9 +71,9 @@ class DevSystem::AppShell < DevSystem::Shell
         .select { _1.source_location_radical.include? "/liza/subsystemic_units" }
         .sort_by { _1.to_s }
 
-    ret["ruby_tests"] =
+    ret["extra_tests"] =
       liza_classes
-        .select { _1.source_location_radical.include? "/liza/ruby_tests" }
+        .select { _1.source_location_radical.include? "/liza/extra_tests" }
         .sort_by { _1.to_s }
 
     raise "not all categories are filled" if get_liza_categories != ret.select { _2.any? }.keys
