@@ -11,6 +11,109 @@ puts "$VERBOSE = true" if $VERBOSE
 
 require_relative "lizarb/version"
 
+class Class
+
+  def descendants
+    ObjectSpace.each_object(Class).select { |klass| klass < self }
+  end
+
+  def and_descendants
+    ObjectSpace.each_object(Class).select { |klass| klass <= self }
+  end
+  
+  def ancestors_until klass
+    ancestors.take_while { _1 <= klass }
+  end
+
+end
+
+class Module
+
+  # ["/path/to/liza.rb", 1]
+  def source_location
+    Array Object.const_source_location name
+  end
+
+  # "/path/to/liza.rb"
+  def source_location_path
+    source_location[0]
+  rescue
+    nil
+  end
+
+  # "/path/to/liza"
+  def source_location_radical
+    source_location_path[0..-4]
+  rescue
+    nil
+  end
+
+  def first_namespace
+    name.rpartition('::')[0]
+  end
+
+  def last_namespace
+    name.rpartition('::')[-1]
+  end
+  
+end
+
+class Proc
+  def relative_source
+    absolute_source
+      .sub("#{Lizarb.app_dir}/", "")
+      .sub("#{Lizarb.root}/", "")
+  end
+
+  def absolute_source
+    sl = source_location
+    "#{sl[0]}:#{sl[1]}"
+  end
+end
+
+class String
+  alias lpartition partition
+
+  def camelcase
+    split("_").map { |s| "#{s[0].to_s.upcase}#{s[1..-1]}" }.join("")
+  end
+
+  alias camelize camelcase
+
+  def snakecase
+    gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+      .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+      .downcase
+  end
+  
+  alias snakefy snakecase
+
+  def rjust_blanks length
+    rjust length, " "
+  end
+
+  def rjust_zeroes length
+    rjust length, "0"
+  end
+
+  def ljust_blanks length
+    ljust length, " "
+  end
+
+  def ljust_zeroes length
+    ljust length, "0"
+  end
+end
+
+class Time
+  def diff digits = 4
+    raise ArgumentError, "digits must be between 1 and 4" unless digits.between? 1, 4
+    f = (self.class.now.to_f - to_f).floor(digits)
+    u, d = f.to_s.split "."
+    "#{u}.#{d.ljust digits, "0"}"
+  end
+end
+
 module Lizarb
   class Error < StandardError; end
   class ModeNotFound < Error; end
@@ -198,15 +301,13 @@ module Lizarb
   #
   # The `setup` method orchestrates the following steps:
   # 1. Determines the environment by setting various directory and configuration variables.
-  # 2. Loads necessary Ruby extensions from the LizaRB library.
-  # 3. Configures the application by loading the main application configuration file.
-  # 4. Overwrites Application settings with environment variables.
-  # 5. Defines log levels for the application based on the boot log level setting.
+  # 2. Configures the application by loading the main application configuration file.
+  # 3. Overwrites Application settings with environment variables.
+  # 4. Defines log levels for the application based on the boot log level setting.
   #
   def setup
     ENV["LOG_BOOT"] = ENV["LOG"] = "1" if ARGV[0] && ARGV[0][0] == "-"
     setup_and_determine_environment
-    setup_and_load_ruby_extensions
     puts "Lizarb  #{__FILE__}" if $VERBOSE
     setup_and_configure_app
     puts "App     #{@config_path}\n\n" if $VERBOSE
@@ -305,18 +406,6 @@ module Lizarb
       puts "                      Lizarb.liz_dir = #{@liz_dir.inspect}"
       puts "                      Lizarb.gem_dir = #{@gem_dir.inspect}"
       puts
-    end
-  end
-
-  # This method is called internally by `setup` and is not intended for direct use.
-  #
-  # - Loads files from `lib/lizarb/ruby/*.rb` which reopen some of Ruby's core classes and add methods to them.
-  # - Prints verbose output if `$VERBOSE` is enabled.
-  #
-  def setup_and_load_ruby_extensions
-    puts "loading #{@liz_dir}/lib/lizarb/ruby/*.rb" if $VERBOSE
-    Dir["#{@liz_dir}/lib/lizarb/ruby/*.rb"].each do |file_name|
-      Kernel.load file_name
     end
   end
 
