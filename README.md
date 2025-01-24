@@ -2,9 +2,9 @@
 
 Liza is a light, experimental framework primarily developed to help study the Ruby language and the Ruby ecosystem.
 
-Liza is a < 2500 LOC framework, which provides an abstract architecture for organizing Ruby code using systems.
+It is a < 3000 LOC Core, which provides an abstract architecture for organizing Ruby code using systems.
 
-It defines 3 top level constants [Lizarb, App, Liza]and works with any gem or app that doesn't implement these constants.
+It defines 3 top level constants [Lizarb, App, Liza] and works with any gem or app that doesn't need these constants.
 
 ## Author note
 
