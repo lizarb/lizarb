@@ -81,6 +81,18 @@ class DevSystem::ShellGenerator < DevSystem::ControllerGenerator
     end
   end
 
+  # liza g shell:renderer
+
+  def call_renderer
+    set_default_require arg_name
+    set_default_super "renderer"
+
+    create_controller do |unit, test|
+      unit.section name: :renderer
+      test.section name: :subject
+    end
+  end
+
   # liza g shell:examples
 
   def call_examples

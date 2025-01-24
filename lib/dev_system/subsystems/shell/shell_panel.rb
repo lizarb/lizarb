@@ -67,4 +67,21 @@ class DevSystem::ShellPanel < Liza::Panel
     end
   end
 
+  section :rendering
+
+  def renderer format, shell_key = format, options = {}
+    renderers[shell_key] = {
+      format: format,
+      options: options
+    }
+  end
+
+  def renderers
+    @renderers ||= {}
+  end
+
+  def render? format
+    renderers.key? format.to_sym
+  end
+
 end

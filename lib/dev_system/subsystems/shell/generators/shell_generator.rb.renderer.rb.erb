@@ -1,0 +1,15 @@
+# view renderer.rb.erb
+
+  def self.call(env)
+    ret = true
+    super
+    
+    env[:render_out] = <%= arg_name.camelize %>.render env[:render_in]
+  rescue => e
+    raise if env[:raise_errors]
+    log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
+    env[:error] = e
+    env[:render_out] = env[:render_in]
+  ensure
+    nil
+  end

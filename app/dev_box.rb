@@ -41,6 +41,9 @@ class DevBox < DevSystem::DevBox
     # formatters
     formatter :html
     formatter :html, :xml
+
+    # renderers
+    renderer :erb
   end
 
 end
