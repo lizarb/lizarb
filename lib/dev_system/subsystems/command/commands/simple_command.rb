@@ -264,7 +264,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   end
 
   def simple_remember_add type, key, value
-    log :highest, "simple_remember_add #{type.inspect}, #{key.inspect}, #{value.inspect}"
+    log :highest, "#{type.inspect}, #{key.inspect}, #{value.inspect}"
     case type
     when :arg
       simple_remember[:args][key] = value
