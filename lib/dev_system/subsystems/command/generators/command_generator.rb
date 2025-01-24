@@ -7,9 +7,11 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
   end
 
   section :default
-  
+
   def arg_action_names
-    ["default", *super]
+    ret = super
+    ret = ["default", *ret] unless ret.include? "default"
+    ret
   end
 
   section :actions
