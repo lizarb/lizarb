@@ -1,4 +1,4 @@
-class LabSystem::DockerShell < DevSystem::Shell
+class LabSystem::DockerSoftShell < DevSystem::SoftShell
 
   #
 

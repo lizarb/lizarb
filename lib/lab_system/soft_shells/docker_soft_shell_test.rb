@@ -1,7 +1,10 @@
-class LabSystem::DockerShellTest < DevSystem::ShellTest
+class LabSystem::DockerSoftShellTest < DevSystem::SoftShellTest
 
-  test :subject_class do
-    assert_equality subject_class, LabSystem::DockerShell
+  section :subject
+
+  test :subject_class, :subject do
+    assert_equality subject_class, LabSystem::DockerSoftShell
+    assert_equality subject.class, LabSystem::DockerSoftShell
   end
 
   test :parse_version do
