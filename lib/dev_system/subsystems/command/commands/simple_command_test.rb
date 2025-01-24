@@ -50,7 +50,7 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
 
   def forge_subject_with *args
     @subject = subject_class.new
-    @subject.instance_exec { @env = DevBox[:command].forge ["simple", *args] }
+    @subject.instance_exec { @menv = DevBox[:command].forge ["simple", *args] }
     @subject.before
   end
 
