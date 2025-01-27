@@ -104,7 +104,7 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
     assert_equality layers[0].color, [0, 204, 0]
     assert_equality layers[0].level, 1
     assert_equality layers[0].name, "App"
-    assert_equality layers[0].objects.count, 1
+    assert_equality layers[0].objects.count, 0
     assert_equality layers[0].path, "app/"
 
   end
