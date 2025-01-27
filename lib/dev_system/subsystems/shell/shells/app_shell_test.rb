@@ -12,22 +12,22 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
 
   test :get_writable_domains do
     expected = {
-      :core=>"Core",
-      :dev=>DevSystem,
-      :happy=>HappySystem,
-      :net=>NetSystem,
-      :web=>WebSystem,
-      :work=>WorkSystem,
-      :micro=>MicroSystem,
-      :desk=>DeskSystem,
-      :crypto=>CryptoSystem,
-      :media=>MediaSystem,
-      :art=>ArtSystem,
-      :deep=>DeepSystem,
-      :prime=>PrimeSystem,
-      :lab=>LabSystem,
-      :eco=>EcoSystem,
-      :app=>"App"
+      "core"=>"Core",
+      "dev"=>DevSystem,
+      "happy"=>HappySystem,
+      "net"=>NetSystem,
+      "web"=>WebSystem,
+      "work"=>WorkSystem,
+      "micro"=>MicroSystem,
+      "desk"=>DeskSystem,
+      "crypto"=>CryptoSystem,
+      "media"=>MediaSystem,
+      "art"=>ArtSystem,
+      "deep"=>DeepSystem,
+      "prime"=>PrimeSystem,
+      "lab"=>LabSystem,
+      "eco"=>EcoSystem,
+      "app"=>"App"
     }
 
     assert_equality subject_class.get_writable_domains, expected
