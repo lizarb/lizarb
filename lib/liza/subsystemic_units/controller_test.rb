@@ -6,7 +6,7 @@ class Liza::ControllerTest < Liza::UnitTest
   test_sections(
     :subsystem=>{
       :constants=>[],
-      :class_methods=>[:on_connected, :inherited, :color, :sh, :`, :subsystem, :subsystem?, :subsystem!, :box, :panel],
+      :class_methods=>[:on_connected, :inherited, :color, :sh, :`, :subsystem_token, :subsystem, :subsystem?, :subsystem!, :box, :panel],
       :instance_methods=>[:sh, :`, :box, :panel]
     },
     :divisionable=>{

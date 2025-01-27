@@ -40,6 +40,10 @@ class Liza::Controller < Liza::Unit
 
   # subsystem
 
+  def self.subsystem_token
+    get :subsystem_token
+  end
+
   def self.subsystem
     get :subsystem
   end
@@ -51,6 +55,7 @@ class Liza::Controller < Liza::Unit
   def self.subsystem! box_klass, token
     # FIRST, subsystem settings
     panel = box_klass[token]
+    set :subsystem_token, token
     set :subsystem, self
     set :box, box_klass
     set :panel, panel
