@@ -1,4 +1,4 @@
-class LabSystem::KrokiDockerShell < LabSystem::DockerShell
+class LabSystem::KrokiDockerShell < DevSystem::Shell
 
   #
 
