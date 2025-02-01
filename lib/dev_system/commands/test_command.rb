@@ -7,7 +7,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     set_default_boolean :run, true
     
     set_input_array :domains do |default|
-      domains = InputShell.get_writable_domains
+      domains = AppShell.get_writable_domains
       title = "Which domains are we going to test?"
       InputShell.pick_domains domains, default, title
     end
