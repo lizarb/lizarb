@@ -95,7 +95,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     args = args.flatten
     cmd_env = Command.panel.forge ["generate", *args]
     cmd_env[:command] = SimpleCommand.new.tap do |cmd|
-      cmd.instance_variable_set :@env, cmd_env
+      cmd.instance_variable_set :@menv, cmd_env
       cmd.before
     end
 
