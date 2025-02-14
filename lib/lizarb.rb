@@ -548,18 +548,17 @@ module Lizarb
     else
       raise "App.gemfile is not a String or a Proc"
     end
-  rescue Gem::LoadError => e
+  rescue SystemExit => e
+    raise unless e.cause&.class == Bundler::GemNotFound
     puts
-    puts "    Bundler could not load #{e.name} version #{e.requirement}"
+    puts "LizaRB v#{version} dependencies not found."
+    puts "LizaRB is installing the dependencies found in the above gemfile."
     puts
-    puts "      Please run the following commands to fix the error:"
-    3.times { puts }
-    puts "        gem uninstall #{e.name} -aI"
-    puts "        BUNDLE_GEMFILE=#{ENV["BUNDLE_GEMFILE"]} bundle install"
-    3.times { puts }
-    # puts "           Error Details:"
-    # raise
-    raise "gem uninstall #{e.name} -aI", cause: nil
+    Kernel.system "bundle install --gemfile #{ENV["BUNDLE_GEMFILE"]}"
+    puts
+    puts "Please, run the latest command again."
+    puts
+    raise
   end
 
   # This method is called internally by `load` and is not intended for direct use.
