@@ -32,17 +32,5 @@ Gem::Specification.new do |spec|
   spec.executables = ["liza", "lizarb"]
   spec.require_paths = ["lib"]
 
-  # dependencies (Lizarb)
-
-  spec.add_dependency "zeitwerk", ">= 2.6.13"
-
-  # dependencies (DevSystem)
-
-  spec.add_dependency "pry", ">= 0.14.2"
-  spec.add_dependency "diff-lcs", ">= 1.5.1"
-  spec.add_dependency "tty-prompt", ">= 0.23.1"
-
-  # development dependencies
-
   spec.add_development_dependency "rake", "~> 13.0"
 end

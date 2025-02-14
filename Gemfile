@@ -5,6 +5,8 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in lizarb.gemspec
 gemspec name: "lizarb"
 
+gem "zeitwerk", ">= 2.6.13"
+
 group :systems do
   # gem "echo_system", "~> 1.0"
 end
@@ -12,7 +14,12 @@ end
 group :dev do
   # gems used by DevSystem
 
+  # Command gems
+  gem "pry", ">= 0.14.2"
+
   # Shell gems
+  gem "diff-lcs", ">= 1.5.1"
+  gem "tty-prompt", ">= 0.23.1"
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23"
   gem "haml", "~> 6.1"

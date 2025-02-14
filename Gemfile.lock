@@ -2,10 +2,6 @@ PATH
   remote: .
   specs:
     lizarb (1.0.5)
-      diff-lcs (>= 1.5.1)
-      pry (>= 0.14.2)
-      tty-prompt (>= 0.23.1)
-      zeitwerk (>= 2.6.13)
 
 GEM
   remote: https://rubygems.org/
@@ -199,6 +195,7 @@ DEPENDENCIES
   agoo (~> 2.15)
   coffee-script (~> 2.4)
   commonmarker (~> 0.23)
+  diff-lcs (>= 1.5.1)
   falcon (~> 0.47)
   glimmer-dsl-libui (~> 0.11)
   haml (~> 6.1)
@@ -209,6 +206,7 @@ DEPENDENCIES
   mysql2 (~> 0.5)
   nori (~> 2.6)
   pg (~> 1.5)
+  pry (>= 0.14.2)
   puma (~> 6.4)
   rack (~> 3.0)
   rake (~> 13.0)
@@ -216,6 +214,8 @@ DEPENDENCIES
   rexml (~> 3.2)
   sassc (~> 2.4)
   sqlite3 (~> 1.5)
+  tty-prompt (>= 0.23.1)
+  zeitwerk (>= 2.6.13)
 
 BUNDLED WITH
    2.5.4
