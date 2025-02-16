@@ -3,10 +3,23 @@ class Liza::BoxTest < Liza::UnitTest
     assert subject_class == Liza::Box
   end
 
-  test_methods_defined do
-    on_self :[], :color, :configure, :forward, :panels, :puts
-    on_instance
-  end
+  test_sections(
+    :default=>{
+      :constants=>[],
+      :class_methods=>[:panels, :[]],
+      :instance_methods=>[]
+    },
+    :two_boxes=>{
+      :constants=>[],
+      :class_methods=>[:preconfiguration, :configuration, :preconfigure, :configure],
+      :instance_methods=>[]
+    },
+    :forwarding=>{
+      :constants=>[],
+      :class_methods=>[:forward, :color, :log, :puts],
+      :instance_methods=>[:log, :puts]
+    },
+  )
 
   def assert_sub name, controller_class, panel_class, kaller: caller
     assert_equality subject_class[name].class, panel_class, kaller: kaller
