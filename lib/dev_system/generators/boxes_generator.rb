@@ -13,7 +13,7 @@ class DevSystem::BoxesGenerator < DevSystem::SimpleGenerator
       box_file = "#{ app_dir }/#{ k }_box.rb"
       next if list.include? box_file
 
-      name = "#{ App.folder }/#{k}_box.rb"
+      name = "#{ App.directory_name }/#{k}_box.rb"
       b = klass.box.new
       contents = b.render! :default, format: :rb
 
