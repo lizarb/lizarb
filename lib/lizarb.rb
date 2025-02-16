@@ -31,7 +31,7 @@ class Module
 
   # ["/path/to/liza.rb", 1]
   def source_location
-    Array Object.const_source_location name
+    Array Object.const_source_location to_s
   end
 
   # "/path/to/liza.rb"
@@ -49,11 +49,11 @@ class Module
   end
 
   def first_namespace
-    name.rpartition('::')[0]
+    to_s.rpartition('::')[0]
   end
 
   def last_namespace
-    name.rpartition('::')[-1]
+    to_s.rpartition('::')[-1]
   end
   
 end
