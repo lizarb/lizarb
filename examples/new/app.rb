@@ -3,6 +3,10 @@
 
 class App
 
+  # Choose your Name
+
+  name "project_1"
+
   # Choose your Gemfile
 
   gemfile "Gemfile"

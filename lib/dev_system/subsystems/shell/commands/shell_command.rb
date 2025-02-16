@@ -31,6 +31,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts "App                   #{ App.source_location[0] }"
     puts
     puts "App.type              #{ App.type.inspect }"
+    puts "App.name              #{ App.name.inspect }"
     puts "App.root              #{ App.root }/"
     puts "App.file              #{ App.file }"
     puts "App.directory         #{ App.directory }/"

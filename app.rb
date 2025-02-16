@@ -1,5 +1,9 @@
 class App
 
+  # Choose your Name
+
+  name "matrix"
+
   # Choose your Gemfile
 
   gemfile "Gemfile"

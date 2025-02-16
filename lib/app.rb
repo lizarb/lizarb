@@ -121,6 +121,17 @@ class App
     @sys_relative_path or raise "@sys_relative_path not set"
   end
 
+  # name
+
+  def self.name(name = nil)
+    raise "locked" if @locked
+    if name
+      @name = name
+    else
+      @name
+    end
+  end
+
   # gemfile
 
   def self.gemfile(gemfile = :unset, &block)
