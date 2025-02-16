@@ -445,20 +445,21 @@ module Lizarb
   #
   # Overwrites Application settings with the following environment variables:
   #
-  # - App.folder    with APP_FOLDER        example: `APP_FOLDER=app liza irb`
-  # - App.log_boot  with LOG_BOOT or LOG   example: `LOG=highest liza irb`
-  # - App.log_level with LOG_LEVEL or LOG  example: `LOG=highest liza irb`
-  # - App.mode      with MODE              example: `MODE=production liza irb`
-  # - App.gemfile   with GEMFILE           example: `GEMFILE=Gemfile liza irb`
-  # - App.system    with ENV["SYSTEMS"]    example: `SYSTEMS=dev,happy,deep,lab liza irb`
+  # - App.directory         with APP_DIR          example: `APP_DIR=app liza irb`
+  # - App.systems_directory with SYSTEMS_DIR      example: `SYSTEMS_DIR=lib liza irb`
+  # - App.log_boot          with LOG_BOOT or LOG  example: `LOG=highest liza irb`
+  # - App.log_level         with LOG_LEVEL or LOG example: `LOG=highest liza irb`
+  # - App.mode              with MODE             example: `MODE=production liza irb`
+  # - App.gemfile           with GEMFILE          example: `GEMFILE=Gemfile liza irb`
+  # - App.system            with ENV["SYSTEMS"]   example: `SYSTEMS=dev,happy,deep,lab liza irb`
   #
   def setup_and_overwrite_app_settings
-    if env_app_folder = ENV["APP_FOLDER"]
-      App.folder env_app_folder
+    if env_app_directory = ENV["APP_DIR"]
+      App.directory env_app_directory
     end
 
-    if env_systems_folder = ENV["SYS_FOLDER"]
-      App.sys_folder env_systems_folder
+    if env_systems_directory = ENV["SYSTEMS_DIR"]
+      App.systems_directory env_systems_directory
     end
 
     if s = ENV["LOG_BOOT"] || ENV["LOG"]
@@ -590,12 +591,10 @@ module Lizarb
 
     App.instance_eval do
       @directory = root / directory
-      @systems_directory = root / systems_directory
+      @systems_directory = root / systems_directory if systems_directory
 
       @relative_path = Pathname(@relative_path)
       @path = Pathname(@path)
-      @sys_relative_path = Pathname (defined? @sys_relative_path) ? @sys_relative_path : "lib"
-      @sys_path = Pathname (defined? @sys_path) ? @sys_path : "#{Lizarb.app_dir}/lib"
     end
   end
 
@@ -652,8 +651,8 @@ module Lizarb
     require "zeitwerk"
     log "    required Zeitwerk" if defined? $log_boot_higher
 
-    if App.sys_folder
-      path = "#{App.root}/#{App.sys_folder}"
+    if App.systems_directory
+      path = "#{App.root}/#{App.systems_directory}"
       $LOAD_PATH << path
       log "    $LOAD_PATH << #{path}" if defined? $log_boot_higher
     end

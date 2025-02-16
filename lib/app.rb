@@ -60,31 +60,27 @@ class App
     puts "LizaRB v#{Lizarb::VERSION}"
   end
 
-  # folder
+  # directory
 
-  def self.directory(directory = nil, systems: nil)
+  def self.directory(directory = nil, systems_directory: nil)
     if directory
       @directory_name = directory
-      folder directory, systems: systems
+      @directory = directory
+      @relative_path = directory
+      @path = "#{Lizarb.app_dir}/#{directory}"
+      self.systems_directory systems_directory if systems_directory
     else
       @directory
     end
   end
 
-  def self.systems_directory
-    @systems_directory ||= root / systems_directory_name
-  end
-
-  def self.folder folder = nil, systems: nil
+  def self.systems_directory(systems_directory = nil)
     raise "locked" if @locked
-    if folder
-      @folder = folder
-      @directory = folder
-      @relative_path = folder
-      @path = "#{Lizarb.app_dir}/#{folder}"
-      self.sys_folder systems if systems
+    if systems_directory
+      @systems_directory = systems_directory
+      @systems_directory_name = systems_directory
     else
-      @folder
+      @systems_directory
     end
   end
 
@@ -98,27 +94,6 @@ class App
 
   def self.relative_path
     @relative_path or raise "@relative_path not set"
-  end
-
-  def self.sys_folder sys_folder = nil
-    raise "locked" if @locked
-    if sys_folder
-      @systems_directory = "#{root}/#{sys_folder}"
-      @systems_directory_name = sys_folder
-      @sys_folder = sys_folder
-      @sys_relative_path = sys_folder
-      @sys_path = "#{Lizarb.app_dir}/#{sys_folder}"
-    else
-      @sys_folder
-    end
-  end
-
-  def self.sys_path
-    @sys_path
-  end
-
-  def self.sys_relative_path
-    @sys_relative_path or raise "@sys_relative_path not set"
   end
 
   # name
