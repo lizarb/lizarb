@@ -19,7 +19,7 @@ class Liza::ClassTest < Liza::ObjectTest
       [PryCommand, SimpleCommand, BaseCommand, Command],
       PryCommand.ancestors_until(Command)
     assert_equality \
-      [TestCommand, Command],
+      [TestCommand, SimpleCommand, BaseCommand, Command],
       TestCommand.ancestors_until(Command)
   end
 
