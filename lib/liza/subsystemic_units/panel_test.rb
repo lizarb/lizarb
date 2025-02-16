@@ -7,24 +7,13 @@ class Liza::PanelTest < Liza::UnitTest
     @subject ||= subject_class.new "name"
   end
 
-  test_methods_defined do
-    on_self \
-      :box,
-      :color,
-      :controller,
-      :puts,
-      :subsystem,
-      :token
-    on_instance \
-      :box,
-      :controller, :division,
-      :key, :push,
-      :rescue_from, :rescue_from_panel, :rescuers,
-      :short, :started,
-      :subsystem
-  end
-
-  #
+  test_sections(
+    :subsystem=>{
+      :constants=>[],
+      :class_methods=>[:instance, :box, :controller, :division, :token, :subsystem, :color, :log, :puts],
+      :instance_methods=>[:box, :controller, :division, :subsystem, :key, :initialize, :push, :started, :log, :puts]
+    }
+  )
   
   test :instance do
     assert_equality BenchPanel.instance, DevBox.panels[:bench]
