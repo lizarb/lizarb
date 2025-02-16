@@ -262,10 +262,6 @@ class DevSystem::AppShell < DevSystem::Shell
 
   section :lists
 
-  def lists
-    @lists ||= get_lists
-  end
-
   def get_units
     lists.flatten.select { _1 <= Liza::Unit }
   end

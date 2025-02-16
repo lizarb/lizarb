@@ -35,7 +35,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     end
 
     should_run = simple_boolean(:run)
-    test_classes = app_shell.lists.flatten
+    test_classes = app_shell.get_lists.flatten
     log "Testing #{test_classes}"
     _call_testing test_classes if should_run
     log "Done Testing (#{now.diff}s)"
