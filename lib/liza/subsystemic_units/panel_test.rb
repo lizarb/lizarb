@@ -25,42 +25,6 @@ class Liza::PanelTest < Liza::UnitTest
   end
 
   #
-
-  def assert_raises_2 e_class, &block
-    kaller = caller
-    begin
-      block.call
-      assert false, kaller: kaller
-    rescue e_class
-      assert true, kaller: kaller
-    rescue Exception
-      assert false, kaller: kaller
-    end
-  end
-
-  def refute_raises_2 e_class, &block
-    kaller = caller
-    begin
-      block.call
-      assert true, kaller: kaller
-    rescue e_class
-      assert false, kaller: kaller
-    rescue Exception
-      assert false, kaller: kaller
-    end
-  end
-
-  #
-
-  test :define_error do
-    todo "test this"
-  end
-
-  test :raise_error do
-    todo "test this"
-  end
-
-  #
   
   test :instance do
     assert_equality BenchPanel.instance, DevBox.panels[:bench]
