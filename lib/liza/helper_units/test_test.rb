@@ -119,7 +119,7 @@ class Liza::TestTest < Liza::UnitTest
 
   group :tree do
     test :test_tree do
-      assert_equality self.class.test_tree.class, Liza::TestTreePart
+      assert_equality self.class.test_tree.class, Liza::Test::Tree
       assert_equality self.class.test_tree, self.class.test_tree.parent
       
       assert_equality 3, self.class.test_tree.tests.count
