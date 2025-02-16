@@ -43,7 +43,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log "count: #{count} | #{msg}"
   end
 
-  def count() = lists.flatten.count
+  def count() = get_lists.flatten.count
 
   #
 
@@ -263,7 +263,7 @@ class DevSystem::AppShell < DevSystem::Shell
   section :lists
 
   def get_units
-    lists.flatten.select { _1 <= Liza::Unit }
+    get_lists.flatten.select { _1 <= Liza::Unit }
   end
 
   def get_test_units
@@ -314,7 +314,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter units.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.reject! { units.include? _1 }
     end
 
@@ -325,7 +325,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter units.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.select! { units.include? _1 }
     end
 
@@ -336,7 +336,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter unit_class.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.reject! { _1.class == Module }
       list.select! { _1 <= unit_class }
     end
@@ -392,7 +392,7 @@ class DevSystem::AppShell < DevSystem::Shell
     systems = systems.map { (_1.is_a? Symbol) ? App.systems[_1] : _1 }
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.select! { (_1 <= Liza::Unit) ? (systems.include? _1.system) : true }
     end
 
@@ -404,7 +404,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter name.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.select! { _1.to_s.snakecase.include? name }
     end
 
@@ -416,7 +416,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter name.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.select! { _1.last_namespace.snakecase.start_with? name }
     end
 
@@ -428,7 +428,7 @@ class DevSystem::AppShell < DevSystem::Shell
     log_filter names.inspect
     check
 
-    lists.each do |list|
+    get_lists.each do |list|
       list.select! { |klass| names.any? { |name| klass.last_namespace.snakecase.include? name } }
     end
 
@@ -444,13 +444,13 @@ class DevSystem::AppShell < DevSystem::Shell
   end
 
   def check
-    filter_history << lists.map(&:dup)
+    filter_history << get_lists.map(&:dup)
     _log_history
   end
 
   def undo_filter!
     old_lists = filter_history.pop
-    lists.each.with_index do |list, i|
+    get_lists.each.with_index do |list, i|
       list.clear
       list.concat old_lists[i]
     end
@@ -458,7 +458,7 @@ class DevSystem::AppShell < DevSystem::Shell
   end
 
   def _log_history
-    log_filter "filter_history size: #{filter_history.size}, results size: #{lists.map(&:size).sum}"
+    log_filter "filter_history size: #{filter_history.size}, results size: #{get_lists.map(&:size).sum}"
   end
 
   section :domains
