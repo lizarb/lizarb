@@ -39,6 +39,12 @@ class DevSystem::AppShell < DevSystem::Shell
     h[:app]        = get_object_classes_structured
   end
 
+  def _log_count(msg)
+    log "count: #{count} | #{msg}"
+  end
+
+  def count() = lists.flatten.count
+
   #
 
   def get_liza_categories
@@ -108,11 +114,11 @@ class DevSystem::AppShell < DevSystem::Shell
 
       system.subsystems.values.each do |subsystem|
         part_classes = array.select { _1.source_location_radical.include?("/subsystems/#{subsystem.last_namespace.downcase}/parts/") }
-        tree["subsystems"][subsystem] = {}
-        tree["subsystems"][subsystem]["parts"] = part_classes
-        tree["subsystems"][subsystem]["panel"] = [subsystem.panel.class, subsystem.panel.class.test_class]
-        tree["subsystems"][subsystem]["controller"] = [subsystem, subsystem.test_class]
-        tree["subsystems"][subsystem]["controllers"] = {}
+        tree["subsystems"][subsystem.subsystem_token] = {}
+        tree["subsystems"][subsystem.subsystem_token]["parts"] = part_classes
+        tree["subsystems"][subsystem.subsystem_token]["panel"] = [subsystem.panel.class, subsystem.panel.class.test_class]
+        tree["subsystems"][subsystem.subsystem_token]["controller"] = [subsystem, subsystem.test_class]
+        tree["subsystems"][subsystem.subsystem_token]["controllers"] = {}
 
         array.delete subsystem.panel.class
         array.delete subsystem.panel.class.test_class
@@ -126,13 +132,14 @@ class DevSystem::AppShell < DevSystem::Shell
 
       array.each do |klass|
         radical = klass.source_location_radical
+        tree = ret[system_name.to_s] or raise "no tree for #{system_name}"
 
         if radical.include? "/#{system_name}_system/subsystems"
           name = radical.split("_system/subsystems/").last.split("/").first
           subsystem = system.const name
-          klasses = tree["subsystems"][subsystem]["controllers"][klass.division] ||= []
+          klasses = tree["subsystems"][subsystem.subsystem_token]["controllers"][klass.division.last_namespace] ||= []
         else
-          klasses = tree["controllers"][klass.division] ||= []
+          klasses = tree["controllers"][klass.division.last_namespace] ||= []
         end
 
         klasses << klass
@@ -142,11 +149,11 @@ class DevSystem::AppShell < DevSystem::Shell
 
     ret.each do |system_name, tree|
       tree["subsystems"].each do |subsystem_name, subsystem_tree|
-        subsystem_tree["controllers"].each do |division, controllers|
+        subsystem_tree["controllers"].values.each do |controllers|
           controllers.sort_by! &:to_s
         end
       end
-      tree["controllers"].each do |division, controllers|
+      tree["controllers"].values.each do |controllers|
         controllers.sort_by! &:to_s
       end
     end
@@ -173,16 +180,17 @@ class DevSystem::AppShell < DevSystem::Shell
       tree["controllers"] = {}
 
       a.each do |klass|
-        tree["controllers"][klass.subsystem] ||= {}
-        tree["controllers"][klass.subsystem][klass.division] ||= []
-        tree["controllers"][klass.subsystem][klass.division] << klass
+        tree["controllers"][klass.subsystem.subsystem_token] ||= {}
+        tree["controllers"][klass.subsystem.subsystem_token][klass.division.last_namespace] ||= []
+        tree["controllers"][klass.subsystem.subsystem_token][klass.division.last_namespace] << klass
       end
 
       system.subsystems.values.each do |subsystem|
-        tree["controllers"][subsystem]&.each do |division, klasses|
+        tree["controllers"][subsystem.subsystem_token]&.each do |division, klasses|
           klasses.sort_by! &:to_s
         end
       end
+
     end
 
     ret
@@ -213,7 +221,7 @@ class DevSystem::AppShell < DevSystem::Shell
         tree["parts"].each do |klass|
           ret << klass
         end
-        tree["controllers"].each do |division, controllers|
+        tree["controllers"].values.each do |controllers|
           controllers.each do |klass|
             ret << klass
           end
@@ -229,7 +237,7 @@ class DevSystem::AppShell < DevSystem::Shell
           subsystem_tree["controller"].each do |klass|
             ret << klass
           end
-          subsystem_tree["controllers"].each do |division, controllers|
+          subsystem_tree["controllers"].values.each do |controllers|
             controllers.each do |klass|
               ret << klass
             end
@@ -240,8 +248,8 @@ class DevSystem::AppShell < DevSystem::Shell
         tree["box"].each do |klass|
           ret << klass
         end
-        tree["controllers"].each do |subsystem, divisions|
-          divisions.each do |division, controllers|
+        tree["controllers"].values.each do |divisions|
+          divisions.values.each do |controllers|
             controllers.each do |klass|
               ret << klass
             end
@@ -279,13 +287,13 @@ class DevSystem::AppShell < DevSystem::Shell
       ret << tree_system["system"]
       ret << tree_system["box"]
       ret << tree_system["parts"]
-      tree_system["controllers"].each do |family, klasses|
+      tree_system["controllers"].values.each do |klasses|
         ret << klasses
       end
-      tree_system["subsystems"].each do |subsystem, tree_subsystem|
+      tree_system["subsystems"].values.each do |tree_subsystem|
         ret << tree_subsystem["panel"]
         ret << tree_subsystem["controller"]
-        tree_subsystem["controllers"].each do |controller_class, klasses|
+        tree_subsystem["controllers"].values.each do |klasses|
           ret << klasses
         end
       end
@@ -293,8 +301,9 @@ class DevSystem::AppShell < DevSystem::Shell
 
     consts[:app].each do |system_name, tree_system|
       ret << tree_system["box"]
-      tree_system["controllers"].each do |family, structure|
-        structure.each do |division, klasses|
+      tree_system["controllers"].each do |_controller, structure|
+        
+        structure.each do |_division, klasses|
           ret << klasses
         end
       end
@@ -342,37 +351,42 @@ class DevSystem::AppShell < DevSystem::Shell
   def filter_by_domains(domains)
     log_filter domains.inspect
     check
+    _log_count ""
 
     system_names = domains - ["core", "app"]
     is_core_included = domains.include? "core"
     is_app_included = domains.include? "app"
 
     unless is_core_included
-      log "core is not included in the domains"
+      _log_count "core is not included in the domains"
 
       consts[:top_level].clear
       consts[:liza].values.map &:clear
     end
 
-    consts[:systems].each do |system_name, tree_system|
-      next if system_names.include? system_name.to_s
-      log "#{system_name} is not included in the domains"
+    consts[:systems].reject do |system_name, tree_system|
+      system_names.include? system_name
+    end.each do |system_name, tree_system|
       tree_system["system"].clear
       tree_system["box"].clear
       tree_system["parts"].clear
-      tree_system["controllers"].values.map &:clear
-      tree_system["subsystems"].values.map { _1.values.map &:clear }
+        tree_system["controllers"].values.map &:clear
+        tree_system["subsystems"].values.map { _1.values.map &:clear }
+
+      _log_count "#{system_name} is not included in the domains"
     end
 
     unless is_app_included
-      log "app is not included in the domains"
-
       consts[:app].each do |system_name, tree_system|
         next if system_names.include? system_name
         tree_system["box"].clear
         tree_system["controllers"].values.each { _1.values.map &:clear }
       end
+      
+      _log_count "app is not included in the domains"
     end
+
+    _log_count ""
 
     self
   end
@@ -543,7 +557,8 @@ class DevSystem::AppShell < DevSystem::Shell
       objects: tree_system["system"] + tree_system["box"]
     )
     
-    tree_system["controllers"].each do |division, klasses|
+    tree_system["controllers"].each do |division_name, klasses|
+      division = system.const division_name
       path = system.source_location_radical.sub("#{App.root}/", "")
       path << "/#{division.plural}/"
 
@@ -559,7 +574,8 @@ class DevSystem::AppShell < DevSystem::Shell
       )
     end
 
-    tree_system["subsystems"].each do |subsystem, tree_subsystem|
+    tree_system["subsystems"].each do |subsystem_token, tree_subsystem|
+      subsystem = system.const subsystem_token
       path = system.source_location_radical.sub("#{App.root}/", "")
       path << "/subsystems/#{subsystem.singular}/"
       ret << Layer.new(
@@ -570,12 +586,13 @@ class DevSystem::AppShell < DevSystem::Shell
         objects: tree_subsystem["controller"] + tree_subsystem["panel"]
       )
 
-      tree_subsystem["controllers"].each do |controller_class, klasses|
+      tree_subsystem["controllers"].each do |controller_name, klasses|
+        controller = Liza.const controller_name
         path = system.source_location_radical.sub("#{App.root}/", "")
-        path << "/subsystems/#{subsystem.singular}/#{controller_class.division.plural}/"
+        path << "/subsystems/#{subsystem.singular}/#{controller.division.plural}/"
 
-        name = controller_class.plural
-        color = controller_class.subsystem.system.color
+        name = controller.plural
+        color = controller.subsystem.system.color
 
         ret << Layer.new(
           level: 3,
@@ -610,8 +627,9 @@ class DevSystem::AppShell < DevSystem::Shell
         path: "app/#{system_name}_box.rb",
         objects: tree_system["box"]
       )
-      tree_system["controllers"].each do |family, structure|
-        structure.each do |division, klasses|
+      tree_system["controllers"].each do |controller_name, structure|
+        structure.each do |division_name, klasses|
+          division = Liza.const division_name
           ret << Layer.new(
             level: 3,
             name: division.plural,

@@ -56,6 +56,7 @@ class DevSystem::AppShellTest < DevSystem::ShellTest
 
   test :filters do
     assert_equality subject.filter_history.count, 0
+    
     c0 = subject.get_units.count
     subject.filter_by_systems :dev
     assert_lt subject.get_units.count, c0
