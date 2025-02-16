@@ -16,6 +16,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
   def call_default
     Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
+    _call_silence_other_units
 
     now = Time.now
 
