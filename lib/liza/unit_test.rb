@@ -43,29 +43,29 @@ class Liza::UnitTest < Liza::Test
       end
     end
   end
-
+  
   test_sections(
     :default=>{
       :constants=>[:Error],
       :class_methods=>[:singleton_method_added, :section, :sections, :method_added, :const_added, :methods_defined, :class_methods_defined, :instance_methods_defined, :constants_defined, :part, :const_missing, :reload!, :cl, :time_diff],
       :instance_methods=>[:reload!, :cl, :time_diff]
     },
-    unit_setting_part: {
+    setting: {
       :constants=>[],
       :class_methods=>[:settings, :get, :set, :add, :fetch],
       :instance_methods=>[:settings, :get, :set, :add, :fetch]
     },
-    unit_associating_part: {
+    associating: {
       :constants=>[],
       :class_methods=>[:namespace, :subclasses_select, :descendants_select, :subunits, :system?, :test_class, :division, :system],
       :instance_methods=>[:system]
     },
-    unit_erroring_part: {
+    erroring: {
       :constants=>[],
       :class_methods=>[:errors, :define_error, :raise_error],
       :instance_methods=>[:raise_error]
     },
-    unit_logging_part: {
+    logging: {
       :constants=>[],
       :class_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?],
       :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?]
@@ -75,7 +75,7 @@ class Liza::UnitTest < Liza::Test
       :class_methods=>[:sleep],
       :instance_methods=>[:sleep]
     },
-    unit_rendering_part: {
+    rendering: {
       :constants=>[:RendererNotFoundError, :RenderStackIsEmptyError, :RenderStackIsFullError],
       :class_methods=>[:erbs_defined, :erbs_available, :renderable_names, :renderable_formats_for, :erbs_for, :_erbs_for],
       :instance_methods=>[:render!, :render, :render_stack, :log_render_in, :log_render_out, :log_render_convert, :log_render_format]
