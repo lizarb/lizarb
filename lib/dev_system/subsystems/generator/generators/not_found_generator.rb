@@ -1,5 +1,4 @@
 class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
-
   #
 
   def before
@@ -8,40 +7,66 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
   end
 
   def call_default
-    h3 "Liza is a light application framework written in Ruby 3.3 ❤", color: DevSystem.color
-    h5 "We're optimizing for happiness. Come join us!", color: ColorShell.colors.keys.sample
+    is_global = App.global?
+    self.log_level 1 if is_global
+
+    app_shell = AppShell.new
+    app_shell.filter_by_unit Generator
+
+    if is_global
+      app_shell.filter_in_units NewGenerator, NotFoundGenerator
+    else
+      app_shell.filter_out_units BaseGenerator, SimpleGenerator, NewGenerator
+      failed_name = env[:generator_name_original]
+      app_shell.filter_by_name_including failed_name if failed_name
+    end
+
+    outputs(app_shell)
+  end
+
+  section :helpers
+
+  def outputs(app_shell)
+    domains = app_shell.get_domains.reject(&:empty?)
+    log "domains: #{domains.count}"
     puts
 
-    if App.global?
-      print_global
-    else
-      print_systems
-      print_app
-    end
-  end
-
-  # color helpers
-
-  def color klass
-    return klass unless klass < Liza::Unit
-
-    namespace, _sep, classname = klass.to_s.rpartition('::')
-
-    if namespace.empty?
-      return stick classname, Liza.const(classname).system.color
+    if domains.empty?
+      log stick :black, :green, "No results found for '#{failed_name}'"
+      app_shell.undo_filter!
+      domains = app_shell.get_domains
+      log "domains: #{domains.count}"
     end
 
-    "#{
-      stick namespace, Liza.const(namespace).system.color
-    }::#{
-      stick classname, Liza.const(classname).color
-    }"
-  end
+    domains.each do |domain|
+      if log? :normal
+        puts typo.h1 domain.name.to_s.upcase, domain.color
+      end
+      
+      next if domain.empty?
+      puts
+      domain.layers.each do |layer|
+        next if layer.objects.empty?
 
-  # print helpers
+        if log? :normal
+          m = "h#{layer.level}"
+          name = layer.level==1 ? domain.name.to_s.upcase : layer.name.to_s
+          puts typo.send m, name, layer.color unless layer.level==3
+
+          puts stick layer.color, layer.path
+          puts
+        end
+
+        layer.objects.each { print_class _1 }
+        puts
+      end
+    end
+  end
 
   def print_class klass, description: nil
-    sidebar_length = 50
+    return if [NotFoundCommand].include? klass
+
+    sidebar_length = Log.panel.sidebar_size
     klass.get_generator_signatures.each do |signature|
       signature[:name] =
         signature[:name].empty? \
@@ -49,118 +74,13 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
           : "#{klass.token}:#{signature[:name]}"
       #
     end.sort_by { _1[:name] }.map do |signature|
-      next if signature[:name].end_with? ":simple"
-      next if signature[:name].end_with? "!"
       puts [
         "liza generate #{signature[:name]}".ljust(sidebar_length),
         (description or signature[:description])
       ].join ""
     end
   end
-  
-  #
 
-  def print_systems
-    h1 "SYSTEMS"
-    AppShell.consts[:systems].each do |system_name, tree_system|
-      system = tree_system["system"][0]
-
-      h4 system
-      tree_system["controllers"].each do |family, klasses|
-        klasses = tree_system["controllers"][family].to_a.select { _1 < Generator }
-        next if klasses.empty?
-
-        h5 "lib/#{system_name}_system/#{family.plural}/", color: system.color
-        klasses.each { print_class _1 }
-      end
-
-      print_system_sub system, system_name, tree_system
-    end
-    puts
-  end
-
-  def print_system_sub system, system_name, tree_system
-    tree_system["subsystems"].each do |subsystem, tree_subsystem|
-      klasses = tree_subsystem["controllers"].values.flatten.select { _1 < Generator }
-      next if klasses.empty?
-
-      tree_subsystem["controllers"].each do |controller_class, klasses|
-        klasses = klasses.select { _1 < Generator }
-        klasses = klasses.reject { _1 == NewGenerator }
-        klasses = klasses.reject { _1 == NotFoundGenerator }
-        klasses = klasses.reject { _1 == InstallGenerator }
-        klasses = klasses.reject { _1 == MoveGenerator }
-        klasses = klasses.reject { _1 == OverwriteGenerator }
-        klasses = klasses.reject { _1 == RemoveGenerator }
-        klasses = klasses.reject { _1 == UninstallGenerator }
-        next if klasses.empty?
-
-        h5 "lib/#{system_name}_system/subsystems/#{subsystem.singular}/#{controller_class.plural}/", color: system.color
-        klasses.each { print_class _1 }
-      end
-    end
-  end
-
-  def print_app
-    h1 "TEAM CODE AT app/"
-
-    system_name = "dev"
-    tree_system = AppShell.consts[:app]["dev"]
-
-    system = Liza.const "#{system_name}_system"
-    tree_system["controllers"].each do |family, structure|
-      structure.each do |division, klasses|
-        klasses = klasses.select { _1 < Generator }
-        if klasses.any?
-          h5 "app/#{system_name}/#{division.plural}/", color: system.color
-          klasses.each { print_class _1 }
-        end
-      end
-    end
-  end
-
-  def print_global
-    klasses = {
-      # GemfileGenerator => "# no description",
-      # EnvGenerator => "# no description",
-    }
-
-    klasses.each { print_class _1, description: _2 }
-
-    5.times { puts }
-  end
-
-  # typography helpers
-
-  def h1 text
-    puts stick " #{ text } ".center(80, "="), :b
-  end
-
-  def h2 text, color: :white
-    puts stick " #{ text } ".center(80, "-"), :b, color
-  end
-
-  def h3 text, color: :white
-    puts
-    puts stick " #{ text } ".center(80, " "), :b, color
-  end
-
-  def h4 system
-    puts
-    s = system.to_s
-    s1 = s
-    s1 = "#{ color(system) }" if system < Liza::Unit
-    color = system.color rescue :white
-    t = s.rjust(80, " ")
-    t = "#{ stick t, :b, color }"
-    t = t.gsub(s, s1)
-    puts t
-  end
-
-  def h5 text, color: :white
-    puts
-    puts stick text.ljust(80, " "), color
-    puts
-  end
+  def typo () = TypographyShell
 
 end
