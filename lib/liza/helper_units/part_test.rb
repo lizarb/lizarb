@@ -10,9 +10,17 @@ class Liza::PartTest < Liza::UnitTest
     assert subject_class == Liza::Part
   end
 
-  test_methods_defined do
-    on_self :insertion
-    on_instance
-  end
+  test_sections(
+    :unit=>{
+      :constants=>[],
+      :class_methods=>[:color],
+      :instance_methods=>[]
+    },
+    :default=>{
+      :constants=>[],
+      :class_methods=>[:insertions, :insertion, :log, :puts],
+      :instance_methods=>[:log, :puts]
+    }
+  )
 
 end
