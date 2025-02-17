@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
-is_mother_project = File.exist? "exe/lizarb"
-
-load \
-  is_mother_project \
-    ? "#{Dir.pwd}/exe/lizarb"
-    : "#{__dir__}/lizarb"
+# global executable liza forwards to local executable when in a mother project directory
+path = "#{Dir.pwd}/exe/lizarb"
+path = "#{__dir__}/lizarb" unless File.exist? path
+Kernel.load path
