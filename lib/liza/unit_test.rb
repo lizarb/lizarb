@@ -38,6 +38,8 @@ class Liza::UnitTest < Liza::Test
 
       # methods in all sections should be unique
       group do
+        assert_equality actual_class_methods.count, actual_class_methods.uniq.count
+        assert_equality actual_instance_methods.count, actual_instance_methods.uniq.count
         assert_equality actual_class_methods.sort, actual_class_methods.sort.uniq
         assert_equality actual_instance_methods.sort, actual_instance_methods.sort.uniq
       end
