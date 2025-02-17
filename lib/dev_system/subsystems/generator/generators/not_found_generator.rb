@@ -21,12 +21,12 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
       app_shell.filter_by_name_including failed_name if failed_name
     end
 
-    outputs(app_shell)
+    outputs(app_shell, failed_name)
   end
 
   section :helpers
 
-  def outputs(app_shell)
+  def outputs(app_shell, failed_name)
     domains = app_shell.get_domains.reject(&:empty?)
     log "domains: #{domains.count}"
     puts
