@@ -802,7 +802,7 @@ class Liza::Test < Liza::Unit
     x = s.split ":in `"
     x[1] = x[1][0..-2]
     x
-  end
+  end if Lizarb.ruby_version < "3.4"
 
   def _caller_line_split s
     x = s.split ":in '"
