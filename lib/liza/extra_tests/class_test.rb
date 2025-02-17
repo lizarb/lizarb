@@ -5,12 +5,12 @@ class Liza::ClassTest < Liza::ObjectTest
   end
 
   test :ancestors_until do
-    assert_equality [Object],  Object.ancestors_until(BasicObject)
-    assert_equality [Integer], Integer.ancestors_until(Object)
-    assert_equality [Symbol],  Symbol.ancestors_until(Object)
-    assert_equality [String],  String.ancestors_until(Object)
-    assert_equality [Array],   Array.ancestors_until(Object)
-    assert_equality [Hash],    Hash.ancestors_until(Object)
+    assert_equality [Object],           Object.ancestors_until(BasicObject)
+    assert_equality [Integer, Numeric], Integer.ancestors_until(Object)
+    assert_equality [Symbol],           Symbol.ancestors_until(Object)
+    assert_equality [String],           String.ancestors_until(Object)
+    assert_equality [Array],            Array.ancestors_until(Object)
+    assert_equality [Hash],             Hash.ancestors_until(Object)
 
     assert_equality \
       [IrbCommand, SimpleCommand, BaseCommand, Command],
