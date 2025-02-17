@@ -1,7 +1,7 @@
-class LoggerLogTest < DevSystem::LogTest
+class LoggerHandlerLogTest < DevSystem::HandlerLogTest
 
   test :subject_class do
-    assert subject_class == LoggerLog
+    assert subject_class == LoggerHandlerLog
   end
   
   test_sections(

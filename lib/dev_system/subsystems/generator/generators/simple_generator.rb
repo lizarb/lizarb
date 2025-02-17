@@ -194,7 +194,6 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     puts
     log controller.to_s
     singular = controller.singular
-    plural = controller.plural
     sys = controller.system.token
     
     [
@@ -202,7 +201,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       Lizarb.app_dir,
     ].uniq.each do |dir|
       FileShell.directory? "#{dir}/examples/#{singular}" or next
-      copy_files "#{dir}/examples/#{singular}/app/#{sys}/#{plural}", "#{App.directory}/#{sys}/#{plural}"
+      copy_files "#{dir}/examples/#{singular}/app/#{sys}", "#{App.directory}/#{sys}"
     end
   end
 
