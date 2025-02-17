@@ -3,10 +3,13 @@ class LoggerLogTest < DevSystem::LogTest
   test :subject_class do
     assert subject_class == LoggerLog
   end
-
-  test_methods_defined do
-    on_self :call
-    on_instance
-  end
   
+  test_sections(
+    :default=>{
+      :constants=>[],
+      :class_methods=>[:call],
+      :instance_methods=>[]
+    }
+  )
+
 end
