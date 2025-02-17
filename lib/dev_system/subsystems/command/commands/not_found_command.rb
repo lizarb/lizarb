@@ -20,6 +20,12 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
       app_shell.filter_by_name_including failed_name if failed_name
     end
 
+    outputs(app_shell)
+  end
+
+  section :helpers
+
+  def outputs(app_shell)
     domains = app_shell.get_domains.reject(&:empty?)
     log "domains: #{domains.count}"
     puts
@@ -29,7 +35,6 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
       app_shell.undo_filter!
       domains = app_shell.get_domains
     end
-    domains = app_shell.get_domains.reject(&:empty?)
 
     domains.each do |domain|
       if log? :normal
@@ -56,12 +61,10 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
     end
   end
 
-  # print helpers
-
   def print_class klass, description: nil
     return if [NotFoundCommand].include? klass
 
-    sidebar_length = 30
+    sidebar_length = Log.panel.sidebar_size
     klass.get_command_signatures.each do |signature|
       signature[:name] =
         signature[:name].empty? \
