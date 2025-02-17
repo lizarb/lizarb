@@ -5,37 +5,68 @@ class Liza::TestTest < Liza::UnitTest
     assert_equality subject_class.log_level, 4
   end
 
-  test_methods_defined do
-    on_self \
-      :after, :after_stack,
-      :before, :before_stack,
-      :call, :color,
-      :group,
-      :log_test_building, :log_test_building?,
-      :subject_class,
-      :subsystem,
-      :test, :test_node, :test_tree,
-      :totals
-    on_instance \
-      :assert, :assert!,
-      :assert_equality, :assert_equality!,
-      :assert_raises, :assert_raises!,
-      :assertions, :assertions=,
-      :call,
-      :critical,
-      :division,
-      :group,
-      :log_test_assertion, :log_test_assertion?,
-      :log_test_assertion_message, :log_test_assertion_message?,
-      :log_test_assertion_result, :log_test_building?,
-      :log_test_call, :log_test_call_block?, :log_test_call_rescue,
-      :refute, :refute!,
-      :refute_equality, :refute_equality!,
-      :refute_raises, :refute_raises!,
-      :subject, :subject_class,
-      :test_words,
-      :todo
-  end
+  test_sections({
+    assertion_totals: {
+      constants: [],
+      class_methods: [:totals, :_assertion_todo, :_assertion_passed, :_assertion_failed, :_assertion_errored],
+      instance_methods: [:assertions=, :assertions, :_inc_assertions]
+    },
+    assertion: {
+      constants: [],
+      class_methods: [],
+      instance_methods: [:todo, :_groups, :group]
+    },
+    assertion_basic: {
+      constants: [],
+      class_methods: [],
+      instance_methods: [:assert, :refute, :assert!, :refute!, :critical]
+    },
+    assertion_equality: {
+      constants: [],
+      class_methods: [],
+      instance_methods: [:assert_equality, :refute_equality, :assert_equality!, :refute_equality!]
+    },
+    assertion_raises: {
+      constants: [],
+      class_methods: [],
+      instance_methods: [:assert_raises, :refute_raises, :assert_raises!, :refute_raises!]
+    },
+    no_raise: {
+      constants: [],
+      class_methods: [],
+      instance_methods: [:assert_no_raise, :assert_no_raise!, :refute_no_raise, :refute_no_raise!]
+    },
+    assertions_arythmetic:{
+      constants: [],
+      class_methods: [],
+      instance_methods: [:assert_gt, :refute_gt, :assert_lt, :refute_lt]
+    },
+    dsl: {
+      constants: [],
+      class_methods: [:call],
+      instance_methods: [:test_words, :initialize, :call]
+    },
+    log: {
+     constants: [:LOG_BUILDING, :LOG_ASSERTION, :LOG_ASSERTION_MESSAGE, :LOG_CALL_BLOCK],
+     class_methods: [:division, :log_test_building?, :log_test_building, :_log_test_block],
+     instance_methods: [:division, :log_test_building?, :log_test_assertion?, :log_test_assertion_message?, :log_test_call_block?, :log_test_call_rescue, :log_test_call, :log_test_assertion, :_log_test_assertion_tag, :_log_test_block, :log_test_assertion_result, :log_test_assertion_message, :_caller_line_split]
+    },
+    subject: {
+      constants: [],
+      class_methods: [:subject_class, :system],
+      instance_methods: [:subject_class, :subject, :system]
+    },
+    tree: {
+      constants: [:Tree],
+      class_methods: [:before_stack, :after_stack, :test_node, :test_tree, :group, :test, :before, :after],
+      instance_methods: []
+    },
+    default: {
+      constants: [],
+      class_methods: [:subsystem, :color],
+      instance_methods: []
+    }
+  })
 
   group :basics do
     test :truths do
