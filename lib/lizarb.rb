@@ -627,6 +627,18 @@ module Lizarb
     files = App.env_vars || []
     log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
 
+    return if files.empty?
+
+    if Gem::Specification.find_all_by_name("dotenv").any?
+      require "dotenv"
+      log "    gem 'dotenv' found" if $log_boot_higher
+
+      Dotenv.load(*files)
+      log "      Dotenv.load(*#{files.inspect})" if $log_boot_highest
+
+      return
+    end
+
     files.each do |file|
       File.readlines(file).each do |line|
         line.strip!
