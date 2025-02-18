@@ -621,6 +621,8 @@ module Lizarb
   # If the file is not found, it raises an error if the file is mandatory.
   # Values will be overwritten if the same key is found in a subsequent file.
   #
+  # If the gem "dotenv" is found, it delegates to it instead.
+  #
   def load_and_require_env_vars
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
