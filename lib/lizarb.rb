@@ -665,8 +665,8 @@ module Lizarb
     require "zeitwerk"
     log "    required Zeitwerk" if defined? $log_boot_higher
 
-    if App.systems_directory
-      path = "#{App.root}/#{App.systems_directory}"
+    if App.systems_directory_name != "lib"
+      path = App.systems_directory.to_s
       $LOAD_PATH << path
       log "    $LOAD_PATH << #{path}" if defined? $log_boot_higher
     end
