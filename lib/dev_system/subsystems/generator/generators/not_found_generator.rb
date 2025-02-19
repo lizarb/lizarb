@@ -39,18 +39,19 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
     end
 
     domains.each do |domain|
-      if log? :normal
-        puts typo.h1 domain.name.to_s.upcase, domain.color
-      end
-      
       next if domain.empty?
+
+      if log? :normal
+        puts typo.h1 domain.name.snakecase.upcase, domain.color
+      end
+
       puts
       domain.layers.each do |layer|
         next if layer.objects.empty?
 
         if log? :normal
           m = "h#{layer.level}"
-          name = layer.level==1 ? domain.name.to_s.upcase : layer.name.to_s
+          name = layer.level==1 ? domain.name.snakecase.upcase : layer.name.to_s
           puts typo.send m, name, layer.color unless layer.level==3
 
           puts stick layer.color, layer.path
