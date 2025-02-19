@@ -29,11 +29,12 @@ class DevSystem::NotFoundBench < DevSystem::Bench
     end
 
     domains.each do |domain|
+      next if domain.empty?
+
       if log? :normal
-        puts typo.h1 domain.name.to_s.upcase, domain.color
+        puts typo.h1 domain.name.snakecase.upcase, domain.color
       end
 
-      next if domain.empty?
       puts
       domain.layers.each do |layer|
         next if layer.objects.empty?
