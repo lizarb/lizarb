@@ -1,13 +1,5 @@
 class DevSystem::InputShell < DevSystem::Shell
 
-  # Liza lazily requires gems required in Controllers
-  require "tty-prompt"
-
-  def self.prompt
-    call({})
-    @prompt ||= TTY::Prompt.new symbols: {marker: ">", radio_on: "x", radio_off: " "}
-  end
-
   def self.ask(...)
     prompt.ask(...)
   rescue Exception => e
@@ -90,14 +82,14 @@ class DevSystem::InputShell < DevSystem::Shell
     rescue_input_interrupt e
   end
 
+  section :delegations
+
   def self.rescue_input_interrupt(e)
-    log :higher, "#{e.class}: #{e.message}"
-    raise e unless defined? TTY
-    raise e unless e.is_a? TTY::Reader::InputInterrupt
-    puts
-    puts
-    log "Control-C"
-    exit
+    TtyPromptGemShell.rescue_input_interrupt e
+  end
+
+  def self.prompt
+    TtyPromptGemShell.prompt
   end
 
 end
