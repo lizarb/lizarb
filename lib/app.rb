@@ -62,13 +62,13 @@ class App
 
   # directory
 
-  def self.directory(directory = nil, systems_directory: nil)
+  def self.directory(directory = nil, systems: nil)
     if directory
       @directory_name = directory
       @directory = directory
       @relative_path = directory
       @path = "#{Lizarb.app_dir}/#{directory}"
-      self.systems_directory systems_directory if systems_directory
+      self.systems_directory systems if systems
     else
       @directory
     end
