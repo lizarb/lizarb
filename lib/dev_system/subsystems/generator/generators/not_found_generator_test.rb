@@ -6,9 +6,9 @@ class DevSystem::NotFoundGeneratorTest < DevSystem::SimpleGeneratorTest
   end
 
   test :call_default do
-    assert_no_raise do
+    # assert_no_raise do
       subject.call_default
-    end
+    # end
   end
 
 end

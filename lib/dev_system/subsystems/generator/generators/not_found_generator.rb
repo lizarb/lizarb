@@ -17,7 +17,7 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
       app_shell.filter_in_units NewGenerator, NotFoundGenerator
     else
       app_shell.filter_out_units BaseGenerator, SimpleGenerator, NewGenerator
-      failed_name = env[:generator_name_original]
+      failed_name = menv[:generator_name_original]
       app_shell.filter_by_name_including failed_name if failed_name
     end
 
