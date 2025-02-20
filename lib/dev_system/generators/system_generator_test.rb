@@ -5,6 +5,7 @@ class DevSystem::SystemGeneratorTest < DevSystem::SimpleGeneratorTest
   end
 
   test_erbs_defined(
+    "gemspec.rb.erb",
     "section_app_box_settings.rb.erb",
     "section_system_box_settings.rb.erb",
     "section_system_box_test.rb.erb",
