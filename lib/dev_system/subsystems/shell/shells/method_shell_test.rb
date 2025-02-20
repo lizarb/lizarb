@@ -23,7 +23,7 @@ class DevSystem::MethodShellTest < DevSystem::ShellTest
     assert_equality subject.line, "def self.call(menv)"
     assert_equality subject.line_location, "lib/dev_system/subsystems/generator/generators/base_generator.rb:5"
 
-    assert subject.signature_has_single_parameter_named? :env
+    assert subject.signature_has_single_parameter_named? :menv
     refute subject.signature_has_single_parameter_named? :wrong
   end
 
