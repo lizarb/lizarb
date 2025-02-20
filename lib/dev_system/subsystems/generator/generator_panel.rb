@@ -4,48 +4,48 @@ class DevSystem::GeneratorPanel < Liza::Panel
 
   section :default
   
-  def call(command_env)
-    env = forge command_env
-    forge_shortcut env
-    find env
-    find_shortcut env
-    forward env
-    inform env
-    save env
+  def call(command_menv)
+    menv = forge command_menv
+    forge_shortcut menv
+    find menv
+    find_shortcut menv
+    forward menv
+    inform menv
+    save menv
   end
 
   #
   
-  def forge command_env
-    command = command_env[:command]
+  def forge command_menv
+    command = command_menv[:command]
     generator_name_original, generator_action_original = command.args.first.to_s.split(":")
 
-    env = { controller: :generator, command:, generator_name_original:, generator_action_original: }
+    menv = { controller: :generator, command:, generator_name_original:, generator_action_original: }
 
     log :high, "generator_name_original:generator_action_original is #{generator_name_original}:#{generator_action_original}"
-    env
+    menv
   end
   
   #
 
-  def inform env
+  def inform menv
     if log_level? :high
       puts
-      log "env.count is #{env.count}"
+      log "menv.count is #{menv.count}"
     end
-    env[:generator] or return log :higher, "not implemented"
-    env[:generator].inform
+    menv[:generator] or return log :higher, "not implemented"
+    menv[:generator].inform
   end
 
   #
 
-  def save env
+  def save menv
     if log_level? :high
       puts
-      log "env.count is #{env.count}"
+      log "menv.count is #{menv.count}"
     end
-    env[:generator] or return log :higher, "not implemented"
-    env[:generator].save
+    menv[:generator] or return log :higher, "not implemented"
+    menv[:generator].save
   end
 
 end
