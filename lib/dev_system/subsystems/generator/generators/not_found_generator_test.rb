@@ -6,9 +6,13 @@ class DevSystem::NotFoundGeneratorTest < DevSystem::SimpleGeneratorTest
   end
 
   test :call_default do
-    # assert_no_raise do
+    assert_raises NoMethodError do
       subject.call_default
-    # end
+    end
+    assert_no_raise do
+      subject.menv = {}
+      subject.call_default
+    end
   end
 
 end
