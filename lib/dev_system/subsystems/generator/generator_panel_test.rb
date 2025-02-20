@@ -20,7 +20,7 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
   def forge_with(args)
     command = SimpleCommand.new
     command_env = {command: , args: }
-    command.instance_variable_set :@env, command_env
+    command.instance_variable_set :@menv, command_env
     env = subject.forge command_env
     subject.forge_shortcut env
     env
