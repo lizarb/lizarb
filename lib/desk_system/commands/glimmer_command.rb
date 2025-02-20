@@ -18,6 +18,7 @@ class DeskSystem::GlimmerCommand < DevSystem::SimpleCommand
     puts
     log "args = #{env[:args].inspect}"
     # require "glimmer-dsl-libui"
+    require "csv"
     require "examples/meta_example"
     
     log "done at #{Time.now}"
