@@ -20,15 +20,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
 
     now = Time.now
 
-    app_shell = AppShell.new
-    app_shell.filter_by_unit Liza::Test
-
-    domains = simple_array(:domains)
-    log "domains = #{domains}"
-    app_shell.filter_by_domains domains
-
-    name = simple_args[0]
-    app_shell.filter_by_starting_with name if name
+    app_shell = build_filters
 
     set_input_boolean :run do |default|
       InputShell.yes? "Do you want to run the tests?", default: default
@@ -127,6 +119,34 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     totals_line = "{ #{ totals_line.join(", ") } }"
     Liza.log "#{"Total".ljust 60} #{totals_line}"
     puts
+  end
+
+  def build_filters
+    app_shell = AppShell.new
+    app_shell.filter_by_unit Liza::Test
+
+    domains = simple_array(:domains)
+    log "domains = #{domains}"
+    app_shell.filter_by_domains domains
+
+    case simple_args.count
+    when 0
+      log "No filter"
+    when 1
+      name = simple_args[0]
+      log "Filter by name starting with #{name}"
+      app_shell.filter_by_starting_with name
+    else
+      case simple_args[0]
+      when "all"
+        log "Filter by all names"
+        app_shell.filter_by_including_all_names simple_args[1..]
+      else
+        app_shell.filter_by_including_any_name simple_args
+      end
+    end
+
+    app_shell
   end
 
 end
