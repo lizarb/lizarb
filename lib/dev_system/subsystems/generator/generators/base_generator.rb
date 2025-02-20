@@ -2,21 +2,23 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   section :panel
 
-  def self.call(env)
+  def self.call(menv)
     super
     
     generator = new
-    env[:generator] = generator
-    env[:command].env[:generator] = generator
-    generator.call env
+    menv[:generator] = generator
+    menv[:command].menv[:generator] = generator
+    generator.call menv
   end
 
   #
 
-  attr_reader :env
+  attr_reader :menv
 
-  def call(env)
-    @env = env
+  alias env menv
+
+  def call(menv)
+    @menv = menv
     
     before
     method_name = "call_#{action_name}"
@@ -52,7 +54,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   section :helper_methods
 
-  def action_name()= env[:generator_action]
+  def action_name()= menv[:generator_action]
 
   section :command
 
@@ -61,7 +63,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   end
 
   def command
-    env[:command]
+    menv[:command]
   end
 
   #
