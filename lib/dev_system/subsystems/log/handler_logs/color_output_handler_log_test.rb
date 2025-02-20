@@ -8,19 +8,19 @@ class DevSystem::ColorOutputHandlerLogTest < DevSystem::OutputHandlerLogTest
   end
   
   test :sidebar_for do
-    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[38;2;0;204;0mCommand\e[0m:call                                    ",
+    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[1m\e[38;2;0;204;0mCommand\e[0m:call                                    ",
       sidebar_for(
         DevSystem::Command,
         DevSystem::Command,
         "call"
       )
-    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[38;2;0;204;0mTestCommand\e[0m:call                                ",
+    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[1m\e[38;2;0;204;0mTestCommand\e[0m:call                                ",
       sidebar_for(
         DevSystem::TestCommand,
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[38;2;0;204;0mDevBox\e[0m[:command].call                           ",
+    assert_equality "\e[1m\e[38;2;0;204;0mDevBox\e[0m[:command].call                                      ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),
