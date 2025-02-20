@@ -447,6 +447,10 @@ class DevSystem::AppShell < DevSystem::Shell
     self
   end
 
+  def filter_by_including_any_name(names)
+    filter_by_any_name_including(names)
+  end
+
   def log_filter(string)
     log (stick :black, :light_green, string), kaller: caller if log? :higher
   end
