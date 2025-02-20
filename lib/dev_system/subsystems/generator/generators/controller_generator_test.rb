@@ -12,11 +12,13 @@ class DevSystem::ControllerGeneratorTest < DevSystem::SimpleGeneratorTest
   test :before_instance_calls, :before_instance_call do
     assert_equality subject_class.before_instance_calls, [
       [:set_default_views, ["none"], nil],
-      [:set_default_division, [false], nil]
+      [:set_default_division, [false], nil],
+      [:set_default_require, ["none"], nil]
     ]
     assert_equality subject_class_subject.before_instance_calls, [
       [:set_default_views, ["none"], nil],
-      [:set_default_division, [false], nil]
+      [:set_default_division, [false], nil],
+      [:set_default_require, ["none"], nil]
     ]
 
     subject_class_subject.set_default_super "base"
@@ -26,11 +28,13 @@ class DevSystem::ControllerGeneratorTest < DevSystem::SimpleGeneratorTest
 
     assert_equality! subject_class.before_instance_calls, [
       [:set_default_views, ["none"], nil],
-      [:set_default_division, [false], nil]
+      [:set_default_division, [false], nil],
+      [:set_default_require, ["none"], nil]
     ]
     assert_equality subject_class_subject.before_instance_calls, [
       [:set_default_views, ["none"], nil],
       [:set_default_division, [false], nil],
+      [:set_default_require, ["none"], nil],
       # new values below
       [:set_default_super, ["base"], nil],
       [:set_default_division, [false], nil],
