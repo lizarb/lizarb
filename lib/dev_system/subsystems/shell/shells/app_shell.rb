@@ -435,6 +435,18 @@ class DevSystem::AppShell < DevSystem::Shell
     self
   end
 
+  def filter_by_including_all_names(names)
+    names = names.map &:snakecase
+    log_filter names.inspect
+    check
+
+    get_lists.each do |list|
+      list.select! { |klass| names.all? { |name| klass.last_namespace.snakecase.include? name } }
+    end
+
+    self
+  end
+
   def log_filter(string)
     log (stick :black, :light_green, string), kaller: caller if log? :higher
   end
