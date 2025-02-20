@@ -93,21 +93,21 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   def generate(*args, &block)
     args = args.flatten
-    cmd_env = Command.panel.forge ["generate", *args]
-    cmd_env[:command] = SimpleCommand.new.tap do |cmd|
-      cmd.instance_variable_set :@menv, cmd_env
+    cmd_menv = Command.panel.forge ["generate", *args]
+    cmd_menv[:command] = SimpleCommand.new.tap do |cmd|
+      cmd.instance_variable_set :@menv, cmd_menv
       cmd.before
     end
 
-    gen_env = panel.forge cmd_env
-    gen_env[:simple_mapper] = mapper
-    panel.forge_shortcut gen_env
-    panel.find gen_env
-    panel.find_shortcut gen_env
-    panel.forward gen_env
+    gen_menv = panel.forge cmd_menv
+    gen_menv[:simple_mapper] = mapper
+    panel.forge_shortcut gen_menv
+    panel.find gen_menv
+    panel.find_shortcut gen_menv
+    panel.forward gen_menv
   end
 
-  def mapper() = env[:simple_mapper] ||= Mapper.new(self)
+  def mapper() = menv[:simple_mapper] ||= Mapper.new(self)
 
   class Mapper
     attr_reader :changes
@@ -250,7 +250,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   set_input_string :views do |default|
     title = "Choose views"
-    valid_views = env[:generator].valid_views
+    valid_views = menv[:generator].valid_views
     index_base_1 = valid_views.index(default) + 1 rescue 1
     InputShell.select title, valid_views, default: index_base_1
   end
