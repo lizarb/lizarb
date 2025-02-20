@@ -17,7 +17,7 @@ class ArtSystem::RubyOpenaiGemShell < DevSystem::GemShell
     call({})
     client_options = get_default_configuration.merge(client_options)
     OpenAI::Client.new(client_options) do |faraday|
-      faraday.response :logger, Logger.new($stdout), bodies: true
+      faraday.response :logger, Logger.new($stdout), bodies: true if log? :high
     end
   end
 
