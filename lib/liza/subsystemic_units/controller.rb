@@ -177,8 +177,8 @@ class Liza::Controller < Liza::Unit
   end
 
   def self.attr_accessor(*names)
-    attr_reader *names
-    attr_writer *names
+    attr_reader(*names)
+    attr_writer(*names)
   end
 
   def attrs
@@ -210,8 +210,8 @@ class Liza::Controller < Liza::Unit
   end
   
   def self.menv_accessor(*names)
-    menv_reader *names
-    menv_writer *names
+    menv_reader(*names)
+    menv_writer(*names)
   end
   
   attr_accessor :menv
