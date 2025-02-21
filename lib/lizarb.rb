@@ -633,10 +633,10 @@ module Lizarb
 
     if Gem::Specification.find_all_by_name("dotenv").any?
       require "dotenv"
-      log "    gem 'dotenv' found" if $log_boot_higher
+      log "    gem 'dotenv' found" if defined? $log_boot_higher
 
       Dotenv.load(*files)
-      log "      Dotenv.load(*#{files.inspect})" if $log_boot_highest
+      log "      Dotenv.load(*#{files.inspect})" if defined? $log_boot_highest
 
       return
     end
