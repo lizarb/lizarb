@@ -23,7 +23,7 @@ class DevSystem::DevBox < Liza::Box
 
   preconfigure :log do
     # LogPanel.instance gives you read-access to this instance
-    sidebar_size 40
+    sidebar_size 50
   end
 
   forward :log, :logg => :call
