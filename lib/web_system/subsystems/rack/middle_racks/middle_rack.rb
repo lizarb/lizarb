@@ -11,7 +11,7 @@ class WebSystem::MiddleRack < WebSystem::Rack
   end
 
   def call(env)
-    log "env.keys.count = #{env.keys.count}"
+    log :high, "env.keys.count = #{env.keys.count}"
     @app.call(env)
   end
 
