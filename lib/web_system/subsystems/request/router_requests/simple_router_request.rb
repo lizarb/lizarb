@@ -8,7 +8,7 @@ class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
     action  = segments.shift || "index"
     format = env["LIZA_FORMAT"]
 
-    log({request:, action:, format:})
+    log "request: #{request.inspect}, action: #{action.inspect}, format: #{format.inspect}"
     request_class = _find_request_class request
     
     env["LIZA_REQUEST"] = request
