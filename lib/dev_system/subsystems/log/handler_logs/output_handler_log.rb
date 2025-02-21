@@ -34,11 +34,9 @@ class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
     source_is_a_panel = source.to_s.end_with? "Panel"
 
     if source_is_a_panel
-      key = env[:unit].key
-      source = source.box
-
-      _namespace, _sep, classname = source.name.rpartition('::')
-      sidebar << "#{classname}[:#{key}]."
+      namespace, _sep, classname = env[:unit_class].controller.name.rpartition('::')
+      sidebar << "#{namespace}::" unless namespace.empty?
+      sidebar << "#{classname}.panel."
     else
       method_sep = env[:instance] ? "#" : ":"
 
