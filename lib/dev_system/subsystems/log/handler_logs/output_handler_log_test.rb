@@ -22,7 +22,7 @@ class DevSystem::OutputHandlerLogTest < DevSystem::HandlerLogTest
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "DevBox[:command].call                                      ",
+    assert_equality "DevSystem::Command.panel.call                              ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),
