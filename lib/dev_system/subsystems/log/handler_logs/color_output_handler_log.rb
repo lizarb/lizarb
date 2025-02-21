@@ -16,14 +16,17 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
     source_is_a_panel = source.to_s.end_with? "Panel"
 
     if source_is_a_panel
-      key = env[:unit].key
-      source = source.box
-
-      _namespace, _sep, classname = source.name.rpartition('::')
+      namespace, _sep, classname = env[:unit_class].controller.name.rpartition('::')
+      unless namespace.empty?
+        sidebar << stick(namespace, system_color, :b).to_s
+        sidebar << "::"
+        size += namespace.size + 2
+      end
       sidebar << stick(classname, source_color, :b).to_s
-      sidebar << "[:#{key}]."
+      size += classname.size
 
-      size += classname.size + key.size + 4
+      sidebar << ".panel."
+      size += 7
     else
       method_sep = env[:instance] ? "#" : ":"
 
@@ -47,6 +50,9 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
     sidebar << " " * size
 
     sidebar
+  rescue => e
+    puts e
+    binding.irb
   end
 
 end
