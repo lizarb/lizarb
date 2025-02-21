@@ -20,7 +20,7 @@ class DevSystem::ColorOutputHandlerLogTest < DevSystem::OutputHandlerLogTest
         DevSystem::TestCommand,
         "call"
       )
-    assert_equality "\e[1m\e[38;2;0;204;0mDevBox\e[0m[:command].call                                      ",
+    assert_equality "\e[1m\e[38;2;0;204;0mDevSystem\e[0m::\e[1m\e[38;2;0;204;0mCommand\e[0m.panel.call                              ",
       sidebar_for(
         DevSystem::CommandPanel,
         DevSystem::CommandPanel.new(:command),
