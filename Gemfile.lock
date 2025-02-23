@@ -110,7 +110,6 @@ GEM
     matrix (0.4.2)
     method_source (1.1.0)
     metrics (0.12.1)
-    mini_portile2 (2.8.8)
     mongo (2.21.0)
       bson (>= 4.14.1, < 6.0.0)
     mysql2 (0.5.6)
@@ -161,8 +160,12 @@ GEM
       mapping (~> 1.0)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sqlite3 (1.7.3)
-      mini_portile2 (~> 2.8.0)
+    sqlite3 (1.7.3-aarch64-linux)
+    sqlite3 (1.7.3-arm-linux)
+    sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86-linux)
+    sqlite3 (1.7.3-x86_64-darwin)
+    sqlite3 (1.7.3-x86_64-linux)
     super_module (1.4.2)
       method_source (>= 0.8.2, < 2.0.0)
     temple (0.10.3)
@@ -181,7 +184,7 @@ GEM
       wisper (~> 2.0)
     tty-screen (0.8.2)
     wisper (2.0.1)
-    zeitwerk (2.6.13)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   aarch64-linux
@@ -215,7 +218,7 @@ DEPENDENCIES
   sassc (~> 2.4)
   sqlite3 (~> 1.5)
   tty-prompt (>= 0.23.1)
-  zeitwerk (>= 2.6.13)
+  zeitwerk (~> 2.6)
 
 BUNDLED WITH
    2.5.4

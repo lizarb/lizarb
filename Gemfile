@@ -5,7 +5,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in lizarb.gemspec
 gemspec name: "lizarb"
 
-gem "zeitwerk", ">= 2.6.13"
+gem "zeitwerk", "~> 2.6"
 
 group :systems do
   # gem "echo_system", "~> 1.0"
