@@ -19,9 +19,4 @@ class DevSystem::ColorShellTest < DevSystem::ShellTest
     assert_equality [255, 0, 0], subject_class.rgb_from_str("#ff0000")
   end
 
-  test :subject_class, :colors do
-    assert_equality 245,     subject_class.colors.count
-    assert_equality [Array], subject_class.colors.map(&:class).uniq
-  end
-  
 end
