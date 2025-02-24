@@ -22,8 +22,7 @@ class DevSystem::AppShell < DevSystem::Shell
   #
 
   def self.consts
-    @instance ||= new
-    @instance.consts
+    new.consts
   end
 
   section :instance
@@ -55,7 +54,7 @@ class DevSystem::AppShell < DevSystem::Shell
 
   def get_liza_classes_structured
     ret = {}
-    liza_classes = BootShell.liza_classes
+    liza_classes = ZeitwerkShell.get_units_in_core
 
     ret["unit"] =
       liza_classes
@@ -82,18 +81,16 @@ class DevSystem::AppShell < DevSystem::Shell
         .select { _1.source_location_radical.include? "/liza/extra_tests" }
         .sort_by { _1.to_s }
 
-    raise "not all categories are filled" if get_liza_categories != ret.select { _2.any? }.keys
-
     ret
   end
 
   def get_system_classes_structured
     ret = {}
-    system_classes = BootShell.system_classes
 
     App.systems.each do |system_name, system|
       tree = ret[system_name.to_s] = {}
 
+      system_classes = ZeitwerkShell.get_units_in_system system
       array = system_classes.select { _1.system == system }
 
       part_classes = array.select { _1.source_location_radical.include? "/#{system_name}_system/parts/" }
@@ -163,7 +160,8 @@ class DevSystem::AppShell < DevSystem::Shell
 
   def get_object_classes_structured
     ret = {}
-    object_classes = BootShell.object_classes.sort_by { _1.source_location_radical }
+
+    object_classes = ZeitwerkShell.get_units_in_app.sort_by { _1.source_location_radical }
 
     App.systems.each do |system_name, system|
       tree = ret[system_name.to_s] = {}
@@ -199,15 +197,15 @@ class DevSystem::AppShell < DevSystem::Shell
   section :sorted
 
   def sorted_writable_units_in_systems
-    @sorted_writable_units_in_systems ||= sorted_units.select { _1.source_location_radical.start_with? App.systems_directory.to_s }
+    sorted_units.select { _1.source_location_radical.start_with? App.systems_directory.to_s }
   end
 
   def sorted_writable_units
-    @sorted_writable_units ||= sorted_units.select { _1.source_location_radical.start_with? App.root.to_s }
+    sorted_units.select { _1.source_location_radical.start_with? App.root.to_s }
   end
 
   def sorted_units
-    @sorted_units ||= begin
+    begin
       ret = []
       consts[:liza].each do |category, classes|
         classes.each do |klass|
@@ -374,7 +372,6 @@ class DevSystem::AppShell < DevSystem::Shell
 
     unless is_app_included
       consts[:app].each do |system_name, tree_system|
-        next if system_names.include? system_name
         tree_system["box"].clear
         tree_system["controllers"].values.each { _1.values.map &:clear }
       end
@@ -570,7 +567,7 @@ class DevSystem::AppShell < DevSystem::Shell
     )
     
     tree_system["controllers"].each do |division_name, klasses|
-      division = system.const division_name
+      division = Liza.const division_name
       path = system.source_location_radical.sub("#{App.root}/", "")
       path << "/#{division.plural}/"
 
