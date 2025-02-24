@@ -45,4 +45,16 @@ class DevSystem::ColorShell < DevSystem::Shell
     "##{"%02x" % r}#{"%02x" % g}#{"%02x" % b}"
   end
 
+  def initialize(color)
+    @rgb = self.class.parse color
+  end
+
+  def to_s
+    @string ||= self.class.rgb_to_str @rgb
+  end
+
+  def to_rgb
+    @rgb
+  end
+
 end
