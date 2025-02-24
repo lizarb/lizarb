@@ -845,18 +845,14 @@ module Lizarb
   # loaders
 
   @loaders = []
-  @mutex = Mutex.new
 
   def loaders
     @loaders
   end
 
   def reload &block
-    @mutex.synchronize do
-      loaders[1].reload
-      yield if block_given?
-    end
-
+    @eager_loaded = false
+    loaders[1].reload
     true
   end
 
@@ -869,7 +865,7 @@ module Lizarb
   end
 
   def eager_loaded?
-    !!defined? @eager_loaded
+    !!@eager_loaded
   end
 
   # naive thread management
