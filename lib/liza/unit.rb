@@ -182,14 +182,13 @@ class Liza::Unit
   # TEST
 
   def self.test_class
-    @test_class ||=
-      if first_namespace == "Liza"
-        Liza.const_get "#{last_namespace}Test"
-      elsif self < Liza::System
-        const "#{last_namespace}Test"
-      else
-        Object.const_get "#{name}Test"
-      end
+    if first_namespace == "Liza"
+      Liza.const_get "#{last_namespace}Test"
+    elsif self < Liza::System
+      const "#{last_namespace}Test"
+    else
+      Object.const_get "#{name}Test"
+    end
   end
 
   # CONTROLLER
