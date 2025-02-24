@@ -6,11 +6,18 @@ class DevSystem::PalletShell < DevSystem::Shell
     @@colors
   end
 
+  def self.find(k)
+    return k if k.class.name == ColorShell.name
+    ret = nil
+    ret   = @@colors[k]
+    ret ||= @@colors.values.find { k == _1.to_s } if k.is_a? String
+    ret ||= @@colors.values.find { k == _1.to_rgb } if k.is_a? Array
+    ret ||  raise("Unknown color: #{k.inspect}")
+    ret
+  end
+
   def self.add k, v
-    v = @@colors[v] if v.is_a? Symbol
-    v = ColorShell.rgb_from_int v if v.is_a? Integer
-    v = ColorShell.rgb_from_str v if v.is_a? String
-    @@colors[k] = v
+    @@colors[k] = ColorShell.new v
   end
 
   # Standard ANSI Colors:
