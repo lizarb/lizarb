@@ -114,7 +114,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
           msg = "infering the path"
           system_name, subsystem_name = arg_place.split("/")
           if subsystem_name.nil?
-            App.systems_directory.join "#{system_name}_system"
+            App.systems_directory.join "#{system_name}_system/#{super_controller.division.plural}"
           else
             App.systems_directory.join "#{system_name}_system/subsystems/#{subsystem_name}/#{super_controller.division.plural}"
           end
