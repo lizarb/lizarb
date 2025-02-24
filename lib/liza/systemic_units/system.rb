@@ -11,7 +11,10 @@ class Liza::System < Liza::Unit
   end
 
   def self.subsystems
-    @subsystems ||= subs.map { [_1, const(_1)] }.to_h
+    return @subsystems if @subsystems
+    ret = subs.map { [_1, const(_1)] }.to_h
+    @subsystems = ret unless App.coding?
+    ret
   end
 
   # Adds a subsystem to the system
@@ -24,7 +27,10 @@ class Liza::System < Liza::Unit
   end
 
   def self.box
-    @box ||= self.const_get "#{token}_box".camelize
+    return @box if @box
+    ret = const "#{token}_box"
+    @box = ret unless App.coding?
+    ret
   end
 
   # SYSTEM
