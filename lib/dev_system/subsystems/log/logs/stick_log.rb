@@ -4,6 +4,7 @@ class DevSystem::StickLog < DevSystem::Log
   class UnknownArg < Error; end
 
   FORE = [255, 255, 255]
+  FORE = :black
   STYLES = {
     bold: :b,
     italic: :i,
@@ -52,15 +53,15 @@ class DevSystem::StickLog < DevSystem::Log
     raise MissingText, "missing a string as text", caller[3..] unless text
     fore ||= FORE
 
-    fore = ColorShell.parse(fore) if fore and not fore.is_a? Array
-    back = ColorShell.parse(back) if back and not back.is_a? Array
+    fore = PalletShell.find(fore) if fore and not fore.is_a? ColorShell
+    back = PalletShell.find(back) if back and not back.is_a? ColorShell
 
     # TODO: benchmark alternatives in regards to Object Shapes
     @bold = bold
     @italic = italic
     @underlined = underlined
-    @fore = fore
-    @back = back
+    @fore = fore&.to_rgb
+    @back = back&.to_rgb
     @text = text.to_s
   end
 
