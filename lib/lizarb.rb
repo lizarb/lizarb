@@ -834,12 +834,6 @@ module Lizarb
     log "        loader.enable_reloading" if defined? $log_boot_highest
     loader.setup
     log "        loader.setup" if defined? $log_boot_highest
-
-    # App connects to systems
-
-    App.systems.each do |system_key, system_class|
-      system_class.color DevSystem::ColorShell.parse system_class.color unless system_class.color.is_a? Array
-    end
   end
 
   # loaders
