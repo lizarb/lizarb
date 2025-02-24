@@ -591,7 +591,7 @@ module Lizarb
 
     App.instance_eval do
       @directory = root / directory
-      @systems_directory = root / systems_directory if systems_directory
+      @systems_directory = root / systems_directory_name
 
       @relative_path = Pathname(@relative_path)
       @path = Pathname(@path)
