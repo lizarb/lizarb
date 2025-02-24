@@ -9,7 +9,7 @@ $boot_time = Time.now
 
 puts "$VERBOSE = true" if $VERBOSE
 
-require_relative "lizarb/version"
+require_relative "lizarb/version" unless defined? Lizarb::VERSION
 
 class Class
 
