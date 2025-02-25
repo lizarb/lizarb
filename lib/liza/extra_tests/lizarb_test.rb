@@ -8,13 +8,11 @@ class Liza::LizarbTest < Liza::ObjectTest
   # test :reload do
   #   array = []
   #   3.times do
-  #     Lizarb.reload do
-  #       # AppShell.consts
-  #       app_shell = AppShell.new
-  #       app_shell.filter_by_unit Request
-  #       app_shell.get_domains
-  #       array << SimpleCommand.object_id
-  #     end
+  #     Lizarb.reload
+  #     app_shell = AppShell.new
+  #     app_shell.filter_by_unit Request
+  #     app_shell.get_domains
+  #     array << SimpleCommand.object_id
   #   end
   #   assert_equality array.uniq.size, 3
   # end
