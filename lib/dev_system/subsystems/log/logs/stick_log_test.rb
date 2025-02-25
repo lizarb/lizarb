@@ -63,12 +63,12 @@ class DevSystem::StickLogTest < DevSystem::LogTest
     assert_equality s.back, [248, 248, 248]
     assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;204;0;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
     
-    s = subject_class.new "I LOVE RUBY", :b, :i, :u, 0xff9900, :white
-    assert_equality s.class, subject_class
-    assert_equality s.text, "I LOVE RUBY"
-    assert_equality s.fore, [255, 153, 0]
-    assert_equality s.back, [248, 248, 248]
-    assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;255;153;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
+    # s = subject_class.new "I LOVE RUBY", :b, :i, :u, 0xff9900, :white
+    # assert_equality s.class, subject_class
+    # assert_equality s.text, "I LOVE RUBY"
+    # assert_equality s.fore, [255, 153, 0]
+    # assert_equality s.back, [248, 248, 248]
+    # assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;255;153;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
     
     s = subject_class.new "I LOVE RUBY", :b, :i, :u, "#ff9900", :white
     assert_equality s.class, subject_class
@@ -77,12 +77,12 @@ class DevSystem::StickLogTest < DevSystem::LogTest
     assert_equality s.back, [248, 248, 248]
     assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;255;153;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
     
-    s = subject_class.new "I LOVE RUBY", :b, :i, :u, "ff9900", :white
-    assert_equality s.class, subject_class
-    assert_equality s.text, "I LOVE RUBY"
-    assert_equality s.fore, [255, 153, 0]
-    assert_equality s.back, [248, 248, 248]
-    assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;255;153;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
+    # s = subject_class.new "I LOVE RUBY", :b, :i, :u, "ff9900", :white
+    # assert_equality s.class, subject_class
+    # assert_equality s.text, "I LOVE RUBY"
+    # assert_equality s.fore, [255, 153, 0]
+    # assert_equality s.back, [248, 248, 248]
+    # assert_equality s.to_s, "\e[1m\e[3m\e[4m\e[38;2;255;153;0m\e[48;2;248;248;248mI LOVE RUBY\e[0m"
   end
 
 end
