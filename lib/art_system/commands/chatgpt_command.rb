@@ -9,7 +9,7 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
     log "simple_booleans #{ simple_booleans }"
     log "simple_strings  #{ simple_strings }"
   end
-  
+
   def after
     super
     log "#{ @t.diff }s | done"
@@ -29,14 +29,17 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
     log stick :b, system.color, "I just think Ruby is the Best for coding!"
 
     # log stick :red, :white, "Not implemented yet"
-    content = args.join(" ")
-    content = "Hello!" if content.empty?
+    set_default_arg(0, "Hello!")
+    content = simple_args.join(" ")
+
+    set_default_string :model, "gpt-4o"
+    model = simple_string(:model)
 
     shell = OpenaiShell.new
     client = shell.client
     response = client.chat(
       parameters: {
-        model: "gpt-4o",
+        model: model,
         messages: [{ role: "user", content: content}],
         temperature: 0.7
       }
@@ -53,7 +56,9 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
   def call_image
     log stick :b, system.color, "I just think Ruby is the Best for coding!"
 
-    prompt = args[0] || "A green lizard sitting atop a big red ruby"
+    set_default_arg(0, "A green lizard sitting atop a big red ruby")
+    prompt = simple_args.join(" ")
+
     n = 1
     size = '512x512'
 
