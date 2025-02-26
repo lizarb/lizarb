@@ -60,3 +60,8 @@ group :desk do
   # gems used by DeskSystem
   gem "glimmer-dsl-libui", "~> 0.11"
 end
+
+group :art do
+  # gems used by ArtSystem
+  gem "ruby-openai", "~> 7.4"
+end
