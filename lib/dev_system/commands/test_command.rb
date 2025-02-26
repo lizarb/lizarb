@@ -66,7 +66,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
   def _call_counting(app_shell)
     puts
     Liza.log ""
-    Liza.log stick :b, " TEST TOTALS ".center(120, "-")
+    Liza.log stick :b, :black, :white, " TEST TOTALS ".center(120, "-")
     Liza.log ""
     puts
     totals = Hash.new { 0 }
