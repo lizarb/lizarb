@@ -9,10 +9,10 @@
   # liza g <%= controller_name %><%= ":#{action_name}" if action_name != "default" %> name action_1 action_2 action_3
   def call_<%= action_name %>
     set_default_super "<%= action_name if action_name != "default" %>"
-    
+
     create_controller do |unit, test|
       unit.section name: :actions, render_key: :section_<%= action_name %>_actions
-      
+
       arg_action_names.each do |action_name|
         unit.view name: action_name, render_key: :view_<%= action_name %>, format: :<%= @current_section[:format] %>
       end unless arg_views_none?
