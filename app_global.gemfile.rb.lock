@@ -26,7 +26,7 @@ GEM
       wisper (~> 2.0)
     tty-screen (0.8.2)
     wisper (2.0.1)
-    zeitwerk (2.6.13)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   arm64-darwin-23
@@ -38,7 +38,7 @@ DEPENDENCIES
   pry (>= 0.14.2)
   rake (~> 13.0)
   tty-prompt (>= 0.23.1)
-  zeitwerk (>= 2.6.13)
+  zeitwerk (~> 2.6)
 
 BUNDLED WITH
    2.5.4
