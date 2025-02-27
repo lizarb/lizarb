@@ -41,7 +41,7 @@ group :net do
   # database gems
   gem "redis", "~> 5.0"
   gem "mongo", "~> 2.19"
-  gem "sqlite3", "~> 1.5", platforms: :ruby
+  gem "sqlite3", "~> 2.6", platforms: :ruby
   gem "mysql2", "~> 0.5", platforms: :ruby
   gem "pg", "~> 1.5", platforms: :ruby
 end
