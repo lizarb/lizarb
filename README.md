@@ -20,8 +20,9 @@ Install the gem by executing:
 
 You will get the following shims:
 
-    lizarb version
-    liza version
+    lizarb --version
+    liza --version
+    liza -v
 
 ## REPL
 
@@ -35,10 +36,11 @@ Try Liza with IRB or Pry:
 So you can run your experiments:
 
     liza new
+    liza new project_1
 
-Then enter your automagically generated liza app:
+Then enter your generated liza app:
 
-    cd app_1
+    cd project_1
     liza help
 
 Now you're ready to go and try some stuff!
@@ -54,6 +56,8 @@ OK, one more thing!
 You can run the tests with:
 
     liza test
+    liza test +ask
+    liza test -run
 
 ## DevSystem
 
@@ -68,15 +72,15 @@ Generate a command
 Generate a system
 
     liza generate
-    liza generate system my
-    liza generate system my
+    liza generate system my_deploy
+    liza generate system my_agents
 
 Generate a command in a system
 
     liza generate
     liza generate command
     liza generate command other
-    liza generate command other place=my
+    liza generate command other place=my_deploy
     liza other
 
 Gemify a system
@@ -85,8 +89,13 @@ Gemify a system
 
 Investigate the framework
 
-    liza loc
+    liza xxxxx
+    liza generate xxxxx
     liza shell
+    liza shell:loc
+    liza shell:paths
+    liza shell:eval "puts 'Hello, World'"
+    liza shell:eval "log 'Hello, World'" 
 
 ---
 
