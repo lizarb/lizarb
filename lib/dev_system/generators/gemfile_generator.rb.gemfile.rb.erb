@@ -15,7 +15,7 @@ group :default do
   # gem "lizarb", github: "lizarb/lizarb"
   # gem "lizarb", path: "../lizarb"
   
-  gem "zeitwerk", ">= 2.6.13"
+  gem "zeitwerk", "~> <%= Zeitwerk::VERSION.split(".")[0..1].join(".") %>"
 end
 
 group :dev do
