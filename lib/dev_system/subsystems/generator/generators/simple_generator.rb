@@ -50,7 +50,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
       if log_level? :low
         puts relative
-        LineDiffShell.log_diff(data[:before].split("\n"), data[:after].split("\n")) if diff.values.sum.positive?
+        DifflcsGemShell.log_diff(data[:before].split("\n"), data[:after].split("\n")) if diff.values.sum.positive?
       end
     end
   end

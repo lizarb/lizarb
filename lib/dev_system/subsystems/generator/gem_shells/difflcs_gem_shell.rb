@@ -1,13 +1,14 @@
-class DevSystem::LineDiffShell < DevSystem::Shell
+class DevSystem::DifflcsGemShell < DevSystem::GemShell
   require "diff/lcs"
+  # gem "diff-lcs"
 
-  # 
+  def self.get_diffs(a, b)
+    call({})
+    Diff::LCS.diff(a, b)
+  end
 
   def self.log_diff(a, b)
-    call({})
-
-    # Compute the diff
-    diffs = Diff::LCS.diff(a, b)
+    diffs = get_diffs(a, b)
     puts
     # Output the diff in a format similar to git diff
     diffs.each do |diff|
@@ -23,5 +24,5 @@ class DevSystem::LineDiffShell < DevSystem::Shell
     end
     puts
   end
-  
+
 end
