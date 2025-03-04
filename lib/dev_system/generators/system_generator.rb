@@ -32,25 +32,41 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
 
   def arg_name
     @arg_name ||= begin
-      name = nil
       index = 1
-      until name.to_s.strip.size.positive?
-        name = command.given_args[index]
-        if name.to_s.strip.split("_").count < 2
-          # establish a default name
-          username = ENV['USER'] || ENV['USERNAME']
-          name = username if name.to_s.strip.size.zero?
-          default = "#{username}_#{name}"
-          # hacks the input block
-          value = instance_exec(default, &input_args[index])
-          # hacks the command's args
-          command.env[:simple_args][index] = value
-          # sets name, used by the above `until` loop
-          name = value
-        end
+      name = command.given_args[index]
+      name_words = name.to_s.strip.split("_")
+      # until name.to_s.strip.size.positive?
+      until name_words.count > 1
+        default = nil
+        # prefix "my" if the given a single word
+        default = "my_#{name}" if name_words.count == 1
+        # establish a default name
+        default ||= "my_#{get_random_name}"
+        # hacks the input block
+        value = instance_exec(default, &input_args[index])
+        # hacks the command's args
+        command.env[:simple_args][index] = value
+        # sets name, used by the above `until` loop
+        name = value
+        name_words = name.to_s.strip.split("_")
       end
       name
     end
+  end
+
+  def get_random_name
+    %w[
+    crocodile chameleon gecko snake turtle
+    axolotl salamander tree_frogs toads frogs
+    crow eagle penguin owl hummingbird
+    rhinoceros camel horse zebra hippo
+    bull sheep antelope giraffe elk
+    squirrel beaver capybara rat hamster
+    lion tiger caracal meerkat hyena
+    kangaroo koala tasmanian_devil opossum glider
+    anteater sloth armadillo seacow elephant
+    lemur baboon gibbon capuchin
+    ].sample
   end
   
   def color() = @color ||= command.simple_color(:color, string: "#{system_name.camelize}System")
