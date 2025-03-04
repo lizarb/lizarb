@@ -18,7 +18,7 @@ group :dev do
   gem "pry", ">= 0.14.2"
 
   # Shell gems
-  gem "diff-lcs", ">= 1.5.1"
+  gem "diff-lcs", "~> 1.6"
   gem "tty-prompt", ">= 0.23.1"
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23", platforms: :ruby

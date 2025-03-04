@@ -50,7 +50,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    diff-lcs (1.5.1)
+    diff-lcs (1.6.0)
     equalizer (0.0.11)
     event_stream_parser (1.0.0)
     execjs (2.10.0)
@@ -233,7 +233,7 @@ DEPENDENCIES
   agoo (~> 2.15)
   coffee-script (~> 2.4)
   commonmarker (~> 0.23)
-  diff-lcs (>= 1.5.1)
+  diff-lcs (~> 1.6)
   falcon (~> 0.47)
   glimmer-dsl-libui (~> 0.11)
   haml (~> 6.1)

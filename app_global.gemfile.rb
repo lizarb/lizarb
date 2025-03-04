@@ -8,5 +8,5 @@ gemspec name: "lizarb"
 gem "zeitwerk", "~> 2.6"
 
 gem "pry", ">= 0.14.2"
-gem "diff-lcs", ">= 1.5.1"
+gem "diff-lcs", "~> 1.6"
 gem "tty-prompt", ">= 0.23.1"
