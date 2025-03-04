@@ -1,7 +1,7 @@
 class NetSystem < Liza::System
   class Error < Error; end
 
-  color :ruby
+  color :light_ruby
   
   panel :client
   panel :database
