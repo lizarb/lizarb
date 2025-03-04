@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    lizarb (1.0.5)
+    lizarb (1.0.6)
 
 GEM
   remote: https://rubygems.org/
@@ -50,7 +50,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    diff-lcs (1.5.1)
+    diff-lcs (1.6.0)
     equalizer (0.0.11)
     event_stream_parser (1.0.0)
     execjs (2.10.0)
@@ -193,12 +193,12 @@ GEM
       ffi (~> 1.9)
     spoon (0.0.6)
       ffi
-    sqlite3 (1.7.3-aarch64-linux)
-    sqlite3 (1.7.3-arm-linux)
-    sqlite3 (1.7.3-arm64-darwin)
-    sqlite3 (1.7.3-x86-linux)
-    sqlite3 (1.7.3-x86_64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (2.6.0-aarch64-linux-gnu)
+    sqlite3 (2.6.0-arm-linux-gnu)
+    sqlite3 (2.6.0-arm64-darwin)
+    sqlite3 (2.6.0-x86-linux-gnu)
+    sqlite3 (2.6.0-x86_64-darwin)
+    sqlite3 (2.6.0-x86_64-linux-gnu)
     super_module (1.4.2)
       method_source (>= 0.8.2, < 2.0.0)
     temple (0.10.3)
@@ -225,7 +225,6 @@ PLATFORMS
   arm-linux
   arm64-darwin
   universal-java-17
-  universal-java-21
   x86-linux
   x86_64-darwin
   x86_64-linux
@@ -234,7 +233,7 @@ DEPENDENCIES
   agoo (~> 2.15)
   coffee-script (~> 2.4)
   commonmarker (~> 0.23)
-  diff-lcs (>= 1.5.1)
+  diff-lcs (~> 1.6)
   falcon (~> 0.47)
   glimmer-dsl-libui (~> 0.11)
   haml (~> 6.1)
@@ -253,7 +252,7 @@ DEPENDENCIES
   rexml (~> 3.2)
   ruby-openai (~> 7.4)
   sassc (~> 2.4)
-  sqlite3 (~> 1.5)
+  sqlite3 (~> 2.6)
   tty-prompt (>= 0.23.1)
   zeitwerk (~> 2.6)
 
