@@ -20,7 +20,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
 
     return log "Directory #{stick :light_green, to} already exists." if Dir.exist? to
 
-    log "Liza Application initializing at `#{to}`"
+    log stick :b, :black, system.color, "Liza Application initializing at `#{to}`"
 
     # app
 
@@ -42,19 +42,36 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     
     puts
 
+    log stick :b, :black, system.color, "Liza Application initialized at `#{to}`"
+
+    log stick :b, :black, system.color, "Generating Gemfile..."
+
     KernelShell.call_system \
       "liza generate gemfile #{@name}/Gemfile +confirm",
       log_level: :normal
 
+    log stick :b, :black, system.color, "Gemfile generated at `#{to}/Gemfile`"
+
+    # bundle install
+
+    log stick :b, :black, system.color, "Installing Gems..."
+    log stick :b, :white, system.color, "This may take a few minutes, depending on where you are..."
+
     KernelShell.call_backticks \
       "cd #{to}; BUNDLE_GEMFILE=Gemfile bundle install",
       log_level: :normal
+    
+    log stick :b, :black, system.color, "Gems installed at `#{to}`"
+
+    # git
+
+    log stick :b, :black, system.color, "Initializing Git..."
 
     KernelShell.call_backticks \
-      "cd #{to}; git init -b main; git add .; git commit -m 'lizarb new app_1 (v#{Lizarb::VERSION})'",
+      "cd #{to}; git init -b main; git add .; git commit -m 'lizarb new @name (v#{Lizarb::VERSION})'",
       log_level: :normal
 
-    log "Liza Application initialized at `#{to}`"
+    log stick :b, :black, system.color, "Liza Application initialized at `#{to}`"
   end
 
   # liza g new:script name
