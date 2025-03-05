@@ -68,7 +68,7 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
     log stick :b, :black, system.color, "Initializing Git..."
 
     KernelShell.call_backticks \
-      "cd #{to}; git init -b main; git add .; git commit -m 'lizarb new @name (v#{Lizarb::VERSION})'",
+      "cd #{to}; git init -b main; git add .; git commit -m 'lizarb new #{@name} (v#{Lizarb::VERSION})'",
       log_level: :normal
 
     log stick :b, :black, system.color, "Liza Application initialized at `#{to}`"
