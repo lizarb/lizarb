@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    lizarb (1.0.6)
+    lizarb (1.0.7)
 
 GEM
   remote: https://rubygems.org/
