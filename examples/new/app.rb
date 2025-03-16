@@ -15,6 +15,11 @@ class App
 
   directory "app"
 
+  # Choose your Operation Mode
+
+  mode :code
+  # mode :demo
+
   # Choose your Log Transparency
   #
   #    1       2     3     4      5      6        7
@@ -23,10 +28,7 @@ class App
   # log_boot  4
   # log_level 4
 
-  # Choose your Mode and sources of Environment Variables
-
-  # mode :code # default
-  # mode :demo
+  # Choose your sources of Environment Variables
 
   # env_vars ".env", ":directory.env", ":directory.:mode.env", mandatory: false
 
