@@ -6,4 +6,8 @@ class WorkSystem::WorkBox < Liza::Box
     # 
   end
 
+  preconfigure :observer do
+    # 
+  end
+
 end

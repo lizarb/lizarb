@@ -7,4 +7,5 @@ class WorkSystem < Liza::System
   
   panel :event
 
+  panel :observer
 end
