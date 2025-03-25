@@ -4,5 +4,7 @@ class WorkSystem < Liza::System
   #
 
   color :saffron
+  
+  panel :event
 
 end
