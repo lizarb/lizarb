@@ -4,4 +4,8 @@ class WorkBox < WorkSystem::WorkBox
     # 
   end
 
+  configure :observer do
+    # 
+  end
+
 end
