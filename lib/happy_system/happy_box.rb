@@ -6,4 +6,8 @@ class HappySystem::HappyBox < Liza::Box
     # 
   end
 
+  preconfigure :linter do
+    # 
+  end
+
 end
