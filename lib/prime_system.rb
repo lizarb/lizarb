@@ -9,5 +9,6 @@ class PrimeSystem < Liza::System
   #
 
   panel :epic
+  panel :insight
   
 end
