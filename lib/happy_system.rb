@@ -9,6 +9,6 @@ class HappySystem < Liza::System
   color :coral
 
   panel :axo
-
-  #
+  panel :linter
+  
 end

@@ -6,4 +6,8 @@ class HappyBox < HappySystem::HappyBox
 
   end
 
+  configure :linter do
+    
+  end
+
 end

@@ -11,10 +11,11 @@ class HappySystem::HappyBoxTest < Liza::BoxTest
 
   test :panels do
     a = subject_class.panels.keys
-    b = [:axo]
+    b = [:axo, :linter]
     assert_equality a, b
     
     assert_sub :axo, HappySystem::Axo, HappySystem::AxoPanel
+    assert_sub :linter, HappySystem::Linter, HappySystem::LinterPanel
   end
 
 end
