@@ -11,4 +11,5 @@ class HappySystem < Liza::System
   panel :axo
 
   #
+  panel :linter
 end
