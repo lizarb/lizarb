@@ -203,6 +203,9 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
     total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
+    # silence log
+    CoderayGemShell.log_level :low
+
     app_shell.get_domains.each do |domain|
       next if domain.empty?
       puts
