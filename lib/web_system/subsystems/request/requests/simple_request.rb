@@ -2,17 +2,17 @@ class WebSystem::SimpleRequest < WebSystem::Request
 
   #
   
-  def self.call env
+  def self.call menv
     super
-    new.call env
+    new.call menv
   end
 
   #
 
-  attr_reader :env
+  attr_reader :menv
 
-  def call env
-    @env = env
+  def call menv
+    @menv = menv
     @status = 200
     @headers = {
       "Framework" => "Liza #{Lizarb::VERSION}"
@@ -43,30 +43,34 @@ class WebSystem::SimpleRequest < WebSystem::Request
     @body = "404"
   end
   
-  # env
+  # menv
+
+  def env
+    menv
+  end
 
   def http_method
-    env["REQUEST_METHOD"]
+    menv["REQUEST_METHOD"]
   end
 
   def request
-    @request ||= env["LIZA_REQUEST"].to_sym
+    @request ||= menv["LIZA_REQUEST"].to_sym
   end
 
   def action
-    @action ||= env["LIZA_ACTION"].to_sym
+    @action ||= menv["LIZA_ACTION"].to_sym
   end
 
   def format
-    @format ||= env["LIZA_FORMAT"].to_sym
+    @format ||= menv["LIZA_FORMAT"].to_sym
   end
 
   def segments
-    @segments ||= env["LIZA_SEGMENTS"]
+    @segments ||= menv["LIZA_SEGMENTS"]
   end
 
   def qs
-    @qs ||= (env["QUERY_STRING"] || "").split("&").map { _1.split("=") }.to_h
+    @qs ||= (menv["QUERY_STRING"] || "").split("&").map { _1.split("=") }.to_h
   end
 
 end
