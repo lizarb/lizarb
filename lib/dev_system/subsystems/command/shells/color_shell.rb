@@ -10,6 +10,10 @@ class DevSystem::ColorShell < DevSystem::Shell
     
     color
   end
+
+  def self.parse_to_str(color)
+    parse(color).to_s
+  end
   
   # Colors
 
