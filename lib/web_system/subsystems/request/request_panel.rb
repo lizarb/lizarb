@@ -1,27 +1,27 @@
 class WebSystem::RequestPanel < Liza::Panel
 
-  def call env, allow_raise: false
+  def call menv, allow_raise: false
     t = Time.now
-    log "#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}"
+    log "#{menv["REQUEST_METHOD"]} #{menv["PATH_INFO"]}"
 
-    request_klass = find env
-    ret = request_klass.call env
+    request_klass = find menv
+    ret = request_klass.call menv
     
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     ret
   rescue => e
     raise e if allow_raise
     request_klass = WebSystem::ServerErrorRequest
-    env["LIZA_ERROR"] = e
+    menv["LIZA_ERROR"] = e
 
-    ret = request_klass.call env
+    ret = request_klass.call menv
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     puts
     ret
   end
 
-  def call! env
-    call env, allow_raise: true
+  def call! menv
+    call menv, allow_raise: true
   end
 
   #
@@ -47,11 +47,11 @@ class WebSystem::RequestPanel < Liza::Panel
 
   #
 
-  def find env
-    _prepare env
+  def find menv
+    _prepare menv
 
     routers.values.each do |router|
-      request_class = router.call env
+      request_class = router.call menv
       return request_class if request_class
     end
 
@@ -60,16 +60,16 @@ class WebSystem::RequestPanel < Liza::Panel
 
   #
 
-  def _prepare env
-    path = env["PATH_INFO"]
+  def _prepare menv
+    path = menv["PATH_INFO"]
     path, _sep, format = path.lpartition "."
     format = "html" if format.empty?
 
     segments = Array path.split("/")[1..-1]
 
-    env["LIZA_PATH"]     = path
-    env["LIZA_FORMAT"]   = format
-    env["LIZA_SEGMENTS"] = segments
+    menv["LIZA_PATH"]     = path
+    menv["LIZA_FORMAT"]   = format
+    menv["LIZA_SEGMENTS"] = segments
   end
 
 end
