@@ -121,7 +121,7 @@ classDiagram {
 # view systems_in_objects.plantuml.erb
 'systems in objects'
 <% Array(@systems_in_objects).each do |system| -%>
-<% color = ColorShell.rgb_to_str system.color -%>
+<% color = ColorShell.parse_to_str system.color -%>
 <%= puml.package_system_in_object system, color %> {
 }
 <% end.each do |system| -%>
@@ -131,7 +131,7 @@ classDiagram {
 # view systems.plantuml.erb
 'systems'
 <% Array(@systems).each do |system| -%>
-  <% color = ColorShell.rgb_to_str system.color -%>
+  <% color = ColorShell.parse_to_str system.color -%>
   <%= puml.package_system system, color %> {
   }
 <% end -%>
@@ -139,7 +139,7 @@ classDiagram {
 # view boxes.plantuml.erb
 'boxes'
 <% Array(@boxes).each do |box| -%>
-  <% color = ColorShell.rgb_to_str box.system.color -%>
+  <% color = ColorShell.parse_to_str box.system.color -%>
   <%= puml.package_box box.superclass, color %> {
   }
   <%= puml.package_box box, color %> {
@@ -151,7 +151,7 @@ classDiagram {
 # view subs.plantuml.erb
 'subs'
 <% Array(@subs).each do |controller| -%>
-  <% color = ColorShell.rgb_to_str controller.division.system.color -%>
+  <% color = ColorShell.parse_to_str controller.division.system.color -%>
   <% panel = controller.panel.class -%>
   <%= puml.inheritance panel %>
   <%= puml.inheritance controller %>
@@ -168,7 +168,7 @@ classDiagram {
 <%= puml.package_object %> {
 }
 <% Array(@objects).each do |controller| -%>
-  <% color = ColorShell.rgb_to_str controller.division.system.color %>
+  <% color = ColorShell.parse_to_str controller.division.system.color %>
   class <%= puml.name_for controller %> <%= color %>;text:000000;line.bold; {
     <%= "division #{controller.plural}" if controller.division? %>
   }
