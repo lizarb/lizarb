@@ -9,8 +9,24 @@ class WebSystem::ServerErrorRequest < WebSystem::Request
     }
 
     e = env["LIZA_ERROR"]
+    body = ""
+    body << "<html>"
+    body << "<head>"
+    body << "<title>Server Error #{status}</title>"
+    body << "</head>"
+    body << "<body>"
+    body << "<h1>Server Error #{status}</h1>"
+    body << "<h2>#{e.class} - #{e.message}</h2>"
 
-    body = "Server Error #{status} - #{e.class} - #{e.message}"
+    body << "<ol>"
+    e.backtrace.each do |line|
+      body << "<li>#{line}</li>\n"
+    end
+    body << "</ol>"
+    
+    body << "\n\n" << e.backtrace.join("\n")
+    body << "\n\n" << e.inspect
+    body << "\n\n" << e.class.to_s
 
     [status, headers, [body]]
   end
