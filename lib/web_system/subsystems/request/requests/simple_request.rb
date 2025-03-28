@@ -74,33 +74,3 @@ class WebSystem::SimpleRequest < WebSystem::Request
   end
 
 end
-
-__END__
-
-# view html.html.erb
-<!DOCTYPE html>
-<html lang="en">
-  <%= render "head" %>
-  <%= render "body" %>
-</html>
-
-# view head.html.erb
-<head>
-  <meta charset="UTF-8">
-  <title><%= get :title %></title>
-</head>
-
-# view body.html.erb
-<body>
-  <%= render %>
-</body>
-
-# view index.html.erb
-<h1><%= self.class %></h1>
-<h2><%= action %></h2>
-<p>http_method: <%= http_method %></p>
-<p>request: <%= request %></p>
-<p>action: <%= action %></p>
-<p>format: <%= format %></p>
-<p>qs: <%= qs %></p>
-<p>segments: <%= segments %></p>
