@@ -542,7 +542,7 @@ class DevSystem::AppShell < DevSystem::Shell
     consts[:liza].each do |category, classes|
       path = "lib/liza/#{category}/"
       ret << Layer.new(
-        level: 2,
+        level: (category=="unit" || category=="extra_tests" ? 2 : 3),
         name: category,
         color: :white,
         path: ,
