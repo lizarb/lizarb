@@ -1,19 +1,19 @@
 class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
   class RequestNotFound < Error; end
 
-  def self.call(env)
+  def self.call(menv)
     super
-    segments = env["LIZA_SEGMENTS"].dup
+    segments = menv["LIZA_SEGMENTS"].dup
     request = segments.shift || "root"
     action  = segments.shift || "index"
-    format = env["LIZA_FORMAT"]
+    format = menv["LIZA_FORMAT"]
 
     log "request: #{request.inspect}, action: #{action.inspect}, format: #{format.inspect}"
     request_class = _find_request_class request
     
-    env["LIZA_REQUEST"] = request
-    env["LIZA_ACTION"] = action
-    env["LIZA_REQUEST_CLASS"] = request_class
+    menv["LIZA_REQUEST"] = request
+    menv["LIZA_ACTION"] = action
+    menv["LIZA_REQUEST_CLASS"] = request_class
 
     request_class
   end
