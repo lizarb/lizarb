@@ -18,6 +18,13 @@ class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
     request_class
   end
 
+  def self.path_for(request, action)
+    request = Liza.const "#{request}_request" if request.is_a? Symbol
+    action.to_sym == :index \
+      ? "/#{ request.token }"
+      : "/#{ request.token }/#{ action }"
+  end
+
   def self._find_request_class request
     Liza.const "#{request}_request"
   rescue Liza::ConstNotFound
