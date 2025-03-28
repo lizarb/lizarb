@@ -58,6 +58,15 @@ class WebSystem::RequestPanel < Liza::Panel
     NotFoundRequest
   end
 
+  def path_for(request, action)
+    routers.values.each do |router|
+      path = router.path_for request, action
+      return path if path
+    end
+
+    nil
+  end
+
   #
 
   def _prepare menv

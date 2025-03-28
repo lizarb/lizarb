@@ -71,6 +71,10 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     assert_equality request_class, RootRequest
   end
 
+  test :path_for do
+    todo "write this"
+  end
+
   test :router do
     todo "write this"
   end
