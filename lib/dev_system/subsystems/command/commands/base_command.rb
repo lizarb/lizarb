@@ -10,11 +10,8 @@ class DevSystem::BaseCommand < DevSystem::Command
 
   #
 
-  def env() = menv
-
   def call(menv)
-    log :higher, "menv.count is #{menv.count}"
-    self.menv = menv
+    super
 
     if respond_to? action_method_name
       around

@@ -135,8 +135,8 @@ class Liza::Controller < Liza::Unit
 
   section :callable
 
-  def self.call(env)
-    log :higher, "env.count is #{env.count}" unless self <= DevSystem::Log
+  def self.call(menv)
+    log :higher, "menv.count is #{menv.count}" unless self <= DevSystem::Log
 
     requirements.each do
       log :normal, "require '#{_1}'" unless self <= DevSystem::Log
@@ -144,6 +144,10 @@ class Liza::Controller < Liza::Unit
     end.clear
 
     true
+  end
+
+  def call(menv)
+    @menv = menv
   end
 
   section :requirable
@@ -215,6 +219,8 @@ class Liza::Controller < Liza::Unit
   end
   
   attr_accessor :menv
+  
+  def env() = menv
   
   section :default
 

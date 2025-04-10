@@ -22,7 +22,7 @@ class Liza::ControllerTest < Liza::UnitTest
     :callable=>{
       :constants=>[],
       :class_methods=>[:call],
-      :instance_methods=>[]
+      :instance_methods=>[:call]
     },
     :requirable=>{
       :constants=>[],
@@ -37,7 +37,7 @@ class Liza::ControllerTest < Liza::UnitTest
     :environmentable=>{
       :constants=>[],
       :class_methods=>[:menv_reader, :menv_writer, :menv_accessor],
-      :instance_methods=>[:menv, :menv=]
+      :instance_methods=>[:menv, :menv=, :env]
     },
     :default=>{
       # this is because tests mock this class

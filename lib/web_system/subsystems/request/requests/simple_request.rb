@@ -9,10 +9,8 @@ class WebSystem::SimpleRequest < WebSystem::Request
 
   #
 
-  attr_reader :menv
-
-  def call menv
-    @menv = menv
+  def call(menv)
+    super
     @status = 200
     @headers = {
       "Framework" => "Liza #{Lizarb::VERSION}"
