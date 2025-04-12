@@ -1,10 +1,10 @@
-class WorkSystem::ObserverTest < Liza::ControllerTest
+class WorkSystem::SubscriberTest < Liza::ControllerTest
 
   section :subject
 
   test :subject_class, :subject do
-    assert_equality subject_class, WorkSystem::Observer
-    assert_equality subject.class, WorkSystem::Observer
+    assert_equality subject_class, WorkSystem::Subscriber
+    assert_equality subject.class, WorkSystem::Subscriber
   end
 
   test_sections(

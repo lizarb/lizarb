@@ -1,10 +1,10 @@
-class WorkSystem::ObserverPanelTest < Liza::PanelTest
+class WorkSystem::SubscriberPanelTest < Liza::PanelTest
 
   section :subject
 
   test :subject_class, :subject do
-    assert_equality subject_class, WorkSystem::ObserverPanel
-    assert_equality subject.class, WorkSystem::ObserverPanel
+    assert_equality subject_class, WorkSystem::SubscriberPanel
+    assert_equality subject.class, WorkSystem::SubscriberPanel
   end
 
   test_sections(

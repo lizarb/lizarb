@@ -4,9 +4,9 @@ class WorkSystem < Liza::System
   #
 
   color :saffron
-  
-  panel :event
 
-  panel :observer
+  panel :event
   panel :publisher
+  panel :subscriber
+
 end

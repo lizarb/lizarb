@@ -1,4 +1,4 @@
-class WorkSystem::ObserverGenerator < DevSystem::ControllerGenerator
+class WorkSystem::SubscriberGenerator < DevSystem::ControllerGenerator
 
 
   section :actions
@@ -9,7 +9,7 @@ class WorkSystem::ObserverGenerator < DevSystem::ControllerGenerator
   # set_default_views "nested"
 
 
-  # liza g observer name action_1 action_2 action_3
+  # liza g subscriber name action_1 action_2 action_3
   def call_default
     set_default_super ""
 
