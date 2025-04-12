@@ -59,7 +59,7 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
 
     new_lines = [
       "  #{verb} :#{subsystem_name} do",
-      "    # #{subsystem_name.camelcase}Panel.instance gives you read-access to this instance",
+      "    # #{subsystem_name.camelcase}.panel gives you read-access to this instance",
       "  end",
       "",
     ]

@@ -4,13 +4,13 @@
     "<%= subsystem_name %> not found: #{args[0].inspect}"
   end
 
-  def call(other_env)
+  def call(other_menv)
     log "not implemented"
   #   log "forging"
-  #   env = { other_env: }
+  #   env = { other_menv: }
 
   #   log "finding"
-  #   k = Liza.const "#{other_env[:<%= subsystem_name %>]}_<%= subsystem_name %>"
+  #   k = Liza.const "#{other_menv[:<%= subsystem_name %>]}_<%= subsystem_name %>"
     
   #   log "forwarding"
   #   k.call env
