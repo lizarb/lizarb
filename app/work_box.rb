@@ -8,4 +8,8 @@ class WorkBox < WorkSystem::WorkBox
     # 
   end
 
+  configure :publisher do
+    # Publisher.panel gives you read-access to this instance
+  end
+
 end

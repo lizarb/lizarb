@@ -10,4 +10,8 @@ class WorkSystem::WorkBox < Liza::Box
     # 
   end
 
+  preconfigure :publisher do
+    # Publisher.panel gives you read-access to this instance
+  end
+
 end

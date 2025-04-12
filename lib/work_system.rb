@@ -8,4 +8,5 @@ class WorkSystem < Liza::System
   panel :event
 
   panel :observer
+  panel :publisher
 end
