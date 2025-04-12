@@ -1,5 +1,7 @@
 class WebSystem::SimpleRequest < WebSystem::Request
 
+  menv_reader :path_info, :request_method, :query_string do |symbol| symbol.to_s.upcase end
+  
   #
   
   def self.call menv

@@ -193,29 +193,37 @@ class Liza::Controller < Liza::Unit
 
   section :environmentable
 
-  def self.menv_reader(*names)
+  def self.menv_reader(*names, &block)
     names.each do |name|
+      _menv_transformers[name] = block if block_given?
       define_method name do
-        log :highest, "env[:#{name}] reads #{env[name].inspect}", method_name: 'menv_reader'
-        raise "env is nil!" unless env
-        env[name]
+        name = cl._menv_transformers[name].call(name) if cl._menv_transformers[name]
+        log :highest, "menv[:#{name}] reads #{menv[name].inspect}", method_name: 'menv_reader'
+        raise "menv is nil!" unless menv
+        menv[name]
       end
     end
   end
   
-  def self.menv_writer(*names)
+  def self.menv_writer(*names, &block)
     names.each do |name|
+      _menv_transformers[name] = block if block_given?
       define_method "#{name}=" do |value|
-        log :higher, "env[:#{name}] writes #{value.inspect}", method_name: 'menv_writer'
-        raise "env is nil!" unless env
-        env[name] = value
+        name = cl._menv_transformers[name].call(name) if cl._menv_transformers[name]
+        log :higher, "menv[:#{name}] writes #{value.inspect}", method_name: 'menv_writer'
+        raise "env is nil!" unless menv
+        menv[name] = value
       end
     end
   end
   
-  def self.menv_accessor(*names)
-    menv_reader(*names)
+  def self.menv_accessor(*names, &block)
+    menv_reader(*names, &block)
     menv_writer(*names)
+  end
+
+  def self._menv_transformers
+    fetch(:_menv_transformers) { {} }
   end
   
   attr_accessor :menv
