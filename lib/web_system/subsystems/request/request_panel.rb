@@ -5,8 +5,9 @@ class WebSystem::RequestPanel < Liza::Panel
     log "#{menv["REQUEST_METHOD"]} #{menv["PATH_INFO"]}"
 
     request_klass = find menv
-    ret = request_klass.call menv
-    
+    request_klass.call menv
+
+    ret = [menv[:response_status], menv[:response_headers], [menv[:response_body]]]
     log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
     ret
   rescue => e

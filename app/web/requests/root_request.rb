@@ -1,40 +1,37 @@
 class RootRequest < AppRequest
 
   # NOTE: There's a bug in this file. Can you find it?
-  def self.call env
+  def self.call menv
     super
-    action = env["LIZA_ACTION"]
+    action = menv["LIZA_ACTION"]
 
     #
 
-    @status = 200
+    menv[:response_status] = 200
 
-    @headers = {
+    menv[:response_headers] = {
       "Framework" => "Liza #{Lizarb::VERSION}"
     }
 
-    @body = ""
+    menv[:response_body] = ""
 
     if action == "index"
-      render_action_index
+      render_action_index menv
     else
-      @status = 404
-      render_action_not_found action
+      menv[:response_status] = 404
+      render_action_not_found action, menv
     end
 
-    [@status, @headers, [@body]]
   rescue => e
-    @status = 500
-    @body = "#{e.class} - #{e.message}"
-
-    log @status
-    [@status, @headers, [@body]]
+    menv[:response_status] = 500
+    menv[:response_body] = "#{e.class} - #{e.message}"
+    log menv[:response_status]
   end
 
-  def self.render_action_index
+  def self.render_action_index(menv)
     h1 = "Ruby Works!"
 
-    @body = <<~CODE
+    menv[:response_body] = <<~CODE
 <html>
 <head>
   <title>Ruby</title>
@@ -48,8 +45,8 @@ class RootRequest < AppRequest
     CODE
   end
 
-  def self.render_action_not_found action
-    @body = "Ruby couldn't find your page! action: #{action}"
+  def self.render_action_not_found action, menv
+    menv[:response_body] = "Ruby couldn't find your page! action: #{action}"
   end
 
 end

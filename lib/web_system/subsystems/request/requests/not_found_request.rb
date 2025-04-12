@@ -1,16 +1,14 @@
 class WebSystem::NotFoundRequest < WebSystem::Request
 
-  def self.call env
+  def self.call menv
     super
-    status = 404
-
-    headers = {
+    menv[:response_status] = 404
+    menv[:response_headers] = {
       "Framework" => "Liza #{Lizarb::VERSION}"
     }
+    menv[:response_body] = "Client Error #{menv[:response_status]} - #{menv["LIZA_PATH"]}"
 
-    body = "Client Error #{status} - #{env["LIZA_PATH"]}"
-
-    [status, headers, [body]]
+    menv
   end
 
 end
