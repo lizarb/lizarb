@@ -5,29 +5,28 @@ class AssetsRequestTest < AppRequestTest
   end
 
   test :actions, :app, :js do
-    env = {
+    menv = {
       "LIZA_ACTION" => "app",
       "LIZA_FORMAT" => "js",
     }
+    subject_class.call menv
 
-    status, headers, body = subject_class.call env
-
-    assert status == 200
-    assert headers["Framework"].to_s.start_with? "Liza"
-    assert body.first.include? "JS file has been loaded"
+    assert menv[:response_status]  == 200
+    assert menv[:response_headers]["Framework"].to_s.start_with? "Liza"
+    assert menv[:response_body].include? "JS file has been loaded"
   end
 
   test :actions, :app, :css do
-    env = {
+      menv = {
       "LIZA_ACTION" => "app",
       "LIZA_FORMAT" => "css",
     }
 
-    status, headers, body = subject_class.call env
+    subject_class.call menv
 
-    assert status == 200
-    assert headers["Framework"].to_s.start_with? "Liza"
-    assert body.first.include? "body {"
+    assert menv[:response_status]  == 200
+    assert menv[:response_headers]["Framework"].to_s.start_with? "Liza"
+    assert menv[:response_body].include? "body {"
   end
 
 end

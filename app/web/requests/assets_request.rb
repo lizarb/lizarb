@@ -1,13 +1,14 @@
 class AssetsRequest < AppRequest
 
-  def self.call env
+  def self.call menv
     super
-    new.call env
+    new.call menv
   end
 
-  def call env
-    action = env["LIZA_ACTION"].to_sym
-    format = env["LIZA_FORMAT"].to_sym
+  def call menv
+    super
+    action = menv["LIZA_ACTION"].to_sym
+    format = menv["LIZA_FORMAT"].to_sym
 
     #
 
@@ -22,7 +23,9 @@ class AssetsRequest < AppRequest
     body = render_action_app_format_js    if action == :app   && format == :js
     body = render_action_app_format_css   if action == :app   && format == :css
 
-    [status, headers, [body]]
+    menv[:response_status] = status
+    menv[:response_headers] = headers
+    menv[:response_body] = body
   end
 
   # helper methods

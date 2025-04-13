@@ -1,7 +1,7 @@
 class WebSystem::SimpleRequest < WebSystem::Request
-
+  menv_accessor :response_status, :response_headers, :response_body
   #
-  
+
   def self.call menv
     super
     new.call menv
@@ -23,8 +23,12 @@ class WebSystem::SimpleRequest < WebSystem::Request
         format: format,
         converted: true,
         formatted: true
-    
-    [@status, @headers, [@body]]
+
+    self.response_status = @status
+    self.response_headers = @headers
+    self.response_body = @body
+
+    menv
   end
 
   #
@@ -40,7 +44,7 @@ class WebSystem::SimpleRequest < WebSystem::Request
     @status = 404
     @body = "404"
   end
-  
+
   # menv
 
   def env

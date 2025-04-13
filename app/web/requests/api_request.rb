@@ -1,9 +1,9 @@
 class ApiRequest < AppRequest
   require "json"
 
-  def self.call env
+  def self.call menv
     super
-    path = env["REQUEST_PATH"]
+    path = menv["REQUEST_PATH"]
 
     #
 
@@ -30,12 +30,14 @@ class ApiRequest < AppRequest
       body = render_route_api_users
     else
       status = 404
-      body = render_route_not_found env["LIZA_PATH"]
+      body = render_route_not_found menv["LIZA_PATH"]
     end
 
     body = body.to_json
 
-    [status, headers, [body]]
+    menv[:response_status] = status
+    menv[:response_headers] = headers
+    menv[:response_body] = body
   end
 
   def self.render_route_api_auth_sign_up
