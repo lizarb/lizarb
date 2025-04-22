@@ -45,5 +45,6 @@ class App
   system :prime
   system :lab
   system :eco
+  system :my_nice
 
 end

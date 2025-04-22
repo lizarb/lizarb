@@ -5,4 +5,5 @@ class DeepSystem < Liza::System
 
   color :light_indigo
 
+  panel :mirror
 end
