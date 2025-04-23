@@ -1,0 +1,26 @@
+# view section_docker.rb.erb
+
+  # define_service :hello_world do
+  #   image 'hello-world:latest'
+  # end
+
+  # use_service :hello_world do
+  #   port 80
+  # end
+
+<% arg_action_names.each do |action_name| -%>
+  define_service :<%= action_name %> do
+    image 'hello-world:latest'
+    default_port 80
+    # persisted '/path/to/data'
+    # environment(
+    #   HELLO_USER: 'hello',
+    #   HELLO_PASSWORD: 'world'
+    # )
+  end
+<% end -%>
+<% arg_action_names.each do |action_name| %>
+  use_service :<%= action_name %> do
+    port 80
+  end
+<% end -%>
