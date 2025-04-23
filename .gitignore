@@ -11,3 +11,5 @@
 /.idea/
 /.solargraph/
 .solargraph.yml
+docker-compose.yml
+docker-compose-*.yml

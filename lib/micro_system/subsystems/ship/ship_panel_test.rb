@@ -9,9 +9,9 @@ class MicroSystem::ShipPanelTest < Liza::PanelTest
 
   test_sections(
     :subsystem=>{
-      :constants=>[:NotFoundError],
+      :constants=>[],
       :class_methods=>[],
-      :instance_methods=>[:call]
+      :instance_methods=>[:call, :auto_dock, :docked_ship, :docked_ship_name]
     }
   )
 
