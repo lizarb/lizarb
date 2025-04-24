@@ -67,10 +67,10 @@ class NetSystem::HttpClient < NetSystem::Client
     return super(url) unless url.is_a? String
 
     self.started_at = Time.now
-    log url
     uri = URI url
     http = Net::HTTP.new uri.host, uri.port
     http.use_ssl = true if uri.scheme == "https"
+    log url
 
     self.request = Net::HTTP::Get.new(uri, headers)
     log_request
@@ -84,11 +84,11 @@ class NetSystem::HttpClient < NetSystem::Client
   end
 
   def post(url, payload, headers = {})
-    self.started_at = t = Time.now
-    log url
+    self.started_at = Time.now
     uri = URI url
     http = Net::HTTP.new uri.host, uri.port
     http.use_ssl = true if uri.scheme == "https"
+    log url
 
     self.request = Net::HTTP::Post.new(uri, headers)
     request.body = payload
