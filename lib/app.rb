@@ -22,7 +22,9 @@ class App
       return _call_instance_command(args) if args[0][0] == "-"
     end
 
-    Liza::DevBox.configuration.command args
+    MicroSystem.box.configuration.dock if defined? MicroSystem
+    DevSystem.box.configuration.command args if defined? DevSystem
+
     puts if should_log
   end
 
