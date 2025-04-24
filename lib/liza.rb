@@ -14,6 +14,16 @@ module Liza
 
   #
 
+  def find_system(name)
+    const "#{name}_system"
+  end
+
+  def find_controller(family, name)
+    const "#{name}_#{family}"
+  end
+
+  #
+
   def [] name
     const name
   end
