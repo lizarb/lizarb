@@ -163,12 +163,14 @@ module Lizarb
 
   ### Initialize LizaRB as a project
   #
+  # - You must provide the const ARGV.
   # - You must provide __FILE__ as argument to this method.
-  def init_project! executable
+  def init_project!(argv, executable)
     pwd = Dir.pwd
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     setup_project pwd, project: executable
     load
+    call(argv)
   end
 
   ### Initialize LizaRB as a dependent script.
@@ -341,6 +343,11 @@ module Lizarb
     App.after if defined? App.after
 
     log "  Lizarb.#{__method__} done" if defined? $log_boot_high
+  end
+
+  def call(argv)
+    argv = argv.dup
+    App.call(argv)
   end
 
   def exit_messages

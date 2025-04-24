@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 
 require_relative "../lib/lizarb"
-Lizarb.init_project! __FILE__
-
-App.call ARGV
-
+Lizarb.init_project! ARGV, __FILE__
 Lizarb.exit_messages if $log_boot_normal
 exit 0
