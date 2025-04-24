@@ -1,6 +1,12 @@
 class MicroSystem::DockerShip < MicroSystem::Ship
 
-  def self.dock(log_level: self.log_level)
+  def self.up(log_level: self.log_level, filename: "docker-compose.yml")
+    dock(log_level:, filename:)
+
+    sh "docker compose -f #{filename} up"
+  end
+
+  def self.dock(log_level: self.log_level, filename: "docker-compose.yml")
     log_level log_level
     menv = {log_level:}
     comments = get_comments
@@ -8,7 +14,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     content = comments + content
 
     puts stick system.color, content if log? :higher
-    FileShell.write_text "docker-compose.yml", content, log_level: :highest
+    FileShell.write_text filename, content, log_level: :highest
   end
 
   def self.get_content(menv)
