@@ -33,16 +33,16 @@ class Liza::Box < Liza::Unit
   # Preconfigure from the Preconfiguration Box at lib/my_system/my_box.rb
   # @param name [Symbol]
   # @param block [Proc] This block will only be loaded when configuration is requested.
-  def self.preconfigure(name, &block)= configure(name, &block)
+  def self.preconfigure(name, box=self, &block)= configure(name, box, &block)
 
   # Configure from the Configuration Box at app/my_box.rb
   # @param name [Symbol]
   # @param block [Proc] This block will only be loaded when configuration is requested.
-  def self.configure name, &block
+  def self.configure(name, box=self, &block)
     raise ArgumentError, "block required" unless block_given?
-    raise ArgumentError, "Invalid panel: #{name}. Valid panels are: #{system.subs}" unless system.subs.include? name
+    raise ArgumentError, "Invalid panel: #{name}. Valid panels are: #{box.system.subs}" unless box.system.subs.include? name
 
-    panel = panels[name] ||= Liza.const("#{name}_panel").new name
+    panel = box.panels[name] ||= Liza.const("#{name}_panel").new name
     panel.push block
   end
 

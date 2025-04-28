@@ -78,7 +78,6 @@ class Liza::Panel < Liza::Unit
     remove_instance_variable :@unstarted
 
     @blocks.each { |bl| instance_eval(&bl) }
-    @blocks.clear
 
     self
   end
