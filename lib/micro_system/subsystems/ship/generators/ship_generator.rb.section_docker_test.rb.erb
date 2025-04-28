@@ -1,6 +1,6 @@
 # view section_docker_test.rb.erb
 
   test :defined_services, :used_services do
-    assert_equality subject_class.defined_services.keys, <% arg_action_names.map(&:to_sym).inspect %>
-    assert_equality subject_class.used_services.keys, <% arg_action_names.map(&:to_sym).inspect %>
+    assert_equality subject_class.defined_services.keys, <%= arg_action_names.map(&:to_sym).inspect %>
+    assert_equality subject_class.used_services.keys, <%= arg_action_names.map(&:to_sym).inspect %>
   end
