@@ -84,10 +84,8 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
 
     # build
 
-    controller      = UnitHelper.new
-    controller_test = UnitHelper.new
-    panel           = UnitHelper.new
-    panel_test      = UnitHelper.new
+    controller, controller_test = UnitHelper.new_pair
+    panel, panel_test           = UnitHelper.new_pair
 
     controller.section        name: :subsystem, render_key: :section_controller,      format: :rb
     controller_test.section   name: :subject,   render_key: :section_controller_test

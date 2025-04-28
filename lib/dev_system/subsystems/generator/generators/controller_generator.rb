@@ -19,7 +19,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
     @class_name = "#{arg_place.split("/").first.camelize}System::#{@class_name}" unless arg_place == "app"
     log "class_name: #{@class_name}"
 
-    unit, test = UnitHelper.new, UnitHelper.new
+    unit, test = UnitHelper.new_pair
     log "Yielding..."
     yield unit, test
 

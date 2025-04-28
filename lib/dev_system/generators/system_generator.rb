@@ -86,7 +86,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   end
 
   def create_system
-    unit, test = UnitHelper.new, UnitHelper.new
+    unit, test = UnitHelper.new_pair
     unit_classes = ["#{system_name.camelize}System", "Liza::System"]
     test_classes = ["#{system_name.camelize}System::#{system_name.camelize}SystemTest", "Liza::SystemTest"]
     unit_path = App.systems_directory / "#{system_name.snakecase}_system.rb"
@@ -103,7 +103,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
   end
 
   def create_system_box
-    unit, test = UnitHelper.new, UnitHelper.new
+    unit, test = UnitHelper.new_pair
     unit_classes = ["#{system_name.camelize}System::#{system_name.camelize}Box", "Liza::Box"]
     test_classes = ["#{system_name.camelize}System::#{system_name.camelize}BoxTest", "Liza::BoxTest"]
     unit_path = App.systems_directory / "#{system_name.snakecase}_system" / "#{system_name.snakecase}_box.rb"

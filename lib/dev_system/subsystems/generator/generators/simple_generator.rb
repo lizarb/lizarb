@@ -292,6 +292,16 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   end
 
   class UnitHelper
+    attr_accessor :unit_class, :test_class
+
+    def self.new_pair
+      unit = new
+      test = new
+      unit.test_class = test
+      test.unit_class = unit
+      [unit, test]
+    end
+
     def section section = {}
       sections << section
       section[:name] or raise "name is required"
