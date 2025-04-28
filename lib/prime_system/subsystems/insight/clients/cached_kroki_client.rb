@@ -9,7 +9,15 @@ class PrimeSystem::CachedKrokiClient < NetSystem::HttpClient
     url = "#{url}/#{type}"
     Kernel.require "json"
     body = JSON.generate({diagram_source:, output_format:})
-    cached_post_json_body(url, body)
+    ret = cached_post_json_body(url, body)
+    if ret.start_with? "Error"
+      log ret
+      code.split("\n").map.with_index do |line, index|
+        log "#{index.to_s.rjust_zeroes 3}: #{line}"
+      end
+      ret += "<br><br>\n\n#{ code.split("\n").map.with_index{ "#{ _2.to_s.rjust_zeroes 3 }: #{ _1 }<br>\n" }.join("") }"
+    end
+    ret
   end
 
   def self.request_puml(code)
