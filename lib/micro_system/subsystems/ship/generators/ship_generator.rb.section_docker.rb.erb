@@ -7,8 +7,7 @@
   # use_service :hello_world do
   #   port 80
   # end
-
-<% arg_action_names.each do |action_name| -%>
+<% arg_action_names.each do |action_name| %>
   define_service :<%= action_name %> do
     image 'hello-world:latest'
     default_port 80
