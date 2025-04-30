@@ -475,10 +475,10 @@ Did you accidentally fall into an infinite loop?
           s = erb.result binding, self
           log_render_out "#{erb.name}.#{erb.format}", s.length, t.diff, kaller: caller if log_rendering
         end
-        
-        if converted and DevBox[:shell].convert? erb.format
+
+        if converted and DevBox[:shell].convert? erb.format, format
           t = Time.now
-          convert_env = {format: format, convert_in: s}
+          convert_env = {format_from: erb.format, format_to: format, convert_in: s}
           DevBox.convert(convert_env)
           s = convert_env[:convert_out]
           log_render_convert "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
