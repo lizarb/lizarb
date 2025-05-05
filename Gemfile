@@ -16,10 +16,12 @@ group :dev do
 
   # Command gems
   gem "pry", ">= 0.14.2"
+  gem "tty-prompt", ">= 0.23.1"
+
+  # Generator gems
+  gem "diff-lcs", "~> 1.6"
 
   # Shell gems
-  gem "diff-lcs", "~> 1.6"
-  gem "tty-prompt", ">= 0.23.1"
   gem "htmlbeautifier", "~> 1.4"
   gem "commonmarker", "~> 0.23", platforms: :ruby
   gem "haml", "~> 6.1"
