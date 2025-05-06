@@ -14,12 +14,16 @@ end
 group :dev do
   # gems used by DevSystem
 
+  # Bench gems
+
   # Command gems
   gem "pry", ">= 0.14.2"
   gem "tty-prompt", ">= 0.23.1"
 
   # Generator gems
   gem "diff-lcs", "~> 1.6"
+
+  # Log gems
 
   # Shell gems
   gem "htmlbeautifier", "~> 1.4"
