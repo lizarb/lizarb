@@ -12,7 +12,7 @@ group :systems do
 end
 
 group :dev do
-  # gems used by DevSystem
+  # DevSystem gems
 
   # Bench gems
 
