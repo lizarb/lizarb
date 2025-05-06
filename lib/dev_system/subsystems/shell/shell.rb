@@ -35,6 +35,31 @@ class DevSystem::Shell < Liza::Controller
     :unix
   end
 
+  section :package_manager
+
+  # Check the current Linux package manager
+  def self.linux_package_manager
+    return :aptitude if aptitude?
+    return :pacman   if pacman?
+    return :dnf      if dnf?
+    :unknown
+  end
+
+  # Check if the current Linux uses aptitude
+  def self.aptitude?
+    KernelShell.call_system 'which aptitude > /dev/null 2>&1'
+  end
+
+  # Check if the current Linux uses pacman
+  def self.pacman?
+    KernelShell.call_system 'which pacman > /dev/null 2>&1'
+  end
+
+  # Check if the current Linux uses dnf
+  def self.dnf?
+    KernelShell.call_system 'which dnf > /dev/null 2>&1'
+  end
+
   section :engine
 
   # Return the current Ruby engine as a symbol
