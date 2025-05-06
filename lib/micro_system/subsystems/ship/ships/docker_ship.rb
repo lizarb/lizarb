@@ -112,7 +112,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     end
 
     def process_persisted_volume
-      volumes "./micro_ships_#{App.mode}/#{name}:#{persisted}" if persisted
+      volumes "./data/#{App.mode}/micro_ships/#{name}:#{persisted}" if persisted
     end
 
     def process_default_port
