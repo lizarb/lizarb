@@ -5,6 +5,8 @@ class DevSystem::Shell < Liza::Controller
     @all ||= AppShell.classes.select { _1 <= self }
   end
 
+  section :os
+
   # Check if the current platform is Windows
   def self.windows?
     @windows || Gem.win_platform?
@@ -32,6 +34,8 @@ class DevSystem::Shell < Liza::Controller
     return :mac     if mac?
     :unix
   end
+
+  section :engine
 
   # Return the current Ruby engine as a symbol
   def self.engine
