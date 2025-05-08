@@ -574,7 +574,7 @@ Did you accidentally fall into an infinite loop?
   def self._erbs_for format, names, allow_missing:
     ret = {}
 
-    log_erb = log_level? :higher
+    log_erb = log_level? :high
 
     converters = DevBox[:shell].converters_to[format] || []
     converters_from = converters.map { _1[:from] }
