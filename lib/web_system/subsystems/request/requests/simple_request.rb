@@ -37,6 +37,9 @@ class WebSystem::SimpleRequest < WebSystem::Request
     return public_send "call_#{action}!" if http_method == "POST" and respond_to? "call_#{action}!"
     return public_send "call_#{action}"  if respond_to? "call_#{action}"
 
+    return public_send "get_#{action}" if http_method == "GET" and respond_to? "get_#{action}"
+    return public_send "post_#{action}" if http_method == "POST" and respond_to? "post_#{action}"
+
     response_404
   end
 
