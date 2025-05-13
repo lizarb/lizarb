@@ -367,6 +367,15 @@ module Lizarb
     puts "Fork us on Github at #{github}/fork"
   end
 
+  def exit_invalid_app(message)
+    puts "Invalid App: #{App.filename}"
+    puts
+    puts "class App"
+    puts "  #{message}"
+    puts "end"
+    exit 1
+  end
+
   # This method is called internally by `setup` and is not intended for direct use.
   #
   # - Checks for the presence of its signature files (`app.rb`, `lib/lizarb.rb`, and `lizarb.gemspec`) in the current directory.
@@ -738,7 +747,11 @@ module Lizarb
     # load each System class
 
     log "      App.systems is Hash containing all system classes" if defined? $log_boot_highest
+    allowed = %i[dev happy net web work micro desk crypto media art deep prime lab eco]
     App.systems.keys.each do |key|
+      if key.to_s.count("_").zero? and not allowed.include? key
+        exit_invalid_app "system :#{key} not allowed (only default systems can have a single name)"
+      end
       klass = _require_system key
       App.systems[key] = klass
     end
