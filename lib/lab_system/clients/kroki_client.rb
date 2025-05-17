@@ -73,7 +73,7 @@ class LabSystem::KrokiClient < NetSystem::Client
   end
 
   def url
-    "#{KrokiDockerShell.url}#{endpoint}"
+    "https://kroki.io/#{endpoint}"
   end
 
   #
