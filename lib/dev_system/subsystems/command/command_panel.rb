@@ -7,11 +7,11 @@ class DevSystem::CommandPanel < Liza::Panel
   def call args
     log :higher, "args = #{args.inspect}"
 
-    env = forge args
-    forge_shortcut env
-    find env
-    find_shortcut env
-    forward env
+    menv = forge args
+    forge_shortcut menv
+    find menv
+    find_shortcut menv
+    forward menv
   rescue NameError => e
     if e.message =~ /uninitialized constant (.*)System/
       name = $1
@@ -28,10 +28,10 @@ class DevSystem::CommandPanel < Liza::Panel
     command_arg, *args = args
     command_name_original, command_action_original = command_arg.split(":")
     
-    env = { controller: :command, command_arg:, args:, command_name_original:, command_action_original: }
+    menv = { controller: :command, command_arg:, args:, command_name_original:, command_action_original: }
     
     log :high, "command_name_original:command_action_original is     #{command_name_original}:#{command_action_original}"
-    env
+    menv
   end
 
   #
