@@ -5,8 +5,8 @@ class HappySystem::AxoCommand < DevSystem::SimpleCommand
   def call_default
     find!
 
-    env[:axo] = @axo
-    HappyBox[:axo].call(env)
+    menv[:axo] = @axo
+    HappyBox[:axo].call(menv)
 
     log "done at #{Time.now}"
   end
