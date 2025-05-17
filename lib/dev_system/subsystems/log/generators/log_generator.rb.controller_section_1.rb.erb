@@ -1,7 +1,7 @@
 # view controller_section_1.rb.erb
 
-  def self.call(env)
+  def self.call(menv)
     super
-    env[:object_parsed] = env[:object].to_s
+    menv[:object_parsed] = menv[:object].to_s
     true
   end

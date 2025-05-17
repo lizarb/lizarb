@@ -1,8 +1,8 @@
 
 # view handler_section_1.rb.erb
 
-  def self.call(env)
+  def self.call(menv)
     super
-    Kernel.puts env[:object_parsed]
+    Kernel.puts menv[:object_parsed]
     true
   end
