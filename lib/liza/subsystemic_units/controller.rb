@@ -215,10 +215,8 @@ class Liza::Controller < Liza::Unit
     menv_reader(*names)
     menv_writer(*names)
   end
-  
+
   attr_accessor :menv
-  
-  def env() = menv
   
   section :default
 
