@@ -1,38 +1,38 @@
 class DevSystem::LogPanel < Liza::Panel
 
-  def call env
-    env[:instance] ||= env[:unit_class] != env[:unit]
-    env[:method_name] ||= method_name_for env
-    env[:method_name] = env[:method_name].to_s
+  def call(menv)
+    menv[:instance] ||= menv[:unit_class] != menv[:unit]
+    menv[:method_name] ||= method_name_for menv
+    menv[:method_name] = menv[:method_name].to_s
 
     # NOTE: this is an intentional redundancy with Unit#log_level?
     # The unit determines the lowest log level it wants to log
     # Therefore, a message of higher log level will not be logged
-    return unless env[:message_log_level] <= env[:unit_log_level]
+    return unless menv[:message_log_level] <= menv[:unit_log_level]
 
     return if handlers.empty?
 
-    find env
-    parse env
+    find menv
+    parse menv
 
     handlers.values.each do |handler|
-      handler.call env
+      handler.call menv
     rescue Exception => e
       log stick :light_yellow, "#{e.class} #{e.message.inspect} on #{e.backtrace[0]}"
     end
   end
 
-  def find env
-    env[:object_log] = Liza.const "#{env[:object_class].last_namespace}_log"
+  def find(menv)
+    menv[:object_log] = Liza.const "#{menv[:object_class].last_namespace}_log"
   rescue Liza::ConstNotFound
-    env[:object_log] = StickLogLog
+    menv[:object_log] = StickLogLog
   end
 
-  def parse env
-    env[:object_log].call env
+  def parse(menv)
+    menv[:object_log].call menv
   end
 
-  def handler *keys
+  def handler(*keys)
     handler_keys.concat keys
   end
 
@@ -56,8 +56,8 @@ class DevSystem::LogPanel < Liza::Panel
 
   # NOTE: improve logs performance and readability
 
-  def method_name_for env
-    env[:caller].each do |s|
+  def method_name_for(menv)
+    menv[:caller].each do |s|
       t = s.match(/`(.*)'/)[1]
 
       next if t.include? " in <class:"
@@ -75,8 +75,8 @@ class DevSystem::LogPanel < Liza::Panel
     raise "there's something wrong with kaller"
   end
 
-  def method_name_for env
-    env[:caller].each do |s|
+  def method_name_for(menv)
+    menv[:caller].each do |s|
       m = s.match(/'(.*)'/)
       t = m[1]
 
@@ -96,7 +96,7 @@ class DevSystem::LogPanel < Liza::Panel
       puts e
       puts
       puts "  caller:"
-      puts env[:caller]
+      puts menv[:caller]
       puts
       puts "  s:"
       puts s
