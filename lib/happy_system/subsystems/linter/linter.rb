@@ -2,11 +2,11 @@ class HappySystem::Linter < Liza::Controller
 
   section :subsystem
 
-  def self.call(env)
+  def self.call(menv)
     super
     log stick :b, "TODO: Build a great DSL!"
-    log "env"
-    log env
+    log "menv"
+    log menv
   end
 
 end
