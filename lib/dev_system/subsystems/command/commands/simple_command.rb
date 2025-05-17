@@ -15,11 +15,11 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
   section :given
 
-  def given_args = env[:given_args]
+  def given_args = menv[:given_args]
 
-  def given_strings = env[:given_strings]
+  def given_strings = menv[:given_strings]
 
-  def given_booleans = env[:given_booleans]
+  def given_booleans = menv[:given_booleans]
 
   private
 
@@ -27,13 +27,13 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     given_strings  = args.select { |arg| arg.include? "=" }
     given_booleans = args.select { |arg| ["+", "-"].any? { arg.start_with? _1 }  }
 
-    env[:given_args] = args - given_strings - given_booleans
-    env[:given_strings] = given_strings.map { |arg| arg.split "=" }.map { |k,v| [k.to_sym, v] }.to_h
-    env[:given_booleans] = given_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
+    menv[:given_args] = args - given_strings - given_booleans
+    menv[:given_strings] = given_strings.map { |arg| arg.split "=" }.map { |k,v| [k.to_sym, v] }.to_h
+    menv[:given_booleans] = given_booleans.map { |arg| [arg[1..-1], arg[0]=="+"] }.map { |k,v| [k.to_sym, v] }.to_h
 
-    env[:given_args].each_with_index { |arg, i| simple_remember_add :arg, i, arg }
-    env[:given_strings].each { |k,v| simple_remember_add :string, k, v }
-    env[:given_booleans].each { |k,v| simple_remember_add :boolean, k, v }
+    menv[:given_args].each_with_index { |arg, i| simple_remember_add :arg, i, arg }
+    menv[:given_strings].each { |k,v| simple_remember_add :string, k, v }
+    menv[:given_booleans].each { |k,v| simple_remember_add :boolean, k, v }
   end
 
   section :defaults
@@ -150,7 +150,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     arg = arg_given || arg_default
     arg = _arg_input_call(index) if arg_input and (ask? or arg.nil?)
 
-    env[:simple_args][index] = arg
+    menv[:simple_args][index] = arg
 
     arg
   end
@@ -167,7 +167,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     boolean = boolean_given.nil? ? boolean_default : boolean_given
     boolean = _boolean_input_call key if boolean_input and (ask? or boolean.nil?)
 
-    env[:simple_booleans][key] = boolean
+    menv[:simple_booleans][key] = boolean
 
     boolean
   end
@@ -184,7 +184,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     string = string_given || string_default
     string = _string_input_call key if string_input and (ask? or string.nil?)
 
-    env[:simple_strings][key] = string
+    menv[:simple_strings][key] = string
 
     string
   end
@@ -205,7 +205,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     [
       default_args,
       given_args,
-      env[:simple_args]
+      menv[:simple_args]
     ].each do |args|
       args.each_with_index do |arg, i|
         array[i] = arg unless arg.nil?
@@ -225,14 +225,14 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # 
   # @return [Hash<Symbol, Boolean>] A hash where each key is a symbol representing a boolean argument.
   def simple_booleans
-    given_booleans.merge(default_booleans).merge(env[:simple_booleans])
+    given_booleans.merge(default_booleans).merge(menv[:simple_booleans])
   end
 
   # Retrieves all simple string arguments.
   # 
   # @return [Hash<Symbol, String>] A hash where each key is a symbol representing a string argument.
   def simple_strings
-    given_strings.merge(default_strings).merge(env[:simple_strings])
+    given_strings.merge(default_strings).merge(menv[:simple_strings])
   end
 
   private
@@ -280,9 +280,9 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   end
 
   def before_simple
-    env[:simple_args] = {}
-    env[:simple_booleans] = {}
-    env[:simple_strings] = {}
+    menv[:simple_args] = {}
+    menv[:simple_booleans] = {}
+    menv[:simple_strings] = {}
   end
 
   def after_simple
@@ -301,7 +301,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     remember << simple_remember[:strings].map { |k,v| v.nil? ? nil : "#{k}=#{v}" }.join(" ")
     remember = remember.reject(&:empty?).join " "
     
-    log stick system.color, "#{ $0.split("/").last } #{ env[:command_arg] } #{ remember }"
+    log stick system.color, "#{ $0.split("/").last } #{ menv[:command_arg] } #{ remember }"
   end
 
   section :simple_derived
