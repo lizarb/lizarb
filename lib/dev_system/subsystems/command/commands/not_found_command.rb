@@ -2,7 +2,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
 
   def before
     super
-    env[:command_action] = "default"
+    menv[:command_action] = "default"
   end
 
   def call_default
@@ -16,7 +16,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
       app_shell.filter_in_units NewCommand, NotFoundCommand
     else
       app_shell.filter_out_units BaseCommand, SimpleCommand, NewCommand
-      failed_name = env[:command_name_original]
+      failed_name = menv[:command_name_original]
       app_shell.filter_by_name_including failed_name if failed_name
     end
 
