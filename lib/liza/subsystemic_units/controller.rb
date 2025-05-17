@@ -194,9 +194,9 @@ class Liza::Controller < Liza::Unit
   def self.menv_reader(*names)
     names.each do |name|
       define_method name do
-        log :highest, "env[:#{name}] reads #{env[name].inspect}", method_name: 'menv_reader'
-        raise "env is nil!" unless env
-        env[name]
+        log :highest, "menv[:#{name}] reads #{menv[name].inspect}", method_name: 'menv_reader'
+        raise "menv is nil!" unless menv
+        menv[name]
       end
     end
   end
@@ -204,9 +204,9 @@ class Liza::Controller < Liza::Unit
   def self.menv_writer(*names)
     names.each do |name|
       define_method "#{name}=" do |value|
-        log :higher, "env[:#{name}] writes #{value.inspect}", method_name: 'menv_writer'
-        raise "env is nil!" unless env
-        env[name] = value
+        log :higher, "menv[:#{name}] writes #{value.inspect}", method_name: 'menv_writer'
+        raise "menv is nil!" unless menv
+        menv[name] = value
       end
     end
   end
