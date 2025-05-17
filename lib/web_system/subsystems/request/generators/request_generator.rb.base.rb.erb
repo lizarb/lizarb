@@ -1,14 +1,12 @@
 # view base.rb.erb
 
-def self.call(env)
+def self.call(menv)
   super
-  path = env["REQUEST_PATH"]
+  path = menv["REQUEST_PATH"]
 
-  status = 200
-  headers = {
+  self.response_status = 200
+  self.response_headers = {
     "Framework" => "Liza \#{Lizarb::VERSION}"
   }
-  body = "It works! <%= controller_name.camelize %>Request"
-
-  [status, headers, [body]]
+  self.response_body = "It works! <%= controller_name.camelize %>Request"
 end
