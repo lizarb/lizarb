@@ -1,6 +1,6 @@
 class WebSystem::ServerErrorRequest < WebSystem::Request
 
-  def self.call env
+  def self.call(menv)
     super
     status = 500
 
@@ -8,7 +8,7 @@ class WebSystem::ServerErrorRequest < WebSystem::Request
       "Framework" => "Liza #{Lizarb::VERSION}"
     }
 
-    e = env["LIZA_ERROR"]
+    e = menv["LIZA_ERROR"]
     body = ""
     body << "<html>"
     body << "<head>"
