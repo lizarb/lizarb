@@ -17,15 +17,15 @@ class DevSystem::ShellPanel < Liza::Panel
     formatters.key? format.to_sym
   end
 
-  def format env
-    format = env[:format] = env[:format].to_sym
+  def format menv
+    format = menv[:format] = menv[:format].to_sym
     if format? format
       formatter = formatters[format][:shell] ||= Liza.const("#{format}_formatter_shell")
       log :higher, "formatter found: #{formatter}"
-      formatter.call env
+      formatter.call menv
     else
       log :higher, "formatter not found"
-      env[:format_to] = env[:format_from]
+      menv[:format_to] = menv[:format_from]
     end
   end
 
@@ -55,16 +55,16 @@ class DevSystem::ShellPanel < Liza::Panel
     converters.values.any? { _1[:from] == from and _1[:to] == to }
   end
 
-  def convert env
-    format_from = env[:format_from] = env[:format_from].to_sym
-    format_to = env[:format_to] = env[:format_to].to_sym
+  def convert menv
+    format_from = menv[:format_from] = menv[:format_from].to_sym
+    format_to = menv[:format_to] = menv[:format_to].to_sym
     if convert? format_from, format_to
       converter = converters[format_from][:shell] ||= Liza.const("#{format_from}_converter_shell")
       log :higher, "converter found: #{converter}"
-      converter.call env
+      converter.call menv
     else
       log :lower, "converter #{format_from.inspect} to #{format_to.inspect} not found. converters: #{converters.inspect}"
-      env[:convert_out] = env[:convert_in]
+      menv[:convert_out] = menv[:convert_in]
     end
   end
 
