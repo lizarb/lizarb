@@ -3,15 +3,15 @@ class DevSystem::HtmlFormatterShell < DevSystem::FormatterShell
 
   # https://github.com/threedaymonk/htmlbeautifier
 
-  def self.call(env)
+  def self.call(menv)
     super
     
-    env[:format_out] = HtmlBeautifier.beautify env[:format_in]
+    menv[:format_out] = HtmlBeautifier.beautify menv[:format_in]
   rescue => e
-    raise if env[:raise_errors]
+    raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-    env[:error] = e
-    env[:format_out] = env[:format_in]
+    menv[:error] = e
+    menv[:format_out] = menv[:format_in]
   ensure
     nil
   end

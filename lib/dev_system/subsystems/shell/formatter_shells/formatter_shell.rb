@@ -9,10 +9,10 @@ class DevSystem::FormatterShell < DevSystem::Shell
     {}
   end
 
-  def self.call(env)
+  def self.call(menv)
     super
 
-    options = env[:format_options]
+    options = menv[:format_options]
     log :higher, "default_options = #{default_options.inspect}"
     log :higher, "options = #{options.inspect}"
     options = \
@@ -21,7 +21,7 @@ class DevSystem::FormatterShell < DevSystem::Shell
       else
         default_options.merge options
       end
-    env[:format_options] = options
+    menv[:format_options] = options
     log :higher, "options = #{options.inspect}"
 
     nil
