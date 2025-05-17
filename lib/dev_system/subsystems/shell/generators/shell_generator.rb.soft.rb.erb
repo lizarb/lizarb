@@ -1,0 +1,15 @@
+# view soft.rb.erb
+
+  program "<%= controller_name %>"
+  # program "<%= controller_name %>", aptitude: "<%= controller_name %>", pacman: "<%= controller_name %>", dnf: "<%= controller_name %>"
+  # program "<%= controller_name %>", path: "bin/<%= controller_name %>"
+
+  def self.<%= @current_section[:action] %>
+    ret = true
+
+    log "your code here 1"
+    call action: :<%= @current_section[:action] %>
+    log "your code here 2"
+
+    ret
+  end

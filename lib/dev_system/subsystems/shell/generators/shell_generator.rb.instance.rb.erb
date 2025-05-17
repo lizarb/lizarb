@@ -1,10 +1,10 @@
 # view instance.rb.erb
 
-  def self.call(env)
+  def self.call(menv)
     super
-    log "call: #{env}"
-    shell = env[:shell] = new
-    ret = shell.call env
+    log "call: #{menv}"
+    shell = menv[:shell] = new
+    ret = shell.call menv
     if ret
       log :normal, "shell.call succeeded"
     else
@@ -18,11 +18,9 @@
   end
 
   attr_reader :status
-  attr_reader :env
 
-  def call(env)
-    log "call: #{env}"
-    @env = env
+  def call(menv)
+    super
     before
     method_name = "call_#{action_name}"
     if respond_to? method_name
@@ -36,18 +34,18 @@
   end
 
   def before
-    env[:before] = Time.now
-    log :normal, "before: #{env}"
+    menv[:before] = Time.now
+    log :normal, "before: #{menv}"
   end
 
   def after
-    env[:after] = Time.now
-    log :normal, "after: #{env}"
+    menv[:after] = Time.now
+    log :normal, "after: #{menv}"
   end
 
-  def action_name() = env[:action]
+  def action_name() = menv[:action]
 
-  def shell() = env[:shell]
+  def shell() = menv[:shell]
 
 <% if the_accessors.any? -%>
   attr_accessor :<%= the_accessors.join ", :"  %>
@@ -57,8 +55,8 @@
 <% arg_action_names.each do |action_name| %>
   def call_<%= action_name %>
     log :normal, "Log. Don't comment."
-    env[:call_<%= action_name %>] = Time.now
-    log "call_<%= action_name %>: #{env}"
+    menv[:call_<%= action_name %>] = Time.now
+    log "call_<%= action_name %>: #{menv}"
     # your code here
 <% unless arg_views_none? %>
     text = render :<%= action_name %>, format: :txt
