@@ -11,22 +11,8 @@ class WebSystem::SimpleRequest < WebSystem::Request
 
   def call(menv)
     super
-    @status = 200
-    @headers = {
-      "Framework" => "Liza #{Lizarb::VERSION}"
-    }
 
-    _call_action
-    @body ||=
-      render format,
-        action,
-        format: format,
-        converted: true,
-        formatted: true
-
-    self.response_status = @status
-    self.response_headers = @headers
-    self.response_body = @body
+    around
 
     menv
   end
@@ -44,8 +30,35 @@ class WebSystem::SimpleRequest < WebSystem::Request
   end
 
   def response_404
-    @status = 404
-    @body = "404"
+    self.response_status = 404
+    self.response_body = "404"
+  end
+
+  def around
+    log :high, "."
+    before
+    _call_action
+    after
+    log :high, "."
+  rescue Exception => e
+    raise unless defined? rescue_from
+    rescue_from e
+  end
+
+  def before
+    self.response_status = 200
+    self.response_headers = {
+      "Framework" => "Liza #{Lizarb::VERSION}"
+    }
+  end
+
+  def after
+    self.response_body ||=
+      render format,
+        action,
+        format: format,
+        converted: true,
+        formatted: true
   end
 
   # menv
