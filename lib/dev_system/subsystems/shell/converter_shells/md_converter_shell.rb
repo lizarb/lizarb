@@ -3,16 +3,16 @@ class DevSystem::MdConverterShell < DevSystem::ConverterShell
 
   # https://github.com/gjtorikian/commonmarker#usage
 
-  def self.call(env)
+  def self.call(menv)
     super
 
-    string = env[:convert_in]
-    env[:convert_out] = CommonMarker.render_html string, :DEFAULT
+    string = menv[:convert_in]
+    menv[:convert_out] = CommonMarker.render_html string, :DEFAULT
   rescue => e
-    raise if env[:raise_errors]
+    raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-    env[:error] = e
-    env[:convert_out] = env[:convert_in]
+    menv[:error] = e
+    menv[:convert_out] = menv[:convert_in]
   ensure
     nil
   end

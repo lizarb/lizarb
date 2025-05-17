@@ -9,10 +9,10 @@ class DevSystem::ConverterShell < DevSystem::Shell
     {}
   end
 
-  def self.call(env)
+  def self.call(menv)
     super
 
-    options = env[:convert_options]
+    options = menv[:convert_options]
     log :higher, "default_options = #{default_options.inspect}"
     log :higher, "options = #{options.inspect}"
     options = \
@@ -21,7 +21,7 @@ class DevSystem::ConverterShell < DevSystem::Shell
       else
         default_options.merge options
       end
-    env[:convert_options] = options
+    menv[:convert_options] = options
     log :higher, "options = #{options.inspect}"
   end
 end

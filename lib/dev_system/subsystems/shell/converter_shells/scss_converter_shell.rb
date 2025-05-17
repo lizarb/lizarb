@@ -3,22 +3,22 @@ class DevSystem::ScssConverterShell < DevSystem::ConverterShell
 
   # https://github.com/gjtorikian/commonmarker#usage
 
-  def self.call(env)
+  def self.call(menv)
     super
     
-    string = env[:convert_in]
+    string = menv[:convert_in]
     # output = SassC::Engine.new(scss, line_comments: true).render
     # output = SassC::Engine.new(scss, style: :sass_style_nested).render
     # output = SassC::Engine.new(scss, style: :sass_style_compact).render
     # output = SassC::Engine.new(scss, style: :compressed).render
     # output = SassC::Engine.new(scss).render
     output = SassC::Engine.new(string, line_comments: true, style: :sass_style_expanded).render
-    env[:convert_out] = output
+    menv[:convert_out] = output
   rescue => e
-    raise if env[:raise_errors]
+    raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-    env[:error] = e
-    env[:convert_out] = env[:convert_in]
+    menv[:error] = e
+    menv[:convert_out] = menv[:convert_in]
   ensure
     nil
   end

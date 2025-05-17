@@ -8,20 +8,20 @@ class DevSystem::HamlConverterShell < DevSystem::ConverterShell
   # Haml::Template.options[:attr_wrapper] = '"'
   # Haml::Template.options[:escape_html] = true
 
-  def self.call(env)
+  def self.call(menv)
     super
 
-    haml = env[:convert_in]
+    haml = menv[:convert_in]
     # template_options = {escape_html: true}
     template_options = {}
     scope = Object.new
     locals = {}
-    env[:convert_out] = Haml::Template.new(template_options) { haml }.render(scope, locals)
+    menv[:convert_out] = Haml::Template.new(template_options) { haml }.render(scope, locals)
   rescue => e
-    raise if env[:raise_errors]
+    raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-    env[:error] = e
-    env[:convert_out] = env[:convert_in]
+    menv[:error] = e
+    menv[:convert_out] = menv[:convert_in]
   ensure
     nil
   end
