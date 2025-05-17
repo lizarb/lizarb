@@ -4,9 +4,6 @@ class NetSystem::Filebase < Liza::Controller
 
   def self.call(env)
     super
-    log stick :b, "TODO: Build a great DSL!"
-    log "env"
-    log env
   end
 
 end
