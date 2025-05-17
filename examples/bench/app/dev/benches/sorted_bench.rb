@@ -2,7 +2,7 @@ class SortedBench < DevSystem::Bench
   # https://rubyapi.org/3.1/o/benchmark
   require "benchmark"
 
-  def self.call env
+  def self.call(menv)
     super
     t = Time.now
 
