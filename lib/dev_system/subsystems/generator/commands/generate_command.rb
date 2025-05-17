@@ -15,7 +15,7 @@ class DevSystem::GenerateCommand < DevSystem::SimpleCommand
 
   # liza generate
   def call_default
-    DevBox.generate env
+    DevBox.generate menv
   end
 
   # liza generate:remove
