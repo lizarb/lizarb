@@ -1,15 +1,15 @@
 class DevSystem::NotFoundBench < DevSystem::Bench
 
-  def self.call env
-    new.call env
+  def self.call(menv)
+    new.call menv
   end
 
-  def call env
+  def call(menv)
     app_shell = AppShell.new
     app_shell.filter_by_unit Bench
 
     app_shell.filter_out_units SortedBench if defined? SortedBench
-    failed_name = env[:bench_name_original]
+    failed_name = menv[:bench_name_original]
     app_shell.filter_by_name_including failed_name if failed_name
 
     outputs(app_shell, failed_name)
