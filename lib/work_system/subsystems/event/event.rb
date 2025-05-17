@@ -2,7 +2,7 @@ class WorkSystem::Event < Liza::Controller
 
   section :subsystem
 
-  def self.call(env)
+  def self.call(menv)
     super
   end
 
