@@ -1,6 +1,6 @@
 class DevSystem::StickLogLog < DevSystem::Log
-  def self.call(env)
-    env[:object_parsed] = env[:object].to_s
+  def self.call(menv)
+    menv[:object_parsed] = menv[:object].to_s
     true
   end
 end

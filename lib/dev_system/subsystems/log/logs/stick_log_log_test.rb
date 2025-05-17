@@ -18,9 +18,9 @@ class DevSystem::StickLogLogTest < DevSystem::LogTest
     
     object = Object.new
     expected = "#<Object:0x"
-    env = {object: object, prefix: prefix}
-    subject_class.call(env)
-    assert env[:object_parsed].start_with? expected
+    menv = {object: object, prefix: prefix}
+    subject_class.call(menv)
+    assert menv[:object_parsed].start_with? expected
   end
 
 end
