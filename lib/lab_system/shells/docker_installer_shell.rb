@@ -1,11 +1,11 @@
 class LabSystem::DockerInstallerShell < DevSystem::Shell
   
   # LabSystem::DockerInstallerShell.call({})
-  # LabSystem::DockerInstallerShell.call(env)
+  # LabSystem::DockerInstallerShell.call(menv)
   
-  def self.call(env)
+  def self.call(menv)
     raise "Not implemented for #{ os }" unless linux?
-    super(env)
+    super(menv)
 
     log stick system.color, "Install Docker ".ljust(80, "-")
 

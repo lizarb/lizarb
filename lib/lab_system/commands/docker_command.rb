@@ -11,13 +11,7 @@ class LabSystem::DockerCommand < DevSystem::SimpleCommand
   # liza docker:install
 
   def call_install
-    DockerInstallerShell.call(env)
-  end
-
-  # liza docker:kroki
-
-  def call_kroki
-    KrokiDockerShell.start_blocking_server
+    DockerInstallerShell.call(menv)
   end
 
   # liza docker:hello
