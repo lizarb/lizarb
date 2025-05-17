@@ -61,12 +61,6 @@ class WebSystem::SimpleRequest < WebSystem::Request
         formatted: true
   end
 
-  # menv
-
-  def env
-    menv
-  end
-
   def http_method
     menv["REQUEST_METHOD"]
   end
