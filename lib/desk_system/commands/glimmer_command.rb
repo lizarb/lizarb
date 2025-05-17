@@ -11,7 +11,7 @@ class DeskSystem::GlimmerCommand < DevSystem::SimpleCommand
   def call_examples
     log stick :b, system.color, "Glimmer is a free Ruby Desktop Development Cross-Platform Native GUI Library!"
     log [
-      (stick :b, "Learn more at "),
+      (stick :darkest_white, "Learn more at "),
       (stick :b, system.color, "https://github.com/AndyObtiva/glimmer-dsl-libui")
     ]
     
