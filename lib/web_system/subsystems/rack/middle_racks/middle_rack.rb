@@ -10,9 +10,9 @@ class WebSystem::MiddleRack < WebSystem::Rack
     @app = app
   end
 
-  def call(env)
-    log :high, "env.keys.count = #{env.keys.count}"
-    @app.call(env)
+  def call(menv)
+    log :high, "menv.keys.count = #{menv.keys.count}"
+    @app.call(menv)
   end
 
 end

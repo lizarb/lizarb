@@ -1,10 +1,10 @@
 class WebSystem::ZeitwerkMiddleRack < WebSystem::MiddleRack
 
-  def call(env)
+  def call(menv)
     puts
     log "reloading"
     Lizarb.reload
-    @app.call(env)
+    @app.call(menv)
   end
 
 end

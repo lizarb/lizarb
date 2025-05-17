@@ -4,18 +4,18 @@ class WebSystem::RackPanel < Liza::Panel
     "Please set your rack server on your web_box.rb file"
   end
 
-  def call env
+  def call(menv)
     puts
 
-    env[:server] ||= get :server
-    env[:host] ||= get :host
-    env[:port] ||= get :port
+    menv[:server] ||= get :server
+    menv[:host] ||= get :host
+    menv[:port] ||= get :port
 
-    self.server env[:server]
-    set :host, env[:host]
-    set :port, env[:port]
+    self.server menv[:server]
+    set :host, menv[:host]
+    set :port, menv[:port]
 
-    log(env)
+    log(menv)
 
     self.server.call(self.rack_app)
   end

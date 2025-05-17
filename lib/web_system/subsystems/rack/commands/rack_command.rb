@@ -17,11 +17,11 @@ class WebSystem::RackCommand < DevSystem::SimpleCommand
       port = arg.split("=")[1] if arg.start_with? "p="
     end
 
-    env = {server:, host:, port:}
+    menv = {server:, host:, port:}
 
-    log env
+    log menv
 
-    rack_panel.call env
+    rack_panel.call menv
   ensure
     log "#{ t.diff }s | server closed on port #{ port }"
   end
