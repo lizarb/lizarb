@@ -1,6 +1,6 @@
 class WebSystem::FirstMiddleRack < WebSystem::MiddleRack
 
-  def call env
+  def call(menv)
     puts unless $coding
     super
   end
