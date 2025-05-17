@@ -84,7 +84,10 @@ class Liza::Unit
   end
 
   def self.get key
-    return settings[key] if settings.has_key? key
+    if settings.has_key? key
+      settings[key] = settings[key].call if settings[key].is_a? Proc
+      return settings[key]
+    end
 
     found = nil
 
@@ -99,6 +102,7 @@ class Liza::Unit
     end
 
     found = settings[key] = found.dup if found.is_a? Enumerable
+    found = settings[key] = found.call if found.is_a? Proc
 
     found
   end
@@ -127,7 +131,10 @@ class Liza::Unit
   end
 
   def get key
-    return settings[key] if settings.has_key? key
+    if settings.has_key? key
+      settings[key] = settings[key].call if settings[key].is_a? Proc
+      return settings[key]
+    end
 
     self.class.get key
   end
