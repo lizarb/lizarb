@@ -1,11 +1,9 @@
 class HappySystem::Axo < Liza::Controller
 
-  def self.call(env)
+  def self.call(menv)
     super
-    log :high, "env.count is #{env.count}"
-    new.tap { _1.env = env }.call(env[:args])
+    log :high, "menv.count is #{menv.count}"
+    new.tap { _1.menv = menv }.call(menv[:args])
   end
-
-  attr_accessor :env
 
 end

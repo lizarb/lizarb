@@ -1,9 +1,9 @@
 class HappySystem::AxoPanel < Liza::Panel
 
-  def call(env)
-    log :high, "env.count is #{env.count}"
-    env[:args] = Array env[:args][1..-1]
-    env[:axo].call env
+  def call(menv)
+    log :high, "menv.count is #{menv.count}"
+    menv[:args] = Array menv[:args][1..-1]
+    menv[:axo].call menv
   end
 
 end
