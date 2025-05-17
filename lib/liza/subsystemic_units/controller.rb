@@ -126,10 +126,8 @@ class Liza::Controller < Liza::Unit
   def self.token
     if subsystem?
       nil
-    elsif division?
-      last_namespace.gsub(/#{subsystem.last_namespace}$/, '').snakecase.to_sym
     else
-      last_namespace.gsub(/#{division.last_namespace}$/, '').snakecase.to_sym
+      last_namespace.gsub(/#{subsystem.last_namespace}$/, '').snakecase.to_sym
     end
   end
 
