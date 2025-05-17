@@ -1,9 +1,9 @@
 class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
   
-  def self.sidebar_for env
+  def self.sidebar_for menv
     sidebar = ""
 
-    source = env[:unit_class]
+    source = menv[:unit_class]
     system_color = source.system.color || :white
     source_color = source.color || :white
     size = 0
@@ -11,11 +11,11 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
     # TODO: Figure out why RequestPanel is returning false when started from rack command but not from request command
     # source_is_a_panel = source < Panel
     # source_is_a_panel = source.ancestors.include? Panel
-    # source_is_a_panel = env[:unit].is_a? Panel
+    # source_is_a_panel = menv[:unit].is_a? Panel
     source_is_a_panel = source.to_s.end_with? "Panel"
 
     if source_is_a_panel
-      namespace, _sep, classname = env[:unit_class].controller.name.rpartition('::')
+      namespace, _sep, classname = menv[:unit_class].controller.name.rpartition('::')
       unless namespace.empty?
         sidebar << stick(namespace, system_color, :b).to_s
         sidebar << "::"
@@ -27,9 +27,9 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
       sidebar << ".panel."
       size += 7
     else
-      method_sep = env[:instance] ? "#" : ":"
+      method_sep = menv[:instance] ? "#" : ":"
 
-      namespace, _sep, classname = env[:unit_class].name.rpartition('::')
+      namespace, _sep, classname = menv[:unit_class].name.rpartition('::')
       unless namespace.empty?
         sidebar << stick(namespace, system_color, :b).to_s
         sidebar << "::"
@@ -41,8 +41,8 @@ class DevSystem::ColorOutputHandlerLog < DevSystem::OutputHandlerLog
       size += classname.size + 1
     end
 
-    sidebar << env[:method_name]
-    size += env[:method_name].size
+    sidebar << menv[:method_name]
+    size += menv[:method_name].size
 
     size = DevBox[:log].sidebar_size - size - 1
     size = 0 if size < 0
