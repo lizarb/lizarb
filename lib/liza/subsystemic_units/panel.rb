@@ -2,11 +2,6 @@ class Liza::Panel < Liza::Unit
 
   section :subsystem
 
-  set :box, Liza::Box
-  set :controller, Liza::Controller
-
-  #
-
   def self.instance
     x = self
     x = x.ancestors.take_while { _1.last_namespace == x.last_namespace }.last
