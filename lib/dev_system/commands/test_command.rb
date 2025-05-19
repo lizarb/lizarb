@@ -16,7 +16,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
   def call_default
     Lizarb.eager_load!
     DevBox[:log].sidebar_size 60
-    _call_silence_other_units
+    silence!
 
     now = Time.now
 
@@ -32,6 +32,8 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     _call_testing test_classes if should_run
     log "Done Testing (#{now.diff}s)"
 
+    unsilence!
+
     puts
 
     log "Counting #{test_classes.count} Test Classes"
@@ -39,21 +41,42 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     log "Done Counting (#{now.diff}s)"
   end
 
-  def _call_silence_other_units
+  def silence!
+    other_units.each do |x|
+      x.class_eval do
+        def self.log(...) end
+        def self.puts(...) end
+        def log(...) end
+        def puts(...) end
+      end unless x == DevSystem::TestCommand
+    end
+  end
+
+  def unsilence!
+    other_units.each do |x|
+      x.class_eval do
+        self.singleton_class.remove_method :log
+        self.singleton_class.remove_method :puts
+        self.remove_method :log
+        self.remove_method :puts
+        # undef :log
+        # undef :puts
+        # def self.log(...) super end
+        # def self.puts(...) super end
+        # def log(...) super end
+        # def puts(...) super end
+      end unless x == DevSystem::TestCommand
+    end
+  end
+
+  def other_units
     [
       Liza::Part,
       Liza::System,
       Liza::Box,
       Liza::Panel,
       Liza::Controller,
-    ].each do |x|
-      x.class_eval do
-        def self.log(...) super(...) if self == TestCommand end
-        def self.puts(...) super(...) if self == TestCommand end
-        def log(...) super(...) if self.class == TestCommand end
-        def puts(...) super(...) if self.class == TestCommand end
-      end
-    end
+    ]
   end
 
   def _call_testing test_classes
