@@ -124,7 +124,12 @@ class DevSystem::FileShell < DevSystem::Shell
     log log_level, "Removing '#{path}'"
     _raise_if_blank path
 
-    File.delete path
+    if exist? path, log_level: log_level
+      File.delete path
+      true
+    else
+      false
+    end
   end
 
 end
