@@ -1,17 +1,15 @@
 class Liza::Controller < Liza::Unit
 
-  section :subsystem
-
-  def self.on_connected
-    token = self.last_namespace.snakecase.to_sym
-    subsystem! system.box, token
-    division!
-  end
-
   def self.inherited klass
     super
 
-    klass.on_connected if klass.superclass == Liza::Controller
+    if klass.superclass == Liza::Controller
+      klass.class_exec do
+        token = self.last_namespace.snakecase.to_sym
+        subsystem! system.box, token
+        division!
+      end
+    end
   end
 
   # color
