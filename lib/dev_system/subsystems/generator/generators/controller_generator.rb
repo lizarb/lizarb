@@ -60,7 +60,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   def super_controller
-    @super_controller ||= Liza.const "#{arg_super}_#{env[:generator_name]}"
+    @super_controller ||= Liza.const "#{arg_super}_#{menv[:generator_name]}"
   end
 
   def controller_name
@@ -154,8 +154,8 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   def set_default_super(zuper)
     command.set_default_string :super, zuper
-    log stick :white, :red, "Checking if class exists... #{arg_super}_#{env[:generator_name]}"
-    Liza.const "#{zuper}_#{env[:generator_name]}"
+    log stick :white, :red, "Checking if class exists... #{arg_super}_#{menv[:generator_name]}"
+    Liza.const "#{zuper}_#{menv[:generator_name]}"
   end
 
   def set_default_division(division)
@@ -167,7 +167,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   set_input_arg 1 do |default|
-    title = "Name your new #{env[:generator].super_controller.last_namespace}:"
+    title = "Name your new #{menv[:generator].super_controller.last_namespace}:"
     x = InputShell.ask title, default: default
     redo if x.to_s.strip.empty?
     x
@@ -184,7 +184,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   set_input_string :place do |default|
-    available_places = env[:generator].available_places
+    available_places = menv[:generator].available_places
     place = nil
     place = available_places.keys[0] if available_places.count == 1
     place ||= begin
