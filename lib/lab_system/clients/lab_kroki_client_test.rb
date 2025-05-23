@@ -1,7 +1,7 @@
-class LabSystem::KrokiClientTest < NetSystem::ClientTest
+class LabSystem::LabKrokiClientTest < NetSystem::ClientTest
 
   test :subject_class do
-    assert_equality subject_class, LabSystem::KrokiClient
+    assert_equality subject_class, LabSystem::LabKrokiClient
   end
 
   #

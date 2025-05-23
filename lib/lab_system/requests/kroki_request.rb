@@ -3,8 +3,8 @@ class LabSystem::KrokiRequest < WebSystem::SimpleRequest
   def call_index
     @kroki_clients = []
 
-    @kroki_clients << KrokiClient.new_plantuml(:ab, :svg)
-    @kroki_clients << KrokiClient.new_nomnoml(:ab, :svg)
+    @kroki_clients << LabKrokiClient.new_plantuml(:ab, :svg)
+    @kroki_clients << LabKrokiClient.new_nomnoml(:ab, :svg)
 
     @kroki_clients.map &:call
   end
@@ -14,7 +14,7 @@ class LabSystem::KrokiRequest < WebSystem::SimpleRequest
   def call_plantuml
     @kroki_clients = []
     
-    @kroki_clients << KrokiClient.new_plantuml(:ab, :svg)
+    @kroki_clients << LabKrokiClient.new_plantuml(:ab, :svg)
 
     @kroki_clients.map &:call
   end

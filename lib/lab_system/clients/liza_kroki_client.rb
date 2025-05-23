@@ -1,4 +1,4 @@
-class LabSystem::LizaKrokiClient < LabSystem::KrokiClient
+class LabSystem::LizaKrokiClient < LabSystem::LabKrokiClient
 
   def puml
     @puml ||= PlantumlHelper.new

@@ -1,4 +1,4 @@
-class LabSystem::LizaKrokiClientTest < LabSystem::KrokiClientTest
+class LabSystem::LizaKrokiClientTest < LabSystem::LabKrokiClientTest
 
   test :subject_class do
     assert_equality subject_class, LabSystem::LizaKrokiClient

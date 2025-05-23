@@ -1,4 +1,4 @@
-class LabSystem::KrokiClient < NetSystem::Client
+class LabSystem::LabKrokiClient < NetSystem::Client
 
   # 
 
