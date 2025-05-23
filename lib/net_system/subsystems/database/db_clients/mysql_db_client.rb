@@ -1,4 +1,4 @@
-class NetSystem::MysqlClient < NetSystem::Client
+class NetSystem::MysqlDbClient < NetSystem::DbClient
   require "mysql2"
 
   # https://www.mysql.com/

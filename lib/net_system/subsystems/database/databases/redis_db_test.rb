@@ -5,7 +5,7 @@ class NetSystem::RedisDbTest < NetSystem::DatabaseTest
   end
 
   test :subject do
-    assert subject.client.class == NetSystem::RedisClient
+    assert subject.client.class == NetSystem::RedisDbClient
   end
 
   test :now do

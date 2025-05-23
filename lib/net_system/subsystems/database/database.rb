@@ -15,7 +15,7 @@ class NetSystem::Database < Liza::Controller
   end
 
   def self.set_client client_id
-    set :client, Liza.const("#{client_id}_client")
+    set :client, Liza.const("#{client_id}_db_client")
   end
 
   def self.current

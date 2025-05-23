@@ -1,7 +1,7 @@
-class NetSystem::MysqlClientTest < NetSystem::ClientTest
+class NetSystem::MysqlDbClientTest < NetSystem::DbClientTest
 
   test :subject_class do
-    assert_equality subject_class, NetSystem::MysqlClient
+    assert_equality subject_class, NetSystem::MysqlDbClient
   end
 
   test :subject do

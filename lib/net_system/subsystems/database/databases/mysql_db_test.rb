@@ -5,7 +5,7 @@ class NetSystem::MysqlDbTest < NetSystem::DatabaseTest
   end
 
   test :subject do
-    assert_equality subject.client.class, NetSystem::MysqlClient
+    assert_equality subject.client.class, NetSystem::MysqlDbClient
   end
 
   test :now do

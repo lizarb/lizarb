@@ -1,4 +1,4 @@
-class NetSystem::PgsqlClient < NetSystem::Client
+class NetSystem::PgsqlDbClient < NetSystem::DbClient
   require "pg"
 
   # https://www.postgresql.org/

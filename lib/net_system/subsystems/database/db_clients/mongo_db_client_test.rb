@@ -1,7 +1,7 @@
-class NetSystem::MongoClientTest < NetSystem::ClientTest
+class NetSystem::MongoDbClientTest < NetSystem::DbClientTest
 
   test :subject_class do
-    assert_equality subject_class, NetSystem::MongoClient
+    assert_equality subject_class, NetSystem::MongoDbClient
   end
 
   test  do

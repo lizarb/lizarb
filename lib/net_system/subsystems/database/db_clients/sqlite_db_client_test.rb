@@ -1,11 +1,11 @@
-class NetSystem::SqliteClientTest < NetSystem::ClientTest
+class NetSystem::SqliteDbClientTest < NetSystem::DbClientTest
 
   def subject
     @subject ||= subject_class.new ":memory:"
   end
 
   test :subject_class do
-    assert subject_class == NetSystem::SqliteClient
+    assert subject_class == NetSystem::SqliteDbClient
   end
 
   test :subject do

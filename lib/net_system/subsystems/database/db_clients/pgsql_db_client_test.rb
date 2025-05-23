@@ -1,7 +1,7 @@
-class NetSystem::PgsqlClientTest < NetSystem::ClientTest
+class NetSystem::PgsqlDbClientTest < NetSystem::DbClientTest
 
   test :subject_class do
-    assert_equality subject_class, NetSystem::PgsqlClient
+    assert_equality subject_class, NetSystem::PgsqlDbClient
   end
 
   test :subject do

@@ -1,4 +1,4 @@
-class NetSystem::MongoClient < NetSystem::Client
+class NetSystem::MongoDbClient < NetSystem::DbClient
   require "mongo"
 
   # https://www.mongodb.com/

@@ -1,4 +1,4 @@
-class NetSystem::RedisClient < NetSystem::Client
+class NetSystem::RedisDbClient < NetSystem::DbClient
   require "redis"
 
   # https://redis.io/

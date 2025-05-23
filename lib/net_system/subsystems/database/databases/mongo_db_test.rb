@@ -5,7 +5,7 @@ class NetSystem::MongoDbTest < NetSystem::DatabaseTest
   end
 
   test :subject do
-    assert_equality subject.client.class, NetSystem::MongoClient
+    assert_equality subject.client.class, NetSystem::MongoDbClient
   end
 
   test :now do

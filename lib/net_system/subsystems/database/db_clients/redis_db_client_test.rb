@@ -1,11 +1,11 @@
-class NetSystem::RedisClientTest < NetSystem::ClientTest
+class NetSystem::RedisDbClientTest < NetSystem::DbClientTest
 
   def subject
     @subject ||= subject_class.new
   end
 
   test :subject_class do
-    assert subject_class == NetSystem::RedisClient
+    assert subject_class == NetSystem::RedisDbClient
   end
 
   test :subject do

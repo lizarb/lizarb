@@ -1,4 +1,4 @@
-class NetSystem::SqliteClient < NetSystem::Client
+class NetSystem::SqliteDbClient < NetSystem::DbClient
   require "sqlite3"
 
   # https://www.sqlite.org/

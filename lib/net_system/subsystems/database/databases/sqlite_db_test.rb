@@ -5,7 +5,7 @@ class NetSystem::SqliteDbTest < NetSystem::DatabaseTest
   end
 
   test :subject do
-    assert subject.client.class == NetSystem::SqliteClient
+    assert subject.client.class == NetSystem::SqliteDbClient
   end
 
   test :now do
