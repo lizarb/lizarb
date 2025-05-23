@@ -1,5 +1,14 @@
 class NetSystem::PgsqlDbTest < NetSystem::DatabaseTest
 
+  def subject
+    @subject ||= begin
+      hash = NetBox[:client].get(:pgsql_hash).dup
+      hash[:dbname] = "postgres"
+      client = NetSystem::PgsqlDbClient.new(hash)
+      subject_class.new(client:)
+    end
+  end
+
   test :subject_class do
     assert_equality subject_class, NetSystem::PgsqlDb
   end
