@@ -3,9 +3,13 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
 
   # https://www.mongodb.com/
   # https://github.com/mongodb/mongo-ruby-driver
-  def initialize hash={}
-    self.class.call({})
+  def initialize(hash={})
+    connect(hash)
+  end
+
+  def connect(hash)
     t = Time.now
+    cl.call({})
     hash = NetBox[:client].get(:mongo_hash) if hash.empty?
     host = hash[:host]
     port = hash[:port]
