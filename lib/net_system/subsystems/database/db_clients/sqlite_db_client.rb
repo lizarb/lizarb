@@ -3,9 +3,13 @@ class NetSystem::SqliteDbClient < NetSystem::DbClient
 
   # https://www.sqlite.org/
   # https://github.com/sparklemotion/sqlite3-ruby
-  def initialize *args
-    self.class.call({})
+  def initialize(*args)
+    connect(*args)
+  end
+
+  def connect(*args)
     t = Time.now
+    cl.call({})
     if args.empty?
       h = NetBox[:client].get(:sqlite_hash)
       args = [h[:path]]
