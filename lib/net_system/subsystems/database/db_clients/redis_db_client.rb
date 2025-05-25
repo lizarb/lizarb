@@ -3,9 +3,13 @@ class NetSystem::RedisDbClient < NetSystem::DbClient
 
   # https://redis.io/
   # https://github.com/redis/redis-rb
-  def initialize *args
-    self.class.call({})
+  def initialize(*args)
+    connect(*args)
+  end
+
+  def connect(*args)
     t = Time.now
+    cl.call({})
     if args.empty?
       h = NetBox[:client].get(:redis_hash)
       host = h[:host]
