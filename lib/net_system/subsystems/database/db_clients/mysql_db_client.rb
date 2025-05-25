@@ -3,9 +3,13 @@ class NetSystem::MysqlDbClient < NetSystem::DbClient
 
   # https://www.mysql.com/
   # https://github.com/brianmario/mysql2
-  def initialize hash={}
-    self.class.call({})
+  def initialize(hash={})
+    connect(hash)
+  end
+
+  def connect(hash)
     t = Time.now
+    cl.call({})
     hash = NetBox[:client].get(:mysql_hash) if hash.empty?
 
     # "localhost" would force a socket connection
