@@ -2,16 +2,7 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
 
   # liza ship
   def call_default
-    call_compose
-  end
-
-  # liza ship:compose
-  def call_compose
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
-    return if ship.nil?
-
-    log "Docking #{ship} to docker-compose.yml"
-    ship.dock log_level: :higher
+    call_up
   end
 
   # liza ship:up
@@ -22,6 +13,15 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
     filename = "docker-compose.#{ship.token}.yml"
     log "Docking #{ship} to #{filename}"
     ship.up log_level: :higher, filename:
+  end
+
+  # liza ship:compose
+  def call_compose
+    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    return if ship.nil?
+
+    log "Docking #{ship} to docker-compose.yml"
+    ship.dock log_level: :higher
   end
 
   def ship
