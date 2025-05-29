@@ -2,7 +2,7 @@ class PrimeSystem < Liza::System
 
   section :default
 
-  color :silver
+  color :topaz
 
   section :info
 
