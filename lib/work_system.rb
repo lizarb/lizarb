@@ -3,7 +3,7 @@ class WorkSystem < Liza::System
 
   #
 
-  color :saffron
+  color :light_saffron
 
   panel :event
   panel :publisher
