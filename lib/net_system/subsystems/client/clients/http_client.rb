@@ -5,14 +5,14 @@ class NetSystem::HttpClient < NetSystem::Client
 
   section :json
 
-  def self.get_json(url, headers = {})
+  def self.get_json(url, headers = {}, log_level: self.log_level)
     headers = HashRubyShell.merge_reverse headers, "Content-Type" => "application/json"
-    get url, headers
+    get url, headers, log_level: log_level
   end
 
-  def self.post_json(url, payload, headers = {})
+  def self.post_json(url, payload, headers = {}, log_level: self.log_level)
     headers = HashRubyShell.merge_reverse headers, "Content-Type" => "application/json"
-    post url, payload, headers
+    post url, payload, headers, log_level: log_level
   end
 
   section :xml
@@ -29,17 +29,17 @@ class NetSystem::HttpClient < NetSystem::Client
 
   section :http
 
-  def self.get(url, headers = {})
+  def self.get(url, headers = {}, log_level: :normal)
     return super(url) unless url.is_a? String
 
-    menv = {}
+    menv = {log_level:,}
     call(menv)
     menv[:client].tap { _1.get url, headers }
     menv[:client]
   end
 
-  def self.post(url, payload, headers = {})
-    menv = {}
+  def self.post(url, payload, headers = {}, log_level: :normal)
+    menv = {log_level:,}
     call(menv)
     menv[:client].tap { _1.post url, payload, headers }
     menv[:client]
@@ -60,6 +60,7 @@ class NetSystem::HttpClient < NetSystem::Client
   def call(menv)
     super
     self.client = self
+    log_level menv[:log_level] if menv[:log_level]
     menv
   end
 
@@ -110,8 +111,12 @@ class NetSystem::HttpClient < NetSystem::Client
     errors[key] << value
   end
 
+  def response_code
+    @response_code ||= response.code.to_i
+  end
+
   def code
-    @code ||= response.code.to_i
+    response_code
   end
 
   def headers
