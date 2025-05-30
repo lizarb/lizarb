@@ -31,7 +31,7 @@ class WebBox < WebSystem::WebBox
 
   configure :request do
     # RequestPanel.instance gives you read-access to this instance
-    router :simple
+    router :auto
   end
 
 end

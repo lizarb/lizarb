@@ -1,4 +1,4 @@
-class WebSystem::SimpleRouterRequest < WebSystem::RouterRequest
+class WebSystem::AutoRouterRequest < WebSystem::RouterRequest
   class RequestNotFound < Error; end
 
   def self.call(menv)
