@@ -2,17 +2,30 @@ class PrimeSystem::PumlConverterShell < DevSystem::ConverterShell
 
   section :converter
 
-  def self.call(env)
+  def self.call(menv)
     super
 
-    env[:convert_out] = CachedKrokiClient.request_puml(env[:convert_in])
+    kroki_options = default_options.slice(:kroki_url)
+    menv[:convert_out] = KrokiClient.request_puml(menv[:convert_in], kroki_options)
   rescue => e
-    raise if env[:raise_errors]
+    raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
-    env[:error] = e
-    env[:convert_out] = env[:convert_in]
+    menv[:error] = e
+    menv[:convert_out] = "#{e.class}: #{e.message}"
   ensure
-    nil
+    add_source(menv) if $coding or menv[:add_source]
+    # add_source(menv) if menv[:add_source]
+    menv
+  end
+
+  def self.add_source(menv)
+    menv[:convert_out] += <<STRING
+
+<!--
+HELP MAKE THIS DIAGRAM BETTER, HERE IS THE SOURCE:
+#{menv[:convert_in].gsub("-->", "--/>")}
+-->
+STRING
   end
 
 end
