@@ -19,6 +19,89 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
+  # Returns an array of units in the specified class.
+  #
+  # @param klass [Class] The class to filter by.
+  # @param log_level [Symbol] The log level for logging.
+  #
+  # @return [Array<Class>] An array of units in the specified class.
+  #
+  # @example
+  #   units = AppShell.units(MyClass, log_level: :low)
+  #   units.each do |unit|
+  #     log unit
+  #   end
+  #
+  # @see AppShell.units_in_domain
+  # @see AppShell.controllers
+  # @see AppShell.controllers_in_domain
+  def self.units(klass, log_level: self.log_level)
+    i = new
+    i.filter_by_unit klass
+    i.get_domains.map { _1.layers.map(&:objects) }.flatten
+  end
+
+  # Returns all units in the specified domain.
+  #
+  # @param klass [Class] The class to filter by.
+  # @param domain [String] The domain to filter by.
+  # @param log_level [Symbol] The log level for logging.
+  #
+  # @return [Array<Class>] An array of units in the specified domain.
+  #
+  # @example
+  #   units = AppShell.units_in_domain(MyClass, "app", log_level: :low)
+  #   units.each do |unit|
+  #     log unit
+  #   end
+  #
+  # @see AppShell.units
+  def self.units_in_domain(klass, domain, log_level: self.log_level)
+    i = new
+    i.filter_by_unit klass
+    i.filter_by_domains [domain], log_level: log_level
+    i.get_domains.map { _1.layers.map(&:objects) }.flatten
+  end
+
+  # Returns an array of controllers in the specified domain.
+  #
+  # @param klass [Class] The class to filter by.
+  # @param log_level [Symbol] The log level for logging.
+  #
+  # @return [Array<Class>] An array of controllers in the specified domain.
+  #
+  # @example
+  #   controllers = AppShell.controllers(MyClass, log_level:
+  #   controllers.each do |controller|
+  #     log controller
+  #   end
+  #
+  # @see AppShell.units
+  def self.controllers(klass, log_level: self.log_level)
+    units(klass, log_level:)
+  end
+
+  # Returns all controllers in the specified domain.
+  #
+  # @param klass [Class] The class to filter by.
+  # @param domain [String] The domain to filter by.
+  # @param log_level [Symbol] The log level for logging.
+  #
+  # @return [Array<Class>] An array of controllers in the specified domain.
+  #
+  # @example
+  #   controllers = AppShell.controllers_in_domain(MyClass, "app", log_level: :low)
+  #   controllers.each do |controller|
+  #     log controller
+  #   end
+  #
+  # @see AppShell.units
+  def self.controllers_in_domain(klass, domain, log_level: self.log_level)
+    units_in_domain(klass, domain, log_level:)
+  end
+
+
+
   #
 
   def self.consts
