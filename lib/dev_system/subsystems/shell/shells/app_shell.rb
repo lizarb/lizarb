@@ -38,8 +38,8 @@ class DevSystem::AppShell < DevSystem::Shell
     h[:app]        = get_object_classes_structured
   end
 
-  def _log_count(msg)
-    log "count: #{count} | #{msg}"
+  def _log_count(log_level, msg)
+    log log_level, "count: #{count} | #{msg}"
   end
 
   def count() = get_lists.flatten.count
@@ -342,17 +342,17 @@ class DevSystem::AppShell < DevSystem::Shell
     self
   end
 
-  def filter_by_domains(domains)
+  def filter_by_domains(domains, log_level: self.log_level)
     log_filter domains.inspect
     check
-    _log_count ""
+    _log_count log_level, ""
 
     system_names = domains - ["core", "app"]
     is_core_included = domains.include? "core"
     is_app_included = domains.include? "app"
 
     unless is_core_included
-      _log_count "core is not included in the domains"
+      _log_count log_level, "core is not included in the domains"
 
       consts[:top_level].clear
       consts[:liza].values.map &:clear
@@ -367,7 +367,7 @@ class DevSystem::AppShell < DevSystem::Shell
         tree_system["controllers"].values.map &:clear
         tree_system["subsystems"].values.map { _1.values.map &:clear }
 
-      _log_count "#{system_name} is not included in the domains"
+      _log_count log_level, "#{system_name} is not included in the domains"
     end
 
     unless is_app_included
@@ -376,10 +376,10 @@ class DevSystem::AppShell < DevSystem::Shell
         tree_system["controllers"].values.each { _1.values.map &:clear }
       end
       
-      _log_count "app is not included in the domains"
+      _log_count log_level, "app is not included in the domains"
     end
 
-    _log_count ""
+    _log_count log_level, ""
 
     self
   end
