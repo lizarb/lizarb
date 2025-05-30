@@ -19,7 +19,7 @@ class PrimeSystem::PumlConverterShell < DevSystem::ConverterShell
   end
 
   def self.add_source(menv)
-    menv[:convert_out] += <<STRING
+    menv[:convert_out] += <<STRING if menv[:convert_out]
 
 <!--
 HELP MAKE THIS DIAGRAM BETTER, HERE IS THE SOURCE:
