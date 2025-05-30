@@ -653,6 +653,16 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
+  def get_structured_domains
+    ret = {}
+
+    get_domains.each do |domain|
+      ret[domain.name] = domain.get_structured_layers
+    end
+
+    ret
+  end
+
   # A PORO representing a top-level namespace of LizaRB.
   class Domain
     def initialize(name: , color: , layers: )
