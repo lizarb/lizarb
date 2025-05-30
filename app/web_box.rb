@@ -11,7 +11,7 @@ class WebBox < WebSystem::WebBox
 
     set :files, App.root.join("web_files")
     set :host, "localhost"
-    set :port, 3000
+    set :port, 5000
   end
 
   configure :request do
