@@ -676,6 +676,21 @@ class DevSystem::AppShell < DevSystem::Shell
     def empty?
       layers.map(&:objects).flatten.empty?
     end
+
+    def get_structured_layers
+      ret = {}
+      last = nil
+      layers.each do |layer|
+        if layer.name.is_a?(String)
+          ret[layer.name] = {layer: layer, controllers: {}}
+          last = layer
+        else
+          ret[last.name][:controllers][layer.name] = layer
+        end
+      end
+      ret
+    end
+
   end
 
   # A PORO representing a layer in a namespace of LizaRB.
