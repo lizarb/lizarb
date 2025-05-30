@@ -5,7 +5,7 @@ class DevSystem::TextShell < DevSystem::FileShell
   set :create_dir, true
   
   def self.write path, content, create_dir: nil, log_level: self.log_level
-    log log_level, "Writing #{content.to_s.size} characters (#{content.encoding}) to #{path}"
+    log log_level, "#{ stick system.color, "Writing" } #{content.to_s.size} characters (#{content.encoding}) to #{path}"
     _raise_if_blank path
 
     create_dir = get :create_dir if create_dir.nil?
