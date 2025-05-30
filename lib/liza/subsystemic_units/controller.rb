@@ -1,5 +1,7 @@
 class Liza::Controller < Liza::Unit
 
+  section :subsystem
+
   def self.inherited klass
     super
 
@@ -215,7 +217,36 @@ class Liza::Controller < Liza::Unit
   end
 
   attr_accessor :menv
-  
-  section :default
 
+  def self.env
+    @env ||= Env.new "#{system.token}_#{division.singular}"
+  end
+
+  def env
+    cl.env
+  end
+
+  class Env
+    def initialize(prefix)
+      @prefix = prefix
+    end
+
+    def method_missing(name, *args, &block)
+      name = "#{ @prefix }_#{ name }".upcase
+      if name[-1] == "?"
+        ENV[name[0..-2]]
+      else
+        ENV.fetch name
+      end
+    rescue KeyError => e
+      puts
+      puts e.message
+      puts
+      puts "Please check your files listed at App.env_vars: #{App.env_vars.inspect}"
+      puts
+      exit 1
+    end
+  end
+
+  section :default
 end
