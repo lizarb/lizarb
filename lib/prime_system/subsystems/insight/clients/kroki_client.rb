@@ -2,11 +2,14 @@ class PrimeSystem::KrokiClient < NetSystem::Client
   require "json"
   require "digest/md5"
 
-  set :kroki_url, "https://kroki.io/"
-
   def self.request(type, code, options={})
     call({})
-    url = options[:kroki_url] || get(:kroki_url)
+
+    url = options[:kroki_url]
+    url ||= get(:kroki_url)
+    url ||= env.kroki_url?
+    url ||= "https://kroki.io/"
+
     url = "#{url}/#{type}"
     diagram_source = code
     output_format = "svg"
