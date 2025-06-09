@@ -11,10 +11,12 @@ class DevSystem::SoftShell < DevSystem::Shell
     asdf: nil,
     aptitude: nil,
     pacman: nil,
-    dnf: nil
+    dnf: nil,
+    zypper: nil,
+    apk: nil
   )
     if path
-      any_of_the_others = [asdf, aptitude, pacman, dnf].compact.any?
+      any_of_the_others = [asdf, aptitude, pacman, dnf, zypper, apk].compact.any?
       raise "path must be used alone" if any_of_the_others
 
       path = standardize_path(path)
@@ -23,7 +25,7 @@ class DevSystem::SoftShell < DevSystem::Shell
     end
 
     @programs ||= {}
-    @programs[name] = {name:, asdf:, path:, aptitude:, pacman:, dnf:}
+    @programs[name] = {name:, asdf:, path:, aptitude:, pacman:, dnf:, zypper:, apk:}
   end
 
   def self.call(menv)
