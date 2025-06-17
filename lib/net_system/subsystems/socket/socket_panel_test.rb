@@ -9,7 +9,7 @@ class NetSystem::SocketPanelTest < Liza::PanelTest
 
   test_sections(
     :subsystem=>{
-      :constants=>[],
+      :constants=>[:NotFoundError],
       :class_methods=>[],
       :instance_methods=>[:call]
     }
