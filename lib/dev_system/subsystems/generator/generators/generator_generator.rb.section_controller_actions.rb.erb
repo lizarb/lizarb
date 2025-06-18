@@ -5,7 +5,7 @@
   # set_default_views "adjacent"
   # set_default_views "nested"
 
-<% arg_action_names.each do |action_name| %>
+<% arg_action_names.each do |action_name| -%>
   # liza g <%= controller_name %><%= ":#{action_name}" if action_name != "default" %> name action_1 action_2 action_3
   def call_<%= action_name %>
     set_default_super "<%= action_name if action_name != "default" %>"
@@ -20,4 +20,4 @@
       test.section name: :subject
     end
   end
-<% end %>
+<% end -%>
