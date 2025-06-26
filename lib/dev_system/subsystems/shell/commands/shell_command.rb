@@ -6,21 +6,6 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   shortcut :p, :paths
   shortcut :l, :loc
 
-  section :filters
-
-  def before
-    super
-    @t = Time.now
-    log "simple_args     #{ simple_args }"
-    log "simple_booleans #{ simple_booleans }"
-    log "simple_strings  #{ simple_strings }"
-  end
-  
-  def after
-    super
-    log "#{ time_diff @t }s | done"
-  end
-
   section :actions
 
   # liza shell
