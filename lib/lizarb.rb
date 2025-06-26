@@ -185,7 +185,7 @@ module Lizarb
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     cl = caller_locations(1, 1)[0]
     
-    raise Lizarb::Error, "Lizarb.#{__method__} does not support app_global, use Lizarb.sfa" if app == "app_global"
+    raise Lizarb::Error, "Lizarb.init_script_dependent! does not support app_global, use Lizarb.init_script_independent! instead" if app == "app_global"
     raise Lizarb::Error, "#{app.inspect} does not start with 'app_'" unless app == "app" or app.to_s.start_with? "app_"
 
     segments = cl.absolute_path.split("/")
