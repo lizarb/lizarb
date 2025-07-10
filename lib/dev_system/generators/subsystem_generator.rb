@@ -169,7 +169,7 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
   def arg_place_path() = @arg_place_path ||= ControllerShell.path_for(arg_place, arg_name)
   
   set_input_string :place do |default|
-    available_places = env[:generator].available_places
+    available_places = menv[:generator].available_places
     place = nil
     place = available_places.keys[0] if available_places.count == 1
     place ||= begin
