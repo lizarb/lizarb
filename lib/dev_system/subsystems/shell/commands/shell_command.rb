@@ -21,6 +21,10 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts "App.file              #{ App.file }"
     puts "App.directory         #{ App.directory }/"
     puts "App.systems_directory #{ App.systems_directory }/"
+    puts "App.mode              #{ App.mode.inspect }"
+    puts "App.log_boot          #{ App.log_boot.inspect }"
+    puts "App.log_level         #{ App.log_level.inspect }"
+    puts "App.env_vars          #{ App.env_vars.inspect }"
     puts
 
     largest_system_name = AppShell.consts[:systems].keys.map(&:to_s).map(&:size).max
