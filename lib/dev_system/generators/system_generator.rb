@@ -92,7 +92,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
     unit_path = App.systems_directory / "#{system_name.snakecase}_system.rb"
     test_path = App.systems_directory / "#{system_name.snakecase}_system" / "#{system_name.snakecase}_system_test.rb"
 
-    log stick system.color, "Creating system: #{system_name}"
+    log stick cl.system.color, "Creating system: #{system_name}"
 
     unit.section name: :default, render_key: :section_system_default
     unit.section name: :info, render_key: :section_system_info
