@@ -29,11 +29,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       length = largest_system_name + 15
 
       puts "#{
-        "#{system.token == :dev ? "App.system" : "          "}   #{system.token.inspect}"
+        "#{cl.system.token == :dev ? "App.system" : "          "}   #{cl.system.token.inspect}"
           .ljust(length)
-          .sub(system.token.inspect, (stick system.token.inspect, system.color).to_s)
+          .sub(cl.system.token.inspect, (stick :b, cl.system.token.inspect, cl.system.color).to_s)
       } #{
-        system.source_location[0]
+        cl.system.source_location[0]
       }"
     end
 
@@ -43,7 +43,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   # liza shell:convert FORMAT FILENAMES
   def call_convert
     valid_converters = Shell.panel.converters.keys
-    color = system.color
+    color = cl.system.color
 
     log :normal, (stick color, "valid converters are #{valid_converters.map { stick :black, color, :b, _1.to_s }.map(&:to_s).join ', '}")
 
@@ -87,17 +87,17 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   # liza shell:eval
   def call_eval
     s = args.join(' ')
-    log :low, (stick system.color, "evaluating:")
+    log :low, (stick cl.system.color, "evaluating:")
     log :lower, s.inspect
     ret = eval s
-    log :low, (stick system.color, "returned:")
+    log :low, (stick cl.system.color, "returned:")
     log :lower, ret.inspect
   end
 
   # liza shell:format FORMAT FILENAME
   def call_format
     valid_formats = Shell.panel.formatters.keys
-    color = system.color
+    color = cl.system.color
 
     log :normal, (stick color, "valid formatters are #{valid_formats.map { stick :black, color, :b, _1.to_s }.map(&:to_s).join ', '}")
 
