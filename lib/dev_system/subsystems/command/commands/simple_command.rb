@@ -289,7 +289,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     return unless log? :lower
     return if simple_remember_values.empty?
 
-    log sticks :black, system.color, :b,
+    log sticks :black, cl.system.color, :b,
       ["LIZA"],
       ["HELPS",    :u],
       ["YOU",      :u, :i],
@@ -301,7 +301,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     remember << simple_remember[:strings].map { |k,v| v.nil? ? nil : "#{k}=#{v}" }.join(" ")
     remember = remember.reject(&:empty?).join " "
     
-    log stick system.color, "#{ $0.split("/").last } #{ menv[:command_arg] } #{ remember }"
+    log stick cl.system.color, "#{ $0.split("/").last } #{ menv[:command_arg] } #{ remember }"
   end
 
   section :simple_derived
