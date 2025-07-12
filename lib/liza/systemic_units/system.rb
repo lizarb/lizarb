@@ -4,6 +4,10 @@ class Liza::System < Liza::Unit
     const_get name.to_s.camelize
   end
 
+  def self.find_controller(family, name)
+    const "#{name}_#{family}"
+  end
+
   #
 
   def self.subs
