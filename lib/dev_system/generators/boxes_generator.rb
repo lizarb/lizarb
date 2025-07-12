@@ -14,8 +14,8 @@ class DevSystem::BoxesGenerator < DevSystem::SimpleGenerator
       next if list.include? box_file
 
       name = "#{ App.directory_name }/#{k}_box.rb"
-      b = klass.box.new
-      contents = b.render! :default, format: :rb
+      contents = klass.box.new.render! :default, format: :rb
+      contents = FileShell.read_text Lizarb.gem_dir / "examples/new/app/dev_box.rb" if k == :dev
 
       create_file_contents name, contents
     end
