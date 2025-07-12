@@ -98,6 +98,18 @@ class App
     @relative_path or raise "@relative_path not set"
   end
 
+  # framework
+
+  def self.framework(framework = nil)
+    if framework
+      valid_frameworks = [:rails, :hanami]
+      raise "invalid framework `#{framework.inspect}` not in #{valid_frameworks.inspect}" unless valid_frameworks.include? framework.to_sym
+      @framework = framework
+    else
+      @framework
+    end
+  end
+
   # name
 
   def self.name(name = nil)
