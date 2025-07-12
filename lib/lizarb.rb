@@ -342,6 +342,7 @@ module Lizarb
     load_and_zeitwerk_loader_0_liza
     load_and_require_system_classes
     load_and_zeitwerk_loader_1_app
+    load_and_boot_framework if App.framework
     App.after if defined? App.after
 
     log "  Lizarb.#{__method__} done" if defined? $log_boot_high
@@ -856,6 +857,39 @@ module Lizarb
     log "        loader.enable_reloading" if defined? $log_boot_highest
     loader.setup
     log "        loader.setup" if defined? $log_boot_highest
+  end
+
+  def load_and_boot_framework
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
+
+    # skips if --sf or --skip-framework is passed
+    return if %w[--sf --skip-framework].any? { |it| ARGV.include? it }
+    # skips if called from `SF=1 liza x`
+    return if ENV["SF"]
+    # skips if loaded by the shim of another framework
+    return if %w[rake rails hanami].any? { |it| $PROGRAM_NAME.include? it }
+
+    send "load_and_boot_framework_#{App.framework}"
+  end
+
+  def load_and_boot_framework_rails
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
+
+    # Matches with "/rails-1.0.0/lib"
+    rails_version = $LOAD_PATH.map { _1.match(/\/rails\-([\d.]+)\/lib/) }.compact.map { _1[1] }.first
+    puts "Rails  v#{rails_version}"
+    # Load Rails
+    require "./config/environment"
+  end
+
+  def load_and_boot_framework_hanami
+    log "  Lizarb.#{__method__}" if defined? $log_boot_high
+
+    # Match with "/hanami-1.0.0/lib"
+    hanami_version = $LOAD_PATH.map { _1.match(/\/hanami\-([\d.]+)\/lib/) }.compact.map { _1[1] }.first
+    puts "Hanami v#{hanami_version}"
+    # Load Hanami
+    require "./config/app"
   end
 
   # loaders
