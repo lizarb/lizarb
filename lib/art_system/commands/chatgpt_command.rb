@@ -19,14 +19,14 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
 
   # liza chatgpt s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_default
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
 
     call_chat
   end
 
   # liza chatgpt:chat s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_chat
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
 
     # log stick :red, :white, "Not implemented yet"
     set_default_arg(0, "Hello!")
@@ -54,7 +54,7 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
 
   # liza chatgpt:image s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_image
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
 
     set_default_arg(0, "A green lizard sitting atop a big red ruby")
     prompt = simple_args.join(" ")
@@ -83,7 +83,7 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
 
   # liza chatgpt:audio s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_audio
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
 
     log stick :red, :white, "Not implemented yet"
   end
