@@ -173,6 +173,13 @@ module Lizarb
     call(argv)
   end
 
+  ### Initialize LizaRB before another framework.
+  #
+  # - You must provide the app key.
+  def init_for_framework!(app:)
+    init_script_dependent!(app:)
+  end
+
   ### Initialize LizaRB as a dependent script.
   #
   # - You must provide the app key.
