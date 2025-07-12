@@ -76,7 +76,7 @@ end
 __END__
 
 # view default.rb.erb
-<% token = system.token.to_s.capitalize -%>
+<% token = cl.system.token.to_s.capitalize -%>
 class <%= token %>Box < <%= token %>System::<%= token %>Box
 
 end
