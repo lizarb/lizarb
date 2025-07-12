@@ -1,13 +1,13 @@
 class DevSystem::NewGenerator < DevSystem::SimpleGenerator
-  
+
   # liza g new name
-  
+
   def call_default
     call_project
   end
-  
+
   # liza g new:project name
-  
+
   def call_project
     log "args = #{args.inspect}"
     # setup
@@ -118,62 +118,3 @@ class DevSystem::NewGenerator < DevSystem::SimpleGenerator
   end
 
 end
-
-__END__
-
-# view gitignore.gitignore.erb
-# Ignore all files in all subdirectories
-.gitignore
-/.bundle/
-/tmp/
-*.sqlite
-*.rdb
-
-# view toolversions.txt.erb
-ruby <%= RUBY_VERSION %>
-
-# view Procfile.yml.erb
-# HEROKU EXAMPLE
-
-web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
-
-# view script_dependent.rb.erb
-#!/usr/bin/env ruby
-
-require "lizarb"
-Lizarb.init_script_dependent! :dev, app: "app"
-
-# YOUR CODE HERE
-
-# use Shell instead of DevSystem::Shell
-DevSystem::MainShell.easy!
-
-puts
-puts stick " MainShell ".center(100, "-"), :b, :black, :green
-puts
-
-log "MainShell is a wrapper for main: #{self}"
-
-# DevSystem::DevBox.command ["shell"]
-DevBox.command ["shell"]
-
-# view script_independent.rb.erb
-#!/usr/bin/env ruby
-
-require "lizarb"
-Lizarb.init_script_independent! :dev, pwd: __dir__
-puts "#{$boot_time.diff}s to boot" if $log_boot_high
-
-# YOUR CODE HERE
-
-# use Shell instead of DevSystem::Shell
-DevSystem::MainShell.easy!
-
-puts
-puts stick " MainShell ".center(100, "-"), :b, :black, :green
-puts
-
-log "MainShell is a wrapper for main: #{self}"
-
-# DevSystem::DevBox.command ["shell"]
-DevBox.command ["shell"]

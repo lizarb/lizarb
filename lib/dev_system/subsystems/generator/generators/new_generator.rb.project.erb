@@ -1,0 +1,15 @@
+# view gitignore.gitignore.erb
+# Ignore all files in all subdirectories
+.gitignore
+/.bundle/
+/tmp/
+*.sqlite
+*.rdb
+
+# view toolversions.txt.erb
+ruby <%= RUBY_VERSION %>
+
+# view Procfile.yml.erb
+# HEROKU EXAMPLE
+
+web: MODE=demo bundle exec liza rack h=0.0.0.0 p=$PORT
