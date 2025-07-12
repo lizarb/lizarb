@@ -209,16 +209,16 @@ class App
     Lizarb.setup_type
   end
 
-  def self.sfa?
-    type == :sfa
-  end
-
   def self.project?
     type == :project
   end
 
-  def self.script?
-    type == :script
+  def self.script_independent?
+    type == :script_independent
+  end
+
+  def self.script_dependent?
+    type == :script_dependent
   end
 
 end
