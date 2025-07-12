@@ -210,7 +210,8 @@ module Lizarb
   def init_script_independent!(
     *systems,
     mode: :code,
-    folder: nil,
+    directory: nil,
+    systems_directory: nil,
     gemfile: nil,
     log_handler: :output,
     log_boot: nil,
@@ -231,7 +232,8 @@ module Lizarb
 
     App.class_exec do
       self.gemfile gemfile if gemfile
-      self.folder folder if folder
+      self.directory directory if directory
+      self.systems_directory systems_directory if systems_directory
       self.log_boot log_boot
       self.log_level log_level
       self.mode mode
