@@ -715,7 +715,7 @@ class Liza::Test < Liza::Unit
   end
 
   def log_test_call_rescue e
-    prefix = stick :light_yellow, "error"
+    prefix = stick :light_red, "error"
 
     kaller = e.backtrace
 
@@ -784,7 +784,7 @@ class Liza::Test < Liza::Unit
     when :passed
       (stick "passed", :light_green).to_s
     when :failed
-      (stick "failed", :light_red).to_s
+      (stick "failed", :light_yellow).to_s
     else
       raise "Unknown result: #{@last_result}"
     end
@@ -794,7 +794,7 @@ class Liza::Test < Liza::Unit
     if b
       log stick :light_green, "                passed #{msg}"
     else
-      log stick :light_red, "                failed #{msg}"
+      log stick :light_yellow, "                failed #{msg}"
     end
   end
 
