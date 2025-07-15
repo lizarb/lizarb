@@ -10,9 +10,7 @@ class DevSystem::GeneratorPanelTest < Liza::PanelTest
       :call,
       :find,
       :forward,
-      :inform,
-      :forge,
-      :save
+      :forge
   end
   
   section :forge

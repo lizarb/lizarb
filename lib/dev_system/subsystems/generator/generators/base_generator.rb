@@ -21,12 +21,12 @@ class DevSystem::BaseGenerator < DevSystem::Generator
     if respond_to? method_name
       public_send method_name
       after
-      return true
+      inform
+      save
+    else
+      log "method not found: #{method_name.inspect}"
+      raise NoMethodError, "method not found: #{method_name.inspect}", caller
     end
-
-    log "method not found: #{method_name.inspect}"
-
-    raise NoMethodError, "method not found: #{method_name.inspect}", caller 
   end
 
   def inform
