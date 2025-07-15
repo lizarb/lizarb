@@ -13,12 +13,8 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   #
 
-  attr_reader :menv
-
-  alias env menv
-
   def call(menv)
-    @menv = menv
+    super
     
     before
     method_name = "call_#{action_name}"
