@@ -178,7 +178,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       unless services.all? { |s| s.is_a?(Symbol) || s.is_a?(String) }
         raise "Dependencies must be symbols or strings"
       end
-      result[:depends_on] = services.map(&:to_s)
+      result["depends_on"] = services.map(&:to_s)
     end
 
     def restart(value)
@@ -193,7 +193,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       key = value.to_sym
       raise "#{value.inspect} not in #{allowed.keys.inspect}" unless allowed.key?(key)
 
-      result[:restart] = allowed[key]
+      result["restart"] = allowed[key]
     end
   end
 
