@@ -9,7 +9,7 @@ class App
 
   # called from exe/lizarb
   def self.call argv
-    log "#{$boot_time.diff}s to boot" if defined? $log_boot_low
+    log "#{$boot_time.diff}s to boot #{full_name}" if defined? $log_boot_low
 
     should_log = log_level >= 4
     puts if should_log
@@ -115,10 +115,14 @@ class App
   def self.name(name = nil)
     raise "locked" if @locked
     if name
-      @name = name
+      @name = name.snakecase
     else
       @name
     end
+  end
+
+  def self.full_name
+    "#{mode}_#{name}"
   end
 
   # gemfile
