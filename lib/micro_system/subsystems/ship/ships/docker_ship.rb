@@ -154,9 +154,10 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       result["ports"] << string
     end
 
-    def persisted(path = nil)
+    def persisted(path = nil, mode: nil)
       if path
         @persisted = path
+        @persisted += ":#{mode}" if mode
       else
         @persisted
       end
