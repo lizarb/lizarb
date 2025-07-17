@@ -1,9 +1,25 @@
 class MicroSystem::DockerShip < MicroSystem::Ship
 
   def self.up(log_level: self.log_level, filename: "docker-compose.yml")
+    compose("up", log_level:, filename:)
+  end
+
+  def self.start(log_level: self.log_level, filename: "docker-compose.yml")
+    compose("start", log_level:, filename:)
+  end
+
+  def self.stop(log_level: self.log_level, filename: "docker-compose.yml")
+    compose("stop", log_level:, filename:)
+  end
+
+  def self.restart(log_level: self.log_level, filename: "docker-compose.yml")
+    compose("restart", log_level:, filename:)
+  end
+
+  def self.compose(action, log_level: self.log_level, filename: "docker-compose.yml")
     dock(log_level:, filename:)
 
-    sh "docker compose -f #{filename} up"
+    sh "docker compose -f #{filename} #{action}"
   end
 
   def self.dock(log_level: self.log_level, filename: "docker-compose.yml")
