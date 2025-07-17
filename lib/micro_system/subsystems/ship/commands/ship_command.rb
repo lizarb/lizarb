@@ -14,6 +14,33 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
     ship.up log_level: :higher, filename:
   end
 
+  # liza ship:start
+  def call_start
+    return if ship.nil?
+
+    filename = "docker-compose.#{ship.token}.yml"
+    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
+    ship.start log_level: :higher, filename:
+  end
+
+  # liza ship:stop
+  def call_stop
+    return if ship.nil?
+
+    filename = "docker-compose.#{ship.token}.yml"
+    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
+    ship.stop log_level: :higher, filename:
+  end
+
+  # liza ship:restart
+  def call_restart
+    return if ship.nil?
+
+    filename = "docker-compose.#{ship.token}.yml"
+    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
+    ship.restart log_level: :higher, filename:
+  end
+
   # liza ship:compose
   def call_compose
     return if ship.nil?
