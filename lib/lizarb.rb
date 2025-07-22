@@ -357,6 +357,7 @@ module Lizarb
 
   def call(argv)
     argv = argv.dup
+    $lizarb_test = true if argv[0] == "t" || argv[0] == "test"
     App.call(argv)
   end
 
@@ -897,6 +898,19 @@ module Lizarb
     puts "Hanami v#{hanami_version}"
     # Load Hanami
     require "./config/app"
+  end
+
+  # test environment
+
+  # Returns true if the LizaRB framework is running in test mode.
+  #
+  # This is determined by the presence of the global variable `$lizarb_test`.
+  # If `$lizarb_test` is defined, it indicates that the framework is in test mode.
+  #
+  # @return [Boolean] true if in test mode, false otherwise.
+  #
+  def test?
+    defined? $lizarb_test
   end
 
   # loaders
