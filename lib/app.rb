@@ -157,8 +157,7 @@ class App
   def self.env_vars *files, mandatory: false
     @env_vars ||= []
     if files.any?
-      mode = self.mode.to_s
-      @env_vars += files.map { _1.sub(":directory", directory).sub(":mode", mode) }
+      @env_vars += files
       @env_vars_mandatory = mandatory
     end
     @env_vars
