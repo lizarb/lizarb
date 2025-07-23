@@ -653,34 +653,7 @@ module Lizarb
   def load_and_require_env_vars
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
-    files = App.env_vars || []
-    log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
-
-    return if files.empty?
-
-    if Gem::Specification.find_all_by_name("dotenv").any?
-      require "dotenv"
-      log "    gem 'dotenv' found" if defined? $log_boot_higher
-
-      Dotenv.load(*files)
-      log "      Dotenv.load(*#{files.inspect})" if defined? $log_boot_highest
-
-      return
-    end
-
-    files.each do |file|
-      File.readlines(file).each do |line|
-        line.strip!
-        next if line.empty? or line.start_with? "#"
-
-        key, value = line.split('=', 2).map(&:strip)
-        ENV[key] = value
-      end
-      log "    ENV variables #{file}" if defined? $log_boot_higher
-    rescue Errno::ENOENT
-      log "    ENV variables not found #{file}" if defined? $log_boot_higher
-      raise if App.env_vars_mandatory?
-    end
+    require_env_vars
   end
 
   # This method is called internally by `load` and is not intended for direct use.
@@ -898,6 +871,48 @@ module Lizarb
     puts "Hanami v#{hanami_version}"
     # Load Hanami
     require "./config/app"
+  end
+
+  # Load environment variables
+
+  def require_env_vars(files=App.env_vars, mode: App.mode)
+    log "  Lizarb.#{__method__} (#{files.count})" if defined? $log_boot_high
+    log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
+    return if files.empty?
+
+    files = files.map { _1.gsub(":directory", App.directory.to_s).gsub(":mode", mode.to_s) }
+
+    @gem_dotenv_loaded = Gem::Specification.find_all_by_name("dotenv").any? unless defined? @gem_dotenv_loaded
+    if @gem_dotenv_loaded
+      _require_env_vars_with_dotenv(files)
+    else
+      _require_env_vars_without_dotenv(files)
+    end
+  end
+
+  def _require_env_vars_with_dotenv(files)
+    log "    gem 'dotenv' found, using it to load ENV variables" if defined? $log_boot_higher
+    require "dotenv"
+    Dotenv.load(*files)
+    log "      Dotenv.load(*#{files.inspect})" if defined? $log_boot_highest
+  end
+
+  def _require_env_vars_without_dotenv(files)
+    log "    gem 'dotenv' not found, using custom (and stricter) ENV loader" if defined? $log_boot_higher
+
+    files.each do |file|
+      File.readlines(file).each do |line|
+        line.strip!
+        next if line.empty? or line.start_with? "#"
+
+        key, value = line.split('=', 2).map(&:strip)
+        ENV[key] = value
+      end
+      log "    ENV variables #{file}" if defined? $log_boot_higher
+    rescue Errno::ENOENT
+      log "    ENV variables not found #{file}" if defined? $log_boot_higher
+      raise if App.env_vars_mandatory?
+    end
   end
 
   # test environment
