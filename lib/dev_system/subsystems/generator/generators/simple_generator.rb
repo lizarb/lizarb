@@ -123,6 +123,10 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       @changes = {}
     end
 
+    def clear!
+      changes.clear
+    end
+
     def get(fname)
       changes[fname]
     end
