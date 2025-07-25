@@ -37,6 +37,12 @@ class DevSystem::BaseGenerator < DevSystem::Generator
     log "not implemented"
   end
 
+  def commit!
+    inform
+    save
+    mapper.clear!
+  end
+
   section :filters
 
   def before
