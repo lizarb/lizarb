@@ -40,10 +40,6 @@ class Liza::Controller < Liza::Unit
 
   # subsystem
 
-  def self.subsystem_token
-    get :subsystem_token
-  end
-
   def self.subsystem
     get :subsystem
   end
@@ -55,7 +51,6 @@ class Liza::Controller < Liza::Unit
   def self.subsystem! box_klass, token
     # FIRST, subsystem settings
     panel = box_klass[token]
-    set :subsystem_token, token
     set :subsystem, self
     set :box, box_klass
     set :panel, panel
@@ -122,12 +117,24 @@ class Liza::Controller < Liza::Unit
     else                 :"#{token}_#{division.plural}"
     end
   end
-  
+
   def self.token
+    subsystem_token
+  end
+
+  def self.subsystem_token
     if subsystem?
       nil
     else
-      last_namespace.gsub(/#{subsystem.last_namespace}$/, '').snakecase.to_sym
+      last_namespace.sub(/#{subsystem.last_namespace}$/, '').snakecase.to_sym
+    end
+  end
+
+  def self.division_token
+    if division?
+      nil
+    else
+      last_namespace.sub(/#{division.last_namespace}$/, '').snakecase.to_sym
     end
   end
 
