@@ -232,6 +232,14 @@ class Liza::Controller < Liza::Unit
     end
 
     def method_missing(name, *args, &block)
+      get(name)
+    end
+
+    def get?(name)
+      get "#{name}?"
+    end
+
+    def get(name)
       name = "#{ @prefix }_#{ name }".upcase
       if name[-1] == "?"
         ENV[name[0..-2]]
