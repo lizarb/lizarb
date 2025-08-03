@@ -4,7 +4,7 @@ class DevSystem::GenerateCommand < DevSystem::SimpleCommand
   shortcut :u, :uninstall
   shortcut :i, :install
   shortcut :m, :move
-  shortcut :o, :overwrite
+  shortcut :o, :override
 
   def before
     super
@@ -38,9 +38,9 @@ class DevSystem::GenerateCommand < DevSystem::SimpleCommand
     DevBox.command ["generate", "move", *args]
   end
 
-  # liza generate:overwrite
-  def call_overwrite
-    DevBox.command ["generate", "overwrite", *args]
+  # liza generate:override
+  def call_override
+    DevBox.command ["generate", "override", *args]
   end
 
 end
