@@ -45,7 +45,7 @@ class DevSystem::SystemGenerator < DevSystem::SimpleGenerator
         # hacks the input block
         value = instance_exec(default, &input_args[index])
         # hacks the command's args
-        command.env[:simple_args][index] = value
+        command.menv[:simple_args][index] = value
         # sets name, used by the above `until` loop
         name = value
         name_words = name.to_s.strip.split("_")
