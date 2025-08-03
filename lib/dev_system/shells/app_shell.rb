@@ -19,6 +19,24 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
+  # Returns an array of writable units in the specified class.
+  #
+  # @param klass [Class] The class to filter by.
+  #
+  # @return [Array<Class>] An array of writable units in the specified class.
+  #
+  # @example
+  #   units = AppShell.writable_units(MyClass)
+  #   units.each do |unit|
+  #     log unit
+  #   end
+  #
+  # @see AppShell.units
+  def self.writable_units(klass=Unit)
+    units(klass)
+      .select { _1.source_location_radical.start_with? App.root.to_s }
+  end
+
   # Returns an array of units in the specified class.
   #
   # @param klass [Class] The class to filter by.
