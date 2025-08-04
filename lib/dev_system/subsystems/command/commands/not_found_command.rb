@@ -65,16 +65,35 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
   def print_class klass, description: nil
     return if [NotFoundCommand].include? klass
 
+    command_shortcuts = Command.panel.shortcuts.invert
+    action_shortcuts = klass.shortcuts.invert
+
     sidebar_length = Log.panel.sidebar_size
     klass.get_command_signatures.each do |signature|
+      controller_name = klass.token.to_s
+      action_name = signature[:name]
       signature[:name] =
-        signature[:name].empty? \
-          ? klass.token.to_s
-          : "#{klass.token}:#{signature[:name]}"
+        action_name.empty? \
+          ? controller_name
+          : "#{controller_name}:#{action_name}"
       #
+      controller_name = command_shortcuts[controller_name] || controller_name
+      action_name = "#{action_shortcuts[action_name]}" if action_shortcuts[action_name]
+      signature[:short] =
+        action_name.empty? \
+          ? controller_name
+          : "#{controller_name}:#{action_name}"
+
     end.sort_by { _1[:name] }.map do |signature|
+      if signature[:name] == signature[:short]
+        s = signature[:name]
+        t = ''
+      else
+        s = signature[:short].ljust_blanks 6
+        t = signature[:name]
+      end
       puts [
-        "liza #{signature[:name]}".ljust(sidebar_length),
+        "liza #{s} #{t}".ljust(sidebar_length),
         (description or signature[:description])
       ].join ""
     end
