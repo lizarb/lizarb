@@ -12,14 +12,14 @@ class DevSystem::SimpleGeneratorTest < DevSystem::BaseGeneratorTest
   # helper methods
 
   def call_with(name, action, placement, superklass, path)
-    env = {}
-    env[:name] = name.to_s
-    env[:generator_action] = action.to_s
-    env[:placement] = placement
-    env[:superclass] = superklass
-    env[:path] = path
+    menv = {}
+    menv[:name] = name.to_s
+    menv[:generator_action] = action.to_s
+    menv[:placement] = placement
+    menv[:superclass] = superklass
+    menv[:path] = path
 
-    subject.call env
+    subject.call menv
   end
 
   def assert_change_count count, kaller: nil
