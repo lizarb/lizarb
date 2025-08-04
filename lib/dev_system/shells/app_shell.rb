@@ -602,38 +602,45 @@ class DevSystem::AppShell < DevSystem::Shell
 
     log_filter "reading the domain of the core"
 
-    ret << Domain.new(
+    domain = Domain.new(
       name: "core",
       color: :white,
-      layers: get_layers_for_core
+      layers: []
     )
+    domain.layers.concat get_layers_for_core(domain)
+    ret << domain
 
     log_filter "reading the domains of the systems"
 
     App.systems.values.each do |system|
       log_filter "-- reading the domain of the system #{system}"
-      ret << Domain.new(
+      domain = Domain.new(
         name: system.to_s,
         color: system.color,
-        layers: get_layers_for_system(system)
+        layers: []
       )
+      domain.layers.concat get_layers_for_system(domain, system)
+      ret << domain
     end
 
     log_filter "reading the domain of the app"
 
-    ret << Domain.new(
+    domain = Domain.new(
       name: "app",
       color: :white,
-      layers: get_layers_for_app
+      layers: []
     )
+    domain.layers.concat get_layers_for_app(domain)
+    ret << domain
 
     ret
   end
 
-  def get_layers_for_core
+  def get_layers_for_core(domain)
     ret = []
 
     ret << Layer.new(
+      domain: ,
       level: 1,
       name: "top level",
       color: :white,
@@ -644,6 +651,7 @@ class DevSystem::AppShell < DevSystem::Shell
     consts[:liza].each do |category, classes|
       path = "lib/liza/#{category}/"
       ret << Layer.new(
+        domain: ,
         level: (category=="unit" || category=="extra_tests" ? 2 : 3),
         name: category,
         color: :white,
@@ -655,12 +663,13 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
-  def get_layers_for_system(system)
+  def get_layers_for_system(domain, system)
     ret = []
 
     tree_system = consts[:systems][system.token.to_s]
     path = system.source_location_radical.sub("#{App.root}/", "")
     ret << Layer.new(
+      domain: ,
       level: 1,
       name: system.to_s,
       color: system.color,
@@ -677,6 +686,7 @@ class DevSystem::AppShell < DevSystem::Shell
       color = division.subsystem.system.color
 
       ret << Layer.new(
+        domain: ,
         level: 3,
         name: ,
         color: ,
@@ -690,6 +700,7 @@ class DevSystem::AppShell < DevSystem::Shell
       path = system.source_location_radical.sub("#{App.root}/", "")
       path << "/subsystems/#{subsystem.singular}/"
       ret << Layer.new(
+        domain: ,
         level: 2,
         name: subsystem.to_s,
         color: system.color,
@@ -706,6 +717,7 @@ class DevSystem::AppShell < DevSystem::Shell
         color = controller.subsystem.system.color
 
         ret << Layer.new(
+          domain: ,
           level: 3,
           name: ,
           color: ,
@@ -718,10 +730,11 @@ class DevSystem::AppShell < DevSystem::Shell
     ret
   end
 
-  def get_layers_for_app
+  def get_layers_for_app(domain)
     ret = []
 
     ret << Layer.new(
+      domain: ,
       level: 1,
       name: "App",
       color: :white,
@@ -732,6 +745,7 @@ class DevSystem::AppShell < DevSystem::Shell
     consts[:app].each do |system_name, tree_system|
       system = App.systems[system_name.to_sym]
       ret << Layer.new(
+        domain: ,
         level: 2,
         name: system_name,
         color: :white,
@@ -742,6 +756,7 @@ class DevSystem::AppShell < DevSystem::Shell
         structure.each do |division_name, klasses|
           division = Liza.const division_name
           ret << Layer.new(
+            domain: ,
             level: 3,
             name: division.plural,
             color: :white,
@@ -797,7 +812,8 @@ class DevSystem::AppShell < DevSystem::Shell
 
   # A PORO representing a layer in a namespace of LizaRB.
   class Layer
-    def initialize(level: , name: , color: , path: , objects: )
+    def initialize(domain: , level: , name: , color: , path: , objects: )
+      @domain = domain
       @level = level
       @name = name
       @color = color
@@ -805,7 +821,31 @@ class DevSystem::AppShell < DevSystem::Shell
       @objects = objects
     end
 
-    attr_reader :level, :name, :color, :path, :objects
+    attr_reader :domain, :level, :name, :color, :path, :objects
+
+    def path_color
+      a_controller = objects.first
+      ns_color = domain.color
+      cname_color = a_controller.color
+
+      ns_path = path.split("/")[0..-2].join("/")
+      ns_path = "#{App.directory_name}/#{a_controller.subsystem.system.token}" if app?
+      cname_path = "#{a_controller.division.plural}/"
+
+      stick = Liza::Unit.method(:stick)
+      s = stick.call :b, ns_color, ns_path
+      t = stick.call :b, :white, "/"
+      u = stick.call :b, cname_color, cname_path
+      "#{s}#{t}#{u}"
+    end
+
+    def app?
+      name == "app"
+    end
+
+    def core?
+      name == "core"
+    end
   end
 
 end
