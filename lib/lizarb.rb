@@ -124,8 +124,15 @@ module Lizarb
   module_function
 
   def log s
-    print "#{$boot_time.diff}s " if defined? $log_boot_high
+    print "#{time_diff $boot_time}s " if defined? $log_boot_high
     puts s
+  end
+
+  def time_diff(t, digits = 4)
+    raise ArgumentError, "digits must be between 1 and 4" unless digits.between? 1, 4
+    f = (Time.now.to_f - t.to_f).floor(digits)
+    u, d = f.to_s.split "."
+    "#{u}.#{d.ljust digits, "0"}"
   end
 
   # Returns Lizarb::VERSION as a Gem::Version

@@ -7,9 +7,16 @@ class App
     puts s
   end
 
+  def self.time_diff(t, digits = 4)
+    raise ArgumentError, "digits must be between 1 and 4" unless digits.between? 1, 4
+    f = (Time.now.to_f - t.to_f).floor(digits)
+    u, d = f.to_s.split "."
+    "#{u}.#{d.ljust digits, "0"}"
+  end
+
   # called from exe/lizarb
   def self.call argv
-    log "#{$boot_time.diff}s to boot #{full_name}" if defined? $log_boot_low
+    log "#{time_diff $boot_time}s to boot #{full_name}" if defined? $log_boot_low
 
     should_log = log_level >= 4
     puts if should_log
