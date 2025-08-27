@@ -12,7 +12,7 @@ class ArtSystem::ChatgptCommand < DevSystem::SimpleCommand
 
   def after
     super
-    log "#{ @t.diff }s | done"
+    log "#{ time_diff @t }s | done"
   end
 
   section :actions

@@ -27,7 +27,7 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
 
     @conn = Mongo::Client.new(uri)
   ensure
-    log "#{t.diff}s | Connecting to #{hash}"
+    log "#{time_diff t}s | Connecting to #{hash}"
   end
 
   attr_reader :conn
@@ -36,7 +36,7 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
     t = Time.now
     raise NotImplementedError
   ensure
-    log "#{t.diff}s | #{cmd_name} | #{args}"
+    log "#{time_diff t}s | #{cmd_name} | #{args}"
   end
 
   def now
@@ -45,7 +45,7 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
     t = server_status.first['localTime']
     Time.at t.to_i
   ensure
-    log "#{t0.diff}s | now | []"
+    log "#{time_diff t0}s | now | []"
   end
 
 end
