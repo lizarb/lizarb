@@ -20,7 +20,7 @@ class ArtSystem::DeepseekCommand < DevSystem::SimpleCommand
 
   # liza deepseek s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_default
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
     call_chat
 
   rescue => e
@@ -30,7 +30,7 @@ class ArtSystem::DeepseekCommand < DevSystem::SimpleCommand
 
   # liza deepseek:chat s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2
   def call_chat
-    log stick :b, system.color, "I just think Ruby is the Best for coding!"
+    log stick :b, cl.system.color, "I just think Ruby is the Best for coding!"
 
     set_default_arg(0, "Hello!")
     content = simple_args.join(" ")
