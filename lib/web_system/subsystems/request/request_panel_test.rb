@@ -32,28 +32,6 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
 
   #
 
-  test :_prepare do
-    menv = {}
-    menv["PATH_INFO"]   = "/foo/bar/baz"
-    subject._prepare menv
-    assert_equality menv, {
-      "PATH_INFO"=>"/foo/bar/baz",
-      "LIZA_PATH"=>"/foo/bar/baz",
-      "LIZA_FORMAT"=>"html",
-      "LIZA_SEGMENTS"=>["foo", "bar", "baz"]
-    }
-
-    menv = {}
-    menv["PATH_INFO"]   = "/"
-    subject._prepare menv
-    assert_equality menv, {
-      "PATH_INFO"=>"/",
-      "LIZA_PATH"=>"/",
-      "LIZA_FORMAT"=>"html",
-      "LIZA_SEGMENTS"=>[]
-    }
-  end
-
   test :find, :invalid do
     menv = {}
     menv["PATH_INFO"]   = "/foo/bar/baz"
@@ -69,6 +47,48 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     assert_equality subject.routers.keys, [:simple]
     request_class = subject.find menv
     assert_equality request_class, RootRequest
+  end
+
+  def test_prepare(path_info, request_path:, request_segments:, request_format:)
+    menv = {}
+    menv["PATH_INFO"] = path_info
+    subject._prepare menv
+    assert_equality menv, {
+      "PATH_INFO"=>path_info,
+      "LIZA_PATH"=>request_path,
+      request_path: request_path,
+      "LIZA_SEGMENTS"=>request_segments,
+      request_segments: request_segments,
+      "LIZA_FORMAT"=>request_format,
+      request_format: request_format,
+    }
+  end
+
+  test :_prepare do
+    test_prepare "/",
+      request_path: "/",
+      request_segments: [],
+      request_format: "html"
+
+    test_prepare "/.abc",
+      request_path: "/",
+      request_segments: [],
+      request_format: "abc"
+
+    test_prepare "/foo/bar/baz",
+      request_path: "/foo/bar/baz",
+      request_segments: ["foo", "bar", "baz"],
+      request_format: "html"
+
+    test_prepare "/foo/bar/baz.json",
+      request_path: "/foo/bar/baz",
+      request_segments: ["foo", "bar", "baz"],
+      request_format: "json"
+
+    test_prepare "/.well-known/appspecific/com.chrome.devtools.json",
+      request_path: "/.well-known/appspecific/com.chrome.devtools",
+      request_segments: [".well-known", "appspecific", "com.chrome.devtools"],
+      request_format: "json"
   end
 
   test :path_for do

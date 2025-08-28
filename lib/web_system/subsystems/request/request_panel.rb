@@ -68,18 +68,26 @@ class WebSystem::RequestPanel < Liza::Panel
     nil
   end
 
-  #
+  section :prepare
 
+  # Prepares the request microenvironment
+  # Needs:
+  #   "PATH_INFO"
+  # Defines:
+  #   :request_path
+  #   :request_segments
+  #   :request_format
   def _prepare menv
     path = menv["PATH_INFO"]
-    path, _sep, format = path.lpartition "."
-    format = "html" if format.empty?
+    index = path.rindex(".")
+    path, format = path[0...index], path[(index+1)..-1] if index
+    format ||= "html"
 
     segments = Array path.split("/")[1..-1]
 
-    menv["LIZA_PATH"]     = path
-    menv["LIZA_FORMAT"]   = format
-    menv["LIZA_SEGMENTS"] = segments
+    menv[:request_path]     = menv["LIZA_PATH"]     = path
+    menv[:request_segments] = menv["LIZA_SEGMENTS"] = segments
+    menv[:request_format]   = menv["LIZA_FORMAT"]   = format
   end
 
 end
