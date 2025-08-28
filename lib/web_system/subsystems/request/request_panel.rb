@@ -25,7 +25,7 @@ class WebSystem::RequestPanel < Liza::Panel
     call menv, allow_raise: true
   end
 
-  #
+  section :routers
 
   def router(name, &block)
     _routers[name] ||= []
@@ -46,7 +46,7 @@ class WebSystem::RequestPanel < Liza::Panel
     @_routers ||= {}
   end
 
-  #
+  section :finders
 
   def find menv
     _prepare menv
@@ -66,6 +66,27 @@ class WebSystem::RequestPanel < Liza::Panel
     end
 
     nil
+  end
+
+  section :forgers
+
+  # Forges a request microenvironment from a path_info string
+  # Defines:
+  #   "PATH_INFO"
+  #   "REQUEST_METHOD"
+  #   "QUERY_STRING"
+  # Returns:
+  #   Hash
+  def forge(path_info, request_method: "GET", qs: nil, headers: {})
+    path_info = "/" if path_info.empty?
+
+    menv = headers.merge({
+      "PATH_INFO" => path_info,
+      "QUERY_STRING" => qs,
+      "REQUEST_METHOD" => request_method,
+    })
+    log :high, "#{request_method} #{path_info}#{qs ? "?#{qs}" : ""} with headers #{headers.inspect}"
+    menv
   end
 
   section :prepare

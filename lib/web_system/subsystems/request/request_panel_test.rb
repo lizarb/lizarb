@@ -49,6 +49,25 @@ class WebSystem::RequestPanelTest < Liza::PanelTest
     assert_equality request_class, RootRequest
   end
 
+  test :forge do
+    path_info = "/foo/bar/baz"
+    request_menv = subject.forge path_info
+    assert_equality request_menv["PATH_INFO"], "/foo/bar/baz"
+    assert_equality request_menv["REQUEST_METHOD"], "GET"
+    assert_equality request_menv["QUERY_STRING"], nil
+
+    request_menv = subject.forge path_info, request_method: "POST", qs: "a=1&b=2"
+    assert_equality request_menv["PATH_INFO"], "/foo/bar/baz"
+    assert_equality request_menv["REQUEST_METHOD"], "POST"
+    assert_equality request_menv["QUERY_STRING"], "a=1&b=2"
+
+    request_menv = subject.forge path_info, headers: { "X-Custom-Header" => "value" }
+    assert_equality request_menv["PATH_INFO"], "/foo/bar/baz"
+    assert_equality request_menv["REQUEST_METHOD"], "GET"
+    assert_equality request_menv["QUERY_STRING"], nil
+    assert_equality request_menv["X-Custom-Header"], "value"
+  end
+
   def test_prepare(path_info, request_path:, request_segments:, request_format:)
     menv = {}
     menv["PATH_INFO"] = path_info
