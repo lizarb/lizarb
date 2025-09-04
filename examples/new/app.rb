@@ -15,11 +15,6 @@ class App
 
   directory "app"
 
-  # Choose your Operation Mode
-
-  mode :code
-  # mode :demo
-
   # Choose your Log Transparency
   #
   #    1       2     3     4      5      6        7

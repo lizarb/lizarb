@@ -140,16 +140,12 @@ class App
 
   # mode
 
-  def self.mode mode = nil
-    if mode
-      @mode = mode.to_sym
-    else
-      @mode ||= (ENV["MODE"] || :code).to_sym
-    end
+  def self.mode
+    @mode ||= ENV["MODE"] || "coding"
   end
 
   def self.coding?
-    mode == :code
+    mode == "coding"
   end
 
   # env_vars

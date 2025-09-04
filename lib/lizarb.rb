@@ -497,10 +497,6 @@ module Lizarb
       App.log_level (s.length == 1) ? s.to_i : s.to_sym
     end
 
-    if env_mode = ENV["MODE"]
-      App.mode env_mode
-    end
-
     if env_gemfile = ENV["GEMFILE"]
       App.gemfile env_gemfile
     end
