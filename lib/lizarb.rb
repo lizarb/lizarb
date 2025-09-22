@@ -191,12 +191,14 @@ module Lizarb
     pwd = Dir.pwd
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     cl = caller_locations(1, 1)[0]
-    
+
     raise Lizarb::Error, "Lizarb.init_script_dependent! does not support app_global, use Lizarb.init_script_independent! instead" if app == "app_global"
     raise Lizarb::Error, "#{app.inspect} does not start with 'app_'" unless app == "app" or app.to_s.start_with? "app_"
 
     segments = cl.absolute_path.split("/")
-    root, script = segments[0..-3].join("/"), segments[-2..-1].join("/")
+    # bad_root, script = segments[0..-3].join("/"), segments[-2..-1].join("/")
+    root = pwd
+    script = segments[-2..-1].join("/")
 
     setup_script_dependent root, script: script, script_app: app
 
