@@ -212,6 +212,16 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
       result["restart"] = allowed[key]
     end
+
+    def set_value(key, value)
+      result[key.to_s] = value
+    end
+
+    def add_value(key, value)
+      result[key.to_s] ||= []
+      result[key.to_s] << value
+    end
+
   end
 
   def self.define_service(name, &block)
