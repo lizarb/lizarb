@@ -8,6 +8,7 @@ class DevSystem::NotFoundBench < DevSystem::Bench
     app_shell = AppShell.new
     app_shell.filter_by_unit Bench
 
+    app_shell.filter_out_units Bench, NotFoundBench
     app_shell.filter_out_units SortedBench if defined? SortedBench
     failed_name = menv[:bench_name_original]
     app_shell.filter_by_name_including failed_name if failed_name
@@ -44,7 +45,7 @@ class DevSystem::NotFoundBench < DevSystem::Bench
           name = layer.level==1 ? domain.name.to_s.upcase : layer.name.to_s
           puts typo.send m, name, layer.color unless layer.level==3
 
-          puts stick layer.color, layer.path
+          puts layer.path_color
           puts
         end
 
