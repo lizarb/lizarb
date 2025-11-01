@@ -24,7 +24,7 @@ class Liza::Box < Liza::Unit
   # @return [Liza::Box]
   def self.configuration
     @configuration ||= begin
-      last_namespace == name ? self : const_get(last_namespace)
+      last_namespace == name ? self : ::Object.const_get(last_namespace)
     rescue NameError
       self
     end
