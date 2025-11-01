@@ -12,6 +12,11 @@ class Liza::PanelTest < Liza::UnitTest
       :constants=>[],
       :class_methods=>[:instance, :box, :controller, :division, :token, :subsystem, :color, :log, :puts],
       :instance_methods=>[:box, :controller, :division, :subsystem, :key, :initialize, :push, :started, :log, :puts]
+    },
+    :env=>{
+      :constants=>[],
+      :class_methods=>[:env],
+      :instance_methods=>[:env]
     }
   )
   
