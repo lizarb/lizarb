@@ -324,9 +324,10 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       unit_path = "#{unit_path_radical}.rb"
 
       mapper.delete_after Pathname unit_path
-      views = Dir["#{unit_path_radical}*/**/*"]
+      views = Dir["#{unit_path_radical}*", "#{unit_path_radical}*/**/*"]
       views.each do |fname|
-        mapper.delete_after Pathname fname
+        path = Pathname fname
+        mapper.delete_after path if path.file?
       end
     end
   end
