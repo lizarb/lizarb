@@ -12,6 +12,11 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
       :class_methods=>[],
       :instance_methods=>[:before, :after]
     },
+    :params=>{
+      :constants=>[:Params, :Type, :Field],
+      :class_methods=>[],
+      :instance_methods=>[:params, :params_parse_type_array, :params_parse_type_integer, :params_parse_type_symbol, :params_parse_type_color, :params_parse_type_subsystem, :params_input_type_string, :params_input_type_boolean, :params_input_type_integer, :params_input_type_color, :params_input_type_array, :params_input_type_subsystem]
+    },
     :given=>{
       :constants=>[],
       :class_methods=>[],
@@ -20,7 +25,7 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     :defaults=>{
       :constants=>[],
       :class_methods=>[],
-      :instance_methods=>[:ask?, :default_args, :set_default_arg, :default_strings, :set_default_string, :set_default_array, :default_booleans, :set_default_boolean]
+      :instance_methods=>[:ask?, :confirm?, :default_args, :set_default_arg, :default_strings, :set_default_string, :set_default_array, :default_booleans, :set_default_boolean]
     },
     :input=>{
       :constants=>[],
@@ -148,6 +153,63 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
 
   test :simple_string do
     todo "test behavior with given, default and input"
+  end
+
+  section :params
+
+  test :params do
+    assert_equality subject.params.class, DevSystem::SimpleCommand::Params
+    assert_equality subject.params.types.keys, [:boolean, :string, :array, :integer, :symbol, :color, :subsystem]
+    assert_equality subject.params.fields.keys, [:ask, :confirm]
+  end
+
+  test :params, :basics do
+    prepare_command %w(s0 s1 s2 s3 +b1 +b2 -b3 -b4 k1=v1 k2=v2)
+
+    assert_equality subject.params.args, ["s0", "s1", "s2", "s3"]
+    assert_equality subject.params.booleans, {b1: true, b2: true, b3: false, b4: false}
+    assert_equality subject.params.strings, {k1: "v1", k2: "v2"}
+    assert_equality subject.params.types.keys, [:boolean, :string, :array, :integer, :symbol, :color, :subsystem]
+    assert_equality subject.params.fields.keys, [:ask, :confirm]
+
+    assert_equality subject.params[0], "s0"
+    assert_equality subject.params[:b1], true
+    assert_equality subject.params[:k1], "v1"
+    assert_equality subject.params.fields.keys, [:ask, :confirm, 0, :b1, :k1]
+  end
+
+  test :params, :ask_and_confirm do
+    prepare_command %w(+ask -confirm)
+
+    assert_equality subject.params.args, []
+    assert_equality subject.params.booleans, {ask: true, confirm: false}
+    assert_equality subject.params.strings, {}
+    assert_equality subject.params.types.keys, [:boolean, :string, :array, :integer, :symbol, :color, :subsystem]
+    assert_equality subject.params.fields.keys, [:ask, :confirm]
+
+    assert_equality subject.params[:ask], true
+    assert_equality subject.params[:confirm], false
+  end
+
+  test :params, :named do
+    prepare_command %w(level=5) do |params|
+      assert_equality params[:level], "5"
+    end
+
+    prepare_command %w() do |params|
+      params.add_field :level, :integer, default: 3
+      assert_equality params[:level], 3
+    end
+
+    prepare_command %w(level=5) do |params|
+      params.add_field :level, :integer
+      assert_equality params[:level], 5
+    end
+  end
+
+  def prepare_command(args)
+    forge_subject_with *args
+    yield subject.params if block_given?
   end
 
 end
