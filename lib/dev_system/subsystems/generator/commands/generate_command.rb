@@ -1,29 +1,12 @@
 class DevSystem::GenerateCommand < DevSystem::SimpleCommand
 
-  shortcut :r, :remove
-  shortcut :u, :uninstall
-  shortcut :i, :install
   shortcut :m, :move
   shortcut :o, :override
+  shortcut :r, :remove
 
   # liza generate
   def call_default
     DevBox.generate menv
-  end
-
-  # liza generate:remove
-  def call_remove
-    DevBox.command ["generate", "remove", *args]
-  end
-
-  # liza generate:uninstall
-  def call_uninstall
-    DevBox.command ["generate", "uninstall", *args]
-  end
-
-  # liza generate:install
-  def call_install
-    DevBox.command ["generate", "install", *args]
   end
 
   # liza generate:move
@@ -34,6 +17,11 @@ class DevSystem::GenerateCommand < DevSystem::SimpleCommand
   # liza generate:override
   def call_override
     DevBox.command ["generate", "override", *args]
+  end
+
+  # liza generate:remove
+  def call_remove
+    DevBox.command ["generate", "remove", *args]
   end
 
 end
