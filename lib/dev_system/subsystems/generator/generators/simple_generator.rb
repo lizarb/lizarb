@@ -13,6 +13,14 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     super
 
     before_instance_calls
+    params.add_field :views, :string, default: "none", validations: {whitelist: valid_views}
+
+    def command.params_input_field_views(default)
+      title = "Choose views"
+      valid_views = menv[:generator].valid_views
+      index_base_1 = valid_views.index(default) + 1 rescue 1
+      InputShell.select title, valid_views, default: index_base_1
+    end
   end
 
   def before_instance_calls
@@ -64,14 +72,14 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
     log "saving #{mapper.changes.count} files changed: #{diff[:"+"]} insertions(+), #{diff[:"-"]} deletions(-)"
 
     choices = mapper.changes.keys.map { [_1, _1] }.to_h
-    if command.simple_boolean :confirm
+    if command.confirm?
       answers = choices.keys
     else
       answers = InputShell.multi_select "Approve all changes?", choices
     end
 
     #
-    
+
     puts_line
     diff = {
       "+": mapper.changes.map { _2[:after].split("\n").count }.sum,
@@ -244,23 +252,12 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   def arg_views_nested?() = arg_views == 'nested'
 
-  def self.set_default_views(views) = before_instance_call(:set_default_views, views)
+  def set_default_views(views) = command.params.add_field :views, default: views
 
-  def set_default_views(views) = command.set_default_string(:views, views)
-    
   def valid_views() = @valid_views ||=  %w[none eof adjacent nested]
 
-  def arg_views() = @arg_views ||= command.simple_string(:views)
+  def arg_views() = @arg_views ||= command.params[:views]
 
-  set_input_string :views do |default|
-    title = "Choose views"
-    valid_views = menv[:generator].valid_views
-    index_base_1 = valid_views.index(default) + 1 rescue 1
-    InputShell.select title, valid_views, default: index_base_1
-  end
-  
-  set_default_views "none"
-  
   section :unit
 
   def add_unit(unit, class_names, unit_path)
