@@ -4,7 +4,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   def self.call(menv)
     super
-    
+
     generator = new
     menv[:generator] = generator
     menv[:command].menv[:generator] = generator
@@ -15,7 +15,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
 
   def call(menv)
     super
-    
+
     before
     method_name = "call_#{action_name}"
     if respond_to? method_name
@@ -48,6 +48,7 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   def before
     before_default
     before_input
+    params.strict!
   end
 
   def after
@@ -55,6 +56,8 @@ class DevSystem::BaseGenerator < DevSystem::Generator
   end
 
   section :helper_methods
+
+  def params() = command.params
 
   def action_name()= menv[:generator_action]
 
