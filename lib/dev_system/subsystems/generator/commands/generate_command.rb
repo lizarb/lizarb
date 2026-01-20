@@ -1,5 +1,7 @@
 class DevSystem::GenerateCommand < DevSystem::SimpleCommand
 
+  menv_reader :generator
+
   shortcut :m, :move
   shortcut :o, :override
   shortcut :r, :remove
