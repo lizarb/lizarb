@@ -1,4 +1,4 @@
-class PrimeSystem::InsightShipTest < MicroSystem::DockerShipTest
+class MicroSystem::InsightShipTest < MicroSystem::DockerShipTest
 
   section :subject
 

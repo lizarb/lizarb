@@ -1,4 +1,4 @@
-class PrimeSystem::InsightShip < MicroSystem::DockerShip
+class MicroSystem::InsightShip < MicroSystem::DockerShip
 
   define_service :kroki do
     image "yuzutech/kroki"
