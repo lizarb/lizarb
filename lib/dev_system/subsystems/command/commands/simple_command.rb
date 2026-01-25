@@ -454,7 +454,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
 
       log :high, "object_for #{name.inspect}"
       name = name.to_sym if name.is_a? String
-      field_is_args = name.is_a? Integer or name.is_a? Range
+      field_is_args = (name.is_a? Integer) or (name.is_a? Range)
       field_is_permitted = fields.key? name
       field_is_named = !field_is_args
 
