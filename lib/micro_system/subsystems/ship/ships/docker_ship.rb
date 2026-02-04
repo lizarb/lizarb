@@ -240,4 +240,6 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     log :highest, "using #{name.inspect}"
   end
 
+  define_service :empty
+
 end
