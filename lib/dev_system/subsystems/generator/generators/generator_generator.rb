@@ -1,19 +1,18 @@
 class DevSystem::GeneratorGenerator < DevSystem::ControllerGenerator
 
   section :default
-  
+
   def arg_action_names()= @arg_action_names ||= ["default", *super]
 
-  set_default_views "adjacent"
 
-  set_default_string :format, "txt"
-  set_input_string :format do |default|
-    InputShell.ask "What format?", default: default
+  def before
+    super
+    command.params.add_field :format, :string, default: "txt"
   end
 
   section :actions
-  
-  # liza g generator name place=app 
+
+  # liza g generator name place=app
 
   def call_default
     call_simple
@@ -26,7 +25,7 @@ class DevSystem::GeneratorGenerator < DevSystem::ControllerGenerator
     set_default_require ""
 
     create_controller do |unit, test|
-      format = command.simple_string :format
+      format = command.params[:format]
       unit.section name: :actions, render_key: :section_controller_actions, format: format
 
       arg_action_names.each do |action_name|
@@ -45,7 +44,7 @@ class DevSystem::GeneratorGenerator < DevSystem::ControllerGenerator
     set_default_require ""
 
     create_controller do |unit, test|
-      format = command.simple_string :format
+      format = command.params[:format]
       unit.section name: :actions, render_key: :section_simple_actions, format: format
       test.section name: :subject
 
