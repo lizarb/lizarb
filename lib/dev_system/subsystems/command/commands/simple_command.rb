@@ -25,7 +25,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
   # @param string [String] The string to parse.
   # @return [Array<String>]
   def params_parse_type_array(string)
-    string.to_s.split(",")
+    string.split(",")
   end
 
   # This method is dynamically invoked by DevSystem::SimpleCommand::Params using this exact method name.
