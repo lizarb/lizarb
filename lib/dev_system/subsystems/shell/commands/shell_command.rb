@@ -144,19 +144,23 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     end
   end
 
-  # liza shell:paths
-  def call_paths
+  def params_input_field_globals(field_name, default)
+    title = "Which globals are we going to show?"
+    choices = {"$LOAD_PATH" => "paths", "$LOADED_FEATURES" => "features"}
+    array = InputShell.multi_select title, choices, selected: :all
+    array.join(",")
+  end
+
+  # liza shell:globals
+  # liza shell:globals globals=paths
+  # liza shell:globals globals=paths,features
+  def call_globals
     puts
 
-    set_input_array :paths do
-      title = "Which paths are we going to show?"
-      choices = %w[load_paths loaded_features].map { ["$#{_1.upcase}", _1] }.to_h
-      answers = InputShell.multi_select title, choices, selected: :all
-    end
+    params.expect :globals, :array
+    globals = params[:globals]
 
-    paths = simple_array(:paths)
-
-    if paths.include? "load_paths"
+    if globals.include? "paths"
       puts "$LOAD_PATH"
       $LOAD_PATH.each do |path|
         puts path
@@ -164,7 +168,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       puts
     end
 
-    if paths.include? "loaded_features"
+    if globals.include? "features"
       puts "$LOADED_FEATURES"
       $LOADED_FEATURES.each do |path|
         puts path
@@ -173,23 +177,25 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     end
   end
 
-  # liza shell:loc
-  def call_loc
-    set_default_array :domains, AppShell.get_writable_domains.keys
-    
-    set_input_array :domains do |default|
-      domains = AppShell.get_writable_domains
-      title = "Which domains are we going to inspect?"
-      InputShell.pick_domains domains, default, title
-    end
+  def params_input_field_domains(field_name, default)
+    title = "params[:#{field_name}] - Which domains are we going to inspect?"
+    domains = AppShell.get_writable_domains
+    array=InputShell.pick_domains domains, default, title
+    array.join ","
+  end
 
+  # liza shell:loc
+  # liza shell:loc domains=core
+  # liza shell:loc domains=micro,desk
+  def call_loc
     app_shell = AppShell.new
 
-    domains = simple_array(:domains)
+    params.expect :domains, :array
+    domains = params[:domains]
     log "domains = #{domains}"
     app_shell.filter_by_domains domains
 
-    app_shell.filter_by_any_name_including simple_args if simple_args.any?
+    app_shell.filter_by_any_name_including params.args if params.args.any?
 
     total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
 
@@ -212,7 +218,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
 
         puts stick layer.color, layer.path
         puts
-      
+
         layer_total = {loc: 0, c: 0, cm: 0, im: 0, views: 0}
         layer.objects.each do |object|
           object_type = object.class == Module ? "module" : "class"
@@ -280,7 +286,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
         content << ":im => #{layer_total[:im].to_s.rjust_blanks 2}, "
         content << ":views => #{layer_total[:views].to_s.rjust_blanks 2} "
         content << "}"
-        
+
         log content, sidebar: sidebar
 
         puts
@@ -302,7 +308,6 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       log content, sidebar: sidebar
     end
     puts
-
 
     sidebar = "TOTAL"
     size = Log.panel.sidebar_size - sidebar.length - 1
