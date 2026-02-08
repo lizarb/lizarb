@@ -3,7 +3,10 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
   def before_create_controller
     super
 
-    command.set_boolean :rescue_from, false, "Do you want to add a rescue_from method? (centralized rescue for Exception subclasses)"
+    def command.params_input_field_rescue_from(field_name, default)
+      InputShell.prompt.yes?("params[#{field_name}] - Do you want to add a rescue_from method? (centralized rescue for Exception subclasses)", default: !!default)
+    end
+    command.params.permit :rescue_from, :boolean, default: false
   end
 
   section :default
@@ -22,13 +25,16 @@ class DevSystem::CommandGenerator < DevSystem::ControllerGenerator
     call_simple
   end
 
+  # liza g command:simple name
   # liza g command:simple name place=app
-
+  # liza g command:simple name place=app +rescue_from
+  # liza g command:simple name place=app -rescue_from
   def call_simple
     set_default_super "simple"
-    
+    params.add_field :rescue_from, :boolean, default: false
+
     create_controller do |unit, test|
-      @should_add_rescue_from = command.simple_boolean(:rescue_from)
+      @should_add_rescue_from = params[:rescue_from]
 
       unit.section name: :filters, render_key: :section_simple_filters
       unit.section name: :actions, render_key: :section_simple_actions
