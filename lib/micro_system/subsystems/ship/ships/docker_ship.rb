@@ -1,36 +1,43 @@
 class MicroSystem::DockerShip < MicroSystem::Ship
 
-  def self.up(log_level: self.log_level, filename: "docker-compose.yml")
-    compose("up", log_level:, filename:)
+  section :helpers
+
+  def self.up(log_level: self.log_level)
+    compose("up", log_level:)
   end
 
-  def self.start(log_level: self.log_level, filename: "docker-compose.yml")
-    compose("start", log_level:, filename:)
+  def self.start(log_level: self.log_level)
+    compose("start", log_level:)
   end
 
-  def self.stop(log_level: self.log_level, filename: "docker-compose.yml")
-    compose("stop", log_level:, filename:)
+  def self.stop(log_level: self.log_level)
+    compose("stop", log_level:)
   end
 
-  def self.restart(log_level: self.log_level, filename: "docker-compose.yml")
-    compose("restart", log_level:, filename:)
+  def self.restart(log_level: self.log_level)
+    compose("restart", log_level:)
   end
 
-  def self.compose(action, log_level: self.log_level, filename: "docker-compose.yml")
-    dock(log_level:, filename:)
+  section :default
 
-    sh "docker compose -f #{filename} #{action}"
-  end
-
-  def self.dock(log_level: self.log_level, filename: "docker-compose.yml")
-    log_level log_level
+  def self.compose(action, log_level: self.log_level)
     menv = {log_level:}
+
+    dock(menv)
+
+    sh "docker compose -f #{menv[:filename]} #{action}"
+  end
+
+  def self.dock(menv)
+    menv[:filename] ||= "docker-compose.#{self.token}.yml"
+
+    log_level menv[:log_level]
     comments = get_comments
     content = get_content(menv)
     content = comments + content
 
     puts stick system.color, content if log? :higher
-    FileShell.write_text filename, content, log_level: :highest
+    FileShell.write_text menv[:filename], content, log_level: :highest
   end
 
   def self.get_content(menv)
@@ -46,10 +53,11 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   def self.call(menv)
     super
 
+    ship = menv[:ship] ||= new
     menv[:services] = {}
     used_services.each do |name, used_service|
       menv[:services][name] = used_service
-      used_service.process
+      used_service.process(ship)
     end
   end
 
@@ -101,23 +109,25 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       blocks << block if block
     end
 
-    attr_accessor :name, :supername, :ship
+    attr_accessor :name, :supername, :ship, :ship_class
 
-    def process
-      process_ship
+    def process(ship)
+      @ship = ship
+      raise ArgumentError, "ship must be an instance" unless ship.is_a? MicroSystem::Ship
+      process_ship_class
       process_blocks_shifting
       process_blocks
       process_persisted_volume
       process_default_port
     end
 
-    def process_ship
-      self.ship = Liza.const(:"#{ship}_ship") if ship.is_a?(Symbol)
+    def process_ship_class
+      self.ship_class = Liza.const(:"#{ship_class}_ship") if ship_class.is_a?(Symbol)
     end
 
     def process_blocks_shifting
-      service = ship.defined_services[supername]
-      raise "service #{name} not defined in #{ship}" if service.nil?
+      service = ship_class.defined_services[supername]
+      raise "service #{name} not defined in #{ship_class}" if service.nil?
       @blocks = service.blocks + blocks
     end
 
@@ -167,7 +177,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       raise "must include ':'" unless string.include? ":"
 
       result["ports"] ||= []
-      result["ports"] << string
+      result["ports"] << string unless result["ports"].include? string
     end
 
     def persisted(path = nil, mode: nil)
@@ -182,14 +192,19 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     def volumes(string)
       raise "must include ':'" unless string.include? ":"
       result["volumes"] ||= []
-      result["volumes"] << string
+      result["volumes"] << string unless result["volumes"].include? string
     end
 
     def environment(hash)
+      hash = hash.map {|k, v| [k.to_s, v.to_s] }.to_h
       result["environment"] ||= {}
-      result["environment"].merge!(hash.map {|k, v| [k.to_s, v.to_s] }.to_h)
+      result["environment"].merge! hash
     end
 
+    # TODO: support condition
+    # depends_on:
+    #   rocketchat_mongodb:
+    #     condition: service_healthy
     def depends_on(*services)
       raise "At least one dependency required" if services.empty?
       unless services.all? { |s| s.is_a?(Symbol) || s.is_a?(String) }
@@ -234,7 +249,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     defined_service = defined_services[supername]
 
     used_service = used_services[name] ||= Service.new(name, supername)
-    used_service.ship = ship
+    used_service.ship_class = ship
     used_service.add_block block
 
     log :highest, "using #{name.inspect}"

@@ -9,43 +9,39 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
   def call_up
     return if ship.nil?
 
-    filename = "docker-compose.#{ship.token}.yml"
-    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
-    ship.up log_level: :higher, filename:
+    log stick :b, cl.system.color, "Docking #{ship}"
+    ship.up log_level: :higher
   end
 
   # liza ship:start
   def call_start
     return if ship.nil?
 
-    filename = "docker-compose.#{ship.token}.yml"
-    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
-    ship.start log_level: :higher, filename:
+    log stick :b, cl.system.color, "Docking #{ship}"
+    ship.start log_level: :higher
   end
 
   # liza ship:stop
   def call_stop
     return if ship.nil?
 
-    filename = "docker-compose.#{ship.token}.yml"
-    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
-    ship.stop log_level: :higher, filename:
+    log stick :b, cl.system.color, "Docking #{ship}"
+    ship.stop log_level: :higher
   end
 
   # liza ship:restart
   def call_restart
     return if ship.nil?
 
-    filename = "docker-compose.#{ship.token}.yml"
-    log stick :b, cl.system.color, "Docking #{ship} to #{filename}"
-    ship.restart log_level: :higher, filename:
+    log stick :b, cl.system.color, "Docking #{ship}"
+    ship.restart log_level: :higher
   end
 
   # liza ship:compose
   def call_compose
     return if ship.nil?
 
-    log stick :b, cl.system.color, "Docking #{ship} to docker-compose.yml"
+    log stick :b, cl.system.color, "Docking #{ship}"
     ship.dock log_level: :higher
   end
 

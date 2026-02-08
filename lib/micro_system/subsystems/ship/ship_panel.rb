@@ -4,8 +4,9 @@ class MicroSystem::ShipPanel < Liza::Panel
 
   def call(menv={})
     if docked_ship_name
-      log "Auto-docking #{docked_ship} to docker-compose.yml"
-      docked_ship.dock
+      menv[:log_level] ||= :low
+      docked_ship.dock(menv)
+      log "Auto-docked #{docked_ship} to #{menv[:filename]}"
     end
   end
 
