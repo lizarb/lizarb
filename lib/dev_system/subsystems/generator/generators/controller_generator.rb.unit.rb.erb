@@ -1,7 +1,7 @@
 # view unit.rb.erb
 class <%= @class_names[0] %> < <%= @class_names[1] %>
 <% if not @class_name.end_with?("Test") -%>
-<% if arg_division -%>
+<% if params[:division] -%>
   division!
 <% end %>
 <% if requirements_to_add.any? -%>

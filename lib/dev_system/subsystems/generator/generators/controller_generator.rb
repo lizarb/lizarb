@@ -1,5 +1,47 @@
 class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
+  section :filters
+
+  def before
+    super
+    params.add_field :require, default: "none"
+    params.add_field :division, :boolean, default: false
+    params.add_field :prefix, :boolean, default: false
+    params.add_field :super
+    params.expect 1, :string, validations: { string_size_min: 1 }
+    params.add_field_range 2.., :string
+    params.add_type :place, parse: false
+    params.expect :place, :place
+
+    def command.params_input_field_views(default, field_name)
+      title = "Choose views"
+      valid_views = generator.valid_views
+      index_base_1 = valid_views.index(default) + 1 rescue 1
+      InputShell.select title, valid_views, default: index_base_1
+    end
+
+    def command.params_input_field_1(default, field_name)
+      title = "Name your new #{generator.super_controller.last_namespace}:"
+      string = InputShell.ask title, default: default
+      string = params_input_field_1(default, field_name) if string.to_s.strip.empty?
+      string
+    end
+
+    def command.params_input_type_place(default, field_name)
+      available_places = generator.available_places
+      return available_places.keys[0] if available_places.count == 1
+
+      options = available_places.map do |place, path|
+        [
+          "#{place.ljust 30} path: #{path}",
+          place
+        ]
+      end.to_h
+      InputShell.pick_one "Where should the controller be placed?", options
+    end
+
+  end
+
   section :actions
 
   # liza g controller
@@ -60,7 +102,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   end
 
   def super_controller
-    @super_controller ||= Liza.const "#{arg_super}_#{menv[:generator_name]}"
+    @super_controller ||= Liza.const "#{params[:super]}_#{menv[:generator_name]}"
   end
 
   def controller_name
@@ -68,7 +110,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
       name = arg_name
       
       if arg_place != "app"
-        if arg_prefix
+        if params[:prefix]
           name = "#{arg_place.split("/").first}_#{name}"
         end
       end
@@ -80,7 +122,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
   def available_places
     @available_places ||= begin
       d = super_controller.division
-      directory_name = arg_division \
+      directory_name = params[:division] \
         ? "#{arg_name}_#{d.plural}"
         : d.plural
       log "directory_name: #{directory_name}"
@@ -90,7 +132,7 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   def requirements_to_add
     @requirements_to_add ||= begin
-      array = arg_require.to_s.split(",").map(&:strip).reject(&:empty?)
+      array = params[:require].to_s.split(",").map(&:strip).reject(&:empty?)
       array = [] if array == ["none"]
       array
     end
@@ -98,11 +140,11 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
 
   section :arguments
 
-  def arg_name() = @arg_name ||= (name = command.simple_arg(1) until name.to_s.strip.length.positive?; name)
+  def arg_name() = @arg_name ||= params[1]
 
-  def arg_action_names() = @arg_action_names ||= command.simple_args_from_2
+  def arg_action_names() = @arg_action_names ||= params[2..]
 
-  def arg_place() = @arg_place ||= command.simple_string(:place)
+  def arg_place() = @arg_place ||= params[:place]
 
   def arg_place_path
     @arg_place_path ||= begin
@@ -124,87 +166,25 @@ class DevSystem::ControllerGenerator < DevSystem::SimpleGenerator
     end
   end
 
-  def arg_require() = @arg_require ||= command.simple_string(:require)
-    
-  def arg_division() = @arg_division ||= command.simple_boolean(:division)
-
-  def arg_prefix() = @arg_prefix ||= command.simple_boolean(:prefix)
-
-  def arg_super() = @arg_super ||= command.simple_string(:super)
-
   section :defaults_and_inputs
-
-  def self.set_default_ask(ask)= before_instance_call :set_default_ask, ask
-
-  def self.set_default_super(zuper)= before_instance_call :set_default_super, zuper
-  
-  def self.set_default_prefix(prefix)= before_instance_call :set_default_prefix, prefix
 
   def self.set_default_division(division)= before_instance_call :set_default_division, division
 
   def self.set_default_require(string)= before_instance_call :set_default_require, string
-  
-  def set_default_ask(ask)
-    command.set_default_boolean :ask, ask
-  end
-
-  def set_default_prefix(prefix)
-    command.set_default_boolean :prefix, prefix
-  end
 
   def set_default_super(zuper)
-    command.set_default_string :super, zuper
-    log stick :white, :red, "Checking if class exists... #{arg_super}_#{menv[:generator_name]}"
+    params.set_default :super, zuper
+
+    log stick :white, :red, "Checking if class exists... #{params[:super]}_#{menv[:generator_name]}"
     Liza.const "#{zuper}_#{menv[:generator_name]}"
   end
 
   def set_default_division(division)
-    command.set_default_boolean :division, division
+    params.set_default :division, division
   end
 
   def set_default_require(string)
-    command.set_default_string :require, string    
+    params.set_default :require, string
   end
-
-  set_input_arg 1 do |default|
-    title = "Name your new #{menv[:generator].super_controller.last_namespace}:"
-    x = InputShell.ask title, default: default
-    redo if x.to_s.strip.empty?
-    x
-  end
-  
-  set_input_boolean :division do |default|
-    title = "Create a new division?"
-    InputShell.yes? title, default: !!default
-  end
-
-  set_input_boolean :prefix do |default|
-    title = "Do you want to prefix your controllers with their system names?"
-    InputShell.yes? title, default: !!default
-  end
-
-  set_input_string :place do |default|
-    available_places = menv[:generator].available_places
-    place = nil
-    place = available_places.keys[0] if available_places.count == 1
-    place ||= begin
-      options = available_places.map do |place, path|
-        [
-          "#{place.ljust 30} path: #{path}",
-          place
-        ]
-      end.to_h
-      InputShell.pick_one "Where should the controller be placed?", options
-    end
-    place
-  end
-
-  set_input_string :require do |default|
-    title = "Want to require any gems? (comma separated)"
-    InputShell.ask title, default: default
-  end
-
-  set_default_division false
-  set_default_require "none"
 
 end
