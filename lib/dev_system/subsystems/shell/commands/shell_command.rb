@@ -22,6 +22,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     puts "App.directory         #{ App.directory }/"
     puts "App.systems_directory #{ App.systems_directory }/"
     puts "App.mode              #{ App.mode.inspect }"
+    puts "App.full_name         #{ App.full_name.inspect }"
     puts "App.log_boot          #{ App.log_boot.inspect }"
     puts "App.log_level         #{ App.log_level.inspect }"
     puts "App.env_vars          #{ App.env_vars.inspect }"
@@ -33,11 +34,11 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       length = largest_system_name + 15
 
       puts "#{
-        "#{cl.system.token == :dev ? "App.system" : "          "}   #{cl.system.token.inspect}"
+        "#{system.token == :dev ? "App.system" : "          "}   #{system.token.inspect}"
           .ljust(length)
-          .sub(cl.system.token.inspect, (stick :b, cl.system.token.inspect, cl.system.color).to_s)
+          .sub(system.token.inspect, (stick :b, system.token.inspect, system.color).to_s)
       } #{
-        cl.system.source_location[0]
+        system.source_location[0]
       }"
     end
 
