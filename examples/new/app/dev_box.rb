@@ -1,7 +1,8 @@
 class DevBox < DevSystem::DevBox
 
   configure :command do
-    # CommandPanel.instance gives you read-access to this instance
+    # Command.panel gives you read-access to this instance
+
     shortcut :b, :bench
     shortcut :g, :generate
     shortcut :i, :irb
@@ -12,13 +13,15 @@ class DevBox < DevSystem::DevBox
   end
 
   configure :generator do
-    # GeneratorPanel.instance gives you read-access to this instance
+    # Generator.panel gives you read-access to this instance
+
     shortcut :c, :command
     shortcut :s, :shell
   end
 
   configure :log do
-    # LogPanel.instance gives you read-access to this instance
+    # Log.panel gives you read-access to this instance
+
     sidebar_size 40
 
     # handlers
@@ -27,13 +30,14 @@ class DevBox < DevSystem::DevBox
   end
 
   configure :shell do
-    # ShellPanel.instance gives you read-access to this instance
+    # Shell.panel gives you read-access to this instance
+
     # converters
     converter :html, :md
     converter :html, :haml
     converter :js,   :coffee
     converter :css,  :scss
-    
+
     # formatters
     formatter :html
     formatter :html, :xml
