@@ -3,7 +3,7 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
 
   def before
     super
-    env[:generator_action] = "default"
+    menv[:generator_action] = "default"
   end
 
   def call_default
@@ -16,7 +16,7 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
     if is_global
       app_shell.filter_in_units NewGenerator, NotFoundGenerator
     else
-      app_shell.filter_out_units BaseGenerator, SimpleGenerator, NewGenerator
+      app_shell.filter_out_units Generator, BaseGenerator, SimpleGenerator, NewGenerator
       failed_name = menv[:generator_name_original]
       app_shell.filter_by_name_including failed_name if failed_name
     end
@@ -54,7 +54,7 @@ class DevSystem::NotFoundGenerator < DevSystem::SimpleGenerator
           name = layer.level==1 ? domain.name.snakecase.upcase : layer.name.to_s
           puts typo.send m, name, layer.color unless layer.level==3
 
-          puts stick layer.color, layer.path
+          puts layer.path_color
           puts
         end
 
