@@ -13,6 +13,7 @@ class DevSystem::TypographyShell < DevSystem::Shell
   end
 
   def self.color_class klass
+    return klass.to_s unless klass.is_a? Class
     return klass.to_s unless klass < Liza::Unit
     return klass.to_s if klass.superclass == Liza::Unit
 
