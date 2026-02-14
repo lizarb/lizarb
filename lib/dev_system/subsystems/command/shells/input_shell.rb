@@ -19,6 +19,7 @@ class DevSystem::InputShell < DevSystem::Shell
   end
 
   def self.pick_one title, options = ["Yes", "No"], default: nil
+    3.times { puts }
     prompt.select title, options, filter: true, show_help: :always, per_page: 20, default: default
   rescue Exception => e
     rescue_input_interrupt e
@@ -63,6 +64,7 @@ class DevSystem::InputShell < DevSystem::Shell
   end
 
   def self.multi_select title, choices, selected: :all
+    3.times { puts }
     raise ArgumentError, "choices must be a hash", caller unless choices.is_a? Hash
     return choices if choices.empty?
     
