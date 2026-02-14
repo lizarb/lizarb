@@ -15,7 +15,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
     if is_global
       app_shell.filter_in_units NewCommand, NotFoundCommand
     else
-      app_shell.filter_out_units BaseCommand, SimpleCommand, NewCommand
+      app_shell.filter_out_units Command, BaseCommand, SimpleCommand, NewCommand
       failed_name = menv[:command_name_original]
       app_shell.filter_by_name_including failed_name if failed_name
     end
@@ -52,7 +52,7 @@ class DevSystem::NotFoundCommand < DevSystem::SimpleCommand
           name = layer.level==1 ? domain.name.snakecase.upcase : layer.name.to_s
           puts typo.send m, name, layer.color unless layer.level==3
 
-          puts stick layer.color, layer.path
+          puts layer.path_color
           puts
         end
 
