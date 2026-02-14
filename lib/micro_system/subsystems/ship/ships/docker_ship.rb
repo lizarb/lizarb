@@ -38,6 +38,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
     puts stick system.color, content if log? :higher
     FileShell.write_text menv[:filename], content, log_level: :highest
+    log "Docked #{self} to #{menv[:filename]}"
   end
 
   def self.get_content(menv)
