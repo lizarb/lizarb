@@ -64,39 +64,36 @@ class App
 
   # directory
 
-  def self.directory(directory = nil, systems: nil)
-    if directory
-      @directory_name = directory
-      @directory = directory
-      @relative_path = directory
-      @path = "#{Lizarb.app_dir}/#{directory}"
-      self.systems_directory systems if systems
-    else
-      @directory
+  def self.directory(
+    directory = nil,
+    data: "dat",
+    permanent: "prm",
+    temporary: "tmp",
+    systems: "lib"
+  )
+    if directory.nil?
+      return @directory if @directory
+      return @directory = root.join(@directory_name) if @directory_name
     end
-  end
-
-  def self.systems_directory(systems_directory = nil)
     raise "locked" if @locked
-    if systems_directory
-      @systems_directory = systems_directory
-      @systems_directory_name = systems_directory
-    else
-      @systems_directory
-    end
+    @directory_name = directory
+    @data_directory_name = data
+    @permanent_directory_name = permanent
+    @temporary_directory_name = temporary
+    @systems_directory_name = systems
   end
 
-  def self.directory_name () = @directory_name
-
-  def self.systems_directory_name () = @systems_directory_name ||= "lib"
-
-  def self.path
-    @path
+  class << self
+    attr_reader :directory_name, :systems_directory_name, :data_directory_name, :permanent_directory_name, :temporary_directory_name
   end
 
-  def self.relative_path
-    @relative_path or raise "@relative_path not set"
-  end
+  def self.systems_directory () = (root.join systems_directory_name)
+
+  def self.data_directory () = (root.join data_directory_name, full_name)
+
+  def self.permanent_directory () = (root.join permanent_directory_name, name)
+
+  def self.temporary_directory () = (root.join temporary_directory_name, full_name)
 
   # framework
 

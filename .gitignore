@@ -2,7 +2,7 @@
 /.yardoc
 /_yardoc/
 /coverage/
-/data/
+/dat/
 /doc/
 /pkg/
 /spec/reports/
@@ -13,3 +13,4 @@
 /.solargraph/
 .solargraph.yml
 docker-compose.*
+*.env

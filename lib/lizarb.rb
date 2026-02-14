@@ -613,14 +613,6 @@ module Lizarb
     @root = Pathname(@root)
     @gem_dir = Pathname(@gem_dir)
     @config_path = Pathname(@config_path)
-
-    App.instance_eval do
-      @directory = root / directory
-      @systems_directory = root / systems_directory_name
-
-      @relative_path = Pathname(@relative_path)
-      @path = Pathname(@path)
-    end
   end
 
   # This method is called internally by `load` and is not intended for direct use.
@@ -780,13 +772,13 @@ module Lizarb
 
     # cherrypick App paths
 
-    app_dir = App.path
+    app_dir = App.directory
     if app_dir
       log "      Application Directory: #{app_dir}" if defined? $log_boot_highest
       list = Dir["#{app_dir}/*"].to_set
     end
 
-    if app_dir.nil? || list.empty?
+    if list.empty?
       log "      Application Directory is empty" if defined? $log_boot_highest
     else
       log "      Application Directory found #{list.count} items to collapse" if defined? $log_boot_highest
