@@ -3,14 +3,12 @@ class DevSystem::BoxesGenerator < DevSystem::SimpleGenerator
   # liza g boxes
 
   def call_default
-    app_dir = App.path
-    
-    list = Dir["#{ app_dir }/*"].to_set
+    list = Dir["#{ App.directory_name }/*"].to_set
 
     App.systems.each do |k, klass|
       next if klass.subs.empty?
 
-      box_file = "#{ app_dir }/#{ k }_box.rb"
+      box_file = "#{ App.directory_name }/#{ k }_box.rb"
       next if list.include? box_file
 
       name = "#{ App.directory_name }/#{k}_box.rb"
