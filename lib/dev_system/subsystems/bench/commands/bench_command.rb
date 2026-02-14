@@ -2,9 +2,7 @@ class DevSystem::BenchCommand < DevSystem::SimpleCommand
 
   def before
     super
-    log "simple_args     #{ simple_args }"
-    log "simple_booleans #{ simple_booleans }"
-    log "simple_strings  #{ simple_strings }"
+    log "params #{ params }"
   end
 
   # liza bench NAME
