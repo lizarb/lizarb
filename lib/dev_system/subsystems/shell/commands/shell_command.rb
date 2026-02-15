@@ -72,7 +72,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     fnames = simple_arg(1).to_s.split(",")
     log :normal, (stick color, "selected files are #{fnames.join ', '}")
     fnames.each do |fname|
-      content = TextShell.read fname
+      content = FileShell.read_text fname
       log :higher, (stick color, "IN:")
       puts content if log? :higher
 
@@ -127,7 +127,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
     fnames = simple_arg(1).to_s.split(",")
     log :normal, (stick color, "selected files are #{fnames.join ', '}")
     fnames.each do |fname|
-      content = TextShell.read fname
+      content = FileShell.read_text fname
       log :higher, (stick color, "IN:")
       puts content if log? :higher
 
