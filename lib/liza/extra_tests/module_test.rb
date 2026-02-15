@@ -15,7 +15,7 @@ class Liza::ModuleTest < Liza::ObjectTest
     assert_equality Object.source_location_radical, nil
 
     assert Liza::Command.source_location_radical.end_with? "/lib/dev_system/subsystems/command/command"
-    assert IrbCommand.source_location_radical.end_with? "/lib/dev_system/subsystems/command/commands/irb_command"
+    assert IrbCommand.source_location_radical.end_with? "/lib/dev_system/commands/irb_command"
   end
 
 end
