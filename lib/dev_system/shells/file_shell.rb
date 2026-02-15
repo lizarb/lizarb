@@ -82,8 +82,11 @@ class DevSystem::FileShell < DevSystem::Shell
   end
 
   def self.read_text(path, log_level: self.log_level)
-    # TODO: move all code from TextShell to this file
-    TextShell.read path, log_level:
+    log log_level, "Reading #{path}"
+    _raise_if_blank path
+    _raise_if_not_exists path, log_level:
+
+    File.read path
   end
 
   # write
@@ -104,7 +107,7 @@ class DevSystem::FileShell < DevSystem::Shell
     destination = Pathname(destination)
     _raise_if_blank source
     _raise_if_blank destination
-  
+
     if source.directory?
       destination.mkpath
       source.each_child do |child|

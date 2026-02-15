@@ -15,14 +15,6 @@ class DevSystem::TextShell < DevSystem::FileShell
   end
 
   #
-  
-  def self.read path, log_level: self.log_level
-    log log_level, "Reading #{path}"
-    _raise_if_blank path
-    _raise_if_not_exists path, log_level: log_level
-
-    File.read path
-  end
 
   def self.read_lines path, log_level: self.log_level
     log log_level, "Reading lines from #{path}"
