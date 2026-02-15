@@ -207,6 +207,61 @@ class DevSystem::SimpleCommandTest < DevSystem::BaseCommandTest
     end
   end
 
+  test :params, :boolean do
+    prepare_command %w(+want -need) do |params|
+      params.add_field :want, :boolean, default: false
+      assert_equality params[:want], true
+
+      params.add_field :need, :boolean, default: true
+      assert_equality params[:need], false
+    end
+  end
+
+  test :params, :integer do
+    prepare_command %w(level=5) do |params|
+      params.add_field :level, :integer
+      assert_equality params[:level], 5
+    end
+
+    prepare_command %w() do |params|
+      params.add_field :level, :integer, default: 3
+      assert_equality params[:level], 3
+    end
+  end
+
+  test :params, :array do
+    prepare_command %w(list=a,b,c) do |params|
+      params.add_field :list, :array
+      assert_equality params[:list], ["a", "b", "c"]
+    end
+  end
+
+  test :params, :symbol do
+    prepare_command %w(kind=Foo) do |params|
+      params.add_field :kind, :symbol
+      assert_equality params[:kind], :Foo
+    end
+  end
+
+  test :params, :color do
+    prepare_command %w(color=RED) do |params|
+      params.add_field :color, :color
+      assert_equality params[:color], :red
+    end
+
+    prepare_command %w(color=Green) do |params|
+      params.add_field :color, :color
+      assert_equality params[:color], :green
+    end
+  end
+
+  test :params, :string do
+    prepare_command %w(name=abc) do |params|
+      params.add_field :name, :string
+      assert_equality params[:name], "abc"
+    end
+  end
+
   def prepare_command(args)
     forge_subject_with *args
     yield subject.params if block_given?

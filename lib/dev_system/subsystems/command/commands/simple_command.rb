@@ -362,9 +362,13 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       type = types[type] or raise "Type #{type.inspect} not found. types are #{types.keys.inspect}"
 
       value = args[name] if name.is_a? Integer
-      value ||= booleans[name] if booleans.key? name
-      value ||= strings[name] if strings.key? name
-      value ||= default
+      if booleans.key? name and value.nil?
+        value = booleans[name]
+      end
+      if strings.key? name and value.nil?
+        value = strings[name]
+      end
+      value = default if value.nil?
       fields[name] = Field.new(command, name, type, index, value, mandatory:, default:, validations:)
     end
 
@@ -875,12 +879,12 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       return @value if defined? @value
 
       log "processing value for field #{@name.inspect} with type #{@type.inspect} and given value #{given_value.inspect}"
-      # We start with the given value, which can be nil
+      # We start with the given value (may be false and must be preserved)
       value = given_value
       # If value is nil, we try the default value initialized
-      value ||= @default
+      value = @default if value.nil?
       # If the value is still nil, we try the default value method
-      value ||= call_default_value if call_default_value?
+      value = call_default_value if value.nil? && call_default_value?
 
       @value = value
     rescue RuntimeError => e
@@ -907,7 +911,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
       object = call_parse(object) if object
 
       # Finally, we validate the object
-      object = call_validate(object) if object
+      object = call_validate(object) unless object.nil?
 
       @object = object
     rescue RuntimeError => e
