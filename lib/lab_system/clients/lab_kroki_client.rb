@@ -88,7 +88,7 @@ class LabSystem::LabKrokiClient < NetSystem::Client
     raise "must be called after render_code!" unless @code_md5
     @cache_key = "tmp/#{App.mode}/clients/kokri/#{action}_#{@code_md5}.#{format}"
     log "cache_key = #{@cache_key.inspect}"
-    @result = TextShell.read @cache_key if TextShell.exist? @cache_key
+    @result = FileShell.read_text @cache_key if TextShell.exist? @cache_key
   end
 
   def write_cache!
