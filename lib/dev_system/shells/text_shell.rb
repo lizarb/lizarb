@@ -26,7 +26,8 @@ class DevSystem::TextShell < DevSystem::FileShell
 
   def self.read_lines path, log_level: self.log_level
     log log_level, "Reading lines from #{path}"
-    return [] unless exist? path
+    return [] unless exist? path, log_level: log_level
+    _raise_if_blank path
 
     File.readlines path
   end
