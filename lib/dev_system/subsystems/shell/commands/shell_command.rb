@@ -85,7 +85,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       log :higher, (stick color, "OUT:")
       puts content if log? :higher
 
-      TextShell.write fname, content
+      FileShell.write_text fname, content
     end
   end
 
@@ -140,7 +140,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
       log :higher, (stick color, "OUT:")
       puts content if log? :higher
 
-      TextShell.write fname, content
+      FileShell.write_text fname, content
     end
   end
 
