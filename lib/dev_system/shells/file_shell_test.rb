@@ -182,7 +182,7 @@ class DevSystem::FileShellTest < DevSystem::ShellTest
     assert subject_class.write_text path, "content"
 
     assert subject_class.exist? path
-    assert subject_class.read(path) == "content"
+    assert subject_class.read_text(path) == "content"
   end
 
   test :subject_class, :write_text, :encoding do

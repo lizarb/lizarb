@@ -79,14 +79,17 @@ class DevSystem::FileShell < DevSystem::Shell
   # read
 
   def self.read_binary(path, log_level: self.log_level)
-    # TODO: move all code from BinShell to this file
-    BinShell.read path
+    log log_level, "Reading #{path}"
+    _raise_if_blank path
+    _raise_if_not_exists path
+
+    File.binread path
   end
 
   def self.read_text(path, log_level: self.log_level)
     log log_level, "Reading #{path}"
     _raise_if_blank path
-    _raise_if_not_exists path, log_level:
+    _raise_if_not_exists path, log_level: log_level
 
     File.read path
   end
@@ -110,8 +113,13 @@ class DevSystem::FileShell < DevSystem::Shell
   # write
 
   def self.write_binary(path, content, create_dir: nil, log_level: self.log_level)
-    # TODO: move all code from BinShell to this file
-    BinShell.write path, content, create_dir:
+    log log_level, "Writing #{content&.size.to_i} bytes (#{content.encoding}) to #{path}"
+    _raise_if_blank path
+
+    create_dir = get :create_dir if create_dir.nil?
+    DevSystem::DirShell.create File.dirname path if create_dir
+
+    File.binwrite path, content
   end
 
   def self.write_text(path, content, create_dir: nil, log_level: self.log_level)
