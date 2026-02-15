@@ -92,9 +92,9 @@ class LabSystem::LabKrokiClient < NetSystem::Client
   end
 
   def write_cache!
-    TextShell.write @cache_key, result
+    FileShell.write_text @cache_key, result
     cache_key = "tmp/#{App.mode}/clients/kokri/#{action}_#{@code_md5}.#{name}"
-    TextShell.write cache_key, @code
+    FileShell.write_text cache_key, @code
   end
 
   def http_request!
