@@ -8,7 +8,7 @@ class DevSystem::TextFileShell < DevSystem::FileShell
   def initialize(path)
     @path = Pathname(path)
     @relative_path = Pathname(path).relative_path_from(App.root)
-    @old_lines = TextShell.read_lines path
+    @old_lines = FileShell.read_lines path
   end
 
 end

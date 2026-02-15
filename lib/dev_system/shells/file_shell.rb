@@ -89,6 +89,22 @@ class DevSystem::FileShell < DevSystem::Shell
     File.read path
   end
 
+  def self.read_lines path, log_level: self.log_level
+    log log_level, "Reading lines from #{path}"
+    return [] unless exist? path, log_level: log_level
+    _raise_if_blank path
+
+    File.readlines path
+  end
+
+  def self.read_lines! path, log_level: self.log_level
+    log log_level, "Reading lines from #{path}"
+    _raise_if_blank path
+    _raise_if_not_exists path
+
+    File.readlines path
+  end
+
   # write
 
   def self.write_binary(path, content, create_dir: nil, log_level: self.log_level)
