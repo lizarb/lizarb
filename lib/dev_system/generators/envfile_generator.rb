@@ -24,21 +24,21 @@ class DevSystem::EnvfileGenerator < DevSystem::BaseGenerator
     content = render :env, format: :env
     puts "-" * 80
     puts stick :light_green, content
-    TextShell.write "app.env",      content
+    FileShell.write_text "app.env",      content
 
     # app.code
     @env_name = :code
     content = render :env, format: :env
     puts "-" * 80
     puts stick :light_green, content
-    TextShell.write "app.code.env", content
+    FileShell.write_text "app.code.env", content
 
     # app.demo
     @env_name = :demo
     content = render :env, format: :env
     puts "-" * 80
     puts stick :light_green, content
-    TextShell.write "app.demo.env", content
+    FileShell.write_text "app.demo.env", content
   end
 
 end
