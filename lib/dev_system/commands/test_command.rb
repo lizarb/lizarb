@@ -3,14 +3,18 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
   def before
     super
 
-    set_default_array :domains, AppShell.get_writable_domains.keys
-    set_default_boolean :run, true
-    
-    set_input_array :domains do |default|
-      domains = AppShell.get_writable_domains
-      title = "Which domains are we going to test?"
-      InputShell.pick_domains domains, default, title
-    end
+    params.add_field :domains, :array, default: AppShell.get_writable_domains.keys.join(",")
+    params.add_field :run, :boolean, default: true
+  end
+
+  def params_input_field_domains(field_name, default)
+    domains = AppShell.get_writable_domains
+    title = "Which domains are we going to test?"
+    InputShell.pick_domains domains, default, title
+  end
+
+  def params_input_field_run(field_name, default)
+    InputShell.yes? "Do you want to run the tests?", default: default
   end
 
   def call_default
@@ -22,11 +26,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
 
     app_shell = build_filters
 
-    set_input_boolean :run do |default|
-      InputShell.yes? "Do you want to run the tests?", default: default
-    end
-
-    should_run = simple_boolean(:run)
+    should_run = params[:run]
     test_classes = app_shell.get_lists.flatten
     log "Testing #{test_classes}"
     _call_testing test_classes if should_run
@@ -80,10 +80,12 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
   end
 
   def _call_testing test_classes
+    $testing = true
     i, count = 0, test_classes.count
     for test_class in test_classes
       test_class.call i+=1, count
     end
+    $testing = false
   end
 
   def _call_counting(app_shell)
@@ -148,24 +150,24 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     app_shell = AppShell.new
     app_shell.filter_by_unit Liza::Test
 
-    domains = simple_array(:domains)
+    domains = params[:domains]
     log "domains = #{domains}"
     app_shell.filter_by_domains domains
 
-    case simple_args.count
+    case params.args.count
     when 0
       log "No filter"
     when 1
-      name = simple_args[0]
+      name = params.args[0]
       log "Filter by name starting with #{name}"
       app_shell.filter_by_starting_with name
     else
-      case simple_args[0]
+      case params.args[0]
       when "all"
         log "Filter by all names"
-        app_shell.filter_by_including_all_names simple_args[1..]
+        app_shell.filter_by_including_all_names params.args[1..]
       else
-        app_shell.filter_by_including_any_name simple_args
+        app_shell.filter_by_including_any_name params.args
       end
     end
 
