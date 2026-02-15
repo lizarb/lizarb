@@ -1,5 +1,12 @@
 # view section_docker.rb.erb
 
+  # # 1. You can use the predefined empty service and give it a custom name (inheritance, from superclass)
+  # use_service :empty, :hello_world do
+  #   image 'hello-world:latest'
+  #   port 80
+  # end
+
+  # # 2. You can define a service and then use it (within the ship, or inheritance)
   # define_service :hello_world do
   #   image 'hello-world:latest'
   # end
@@ -7,6 +14,25 @@
   # use_service :hello_world do
   #   port 80
   # end
+
+  # # 3. You can define a service and then use it with a custom name (within the ship, or inheritance)
+  # define_service :redis_8 do
+  #   # ommited details...
+  # end
+
+  # use_service :redis_8, :redis_8_cache do
+  #   port 6381
+  # end
+
+  # use_service :redis_8, :redis_8_queue do
+  #   port 6382
+  # end
+
+  # # 4. You can use a service defined in a different ship (delegation, between ships)
+  # use_service :redis_8, ship: :database do
+  #   port 6380
+  # end
+
 <% arg_action_names.each do |action_name| %>
   define_service :<%= action_name %> do
     image 'hello-world:latest'
