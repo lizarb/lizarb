@@ -1,5 +1,7 @@
 class DevSystem::FileShell < DevSystem::Shell
 
+  set :create_dir, true
+
   def self._raise_if_blank path
     raise ArgumentError, "Path is required" if path.nil? || path.to_s.empty?
   end
@@ -113,8 +115,13 @@ class DevSystem::FileShell < DevSystem::Shell
   end
 
   def self.write_text(path, content, create_dir: nil, log_level: self.log_level)
-    # TODO: move all code from TextShell to this file
-    TextShell.write path, content, create_dir:, log_level:
+    log log_level, "#{ stick system.color, "Writing" } #{content.to_s.size} characters (#{content.encoding}) to #{path}"
+    _raise_if_blank path
+
+    create_dir = get :create_dir if create_dir.nil?
+    DevSystem::DirShell.create File.dirname(path), log_level: log_level if create_dir
+
+    File.write path, content
   end
 
   def self.copy(source, destination, log_level: self.log_level)

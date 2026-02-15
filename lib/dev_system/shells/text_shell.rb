@@ -1,21 +1,5 @@
 class DevSystem::TextShell < DevSystem::FileShell
 
-  #
-    
-  set :create_dir, true
-  
-  def self.write path, content, create_dir: nil, log_level: self.log_level
-    log log_level, "#{ stick system.color, "Writing" } #{content.to_s.size} characters (#{content.encoding}) to #{path}"
-    _raise_if_blank path
-
-    create_dir = get :create_dir if create_dir.nil?
-    DevSystem::DirShell.create File.dirname(path), log_level: log_level if create_dir
-
-    File.write path, content
-  end
-
-  #
-
   def self.append_line_after_last_including(path:, newline:, after:)
     log "Appending to #{path}"
     state = nil
