@@ -8,10 +8,10 @@ class <%= @class_names[0] %> < <%= @class_names[1] %>
   # Liza lazily requires gems required in Controllers
 <% requirements_to_add.each do |requirement| -%>
   require "<%= requirement %>"
+<% end %>
 <% end -%>
 <% end -%>
-<% end -%>
-<% @current_unit.sections.each do |section| %>
+<% @current_unit.sections.each do |section| -%>
 <%= "  section #{section[:name].inspect}" %>
 <%= section[:content] -%>
 <% end %>
