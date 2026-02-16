@@ -33,7 +33,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
   section :panel
 
   def inform
-    log :lowest, "informing #{mapper.changes.count} changes"
+    log :lower, "informing #{mapper.changes.count} changes"
 
     mapper.changes.each do |fname, data|
       mapper.changes.delete fname if data[:before] == data[:after]
@@ -54,7 +54,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       bit = diff.map { "#{_1}#{_2}" }.join(" ")
       relative = Pathname(fname).relative_path_from(App.root)
       string = "#{action.ljust 8} | #{"#{bit}".rjust 8} lines | #{relative}"
-      log :lowest, string
+      log :lower, string
 
       if log_level? :low
         puts relative
@@ -168,7 +168,7 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
       return true if changes.key? fname
       
       s = ""
-      s = DevSystem::FileShell.read_text(fname) if DevSystem::FileShell.exist? fname
+      s = DevSystem::FileShell.read_text(fname) if DevSystem::FileShell.exist? fname, log_level: :higher
       changes[fname] = {before: s, after: s}
 
       true
@@ -342,6 +342,8 @@ class DevSystem::SimpleGenerator < DevSystem::BaseGenerator
 
   def app_shell() = @app_shell ||= AppShell.new
 
-  def puts_line() =  puts "-" * 120
+  def puts_line()
+    puts "-" * 120 if log_level? :low
+  end
 
 end
