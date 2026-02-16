@@ -1,19 +1,21 @@
 class DevSystem::RemoveGenerator < DevSystem::SimpleGenerator
-  
+
   # liza g remove [controller] [filter]
-  
   def call_default
     units = app_shell.sorted_writable_units.select { _1 < Controller and _1.superclass != Controller }
 
-    a_filter = Array command.simple_args[1..2]
+    params.expect 1, :string
+    params.permit 2, :string
+    name = params[1]
+    type = params[2]
 
-    if a_filter[0]
-      c = Liza.const a_filter[0]
+    if name
+      c = Liza.const name
       units = units.select { _1 < c }
     end
 
-    if a_filter[1]
-      units = units.select { _1.to_s.snakecase.include? a_filter[1] }
+    if type
+      units = units.select { _1.to_s.snakecase.include? type }
     end
 
     units = pick_many_units units
