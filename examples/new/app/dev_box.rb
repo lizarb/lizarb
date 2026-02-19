@@ -8,7 +8,7 @@ class DevBox < DevSystem::DevBox
     shortcut :i, :irb
     shortcut :l, :log
     shortcut :p, :pry
-    shortcut :s, :shell
+    shortcut :sh, :shell
     shortcut :t, :test
   end
 
@@ -16,7 +16,7 @@ class DevBox < DevSystem::DevBox
     # Generator.panel gives you read-access to this instance
 
     shortcut :c, :command
-    shortcut :s, :shell
+    shortcut :sh, :shell
   end
 
   configure :log do
