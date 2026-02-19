@@ -3,7 +3,7 @@ class WorkSystem::WorkBox < Liza::Box
   #
 
   preconfigure :event do
-    # 
+    # Event.panel gives you read-access to this instance
   end
 
   preconfigure :publisher do
