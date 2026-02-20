@@ -258,4 +258,10 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
   define_service :empty
 
+  section :helpers
+
+  def volume_for(name, key)
+    cl.data_directory.join("volume_#{name}_#{key}")
+  end
+
 end
