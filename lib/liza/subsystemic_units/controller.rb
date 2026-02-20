@@ -118,6 +118,8 @@ class Liza::Controller < Liza::Unit
     end
   end
 
+  section :identifiable
+
   def self.token
     subsystem_token
   end
@@ -137,6 +139,26 @@ class Liza::Controller < Liza::Unit
       last_namespace.sub(/#{division.last_namespace}$/, '').snakecase.to_sym
     end
   end
+
+  def id () = ('instances')
+
+  section :fileable
+
+  def self.fileable_name () = (@fileable_name ||= "#{subsystem.system.name.snakecase}_#{subsystem.plural}/#{last_namespace.snakecase}")
+
+  def self.subsystem_directory () = (@subsystem_directory ||= subsystem.system.system_directory.join "subsystems", subsystem.last_namespace.snakecase)
+
+  def self.temporary_directory () = (@temporary_directory ||= App.temporary_directory.join fileable_name)
+
+  def self.data_directory () = (@data_directory ||= App.data_directory.join fileable_name)
+
+  def self.permanent_directory () = (@permanent_directory ||= App.permanent_directory.join fileable_name)
+
+  def temporary_directory () = (@temporary_directory ||= cl.temporary_directory.join id)
+
+  def data_directory () = (@data_directory ||= cl.data_directory.join id)
+
+  def permanent_directory () = (@permanent_directory ||= cl.permanent_directory.join id)
 
   section :callable
 
