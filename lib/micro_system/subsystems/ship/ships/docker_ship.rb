@@ -190,6 +190,17 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       end
     end
 
+    def readonly(path)
+      volumes "#{path}:#{path}:ro"
+    end
+
+    def volume(key, container_path, mode: nil)
+      host_path = ship.volume_for(name, key).to_s
+      host_path += ":#{mode}" if mode
+
+      volumes "#{host_path}:#{container_path}"
+    end
+
     def volumes(string)
       raise "must include ':'" unless string.include? ":"
       result["volumes"] ||= []
