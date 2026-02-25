@@ -44,7 +44,13 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     color (1.8)
-    commonmarker (0.23.11)
+    commonmarker (2.6.3)
+      rb_sys (~> 0.9)
+    commonmarker (2.6.3-aarch64-linux)
+    commonmarker (2.6.3-arm-linux)
+    commonmarker (2.6.3-arm64-darwin)
+    commonmarker (2.6.3-x86_64-darwin)
+    commonmarker (2.6.3-x86_64-linux)
     connection_pool (2.5.0)
     console (1.29.2)
       fiber-annotation
@@ -174,8 +180,11 @@ GEM
       awesome_print (~> 1.9.2)
     rack (3.1.8)
     rake (13.2.1)
+    rake-compiler-dock (1.11.0)
     rake-tui (0.2.3)
       tty-prompt
+    rb_sys (0.9.124)
+      rake-compiler-dock (= 1.11.0)
     redis (5.3.0)
       redis-client (>= 0.22.0)
     redis-client (0.23.2)
@@ -232,7 +241,7 @@ PLATFORMS
 DEPENDENCIES
   agoo (~> 2.15)
   coffee-script (~> 2.4)
-  commonmarker (~> 0.23)
+  commonmarker (~> 2.0)
   diff-lcs (~> 1.6)
   falcon (~> 0.47)
   glimmer-dsl-libui (~> 0.11)

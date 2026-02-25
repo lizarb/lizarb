@@ -7,7 +7,7 @@ class DevSystem::MdConverterShell < DevSystem::ConverterShell
     super
 
     string = menv[:convert_in]
-    menv[:convert_out] = CommonMarker.render_html string, :DEFAULT
+    menv[:convert_out] = Commonmarker.to_html string
   rescue => e
     raise if menv[:raise_errors]
     log stick :light_white, :red, :b, "#{e.class}: #{e.message}"
