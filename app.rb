@@ -33,7 +33,7 @@ class App
   system :work
   system :micro
   system :desk
-  system :crypto
+  system :graph
   system :media
   system :art
   system :deep

@@ -1,4 +1,4 @@
-class CryptoSystem::DigestMd5GemShell < DevSystem::GemShell
+class GraphSystem::DigestMd5GemShell < DevSystem::GemShell
   require "digest/md5"
 
   def self.digest_hex(menv)

@@ -1,10 +1,10 @@
-class CryptoSystem::DigestSha1GemShellTest < DevSystem::GemShellTest
+class GraphSystem::DigestSha1GemShellTest < DevSystem::GemShellTest
 
   section :subject
 
   test :subject_class, :subject do
-    assert_equality subject_class, CryptoSystem::DigestSha1GemShell
-    assert_equality subject.class, CryptoSystem::DigestSha1GemShell
+    assert_equality subject_class, GraphSystem::DigestSha1GemShell
+    assert_equality subject.class, GraphSystem::DigestSha1GemShell
   end
 
   def digest_hex(s)

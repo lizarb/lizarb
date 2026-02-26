@@ -1,4 +1,4 @@
-class CryptoSystem < Liza::System
+class GraphSystem < Liza::System
   class Error < Liza::Error; end
 
   #
@@ -6,3 +6,4 @@ class CryptoSystem < Liza::System
   color :jade
 
 end
+

@@ -1,4 +1,4 @@
-class CryptoSystem::DigestSha1GemShell < DevSystem::GemShell
+class GraphSystem::DigestSha1GemShell < DevSystem::GemShell
   require "digest/sha1"
 
   def self.digest_hex(menv)

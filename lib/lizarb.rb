@@ -721,7 +721,7 @@ module Lizarb
     # load each System class
 
     log "      App.systems is Hash containing all system classes" if defined? $log_boot_highest
-    allowed = %i[dev happy net web work micro desk crypto media art deep prime lab eco]
+    allowed = %i[dev happy net web work micro desk graph media art deep prime lab eco]
     App.systems.keys.each do |key|
       if key.to_s.count("_").zero? and not allowed.include? key
         exit_invalid_app "system :#{key} not allowed (only default systems can have a single name)"
