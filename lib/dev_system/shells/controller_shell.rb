@@ -4,7 +4,7 @@ class DevSystem::ControllerShell < DevSystem::Shell
   
   def self.places_for(controller, directory_name: controller.plural)
     ret = {
-      "app" => "#{App.relative_path}/#{controller.system.token}/#{directory_name}",
+      "app" => "#{App.directory_name}/#{controller.system.token}/#{directory_name}",
     }
 
     AppShell.writable_systems.each do |system_key, system|
