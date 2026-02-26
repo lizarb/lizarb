@@ -5,9 +5,10 @@ class WebSystem::ThinServerRack < WebSystem::ServerRack
   require "thin/logging"
   require "thin/backends/tcp_server"
 
-  def self.call rack_app
-    super({})
+  def self.call(menv)
+    super
     rack_panel = WebBox[:rack]
+    rack_app = menv[:rack_app]
 
     host = rack_panel.get :host
     port = rack_panel.get :port

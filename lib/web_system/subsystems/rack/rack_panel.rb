@@ -16,8 +16,9 @@ class WebSystem::RackPanel < Liza::Panel
     set :port, menv[:port]
 
     log(menv)
+    menv[:rack_app] = rack_app
 
-    self.server.call(self.rack_app)
+    self.server.call(menv)
   end
 
   def server name = nil
