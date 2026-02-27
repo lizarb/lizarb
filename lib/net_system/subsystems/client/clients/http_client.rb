@@ -29,6 +29,26 @@ class NetSystem::HttpClient < NetSystem::Client
 
   section :http
 
+  def self.request(method, url, payload = nil, headers = {}, log_level: :normal)
+    menv = {log_level:,}
+    call(menv)
+    client = menv[:client]
+    case method
+    when :get
+      client.get url, headers
+    when :post
+      client.post url, payload, headers
+    when :patch
+      client.patch url, payload, headers
+    when :put
+      client.put url, payload, headers
+    when :delete
+      client.delete url, headers
+    else
+      raise ArgumentError, "Unsupported HTTP method: #{method}"
+    end
+  end
+
   def self.get(url, headers = {}, log_level: :normal)
     return super(url) unless url.is_a? String
 
@@ -42,6 +62,27 @@ class NetSystem::HttpClient < NetSystem::Client
     menv = {log_level:,}
     call(menv)
     menv[:client].tap { _1.post url, payload, headers }
+    menv[:client]
+  end
+
+  def self.patch(url, payload, headers = {}, log_level: :normal)
+    menv = {log_level:,}
+    call(menv)
+    menv[:client].tap { _1.patch url, payload, headers }
+    menv[:client]
+  end
+
+  def self.put(url, payload, headers = {}, log_level: :normal)
+    menv = {log_level:,}
+    call(menv)
+    menv[:client].tap { _1.put url, payload, headers }
+    menv[:client]
+  end
+
+  def self.delete(url, headers = {}, log_level: :normal)
+    menv = {log_level:,}
+    call(menv)
+    menv[:client].tap { _1.delete url, headers }
     menv[:client]
   end
 
@@ -93,6 +134,62 @@ class NetSystem::HttpClient < NetSystem::Client
 
     self.request = Net::HTTP::Post.new(uri, headers)
     request.body = payload
+    log_request
+
+    self.response = http.request(request)
+    self.finished_at = Time.now
+    self.elapsed_time = finished_at - started_at
+    log_response
+
+    self
+  end
+
+  def patch(url, payload, headers = {})
+    self.started_at = Time.now
+    uri = URI url
+    http = Net::HTTP.new uri.host, uri.port
+    http.use_ssl = true if uri.scheme == "https"
+    log url
+
+    self.request = Net::HTTP::Patch.new(uri, headers)
+    request.body = payload
+    log_request
+
+    self.response = http.request(request)
+    self.finished_at = Time.now
+    self.elapsed_time = finished_at - started_at
+    log_response
+
+    self
+  end
+
+  def put(url, payload, headers = {})
+    self.started_at = Time.now
+    uri = URI url
+    http = Net::HTTP.new uri.host, uri.port
+    http.use_ssl = true if uri.scheme == "https"
+    log url
+
+    self.request = Net::HTTP::Put.new(uri, headers)
+    request.body = payload
+    log_request
+
+    self.response = http.request(request)
+    self.finished_at = Time.now
+    self.elapsed_time = finished_at - started_at
+    log_response
+
+    self
+  end
+
+  def delete(url, headers = {})
+    self.started_at = Time.now
+    uri = URI url
+    http = Net::HTTP.new uri.host, uri.port
+    http.use_ssl = true if uri.scheme == "https"
+    log url
+
+    self.request = Net::HTTP::Delete.new(uri, headers)
     log_request
 
     self.response = http.request(request)
