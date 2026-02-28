@@ -23,7 +23,7 @@ class WebSystem::RackCommand < DevSystem::SimpleCommand
 
     rack_panel.call menv
   ensure
-    log "#{ t.diff }s | server closed on port #{ port }"
+    log "#{ Lizarb.time_diff t }s | server closed on port #{ port }"
   end
 
   def rack_panel

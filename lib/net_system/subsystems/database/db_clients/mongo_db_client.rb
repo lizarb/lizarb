@@ -27,7 +27,7 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
 
     @conn = Mongo::Client.new(uri)
   ensure
-    log "#{t.diff}s | Connecting to #{hash}"
+    log "#{Lizarb.time_diff t}s | Connecting to #{hash}"
   end
 
   attr_reader :conn
@@ -36,7 +36,7 @@ class NetSystem::MongoDbClient < NetSystem::DbClient
     t = Time.now
     raise NotImplementedError
   ensure
-    log "#{t.diff}s | #{cmd_name} | #{args}"
+    log "#{Lizarb.time_diff t}s | #{cmd_name} | #{args}"
   end
 
   def now
