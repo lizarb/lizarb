@@ -666,11 +666,8 @@ Did you accidentally fall into an infinite loop?
   #
   # Raises ArgumentError if +digits+ is not a positive Integer.
   #
-  def self.time_diff(t, digits = 4)
-    raise ArgumentError, "digits must be a positive integer" unless digits.is_a?(Integer) && digits.positive?
-    f = (Time.now.to_f - t.to_f).floor(digits)
-    u, d = f.to_s.split "."
-    "#{u}.#{d.ljust digits, "0"}"
+  def self.time_diff(t1, t2 = Time.now, digits = 4)
+    Lizarb.time_diff(t1, t2, digits)
   end
 
   ##

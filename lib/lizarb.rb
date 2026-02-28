@@ -124,7 +124,7 @@ module Lizarb
   module_function
 
   def log s
-    print "#{Liza::Unit.time_diff $boot_time}s " if defined? $log_boot_high
+    print "#{$boot_time.diff}s " if defined? $log_boot_high
     puts s
   end
 
@@ -958,6 +958,15 @@ module Lizarb
       @thread_ids_mutex.synchronize do
         @thread_ids.count
       end
+  end
+
+  TIME_DIFF_ERROR_MSG = "digits must be a positive integer"
+
+  def time_diff(t1, t2 = Time.now, digits = 4)
+    raise ArgumentError, TIME_DIFF_ERROR_MSG unless digits.is_a?(Integer) && digits.positive?
+    f = (t2.to_f - t1.to_f).floor(digits)
+    u, d = f.to_s.split "."
+    "#{u}.#{d.ljust digits, "0"}"
   end
 
 end
