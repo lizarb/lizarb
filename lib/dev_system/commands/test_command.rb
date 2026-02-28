@@ -30,7 +30,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
     test_classes = app_shell.get_lists.flatten
     log "Testing #{test_classes}"
     _call_testing test_classes if should_run
-    log "Done Testing (#{Lizarb.time_diff now}s)"
+    log "Done Testing (#{time_diff now}s)"
 
     unsilence!
 
@@ -38,7 +38,7 @@ class DevSystem::TestCommand < DevSystem::SimpleCommand
 
     log "Counting #{test_classes.count} Test Classes"
     _call_counting app_shell
-    log "Done Counting (#{Lizarb.time_diff now}s)"
+    log "Done Counting (#{time_diff now}s)"
   end
 
   def silence!
