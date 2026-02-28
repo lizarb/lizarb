@@ -16,7 +16,7 @@ class NetSystem::SqliteDbClient < NetSystem::DbClient
     end
     @conn = SQLite3::Database.new(*args)
   ensure
-    log "#{t.diff}s | Connecting to #{args}"
+    log "#{time_diff t}s | Connecting to #{args}"
   end
 
   attr_reader :conn
@@ -27,7 +27,7 @@ class NetSystem::SqliteDbClient < NetSystem::DbClient
 
     result
   ensure
-    log "#{t.diff}s | #{sql} | #{args}"
+    log "#{time_diff t}s | #{sql} | #{args}"
   end
 
   def now

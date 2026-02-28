@@ -19,7 +19,7 @@ class NewsClient < NetSystem::Client
     log "rss channel title: #{ hash.dig :rss, :channel, :title }"
     hash
   ensure
-    log "#{t.diff}s to request #{url}"
+    log "#{time_diff t}s to request #{url}"
     hash
   end
 

@@ -17,7 +17,7 @@ class NetSystem::MysqlDbClient < NetSystem::DbClient
 
     @conn = Mysql2::Client.new(hash)
   ensure
-    log "#{t.diff}s | Connecting to #{hash}"
+    log "#{time_diff t}s | Connecting to #{hash}"
   end
 
   attr_reader :conn
@@ -28,7 +28,7 @@ class NetSystem::MysqlDbClient < NetSystem::DbClient
 
     result
   ensure
-    log "#{t.diff}s | #{sql} | #{args}"
+    log "#{time_diff t}s | #{sql} | #{args}"
   end
 
   def now

@@ -479,7 +479,7 @@ Did you accidentally fall into an infinite loop?
         if true
           t = Time.now
           s = erb.result binding, self
-          log_render_out "#{erb.name}.#{erb.format}", s.length, t.diff, kaller: caller if log_rendering
+          log_render_out "#{erb.name}.#{erb.format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         if converted and DevBox[:shell].convert? erb.format, format
@@ -487,7 +487,7 @@ Did you accidentally fall into an infinite loop?
           convert_env = {format_from: erb.format, format_to: format, convert_in: s}
           DevBox.convert(convert_env)
           s = convert_env[:convert_out]
-          log_render_convert "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
+          log_render_convert "#{erb.name}.#{format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         if formatted and DevBox[:shell].format? erb.format
@@ -495,7 +495,7 @@ Did you accidentally fall into an infinite loop?
           format_env = {format: format, format_in: s}
           DevBox.format(format_env)
           s = format_env[:format_out]
-          log_render_format "#{erb.name}.#{format}", s.length, t.diff, kaller: caller if log_rendering
+          log_render_format "#{erb.name}.#{format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         render_stack.push s
@@ -666,11 +666,8 @@ Did you accidentally fall into an infinite loop?
   #
   # Raises ArgumentError if +digits+ is not a positive Integer.
   #
-  def self.time_diff(t, digits = 4)
-    raise ArgumentError, "digits must be a positive integer" unless digits.is_a?(Integer) && digits.positive?
-    f = (Time.now.to_f - t.to_f).floor(digits)
-    u, d = f.to_s.split "."
-    "#{u}.#{d.ljust digits, "0"}"
+  def self.time_diff(t1, t2 = Time.now, digits = 4)
+    Lizarb.time_diff(t1, t2, digits)
   end
 
   ##

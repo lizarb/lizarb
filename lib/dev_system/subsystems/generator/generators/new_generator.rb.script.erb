@@ -23,7 +23,7 @@ DevBox.command ["shell"]
 
 require "lizarb"
 Lizarb.init_script_independent! :dev, pwd: __dir__
-puts "#{$boot_time.diff}s to boot" if $log_boot_high
+puts "#{time_diff $boot_time}s to boot" if $log_boot_high
 
 # YOUR CODE HERE
 

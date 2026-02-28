@@ -9,7 +9,7 @@ class App
 
   # called from exe/lizarb
   def self.call argv
-    log "#{$boot_time.diff}s to boot #{full_name}" if defined? $log_boot_low
+    log "#{Lizarb.time_diff $boot_time}s to boot #{full_name}" if defined? $log_boot_low
 
     should_log = log_level >= 4
     puts if should_log

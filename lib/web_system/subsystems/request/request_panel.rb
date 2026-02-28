@@ -8,7 +8,7 @@ class WebSystem::RequestPanel < Liza::Panel
     request_klass.call menv
 
     ret = [menv[:response_status], menv[:response_headers], [menv[:response_body]]]
-    log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
+    log "#{ret[0]} with #{ret[2].first.size} bytes in #{time_diff t}s"
     ret
   rescue => e
     raise e if allow_raise
@@ -16,7 +16,7 @@ class WebSystem::RequestPanel < Liza::Panel
     menv["LIZA_ERROR"] = e
 
     ret = request_klass.call menv
-    log "#{ret[0]} with #{ret[2].first.size} bytes in #{t.diff}s"
+    log "#{ret[0]} with #{ret[2].first.size} bytes in #{time_diff t}s"
     puts
     ret
   end
