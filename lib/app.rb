@@ -84,14 +84,14 @@ class App
   end
 
   class << self
-    attr_reader :directory_name, :systems_directory_name, :data_directory_name, :permanent_directory_name, :temporary_directory_name
+    attr_reader :directory_name, :systems_directory_name, :permanent_directory_name, :data_directory_name, :temporary_directory_name
   end
 
   def self.systems_directory () = (root.join systems_directory_name)
 
-  def self.data_directory () = (root.join data_directory_name, full_name)
+  def self.permanent_directory () = (root.join permanent_directory_name)
 
-  def self.permanent_directory () = (root.join permanent_directory_name, name)
+  def self.data_directory () = (root.join data_directory_name, full_name)
 
   def self.temporary_directory () = (root.join temporary_directory_name, full_name)
 

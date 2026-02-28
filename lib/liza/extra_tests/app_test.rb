@@ -22,7 +22,7 @@ class Liza::AppTest < Liza::ObjectTest
     assert_equality App.root.to_s, Dir.pwd
   end
 
-  test :directory, :systems_directory, :data_directory, :permanent_directory, :temporary_directory do
+  test :directory, :systems_directory, :permanent_directory, :data_directory, :temporary_directory do
     assert_equality App.directory.class,           Pathname
     assert_equality App.systems_directory.class,   Pathname
     assert_equality App.data_directory.class,      Pathname
@@ -30,8 +30,8 @@ class Liza::AppTest < Liza::ObjectTest
     assert_equality App.temporary_directory.class, Pathname
     assert_equality App.directory,                 (App.root / "app")
     assert_equality App.systems_directory,         (App.root / "lib")
+    assert_equality App.permanent_directory,       (App.root / "prm")
     assert_equality App.data_directory,            (App.root / "dat/coding_matrix")
-    assert_equality App.permanent_directory,       (App.root / "prm/matrix")
     assert_equality App.temporary_directory,       (App.root / "tmp/coding_matrix")
   end
 
