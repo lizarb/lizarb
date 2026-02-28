@@ -124,7 +124,7 @@ module Lizarb
   module_function
 
   def log s
-    print "#{$boot_time.diff}s " if defined? $log_boot_high
+    print "#{Liza::Unit.time_diff $boot_time}s " if defined? $log_boot_high
     puts s
   end
 
