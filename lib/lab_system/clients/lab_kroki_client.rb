@@ -62,7 +62,7 @@ class LabSystem::LabKrokiClient < NetSystem::Client
 
     @result
   ensure
-    log "#{Lizarb.time_diff t}s to render #{action.inspect}"
+    log "#{time_diff t}s to render #{action.inspect}"
     @result
   end
 
@@ -117,7 +117,7 @@ class LabSystem::LabKrokiClient < NetSystem::Client
       raise "Error calling Kroki API. HTTP Status Code: #{@response.code}"
     end
   ensure
-    log "#{Lizarb.time_diff t}s to request #{request_uri}"
+    log "#{time_diff t}s to request #{request_uri}"
   end
 
 end

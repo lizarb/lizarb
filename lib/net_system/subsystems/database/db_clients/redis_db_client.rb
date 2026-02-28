@@ -29,7 +29,7 @@ class NetSystem::RedisDbClient < NetSystem::DbClient
     end
     @conn = Redis.new(*args)
   ensure
-    log "#{Lizarb.time_diff t}s | Connecting to #{args}"
+    log "#{time_diff t}s | Connecting to #{args}"
   end
 
   attr_reader :conn
@@ -40,7 +40,7 @@ class NetSystem::RedisDbClient < NetSystem::DbClient
 
     result
   ensure
-    log "#{Lizarb.time_diff t}s | #{cmd_name} | #{args}"
+    log "#{time_diff t}s | #{cmd_name} | #{args}"
   end
 
   def now

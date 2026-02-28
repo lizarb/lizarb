@@ -47,7 +47,7 @@ class SortedBench < DevSystem::Bench
     end
     puts
   ensure
-    log "#{Lizarb.time_diff t}s | #{marks.count} marks | #{repetitions} repetitions"
+    log "#{time_diff t}s | #{marks.count} marks | #{repetitions} repetitions"
   end
 
   #

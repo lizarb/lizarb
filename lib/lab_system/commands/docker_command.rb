@@ -22,7 +22,7 @@ class LabSystem::DockerCommand < DevSystem::SimpleCommand
 
     DockerShell.hello_alpine
   ensure
-    log "#{Lizarb.time_diff t} | done"
+    log "#{time_diff t} | done"
   end
 
   # liza docker:version

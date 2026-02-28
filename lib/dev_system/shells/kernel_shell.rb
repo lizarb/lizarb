@@ -7,7 +7,7 @@ class DevSystem::KernelShell < DevSystem::Shell
     log log_level, "#{stick command, DevSystem.color} | returns a string | executing..."
     result = Kernel.send :`, command
   ensure
-    log log_level, "#{Lizarb.time_diff t}s | executed with an output of #{"#{result.size} bytes" if result}#{result.inspect unless result} |"
+    log log_level, "#{time_diff t}s | executed with an output of #{"#{result.size} bytes" if result}#{result.inspect unless result} |"
     puts result if log? log_level
   end
 
@@ -20,7 +20,7 @@ class DevSystem::KernelShell < DevSystem::Shell
     success
   ensure
     message = success ? (stick :green, "successfully") : (stick :red, "failed")
-    log log_level, "#{Lizarb.time_diff t}s | #{message}"
+    log log_level, "#{time_diff t}s | #{message}"
   end
 
 end

@@ -13,7 +13,7 @@ class NetSystem::PgsqlDbClient < NetSystem::DbClient
     hash = NetBox[:client].get(:pgsql_hash) if hash.empty?
     @conn = PG::Connection.new(hash)
   ensure
-    log "#{Lizarb.time_diff t}s | Connecting to #{hash}"
+    log "#{time_diff t}s | Connecting to #{hash}"
   end
 
   attr_reader :conn
@@ -24,7 +24,7 @@ class NetSystem::PgsqlDbClient < NetSystem::DbClient
 
     result
   ensure
-    log "#{Lizarb.time_diff t}s | #{sql} | #{args}"
+    log "#{time_diff t}s | #{sql} | #{args}"
   end
 
   def now

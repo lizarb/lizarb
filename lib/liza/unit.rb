@@ -476,7 +476,7 @@ Did you accidentally fall into an infinite loop?
 
       erbs = self.class.erbs_for format, keys, allow_missing: allow_missing
       erbs.to_a.reverse.each do |key, erb|
-        t_diff = Lizarb.time_diff Time.now
+        t_diff = time_diff time.now
         if true
           s = erb.result binding, self
           log_render_out "#{erb.name}.#{erb.format}", s.length, t_diff, kaller: caller if log_rendering

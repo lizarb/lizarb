@@ -17,7 +17,7 @@
     log "rss channel title: #{ hash.dig :rss, :channel, :title }"
     hash
   ensure
-    log "#{Lizarb.time_diff t}s to request #{url}"
+    log "#{time_diff t}s to request #{url}"
     hash
   end
 
