@@ -476,24 +476,26 @@ Did you accidentally fall into an infinite loop?
 
       erbs = self.class.erbs_for format, keys, allow_missing: allow_missing
       erbs.to_a.reverse.each do |key, erb|
-        t_diff = time_diff time.now
         if true
+          t = Time.now
           s = erb.result binding, self
-          log_render_out "#{erb.name}.#{erb.format}", s.length, t_diff, kaller: caller if log_rendering
+          log_render_out "#{erb.name}.#{erb.format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         if converted and DevBox[:shell].convert? erb.format, format
+          t = Time.now
           convert_env = {format_from: erb.format, format_to: format, convert_in: s}
           DevBox.convert(convert_env)
           s = convert_env[:convert_out]
-          log_render_convert "#{erb.name}.#{format}", s.length, t_diff, kaller: caller if log_rendering
+          log_render_convert "#{erb.name}.#{format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         if formatted and DevBox[:shell].format? erb.format
+          t = Time.now
           format_env = {format: format, format_in: s}
           DevBox.format(format_env)
           s = format_env[:format_out]
-          log_render_format "#{erb.name}.#{format}", s.length, t_diff, kaller: caller if log_rendering
+          log_render_format "#{erb.name}.#{format}", s.length, (time_diff t), kaller: caller if log_rendering
         end
 
         render_stack.push s
