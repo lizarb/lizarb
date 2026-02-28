@@ -42,7 +42,11 @@ class Liza::System < Liza::Unit
   def self.system
     self
   end
-  
+
+  def self.system_directory () = (@system_directory ||= Pathname source_location_radical)
+
+  def self.writable? () = (return @writable if defined? @writable; @writable = source_location_radical.start_with? App.systems_directory.to_s)
+
   # COLOR
 
   def self.color color = nil
