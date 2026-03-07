@@ -251,16 +251,20 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
   end
 
-  def self.define_service(name, &block)
+  def self.define_service_class(name) = (const_set name.to_s.camelcase, Class.new(Service))
+
+  def self.define_service(name, class: Service, &block)
+    service_class = binding.local_variable_get(:class)
     log :highest, "defining #{name.inspect}"
-    defined_services[name] ||= Service.new(name, name)
+    defined_services[name] ||= service_class.new(name, name)
     defined_services[name].add_block block
   end
 
-  def self.use_service(supername, name=supername, ship: self, &block)
-    defined_service = defined_services[supername]
+  def self.use_service(supername, name=supername, ship: self, class: Service, &block)
+    service_class = binding.local_variable_get(:class)
+    ship = Liza.find_controller :ship, ship if ship.is_a?(Symbol)
 
-    used_service = used_services[name] ||= Service.new(name, supername)
+    used_service = used_services[name] ||= ship.defined_services[supername] || service_class.new(name, supername)
     used_service.ship_class = ship
     used_service.add_block block
 
