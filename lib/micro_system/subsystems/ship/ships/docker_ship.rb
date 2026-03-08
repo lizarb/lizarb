@@ -101,6 +101,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     def initialize(name, supername)
       @name = name
       @supername = supername
+      container_name "#{App.full_name}_#{name}"
     end
 
     def blocks()= @blocks ||= []
@@ -147,6 +148,10 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     end
 
     # properties
+
+    def container_name(string)
+      result["container_name"] = string
+    end
 
     def image(string)
       result["image"] = string
