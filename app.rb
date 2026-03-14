@@ -27,7 +27,7 @@ class App
   # Systems help you organize your application's dependencies and RAM memory usage.
 
   system :dev # default
-  system :happy if coding?
+  system :happy
   system :net
   system :web
   system :work
