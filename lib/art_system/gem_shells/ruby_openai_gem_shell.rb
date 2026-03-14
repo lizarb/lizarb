@@ -23,7 +23,7 @@ class ArtSystem::RubyOpenaiGemShell < DevSystem::GemShell
 
   def self.get_default_configuration
     {
-      log_errors: $coding,
+      log_errors: App.development?,
       # uri_base: "https://api.openai.com/v1",
       # access_token: ENV.fetch("OPENAI_ACCESS_TOKEN")
     }

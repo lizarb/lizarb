@@ -31,8 +31,8 @@ class Liza::AppTest < Liza::ObjectTest
     assert_equality App.directory,                 (App.root / "app")
     assert_equality App.systems_directory,         (App.root / "lib")
     assert_equality App.permanent_directory,       (App.root / "prm")
-    assert_equality App.data_directory,            (App.root / "dat/coding_matrix")
-    assert_equality App.temporary_directory,       (App.root / "tmp/coding_matrix")
+    assert_equality App.data_directory,            (App.root / "dat/development_matrix")
+    assert_equality App.temporary_directory,       (App.root / "tmp/development_matrix")
   end
 
 end

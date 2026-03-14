@@ -137,13 +137,11 @@ class App
 
   # mode
 
-  def self.mode
-    @mode ||= ENV["MODE"] || "coding"
-  end
+  DEVELOPMENT = "development"
 
-  def self.coding?
-    mode == "coding"
-  end
+  def self.mode() = (@mode ||= ENV["MODE"] || DEVELOPMENT)
+
+  def self.development?() = (self.mode == DEVELOPMENT)
 
   # env_vars
 

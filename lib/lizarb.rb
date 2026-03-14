@@ -333,19 +333,17 @@ module Lizarb
   # The `load` method orchestrates the following steps:
   # 1. Properly requires gem "bundler" for managing gem your dependencies.
   # 2. Requires essential Ruby libraries, not required by default.
-  # 3. Enables or disables coding mode for debugging purposes.
-  # 4. Loads environment variables from the following `.env` files.
-  # 5. Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
-  # 6. Requires the Liza module, and its constants are required on demand by zeitwerk.
-  # 7. Requires all system-gems, then requires each system class.
-  # 8. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
+  # 3. Loads environment variables from the following `.env` files.
+  # 4. Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
+  # 5. Requires the Liza module, and its constants are required on demand by zeitwerk.
+  # 6. Requires all system-gems, then requires each system class.
+  # 7. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
   #
   def load
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     load_and_require_bundler
     load_and_require_default_gems
-    load_and_define_mode
     load_and_require_env_vars
     load_and_zeitwerk
     load_and_zeitwerk_loader_0_liza
@@ -604,7 +602,7 @@ module Lizarb
     
     log "    require 'pathname'" if defined? $log_boot_higher
     require "pathname"
-    
+
     # this adds method Time.parse
     log "    require 'time'" if defined? $log_boot_higher
     require "time"
@@ -617,24 +615,8 @@ module Lizarb
 
   # This method is called internally by `load` and is not intended for direct use.
   #
-  # Enables or disables coding mode for debugging purposes:
-  #
-  # - Sets the global `$mode` variable to the application mode.
-  # - Sets the global `$coding` variable to `true` if the application mode is `:code`.
-  #
-  def load_and_define_mode
-    log "  Lizarb.#{__method__}" if defined? $log_boot_high
-
-    $mode = App.mode
-    log "    $mode = #{$mode.inspect}" if defined? $log_boot_higher
-    $coding = App.coding?
-    log "    $coding enabled because $mode == :code | A bit slower for debugging purposes" if $coding && defined? $log_boot_higher
-  end
-
-  # This method is called internally by `load` and is not intended for direct use.
-  #
   # Loads environment variables from the given `.env` files.
-  # 
+  #
   # If the file is not found, it raises an error if the file is mandatory.
   # Values will be overwritten if the same key is found in a subsequent file.
   #

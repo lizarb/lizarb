@@ -1,7 +1,7 @@
 class WebSystem::FirstMiddleRack < WebSystem::MiddleRack
 
   def call(menv)
-    puts unless $coding
+    puts unless App.development?
     super
   end
 

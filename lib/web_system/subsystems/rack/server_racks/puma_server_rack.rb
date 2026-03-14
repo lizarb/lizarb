@@ -8,7 +8,7 @@ class WebSystem::PumaServerRack < WebSystem::ServerRack
 
     host = rack_panel.get :host
     port = rack_panel.get :port
-    threads = $coding ? "1:1" : "5:5"
+    threads = App.development? ? "1:1" : "5:5"
 
     handler = ::Rack::Handler::Puma
     handler.run rack_app, Host: host, Port: port, Threads: threads

@@ -23,7 +23,7 @@ class DevSystem::HamlConverterShell < DevSystem::ConverterShell
     menv[:error] = e
     menv[:convert_out] = "#{e.class}: #{e.message}"
   ensure
-    add_source(menv) if $coding or menv[:add_source]
+    add_source(menv) if App.development? or menv[:add_source]
     nil
   end
 

@@ -6,14 +6,14 @@ class NetBox < NetSystem::NetBox
                       port:     6379,
                       # password: "",
                       # protocol: "redis",
-                      database: ($coding ? 0 : 1)
+                      database: (App.development? ? 0 : 1)
     set :mongo_hash,  host: "localhost",
                       port: 27017,
                       # password: "",
                       # protocol: "mongodb",
                       database: "app_1_#{App.mode}"
     set :sqlite_hash, path:     "app.#{App.mode}.sqlite"
-    set :sqlite_hash, path:     "tmp/app.#{Time.now.to_i}.sqlite" if $coding
+    set :sqlite_hash, path:     "tmp/app.#{Time.now.to_i}.sqlite" if App.development?
     set :mysql_hash,  host:     "localhost",
                       port:     3306,
                       username: "user",

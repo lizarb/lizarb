@@ -25,8 +25,8 @@ class DevBox < DevSystem::DevBox
     sidebar_size 40
 
     # handlers
-    handler :output   if not $coding
-    handler :color_output if $coding
+    handler :output   if not App.development?
+    handler :color_output if App.development?
   end
 
   configure :shell do

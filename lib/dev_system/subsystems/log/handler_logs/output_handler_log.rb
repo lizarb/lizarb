@@ -4,7 +4,7 @@ class DevSystem::OutputHandlerLog < DevSystem::HandlerLog
     super
     sidebar = menv[:sidebar] || (sidebar_for menv)
 
-    unless $coding
+    unless App.development?
       pid = Process.pid
       tid = Lizarb.thread_id.to_s.rjust_zeroes 3
       sidebar = "#{pid} #{tid} #{sidebar}"

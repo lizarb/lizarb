@@ -77,33 +77,33 @@ class Liza::ControllerTest < Liza::UnitTest
 
   test :fileable, :dev_system do
     assert_equality Shell.permanent_directory.to_s, "#{App.root}/prm/dev_system_shells/shell"
-    assert_equality Shell.data_directory.to_s,      "#{App.root}/dat/coding_matrix/dev_system_shells/shell"
-    assert_equality Shell.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/dev_system_shells/shell"
+    assert_equality Shell.data_directory.to_s,      "#{App.root}/dat/development_matrix/dev_system_shells/shell"
+    assert_equality Shell.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/dev_system_shells/shell"
 
     assert_equality RubyShell.permanent_directory.to_s, "#{App.root}/prm/dev_system_shells/ruby_shell"
-    assert_equality RubyShell.data_directory.to_s,      "#{App.root}/dat/coding_matrix/dev_system_shells/ruby_shell"
-    assert_equality RubyShell.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/dev_system_shells/ruby_shell"
+    assert_equality RubyShell.data_directory.to_s,      "#{App.root}/dat/development_matrix/dev_system_shells/ruby_shell"
+    assert_equality RubyShell.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/dev_system_shells/ruby_shell"
 
     assert_equality HashRubyShell.permanent_directory.to_s, "#{App.root}/prm/dev_system_shells/hash_ruby_shell"
-    assert_equality HashRubyShell.data_directory.to_s,      "#{App.root}/dat/coding_matrix/dev_system_shells/hash_ruby_shell"
-    assert_equality HashRubyShell.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/dev_system_shells/hash_ruby_shell"
+    assert_equality HashRubyShell.data_directory.to_s,      "#{App.root}/dat/development_matrix/dev_system_shells/hash_ruby_shell"
+    assert_equality HashRubyShell.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/dev_system_shells/hash_ruby_shell"
   end
 
   test :fileable, :happy_system do
     assert_equality AxoCommand.permanent_directory.to_s, "#{App.root}/prm/happy_system_commands/axo_command"
-    assert_equality AxoCommand.data_directory.to_s,      "#{App.root}/dat/coding_matrix/happy_system_commands/axo_command"
-    assert_equality AxoCommand.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/happy_system_commands/axo_command"
+    assert_equality AxoCommand.data_directory.to_s,      "#{App.root}/dat/development_matrix/happy_system_commands/axo_command"
+    assert_equality AxoCommand.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/happy_system_commands/axo_command"
 
     assert_equality Axo.permanent_directory.to_s, "#{App.root}/prm/happy_system_axos/axo"
-    assert_equality Axo.data_directory.to_s,      "#{App.root}/dat/coding_matrix/happy_system_axos/axo"
-    assert_equality Axo.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/happy_system_axos/axo"
+    assert_equality Axo.data_directory.to_s,      "#{App.root}/dat/development_matrix/happy_system_axos/axo"
+    assert_equality Axo.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/happy_system_axos/axo"
 
     axo = Axo.new
     def axo.to_id () = ("1234")
 
-    assert_equality axo.data_directory_pathname.to_s,      "#{App.root}/dat/coding_matrix/happy_system_axos/axo/1234"
+    assert_equality axo.data_directory_pathname.to_s,      "#{App.root}/dat/development_matrix/happy_system_axos/axo/1234"
     assert_equality axo.permanent_directory_pathname.to_s, "#{App.root}/prm/happy_system_axos/axo/1234"
-    assert_equality axo.temporary_directory.to_s, "#{App.root}/tmp/coding_matrix/happy_system_axos/axo/1234"
+    assert_equality axo.temporary_directory.to_s, "#{App.root}/tmp/development_matrix/happy_system_axos/axo/1234"
   end if defined? HappySystem
 
 end

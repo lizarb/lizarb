@@ -26,8 +26,8 @@ class DevBox < DevSystem::DevBox
   configure :log do
     # Log.panel gives you read-access to this instance
 
-    handler :output   if not $coding
-    handler :color_output if $coding
+    handler :output   if not App.development?
+    handler :color_output if App.development?
   end
 
   configure :shell do

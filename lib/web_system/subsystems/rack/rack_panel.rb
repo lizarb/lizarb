@@ -37,12 +37,12 @@ class WebSystem::RackPanel < Liza::Panel
 
     rack_app = @rack_app = WebBox[:request]
 
-    ENV["RACK_ENV"] = $coding ? "development" : "production"
+    ENV["RACK_ENV"] = App.development? ? "development" : "production"
 
     rack_app = WebBox[:request]
     rack_app = LastMiddleRack.new rack_app
     rack_app = FirstMiddleRack.new rack_app
-    rack_app = ZeitwerkMiddleRack.new rack_app if $coding
+    rack_app = ZeitwerkMiddleRack.new rack_app if App.development?
 
     require "rack"
 

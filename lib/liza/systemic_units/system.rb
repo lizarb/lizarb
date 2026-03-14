@@ -17,7 +17,7 @@ class Liza::System < Liza::Unit
   def self.subsystems
     return @subsystems if @subsystems
     ret = subs.map { [_1, const(_1)] }.to_h
-    @subsystems = ret unless App.coding?
+    @subsystems = ret unless App.development?
     ret
   end
 
@@ -33,7 +33,7 @@ class Liza::System < Liza::Unit
   def self.box
     return @box if @box
     ret = const "#{token}_box"
-    @box = ret unless App.coding?
+    @box = ret unless App.development?
     ret
   end
 
