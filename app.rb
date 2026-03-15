@@ -22,7 +22,7 @@ class App
 
   # Choose your sources of Environment Variables
 
-  # env_vars ".env", ":directory.env", ":directory.:mode.env", mandatory: false
+  env_vars ".env", "app.env", "app.:mode.env", mandatory: false
 
   # Systems help you organize your application's dependencies and RAM memory usage.
 

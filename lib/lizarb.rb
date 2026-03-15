@@ -852,7 +852,7 @@ module Lizarb
     log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
     return if files.empty?
 
-    files = files.map { _1.gsub(":directory", App.directory.to_s).gsub(":mode", mode.to_s) }
+    files = files.map { _1.gsub ":mode", mode }
 
     @gem_dotenv_loaded = Gem::Specification.find_all_by_name("dotenv").any? unless defined? @gem_dotenv_loaded
     if @gem_dotenv_loaded
