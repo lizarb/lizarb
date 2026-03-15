@@ -3,7 +3,7 @@ class DevSystem::ShellCommand < DevSystem::SimpleCommand
   shortcut :c, :convert
   shortcut :e, :eval
   shortcut :f, :format
-  shortcut :p, :paths
+  shortcut :g, :globals
   shortcut :l, :loc
 
   section :actions
