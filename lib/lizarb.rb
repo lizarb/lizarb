@@ -942,13 +942,14 @@ module Lizarb
       end
   end
 
-  TIME_DIFF_ERROR_MSG = "digits must be a positive integer"
+  PERIOD = "."
 
-  def time_diff(t1, t2 = Time.now, digits = 4)
-    raise ArgumentError, TIME_DIFF_ERROR_MSG unless digits.is_a?(Integer) && digits.positive?
-    f = (t2.to_f - t1.to_f).floor(digits)
-    u, d = f.to_s.split "."
-    "#{u}.#{d.ljust digits, "0"}"
+  def time_diff(t1, t0 = Time.now, digits = 3)
+    raise ArgumentError, "digits must be a positive integer" \
+      unless digits.is_a?(Integer) && digits.positive?
+    f = (t0.to_f - t1.to_f).floor(digits)
+    u, d = f.to_s.split PERIOD
+    "#{u}.#{d.ljust_zeroes digits}"
   end
 
 end

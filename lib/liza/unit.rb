@@ -666,9 +666,7 @@ Did you accidentally fall into an infinite loop?
   #
   # Raises ArgumentError if +digits+ is not a positive Integer.
   #
-  def self.time_diff(t1, t2 = Time.now, digits = 4)
-    Lizarb.time_diff(t1, t2, digits)
-  end
+  def self.time_diff(t1, t0 = Time.now, digits = 3) = (Lizarb.time_diff t1, t0, digits)
 
   ##
   # :call-seq:
@@ -677,7 +675,7 @@ Did you accidentally fall into an infinite loop?
   # Convenience instance method delegating to +Unit.time_diff+.
   # Returns the time difference string with the specified decimal precision.
   #
-  def time_diff(t, digits = 4)= self.class.time_diff t, digits
+  def time_diff(t1, t0 = Time.now, digits = 3) = (Lizarb.time_diff t1, t0, digits)
 
   set :log_level, App.log_level
   set :division, Liza::Controller
