@@ -679,13 +679,14 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
     end
 
     # Handle interactive input for this field.
-    # This will consult per-field and per-type input handlers and
-    # respects the `ask?` and `mandatory` flags to decide whether to prompt.
+    # This will cache collected values as well as consult per-field and per-type
+    # input handlers and respects the `ask?` and `mandatory` flags to decide whether to prompt.
     # @param object [Object] current value (may be nil)
     # @return [Object] value after input handlers
     def call_input(object)
       return object if $testing # during testing, we do not want to ask for input
       return object if !call_input_by_field? and !call_input_by_type? # nothing to do
+      return @input if defined? @input # caches the input value to avoid multiple prompts
 
       object_is_nil = object.nil?
       object_is_not_nil = !object_is_nil
@@ -711,7 +712,7 @@ class DevSystem::SimpleCommand < DevSystem::BaseCommand
         object = call_input_by_type object
       end
 
-      object
+      @input = object
     end
 
     # Call the per-type input hook on the command: `params_input_type_<type>`.

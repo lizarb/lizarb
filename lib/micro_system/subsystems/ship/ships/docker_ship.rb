@@ -44,8 +44,11 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   def self.get_content(menv)
     ship_menv = {log_level: menv[:log_level]}
     self.call(ship_menv)
+    services = ship_menv[:services]
+    services.each_value { _1.inject_shared_network cl.shared_network } if cl.shared_network
     services = ship_menv[:services].map { [_1.to_s, _2.result] }.to_h
     content = {"services" => services}
+    content["networks"] = {cl.shared_network => {"external" => true}} if cl.shared_network
 
     Object.send :require, "yaml"
     YAML.dump content
@@ -87,6 +90,13 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     YAML
   end
 
+  section :networks
+
+  def self.shared_network(name=nil)
+    return @shared_network if name.nil?
+    @shared_network = name.to_s
+  end
+
   section :services
 
   def self.defined_services
@@ -109,6 +119,12 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
     def add_block(block)
       blocks << block if block
+    end
+
+    def inject_shared_network(network)
+      return if network.nil?
+      result["networks"] ||= []
+      result["networks"] << network unless result["networks"].include? network
     end
 
     attr_accessor :name, :supername, :ship, :ship_class
@@ -278,7 +294,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
   define_service :empty
 
-  section :helpers
+  section :instance_helpers
 
   def volume_for(name, key)
     cl.data_directory.join("volume_#{name}_#{key}")
