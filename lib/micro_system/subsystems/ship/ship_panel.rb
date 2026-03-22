@@ -6,7 +6,7 @@ class MicroSystem::ShipPanel < Liza::Panel
     if docked_ship_name
       menv[:log_level] ||= :low
       docked_ship.dock(menv)
-      log "Auto-docked #{docked_ship} to #{menv[:filename]}"
+      logc "Auto-docked #{docked_ship} to #{menv[:filename]}"
     end
   end
 
