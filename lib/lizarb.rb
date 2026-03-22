@@ -20,7 +20,7 @@ class Class
   def and_descendants
     ObjectSpace.each_object(Class).select { |klass| klass <= self }
   end
-  
+
   def ancestors_until klass
     ancestors.take_while { _1 <= klass }
   end
@@ -55,7 +55,7 @@ class Module
   def last_namespace
     to_s.rpartition('::')[-1]
   end
-  
+
 end
 
 class Proc
@@ -85,7 +85,7 @@ class String
       .gsub(/([a-z\d])([A-Z])/, '\1_\2')
       .downcase
   end
-  
+
   alias snakefy snakecase
 
   def rjust_blanks length
@@ -221,9 +221,9 @@ module Lizarb
     log_level ||= log if log
     log_boot  ||= :normal
     log_level ||= :normal
-    
+
     cl = caller_locations(1, 1)[0]
-    
+
     script = cl.absolute_path
 
     setup_script_independent pwd, script: script
@@ -240,7 +240,7 @@ module Lizarb
         system key
       end
     end
-    
+
     load
 
     DevSystem::DevBox.configure :log do
@@ -392,7 +392,7 @@ module Lizarb
       # puts "        Lizarb._script_dependent   = #{_script_dependent.inspect}" if setup_type == :script_dependent
       # puts "        Lizarb._script_independent = #{_script_independent.inspect}" if setup_type == :script_independent
     end
-    
+
     # NOTE: calling an unset instance variable returns nil
     # NOTE: these file calls are pretty fast
     @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
@@ -588,7 +588,7 @@ module Lizarb
   #
   def self.load_and_require_default_gems
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
-    
+
     log "    require 'pathname'" if defined? $log_boot_higher
     require "pathname"
 
