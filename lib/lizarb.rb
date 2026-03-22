@@ -120,24 +120,22 @@ module Lizarb
 
   #
 
-  module_function
-
-  def log s
+  def self.log s
     print "#{time_diff $boot_time}s " if defined? $log_boot_high
     puts s
   end
 
   # Returns Lizarb::VERSION as a Gem::Version
-  def version
+  def self.version
     @version ||= Gem::Version.new VERSION
   end
 
   # Returns RUBY_VERSION as a Gem::Version
-  def ruby_version
+  def self.ruby_version
     @ruby_version ||= Gem::Version.new RUBY_VERSION
   end
 
-  def ruby_supports_raise_cause?
+  def self.ruby_supports_raise_cause?
     RUBY_ENGINE != "jruby"
   end
 
@@ -156,7 +154,7 @@ module Lizarb
   end
 
   # ["/path/to/lizarb.rb", 1]
-  def source_location
+  def self.source_location
     [__FILE__, 1]
   end
 
@@ -164,7 +162,7 @@ module Lizarb
   #
   # - You must provide the const ARGV.
   # - You must provide __FILE__ as argument to this method.
-  def init_project!(argv, executable)
+  def self.init_project!(argv, executable)
     pwd = Dir.pwd
     $LOAD_PATH.unshift "#{pwd}/lib" if File.directory? "#{pwd}/lib"
     setup_project pwd, project: executable
@@ -175,7 +173,7 @@ module Lizarb
   ### Initialize LizaRB before another framework.
   #
   # - You must provide the app key.
-  def init_for_framework!(app:)
+  def self.init_for_framework!(app:)
     init_script_dependent!(app:)
   end
 
@@ -183,7 +181,7 @@ module Lizarb
   #
   # - You must provide the app key.
   # - You may provide an array of system keys.
-  def init_script_dependent!(
+  def self.init_script_dependent!(
     *systems,
     app:
   )
@@ -215,7 +213,7 @@ module Lizarb
   # - You may provide all app configurations.
   # - You may provide some dev_box configurations.
   # - You may provide an array of system keys.
-  def init_script_independent!(
+  def self.init_script_independent!(
     *systems,
     mode: :code,
     directory: nil,
@@ -267,7 +265,7 @@ module Lizarb
   #
   # A project is a directory that contains an application app.rb file.
   #
-  def setup_project pwd, project:
+  def self.setup_project pwd, project:
     @root = pwd.to_s
     @setup_type = :project
     # NOTE: arg project is not being stored anywhere
@@ -284,7 +282,7 @@ module Lizarb
   #
   # A script_dependent must be placed in a directory which parent directory is a project directory.
   #
-  def setup_script_dependent pwd, script: , script_app:
+  def self.setup_script_dependent pwd, script: , script_app:
     @root = pwd.to_s
     @setup_type = :script_dependent
     # NOTE: arg script is not being stored anywhere
@@ -301,7 +299,7 @@ module Lizarb
   #
   # A script_independent is a Ruby script that uses the global_app for its project and project directory.
   #
-  def setup_script_independent pwd, script:
+  def self.setup_script_independent pwd, script:
     @root = pwd.to_s
     @setup_type = :script_independent
     # NOTE: arg script is not being stored anywhere
@@ -317,7 +315,7 @@ module Lizarb
   # 3. Overwrites Application settings with environment variables.
   # 4. Defines log levels for the application based on the boot log level setting.
   #
-  def setup
+  def self.setup
     ENV["LOG_BOOT"] = ENV["LOG"] = "1" if ARGV[0] && ARGV[0][0] == "-"
     setup_and_determine_environment
     puts "Lizarb  #{__FILE__}" if $VERBOSE
@@ -338,7 +336,7 @@ module Lizarb
   # 6. Requires all system-gems, then requires each system class.
   # 7. Initializes Lizarb.loaders[1] with the systems directories and the application directory.
   #
-  def load
+  def self.load
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     load_and_require_bundler
@@ -354,13 +352,13 @@ module Lizarb
     log "  Lizarb.#{__method__} done" if defined? $log_boot_high
   end
 
-  def call(argv)
+  def self.call(argv)
     argv = argv.dup
     $lizarb_test = true if argv[0] == "t" || argv[0] == "test"
     App.call(argv)
   end
 
-  def exit_messages
+  def self.exit_messages
     info = {
       ruby: RUBY_VERSION,
       bundler: Bundler::VERSION,
@@ -377,7 +375,7 @@ module Lizarb
     puts "Fork us on Github at #{github}/fork"
   end
 
-  def exit_invalid_app(message)
+  def self.exit_invalid_app(message)
     puts "Invalid App: #{App.filename}"
     puts
     puts "class App"
@@ -393,7 +391,7 @@ module Lizarb
   # - Determines key directories (`@app_dir`, `@liz_dir`, `@gem_dir`) and configuration specs (`@spec`).
   #
   # - Prints verbose output if `$VERBOSE` is enabled.
-  def setup_and_determine_environment
+  def self.setup_and_determine_environment
     if $VERBOSE
       puts "determining environment"
       puts "        Lizarb.root       = #{root.inspect}"
@@ -443,7 +441,7 @@ module Lizarb
   # - Raises an error if the configuration file is not found.
   # - Prints verbose output if `$VERBOSE` is enabled.
   #
-  def setup_and_configure_app
+  def self.setup_and_configure_app
     # This is lib/app.rb
     require "app"
 
@@ -479,7 +477,7 @@ module Lizarb
   # - App.gemfile           with GEMFILE          example: `GEMFILE=Gemfile liza irb`
   # - App.system            with ENV["SYSTEMS"]   example: `SYSTEMS=dev,happy,deep,lab liza irb`
   #
-  def setup_and_overwrite_app_settings
+  def self.setup_and_overwrite_app_settings
     if env_app_directory = ENV["APP_DIR"]
       App.directory env_app_directory
     end
@@ -526,7 +524,7 @@ module Lizarb
   # $log_boot_lower   = true if App.log_boot >= 2 # this number is for :lower
   # $log_boot_lowest  = true if App.log_boot >= 1 # this number is for :lowest
   #
-  def setup_and_define_log_levels
+  def self.setup_and_define_log_levels
     level = App.log_boot
     is_highest = level == 7
     App::LOG_LEVELS.each do |k, v|
@@ -550,7 +548,7 @@ module Lizarb
   # - If App.gemfile is a Proc, requires Bundler inline and evaluates the gemfile block.
   # - Raises an error if App.gemfile is neither a String nor a Proc.
   #
-  def load_and_require_bundler
+  def self.load_and_require_bundler
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     gf = App.gemfile
@@ -596,7 +594,7 @@ module Lizarb
   # - `Lizarb`: `@root`, `@gem_dir`, `@config_path`
   # - `App`: `@relative_path`, `@path`
   #
-  def load_and_require_default_gems
+  def self.load_and_require_default_gems
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
     
     log "    require 'pathname'" if defined? $log_boot_higher
@@ -621,7 +619,7 @@ module Lizarb
   #
   # If the gem "dotenv" is found, it delegates to it instead.
   #
-  def load_and_require_env_vars
+  def self.load_and_require_env_vars
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     require_env_vars
@@ -631,7 +629,7 @@ module Lizarb
   #
   # Requires award-winning gem Zeitwerk to manage autoloading of Ruby classes.
   #
-  def load_and_zeitwerk
+  def self.load_and_zeitwerk
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
     require "zeitwerk"
     log "    required Zeitwerk" if defined? $log_boot_higher
@@ -654,7 +652,7 @@ module Lizarb
   # lib/liza/unit.rb
   # lib/liza/**/*.rb
   #
-  def load_and_zeitwerk_loader_0_liza
+  def self.load_and_zeitwerk_loader_0_liza
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
     require "liza"
     log "    required Liza" if defined? $log_boot_higher
@@ -691,7 +689,7 @@ module Lizarb
   # - Requires each system class.
   # - Freezes the App.systems hash.
   #
-  def load_and_require_system_classes
+  def self.load_and_require_system_classes
     log "  Lizarb.#{__method__} (#{App.systems.count})" if defined? $log_boot_high
 
     # bundle each System gem
@@ -714,7 +712,7 @@ module Lizarb
     App.systems.freeze
   end
 
-  def _require_system key
+  def self._require_system key
     key = "#{key}_system"
     log "        require '#{key}'" if defined? $log_boot_highest
     require key
@@ -736,7 +734,7 @@ module Lizarb
   #   app/dev_box.rb
   #   app/dev/**/*.rb
   #
-  def load_and_zeitwerk_loader_1_app
+  def self.load_and_zeitwerk_loader_1_app
     log "  Lizarb.#{__method__}  (#{App.systems.count})" if defined? $log_boot_high
 
     # loaders[1] first loads each System, then the App
@@ -811,7 +809,7 @@ module Lizarb
     log "        loader.setup" if defined? $log_boot_highest
   end
 
-  def load_and_boot_framework
+  def self.load_and_boot_framework
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     # skips if --sf or --skip-framework is passed
@@ -824,7 +822,7 @@ module Lizarb
     send "load_and_boot_framework_#{App.framework}"
   end
 
-  def load_and_boot_framework_rails
+  def self.load_and_boot_framework_rails
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     # Matches with "/rails-1.0.0/lib"
@@ -834,7 +832,7 @@ module Lizarb
     require "./config/environment"
   end
 
-  def load_and_boot_framework_hanami
+  def self.load_and_boot_framework_hanami
     log "  Lizarb.#{__method__}" if defined? $log_boot_high
 
     # Match with "/hanami-1.0.0/lib"
@@ -846,7 +844,7 @@ module Lizarb
 
   # Load environment variables
 
-  def require_env_vars(files=App.env_vars, mode: App.mode)
+  def self.require_env_vars(files=App.env_vars, mode: App.mode)
     log "  Lizarb.#{__method__} (#{files.count})" if defined? $log_boot_high
     log "    ENV variables from #{files.count} sources" if defined? $log_boot_higher
     return if files.empty?
@@ -861,14 +859,14 @@ module Lizarb
     end
   end
 
-  def _require_env_vars_with_dotenv(files)
+  def self._require_env_vars_with_dotenv(files)
     log "    gem 'dotenv' found, using it to load ENV variables" if defined? $log_boot_higher
     require "dotenv"
     Dotenv.load(*files)
     log "      Dotenv.load(*#{files.inspect})" if defined? $log_boot_highest
   end
 
-  def _require_env_vars_without_dotenv(files)
+  def self._require_env_vars_without_dotenv(files)
     log "    gem 'dotenv' not found, using custom (and stricter) ENV loader" if defined? $log_boot_higher
 
     files.each do |file|
@@ -895,7 +893,7 @@ module Lizarb
   #
   # @return [Boolean] true if in test mode, false otherwise.
   #
-  def test?
+  def self.test?
     defined? $lizarb_test
   end
 
@@ -903,17 +901,17 @@ module Lizarb
 
   @loaders = []
 
-  def loaders
+  def self.loaders
     @loaders
   end
 
-  def reload &block
+  def self.reload &block
     @eager_loaded = false
     loaders[1].reload
     true
   end
 
-  def eager_load!
+  def self.eager_load!
     return if eager_loaded?
     log "Lizarb.#{__method__} begin" if defined? $log_boot_high
     @eager_loaded = true
@@ -921,20 +919,20 @@ module Lizarb
     log "Lizarb.#{__method__} end" if defined? $log_boot_high
   end
 
-  def eager_loaded?
+  def self.eager_loaded?
     !!@eager_loaded
   end
 
   # naive thread management
 
-  def thread_object_id
+  def self.thread_object_id
     Thread.current.object_id
   end
 
   @thread_ids = {thread_object_id => 0}
   @thread_ids_mutex = Mutex.new
 
-  def thread_id
+  def self.thread_id
     @thread_ids[thread_object_id] ||=
       @thread_ids_mutex.synchronize do
         @thread_ids.count
@@ -943,7 +941,7 @@ module Lizarb
 
   PERIOD = "."
 
-  def time_diff(t1, t0 = Time.now, digits = 3)
+  def self.time_diff(t1, t0 = Time.now, digits = 3)
     raise ArgumentError, "digits must be a positive integer" \
       unless digits.is_a?(Integer) && digits.positive?
     f = (t0.to_f - t1.to_f).floor(digits)
