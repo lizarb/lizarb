@@ -409,6 +409,10 @@ class Liza::Unit
     log_level <= self.log_level
   end
 
+  def self.logc(*string_and_args) = (log (stick cl.system.color, *string_and_args), kaller: caller)
+
+  def logc(*string_and_args)      = (log (stick cl.system.color, *string_and_args), kaller: caller)
+
   section :sleep
 
   def self.sleep(seconds)

@@ -69,8 +69,8 @@ class Liza::UnitTest < Liza::Test
     },
     logging: {
       :constants=>[],
-      :class_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?],
-      :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?]
+      :class_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?, :logc],
+      :instance_methods=>[:log_levels, :log, :stick, :sticks, :log_level, :log_hash, :log_array, :log?, :log_level?, :logc]
     },
     :sleep=>{
       :constants=>[],
