@@ -116,7 +116,6 @@ end
 
 module Lizarb
   class Error < StandardError; end
-  class ModeNotFound < Error; end
   class SystemNotFound < Error; end
 
   #
