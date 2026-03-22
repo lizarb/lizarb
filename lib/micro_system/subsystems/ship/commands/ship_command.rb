@@ -45,6 +45,14 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
     ship.dock log_level: :higher
   end
 
+  # liza ship:create_network
+  def call_create_network
+    return if ship.nil?
+
+    log stick :b, cl.system.color, "Creating network for #{ship}"
+    ship.create_network log_level: :higher
+  end
+
   def ship
     @ship ||= begin
       default_ship_name = Ship.panel.docked_ship_name || "default"

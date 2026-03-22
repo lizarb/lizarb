@@ -97,6 +97,13 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     @shared_network = name.to_s
   end
 
+  def self.create_network(log_level: self.log_level)
+    return log(stick :b, cl.system.color, "NO NETWORK FOUND") if shared_network.nil?
+
+    log :higher, (stick :b, cl.system.color, "Creating network for #{self}")
+    sh "docker network create #{shared_network}"
+  end
+
   section :services
 
   def self.defined_services
