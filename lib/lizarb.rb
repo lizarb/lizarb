@@ -126,18 +126,12 @@ module Lizarb
   end
 
   # Returns Lizarb::VERSION as a Gem::Version
-  def self.version
-    @version ||= Gem::Version.new VERSION
-  end
+  def self.version() = ( @version ||= Gem::Version.new VERSION )
 
   # Returns RUBY_VERSION as a Gem::Version
-  def self.ruby_version
-    @ruby_version ||= Gem::Version.new RUBY_VERSION
-  end
+  def self.ruby_version() = ( @ruby_version ||= Gem::Version.new RUBY_VERSION )
 
-  def self.ruby_supports_raise_cause?
-    RUBY_ENGINE != "jruby"
-  end
+  def self.ruby_supports_raise_cause?() = ( RUBY_ENGINE != "jruby" )
 
   singleton_class.class_eval do
     attr_reader :root
@@ -154,9 +148,7 @@ module Lizarb
   end
 
   # ["/path/to/lizarb.rb", 1]
-  def self.source_location
-    [__FILE__, 1]
-  end
+  def self.source_location() = ( [__FILE__, 1] )
 
   ### Initialize LizaRB as a project
   #
@@ -893,17 +885,13 @@ module Lizarb
   #
   # @return [Boolean] true if in test mode, false otherwise.
   #
-  def self.test?
-    defined? $lizarb_test
-  end
+  def self.test?() = (defined? $lizarb_test)
 
   # loaders
 
   @loaders = []
 
-  def self.loaders
-    @loaders
-  end
+  def self.loaders() = ( @loaders )
 
   def self.reload &block
     @eager_loaded = false
@@ -919,15 +907,11 @@ module Lizarb
     log "Lizarb.#{__method__} end" if defined? $log_boot_high
   end
 
-  def self.eager_loaded?
-    !!@eager_loaded
-  end
+  def self.eager_loaded?() = ( !!@eager_loaded )
 
   # naive thread management
 
-  def self.thread_object_id
-    Thread.current.object_id
-  end
+  def self.thread_object_id() = ( Thread.current.object_id )
 
   @thread_ids = {thread_object_id => 0}
   @thread_ids_mutex = Mutex.new
