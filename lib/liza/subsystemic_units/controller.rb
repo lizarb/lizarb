@@ -269,7 +269,7 @@ class Liza::Controller < Liza::Unit
     end
 
     def get(name)
-      name = "#{ @prefix }_#{ name }".upcase
+      name = name_for(name)
       if name[-1] == "?"
         ENV[name[0..-2]]
       else
@@ -283,6 +283,8 @@ class Liza::Controller < Liza::Unit
       puts
       exit 1
     end
+
+    def name_for(name) = ( "#{ @prefix }_#{ name }".upcase )
   end
 
   section :default
