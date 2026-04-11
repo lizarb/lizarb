@@ -262,7 +262,7 @@ class NetSystem::HttpClient < NetSystem::Client
   end
 
   def log_body(response)
-    log "size: #{response.body.size} | #{response.body.to_s[0..39].inspect}"
+    log "size: #{response.body.size} | #{response.body.to_s[0..99].inspect}"
   end
 
 end
