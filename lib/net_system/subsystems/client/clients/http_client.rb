@@ -256,7 +256,7 @@ class NetSystem::HttpClient < NetSystem::Client
     size = hash.map(&:first).map(&:to_s).map(&:size).max
     hash.each do |k, v|
       Array(v).each do |x|
-        log "          #{k.to_s.ljust size} #{x}", kaller:
+        logc "          #{k.to_s.ljust size} #{x}", kaller:
       end
     end
   end
