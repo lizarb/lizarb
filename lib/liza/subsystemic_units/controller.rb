@@ -154,11 +154,11 @@ class Liza::Controller < Liza::Unit
 
   def self.permanent_directory () = (@permanent_directory ||= App.permanent_directory.join fileable_name)
 
-  def temporary_directory () = (@temporary_directory ||= cl.temporary_directory.join id)
+  def temporary_directory () = (@temporary_directory ||= cl.temporary_directory.join id.to_s)
 
-  def data_directory () = (@data_directory ||= cl.data_directory.join id)
+  def data_directory () = (@data_directory ||= cl.data_directory.join id.to_s)
 
-  def permanent_directory () = (@permanent_directory ||= cl.permanent_directory.join id)
+  def permanent_directory () = (@permanent_directory ||= cl.permanent_directory.join id.to_s)
 
   section :callable
 
