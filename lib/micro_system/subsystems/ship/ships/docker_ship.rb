@@ -218,8 +218,12 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       end
     end
 
-    def readonly(path_host, path_container=path_host)
+    def read_only(path_host, path_container=path_host)
       volumes "#{path_host}:#{path_container}:ro"
+    end
+
+    def readonly(path_host, path_container=path_host)
+      read_only(path_host, path_container)
     end
 
     def volume(key, container_path, mode: nil)
