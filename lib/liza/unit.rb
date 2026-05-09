@@ -33,6 +33,10 @@ class Liza::Unit
     sections[@current_section || :default][:constants] << name
   end
 
+  # Default options hash for units.
+  # Used as an immutable empty options object.
+  OPTS = {}.freeze
+
   # Alias for class_methods_defined
   def self.methods_defined() = class_methods_defined
 
@@ -49,7 +53,7 @@ class Liza::Unit
   def self.constants_defined() = sections.values.map { _1[:constants] }.flatten
 
   # ERROR
-  
+
   class Error < Liza::Error; end
 
   # PART
