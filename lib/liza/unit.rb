@@ -417,6 +417,10 @@ class Liza::Unit
 
   def logc(*string_and_args, kaller: caller)      = (log (stick cl.system.color, *string_and_args), kaller: kaller)
 
+  def self.logs(*stick_args, kaller: caller) = (log (stick *stick_args), kaller: kaller)
+
+  def logs(*stick_args, kaller: caller)      = (log (stick *stick_args), kaller: kaller)
+
   section :sleep
 
   def self.sleep(seconds)
