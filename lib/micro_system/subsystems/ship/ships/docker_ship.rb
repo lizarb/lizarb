@@ -29,7 +29,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   end
 
   def self.dock(menv)
-    menv[:filename] ||= "docker-compose.#{self.token}.yml"
+    menv[:filename] ||= data_directory.join("docker-compose.#{self.token}.yml").to_s
 
     log_level menv[:log_level]
     comments = get_comments
@@ -50,7 +50,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     content = {"services" => services}
     content["networks"] = {cl.shared_network => {"external" => true}} if cl.shared_network
 
-    Object.send :require, "yaml"
+    Kernel.require "yaml"
     YAML.dump content
   end
 
@@ -58,16 +58,29 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     super
 
     ship = menv[:ship] ||= new
-    menv[:services] = {}
+    ship.call(menv)
+  end
+
+  def call(menv)
+    super
+
+    before
+
+    used_services = menv[:used_services] ||= cl.used_services
+    services = menv[:services] = {}
     used_services.each do |name, used_service|
-      menv[:services][name] = used_service
-      used_service.process(ship)
+      service_class, name, supername, defined_block, used_block = used_service
+      service = services[name] = service_class.new(self, name, supername)
+      service.process(defined_block, used_block)
     end
+    logc "#{services.size} Services used!"
+
+    after
   end
 
   def self.get_comments
     content = FileShell.read_text self.source_location_path, log_level: :higher
-    Object.send :require, "digest/md5"
+    Kernel.require "digest/md5"
     md5 = Digest::MD5.hexdigest content
     path = self.source_location_path.sub App.root.to_s, ""
     <<~YAML
@@ -115,17 +128,14 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   end
 
   class Service
-    def initialize(name, supername)
+    attr_reader :ship, :name, :supername, :result
+
+    def initialize(ship, name, supername)
+      @result = {}
+      @ship = ship
       @name = name
       @supername = supername
       container_name "#{App.full_name}_#{name}"
-    end
-
-    def blocks()= @blocks ||= []
-    def result()= @result ||= {}
-
-    def add_block(block)
-      blocks << block if block
     end
 
     def inject_shared_network(network)
@@ -134,32 +144,11 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       result["networks"] << network unless result["networks"].include? network
     end
 
-    attr_accessor :name, :supername, :ship, :ship_class
-
-    def process(ship)
-      @ship = ship
-      raise ArgumentError, "ship must be an instance" unless ship.is_a? MicroSystem::Ship
-      process_ship_class
-      process_blocks_shifting
-      process_blocks
+    def process(defined_block, used_block)
+      instance_eval(&defined_block) if defined_block
+      instance_eval(&used_block) if used_block
       process_persisted_volume
       process_default_port
-    end
-
-    def process_ship_class
-      self.ship_class = Liza.const(:"#{ship_class}_ship") if ship_class.is_a?(Symbol)
-    end
-
-    def process_blocks_shifting
-      service = ship_class.defined_services[supername]
-      raise "service #{name} not defined in #{ship_class}" if service.nil?
-      @blocks = service.blocks + blocks
-    end
-
-    def process_blocks
-      blocks.each do |block|
-        self.instance_eval(&block)
-      end
     end
 
     def process_persisted_volume
@@ -287,23 +276,28 @@ class MicroSystem::DockerShip < MicroSystem::Ship
 
   def self.define_service(name, class: Service, &block)
     service_class = binding.local_variable_get(:class)
-    log :highest, "defining #{name.inspect}"
-    defined_services[name] ||= service_class.new(name, name)
-    defined_services[name].add_block block
+    log :highest, "defining #{name.inspect} as a #{service_class}"
+    defined_services[name] = [service_class, name, name, block]
   end
 
   def self.use_service(supername, name=supername, ship: self, class: Service, &block)
     service_class = binding.local_variable_get(:class)
-    ship = Liza.find_controller :ship, ship if ship.is_a?(Symbol)
+    ship_class = ship
+    ship_class = Liza.find_controller :ship, ship_class if ship_class.is_a?(Symbol)
 
-    used_service = used_services[name] ||= ship.defined_services[name] || service_class.new(name, supername)
-    used_service.ship_class = ship
-    used_service.add_block block
+    defined_service = ship_class.defined_services[supername]
+    used_services[name] = [*defined_service, block]
 
     log :highest, "using #{name.inspect}"
   end
 
   define_service :empty
+
+  section :instance_hooks
+
+  def before; end
+
+  def after; end
 
   section :instance_helpers
 

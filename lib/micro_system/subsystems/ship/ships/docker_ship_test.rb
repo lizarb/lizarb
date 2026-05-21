@@ -21,17 +21,22 @@ class MicroSystem::DockerShipTest < MicroSystem::ShipTest
     :default=>{
       :constants=>[],
       :class_methods=>[:compose, :dock, :get_content, :call, :get_comments],
-      :instance_methods=>[]
+      :instance_methods=>[:call]
     },
     :networks=>{
       :constants=>[],
-      :class_methods=>[:shared_network],
+      :class_methods=>[:shared_network, :create_network],
       :instance_methods=>[]
     },
     :services=>{
       :constants=>[:Service],
       :class_methods=>[:defined_services, :used_services, :define_service_class, :define_service, :use_service],
       :instance_methods=>[]
+    },
+    :instance_hooks=>{
+      :constants=>[],
+      :class_methods=>[],
+      :instance_methods=>[:before, :after]
     },
     :instance_helpers=>{
       :constants=>[],
