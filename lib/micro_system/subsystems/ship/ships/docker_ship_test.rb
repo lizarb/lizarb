@@ -15,7 +15,7 @@ class MicroSystem::DockerShipTest < MicroSystem::ShipTest
   test_sections(
     :helpers=>{
       :constants=>[],
-      :class_methods=>[:up, :start, :stop, :restart],
+      :class_methods=>[:up, :start, :stop, :restart, :docker_directory],
       :instance_methods=>[]
     },
     :default=>{

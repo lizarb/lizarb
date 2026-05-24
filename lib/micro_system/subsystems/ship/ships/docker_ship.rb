@@ -18,6 +18,8 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     compose("restart", log_level:)
   end
 
+  def self.docker_directory() = ( temporary_directory )
+
   section :default
 
   def self.compose(action, log_level: self.log_level)
@@ -29,7 +31,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   end
 
   def self.dock(menv)
-    menv[:filename] ||= data_directory.join("docker-compose.#{self.token}.yml").to_s
+    menv[:filename] ||= docker_directory.join("docker-compose.#{self.token}.yml").to_s
 
     log_level menv[:log_level]
     comments = get_comments
