@@ -38,8 +38,7 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     content = get_content(menv)
     content = comments + content
 
-    puts stick system.color, content if log? :higher
-    FileShell.write_text menv[:filename], content, log_level: :highest
+    FileShell.write_text menv[:filename], content, log_level: :high
     log "Docked #{self} to #{menv[:filename]}"
   end
 
@@ -72,6 +71,8 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     services = menv[:services] = {}
     used_services.each do |name, used_service|
       service_class, name, supername, defined_block, used_block = used_service
+
+      logc "Processing #{cl} #{name} service from #{supername}"
       service = services[name] = service_class.new(self, name, supername)
       service.process(defined_block, used_block)
     end
@@ -288,9 +289,9 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     ship_class = Liza.find_controller :ship, ship_class if ship_class.is_a?(Symbol)
 
     defined_service = ship_class.defined_services[supername]
-    used_services[name] = [*defined_service, block]
+    defined_service_class, defined_name, _defined_supername, defined_block = defined_service
 
-    log :highest, "using #{name.inspect}"
+    used_services[name] = [defined_service_class, name, defined_name, defined_block, block]
   end
 
   define_service :empty
