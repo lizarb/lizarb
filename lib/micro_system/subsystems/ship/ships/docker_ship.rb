@@ -18,6 +18,12 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     compose("restart", log_level:)
   end
 
+  def self.terminal(service, terminal, terminal_args, menv={})
+    dock(menv)
+
+    menv[:ship].terminal(service, terminal, terminal_args)
+  end
+
   def self.docker_directory() = ( temporary_directory )
 
   section :default
@@ -295,6 +301,15 @@ class MicroSystem::DockerShip < MicroSystem::Ship
       result[key.to_s] << value
     end
 
+    def terminals() = ( @terminals ||= {} )
+
+    def terminal(terminal_key, callable=nil, must_be_running: false, &block)
+      raise "Must provide a block or a callable object" if callable.nil? && block.nil?
+      raise "Cannot provide both a callable object and a block" if callable && block
+      callable ||= block
+      terminals[terminal_key] = Terminal.new(terminal_key, callable, must_be_running)
+    end
+
   end
 
   def self.define_service_class(name) = (const_set name.to_s.camelcase, Class.new(Service))
@@ -317,6 +332,42 @@ class MicroSystem::DockerShip < MicroSystem::Ship
   end
 
   define_service :empty
+
+  section :terminal
+
+  class Terminal
+    attr_reader :key, :callable
+
+    def initialize(key, callable, must_be_running)
+      @key = key
+      @callable = callable
+      @must_be_running = must_be_running
+    end
+
+    def call(args) = ( callable.call(args) )
+
+    def must_be_running?() = ( @must_be_running )
+  end
+
+  def terminal(service_key, terminal_key, terminal_args)
+    services = menv[:services]
+    service = services[service_key.to_sym]
+    raise "Service #{service_key} not found in #{services.keys.inspect}" unless service
+    terminal = service.terminals[terminal_key.to_sym]
+    raise "Terminal #{terminal_key} not found in #{service.terminals.keys.inspect}" unless terminal
+
+    logc "Calling #{cl} #{service_key}/#{terminal_key} with args #{terminal_args.inspect}"
+    raise "Terminal #{terminal_key} must be running, but service #{service_key} is not running" if terminal.must_be_running? && !is_service_running(service)
+
+    container_name = service.result['container_name']
+    command_line = terminal.call(terminal_args)
+    sh "docker exec -it #{container_name} #{command_line}"
+  end
+
+  def is_service_running(service)
+    container_name = service.result['container_name']
+    sh "docker ps --filter name=#{container_name} --filter status=running --format '{{.Names}}' | grep -w #{container_name}"
+  end
 
   section :dockerfiles
 

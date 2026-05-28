@@ -15,7 +15,7 @@ class MicroSystem::DockerShipTest < MicroSystem::ShipTest
   test_sections(
     :helpers=>{
       :constants=>[],
-      :class_methods=>[:up, :start, :stop, :restart, :docker_directory],
+      :class_methods=>[:up, :start, :stop, :restart, :terminal, :docker_directory],
       :instance_methods=>[]
     },
     :default=>{
@@ -32,6 +32,11 @@ class MicroSystem::DockerShipTest < MicroSystem::ShipTest
       :constants=>[:Service],
       :class_methods=>[:defined_services, :used_services, :define_service_class, :define_service, :use_service],
       :instance_methods=>[]
+    },
+    :terminal=>{
+      :constants=>[:Terminal],
+      :class_methods=>[],
+      :instance_methods=>[:terminal, :is_service_running]
     },
     :dockerfiles=>{
       :constants=>[:Dockerfile],
