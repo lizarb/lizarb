@@ -33,6 +33,11 @@ class MicroSystem::DockerShipTest < MicroSystem::ShipTest
       :class_methods=>[:defined_services, :used_services, :define_service_class, :define_service, :use_service],
       :instance_methods=>[]
     },
+    :dockerfiles=>{
+      :constants=>[:Dockerfile],
+      :class_methods=>[:defined_dockerfiles, :used_dockerfiles, :dockerfile, :define_dockerfile, :use_dockerfile],
+      :instance_methods=>[]
+    },
     :instance_hooks=>{
       :constants=>[],
       :class_methods=>[],
