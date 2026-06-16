@@ -3,10 +3,10 @@ class NetSystem < Liza::System
 
   color :light_ruby
   
-  panel :client
-  panel :database
-  panel :filebase
-  panel :record
-  panel :socket
+  has_subsystem :client
+  has_subsystem :database
+  has_subsystem :filebase
+  has_subsystem :record
+  has_subsystem :socket
 
 end

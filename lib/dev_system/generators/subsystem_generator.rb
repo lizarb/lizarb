@@ -25,7 +25,7 @@ class DevSystem::SubsystemGenerator < DevSystem::SimpleGenerator
     old_lines = contents.split("\n")
 
     lines = LineShell.extract_between old_lines, "class ".."end"
-    lines << "  panel :#{subsystem_name}"
+    lines << "  has_subsystem :#{subsystem_name}"
     lines = LineShell.replace_between old_lines, "class ".."end", lines
 
     contents = lines.join("\n")

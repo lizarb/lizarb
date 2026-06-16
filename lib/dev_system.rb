@@ -5,10 +5,10 @@ class DevSystem < Liza::System
 
   color :green
 
-  panel :bench
-  panel :command
-  panel :generator
-  panel :log
-  panel :shell
-  
+  has_subsystem :bench
+  has_subsystem :command
+  has_subsystem :generator
+  has_subsystem :log
+  has_subsystem :shell
+
 end

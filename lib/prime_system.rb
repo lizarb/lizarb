@@ -8,8 +8,8 @@ class PrimeSystem < Liza::System
 
   #
 
-  panel :agent
-  panel :epic
-  panel :insight
+  has_subsystem :agent
+  has_subsystem :epic
+  has_subsystem :insight
 
 end

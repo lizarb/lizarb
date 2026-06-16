@@ -5,5 +5,5 @@ class MicroSystem < Liza::System
 
   color :dark_coral
 
-  panel :ship
+  has_subsystem :ship
 end

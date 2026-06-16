@@ -22,6 +22,9 @@ class Liza::System < Liza::Unit
   end
 
   # Adds a subsystem to the system
+  def self.has_subsystem(name) = ( subs << name )
+
+  # Deprecated, use has_subsystem instead
   def self.panel name
     subs << name
   end

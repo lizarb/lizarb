@@ -8,7 +8,7 @@ class HappySystem < Liza::System
 
   color :coral
 
-  panel :axo
-  panel :linter
+  has_subsystem :axo
+  has_subsystem :linter
   
 end

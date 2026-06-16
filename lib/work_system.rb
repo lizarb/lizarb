@@ -5,8 +5,8 @@ class WorkSystem < Liza::System
 
   color :light_saffron
 
-  panel :event
-  panel :publisher
-  panel :subscriber
+  has_subsystem :event
+  has_subsystem :publisher
+  has_subsystem :subscriber
 
 end

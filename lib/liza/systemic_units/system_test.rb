@@ -6,7 +6,7 @@ class Liza::SystemTest < Liza::UnitTest
   test_sections(
     :default=>{
       :constants=>[],
-      :class_methods=>[:const, :find_controller, :subs, :subsystems, :panel, :token, :box, :system, :system_directory, :writable?, :color, :log, :puts],
+      :class_methods=>[:const, :find_controller, :subs, :subsystems, :has_subsystem, :panel, :token, :box, :system, :system_directory, :writable?, :color, :log, :puts],
       :instance_methods=>[:log, :puts]
     }
   )
