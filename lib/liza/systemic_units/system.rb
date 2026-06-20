@@ -35,7 +35,7 @@ class Liza::System < Liza::Unit
 
   def self.box
     return @box if @box
-    ret = const "#{token}_box"
+    ret = (const "#{token}_box").configuration
     @box = ret unless App.development?
     ret
   end
