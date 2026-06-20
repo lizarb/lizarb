@@ -197,6 +197,8 @@ class Liza::Unit
       Liza.const_get "#{last_namespace}Test"
     elsif self < Liza::System
       const "#{last_namespace}Test"
+    elsif superclass < Liza::Box
+      system.test_class
     else
       Object.const_get "#{name}Test"
     end
