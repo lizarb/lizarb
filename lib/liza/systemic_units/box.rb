@@ -10,6 +10,12 @@ class Liza::Box < Liza::Unit
 
   section :two_boxes
 
+  # Returns true if this is the Preconfiguration Box (the one at lib/my_system/my_box.rb)
+  def self.preconfiguration?() = ( preconfiguration == self )
+
+  # Returns true if this is the Configuration Box (the one at app/my_box.rb)
+  def self.configuration?() = ( configuration == self )
+
   # Returns the Preconfiguration Box.
   # (The Box in the systems directory)
   # DevSystem::DevBox, HappySystem::HappyBox, etc.

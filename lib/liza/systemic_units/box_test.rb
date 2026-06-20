@@ -11,7 +11,7 @@ class Liza::BoxTest < Liza::UnitTest
     },
     :two_boxes=>{
       :constants=>[],
-      :class_methods=>[:preconfiguration, :configuration, :preconfigure, :configure],
+      :class_methods=>[:preconfiguration?, :configuration?, :preconfiguration, :configuration, :preconfigure, :configure],
       :instance_methods=>[]
     },
     :forwarding=>{
