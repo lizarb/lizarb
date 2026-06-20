@@ -757,14 +757,13 @@ module Lizarb
       to_collapse = []
 
       App.systems.each do |k, klass|
-        next if klass.subs.empty?
-
         box_dir  = "#{app_dir}/#{k}"
         box_file = "#{box_dir}_box.rb"
         next if !list.include? box_file
 
         log "        Found box file    #{box_file}" if defined? $log_boot_highest
         to_collapse << box_file
+        next if klass.subs.empty?
 
         if list.include? box_dir
           log "        Found controllers #{box_dir}" if defined? $log_boot_highest
