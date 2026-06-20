@@ -395,7 +395,7 @@ module Lizarb
 
     # NOTE: calling an unset instance variable returns nil
     # NOTE: these file calls are pretty fast
-    @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :sfa
+    @is_app_dir = File.file? "#{root}/app.rb" if setup_type != :script_independent
     @is_liz_dir = File.file? "#{root}/lib/lizarb.rb"
     @is_gem_dir = File.file? "#{root}/lizarb.gemspec" if @is_liz_dir
 
