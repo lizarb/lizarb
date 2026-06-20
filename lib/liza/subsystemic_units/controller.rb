@@ -62,6 +62,8 @@ class Liza::Controller < Liza::Unit
     end
   end
 
+  set :subsystem, self
+
   # box and panel
 
   def self.box
