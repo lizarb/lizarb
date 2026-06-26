@@ -188,16 +188,29 @@ class MicroSystem::DockerShip < MicroSystem::Ship
     end
 
     def image(string)
+      raise "Image not allowed. Build already set to #{result['build']}" if result.key? 'build' 
+      raise "Image not allowed. Image already set to #{result['image']}" if result.key? 'image'
       result["image"] = string
     end
 
-    def dockerfile(key)
+    def build_dockerfile(key)
       raise "Block not allowed here" if block_given?
       h = ship.menv[:dockerfiles]
       raise "Dockerfiles #{h.keys.inspect} available, but #{key.inspect} requested" unless h.key? key
+      raise "Build not allowed. Build already set to #{result['build']}" if result.key? 'build'
+      raise "Build not allowed. Image already set to #{result['image']}" if result.key? 'image'
       result['build'] = {}
       result['build']["context"] = "."
       result['build']["dockerfile"] = h[key].path.to_s
+    end
+
+    def build_entrypoint(strings)
+      raise "Block not allowed here" if block_given?
+      raise "Build not allowed. Build already set to #{result['build']}" if result.key? 'build'
+      raise "Build not allowed. Image already set to #{result['image']}" if result.key? 'image'
+      result['build'] = {}
+      result['build']["context"] = "."
+      result['build']["entrypoint"] = strings.to_s
     end
 
     def command(string)
