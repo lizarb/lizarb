@@ -45,6 +45,22 @@ class MicroSystem::ShipCommand < DevSystem::SimpleCommand
     ship.dock log_level: :higher
   end
 
+  # liza ship:terminal 0       1         2
+  # liza ship:terminal SHIP    SERVICE   TERMINAL
+  # liza ship:terminal default long_name create
+  def call_terminal
+    return if ship.nil?
+
+    params.expect 1, :symbol
+    service = params[1]
+    params.expect 2, :symbol
+    terminal_key = params[2]
+    terminal_args = params[3..]
+
+    logc "Docking #{ship} before a terminal call to #{service}/#{terminal_key} with args #{terminal_args.inspect}"
+    ship.terminal service, terminal_key, terminal_args, log_level: :higher
+  end
+
   # liza ship:create_network
   def call_create_network
     return if ship.nil?
