@@ -270,12 +270,21 @@ class Liza::Controller < Liza::Unit
       get "#{name}?"
     end
 
+    def get!(name)
+      ret = get "#{name}!"
+      return ret if ret
+      puts
+      puts "Please check your files listed at App.env_vars: #{App.env_vars.inspect}"
+      puts
+      exit 1
+    end
+
     def get(name)
       name = name_for(name)
-      if name[-1] == "?"
-        ENV[name[0..-2]]
-      else
-        ENV.fetch name
+      case name[-1]
+      when "?" then ENV[name[0..-2]]
+      when "!" then ENV.fetch name[0..-2]
+      else ENV.fetch name
       end
     rescue KeyError => e
       puts
